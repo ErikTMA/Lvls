@@ -115,6 +115,62 @@ local function entitySpots(kind, id, out)
   return out
 end
 
+local function pack(x, y) return math.floor(x * 10 + 0.5) * 1000 + math.floor(y * 10 + 0.5) end
+
+-- An npc / object QuestieDB places, added to the dataset when the dataset has no
+-- spot for it: true when it has one now.
+local function adopt(ds, kind, id)
+  local t = kind == "o" and ds.objects or ds.npcs
+  local rec = t[id]
+  if rec and rec.p and next(rec.p) then return true end
+  local e = kind == "o" and lib.Object or lib.Npc
+  local spots = spawnSpots(get(e, id, "spawns"), {})
+  if #spots == 0 then return false end
+  rec = rec or {}
+  if not rec.n then
+    local n = get(e, id, "name")
+    rec.n = type(n) == "string" and n or nil
+  end
+  rec.p = {}
+  for _, s in ipairs(spots) do
+    rec.p[s.map] = rec.p[s.map] or {}
+    table.insert(rec.p[s.map], pack(s.x, s.y))
+  end
+  t[id] = rec
+  return true
+end
+
+-- QuestieDB's Forever data over the dataset's where they differ. The quest dump
+-- carries Season of Discovery values for quests Forever changed: the paladin chain
+-- "Return to Delgren" is level 25 / required 1 in the dump, 30 / 22 in Forever
+-- (and QuestieDB). Also givers the dump lacks ("A Strange Artifact" starts at the
+-- Strange Orb in Darkshore). Once per dataset; returns how many quests changed.
+function QD.Patch(ds)
+  if not lib or not ds or ds.questiedbPatched == lib then return 0 end
+  ds.questiedbPatched = lib
+  local Q, changed = lib.Quest, 0
+  for qid, q in pairs(ds.quests) do
+    if exists(Q, qid) then
+      local touched = false
+      local l, r = nz(get(Q, qid, "questLevel")), nz(get(Q, qid, "requiredLevel"))
+      if l and l > 0 and l ~= q.l then q.l, touched = l, true end
+      if r and r > 0 and r ~= q.r then q.r, touched = r, true end
+      if not q.sn and not q.so then
+        local sb = get(Q, qid, "startedBy")
+        if type(sb) == "table" then
+          local sn, so = {}, {}
+          for _, n in ipairs(list(sb[1]) or {}) do if adopt(ds, "n", n) then sn[#sn + 1] = n end end
+          for _, o in ipairs(list(sb[2]) or {}) do if adopt(ds, "o", o) then so[#so + 1] = o end end
+          if #sn > 0 then q.sn, touched = sn, true end
+          if #so > 0 then q.so, touched = so, true end
+        end
+      end
+      if touched then changed = changed + 1 end
+    end
+  end
+  return changed
+end
+
 -- The item that starts a quest (startedBy's third list) and where it drops:
 -- { id, n, npcs, objects, spots } or nil. Forever's new quests are often only here
 -- (Nibbled-On Book: dropped by Kobold Vermin, Workers and Laborers).

@@ -14,12 +14,14 @@ local A, P = ns.Availability, ns.Prereqs
 
 CQ.LINK_LEVELS = 5
 CQ.ASK_MIN = 2 -- quests in reach before a chain is worth asking about
-CQ.SLACK = 5    -- a class quest is taken at most this many levels below its level
+CQ.SLACK = 5    -- without a required level: this many levels below its level
 
--- The level a class quest can be taken from. Some have no required level in the
--- data (Return to Delgren, a level 25 paladin chain, says 1): then its level less SLACK.
+-- The level a class quest can be taken from: its required level. Only when the data
+-- has none (1, or missing: the dump without QuestieDB says 1 for Return to Delgren)
+-- its level less SLACK.
 function CQ.MinLevel(q)
-  return math.max(q.r or 1, (q.l or 1) - CQ.SLACK)
+  if q.r and q.r > 1 then return q.r end
+  return math.max(1, (q.l or 1) - CQ.SLACK)
 end
 
 local function bits(m)

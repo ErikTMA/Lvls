@@ -324,8 +324,12 @@ local function onLogin()
   if not ok then
     ns.Log("warn", why .. ": prerequisites fall back to quest chains only. Install QuestieDB for exact quest availability.")
   end
-  if not ns.ActiveDataset() then
+  local ds = ns.ActiveDataset()
+  if not ds then
     ns.Log("warn", "no quest data for this client (" .. tostring(ns.Game.Flavor()) .. ")")
+  elseif ok then
+    local n = ns.QuestieDB.Patch(ds)
+    if n > 0 then ns.Log("debug", ("QuestieDB: Forever's levels and givers for %d quests"):format(n)) end
   end
   ns.Events.Fire("LVLS_LOADED")
   ns.Refresh(true)
