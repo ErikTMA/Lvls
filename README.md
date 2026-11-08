@@ -28,7 +28,8 @@ A World of Warcraft addon for questing and leveling on **WoW Forever**.
 - **Class quest guides.** When a class quest chain becomes possible (the warrior's
   weapon quests at level 10, the druid's bear form, the hunter's pet), Lvls! asks
   whether to focus on it: **Focus** routes you through it, **Later** keeps it in the
-  Guides menu (and `/lvls guide class`) for when you want it.
+  Guides menu (and `/lvls guide class`) for when you want it. The guide takes the
+  chain one quest after another and says what comes next, from whom, and when.
 - **Learns what is hard for you.** Lvls! keeps track of your solo fights: how long they
   take, how much health they cost, the rest you need afterwards, deaths, and the
   level and type of what you fought. When fights against mobs of a certain level

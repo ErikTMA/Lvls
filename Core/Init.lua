@@ -133,7 +133,7 @@ local function plan(ds)
     travel = ctx and function(a, b) return ns.Travel.Time(a, b, ctx) end,
     zoneFirst = ns.db.settings.zoneFirst,
     skip = ns.cdb and ns.cdb.skip,
-    focus = g and g.set,
+    focus = g and (g.focus or g.set),
     dungeon = g and g.area,
     -- what the fights say: how far above your level, how long a kill takes, grind steps
     maxAbove = dm.above,
