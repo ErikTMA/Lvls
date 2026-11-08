@@ -68,7 +68,9 @@ function G.Skills()
 end
 
 -- Current uiMap and position on it (percent), or nil.
-function G.Position()
+-- The player's spot { map, x, y } (map percent), or nil. Pass `out` to have it
+-- filled instead of a new table (the arrow and the minimap ask many times a second).
+function G.Position(out)
   if not has(C_Map, "GetBestMapForUnit") or not has(C_Map, "GetPlayerMapPosition") then return nil end
   local map = C_Map.GetBestMapForUnit("player")
   if not map then return nil end
@@ -77,7 +79,9 @@ function G.Position()
   local x, y
   if v.GetXY then x, y = v:GetXY() else x, y = v.x, v.y end
   if not x or not y or (x == 0 and y == 0) then return nil end
-  return { map = map, x = x * 100, y = y * 100 }
+  out = out or {}
+  out.map, out.x, out.y = map, x * 100, y * 100
+  return out
 end
 
 function G.Character()

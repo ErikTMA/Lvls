@@ -91,4 +91,4 @@ function MP.Refresh()
 end
 
 ns.Events.On("LVLS_LOADED", function() MP.Attach() end)
-ns.Events.On("LVLS_UPDATED", function() MP.Refresh() end)
+ns.Events.On("LVLS_PINS", function() MP.Refresh() end)

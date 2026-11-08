@@ -7,6 +7,8 @@ local MM = ns:NewModule("Minimap")
 MM.pins = {}       -- current pin data (zone of the player)
 local buttons = {} -- pooled frames
 local holder
+local here = {}    -- the player's position, refilled every update
+local laid = {}    -- what the last layout was for: skip it when nothing moved
 
 -- Offset in pixels from the minimap centre for a pin, or nil when it is outside.
 -- Pure: every input handed in (tests call it directly).
@@ -74,7 +76,7 @@ end
 
 function MM.Update()
   if not holder then return end
-  local pos = ns.Game.Position()
+  local pos = ns.Game.Position(here)
   local on = ns.db and ns.db.settings.minimap
   local w, h, radius
   if on and pos and pos.map == MM.map then
@@ -82,18 +84,28 @@ function MM.Update()
     radius = C_Minimap and C_Minimap.GetViewRadius and C_Minimap.GetViewRadius()
   end
   local shown = 0
+  if not (w and w > 0 and radius and radius > 0) then laid.pins = nil end -- hidden: lay out again next time
   if w and w > 0 and radius and radius > 0 then
     local half = (Minimap:GetWidth() or 140) / 2
     local facing
     if GetCVar and GetCVar("rotateMinimap") == "1" and GetPlayerFacing then facing = GetPlayerFacing() end
+    -- standing still (same spot, facing, zoom and pins): the layout is as it was
+    if laid.pins == MM.pins and laid.map == pos.map and laid.x == pos.x and laid.y == pos.y
+      and laid.facing == facing and laid.radius == radius and laid.half == half then
+      return
+    end
+    laid.pins, laid.map, laid.x, laid.y, laid.facing, laid.radius, laid.half =
+      MM.pins, pos.map, pos.x, pos.y, facing, radius, half
     for _, p in ipairs(MM.pins) do
       local ox, oy = MM.Offset(pos, p, w, h, radius, half - 4, facing)
       if ox then
         shown = shown + 1
         local b = button(shown)
-        b.pin = p
-        local size = ns.Style.Apply(b.Icon, p)
-        b:SetSize(size * 0.75, size * 0.75)
+        if b.pin ~= p then
+          b.pin = p
+          local size = ns.Style.Apply(b.Icon, p)
+          b:SetSize(size * 0.75, size * 0.75)
+        end
         b:ClearAllPoints()
         b:SetPoint("CENTER", Minimap, "CENTER", ox, oy)
         b:Show()
@@ -124,4 +136,4 @@ function MM.Attach()
 end
 
 ns.Events.On("LVLS_LOADED", function() MM.Attach() end)
-ns.Events.On("LVLS_UPDATED", function() MM.Rebuild() end)
+ns.Events.On("LVLS_PINS", function() MM.Rebuild() end)

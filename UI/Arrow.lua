@@ -9,6 +9,8 @@ local AR = ns:NewModule("Arrow")
 AR.ARRIVED_YARDS = 12
 AR.target = nil   -- { map, x, y, title, manual }
 local frame
+local here = {}            -- the player's position, refilled every update
+local shownYards, shownEta -- what the distance line says now
 
 -- Direction to a target. Pure. Returns east / north yards from the player.
 -- Same map: map percent times the map's size in yards. Different maps: world
@@ -111,16 +113,16 @@ function AR.Update()
   if on and t and UnitOnTaxi and UnitOnTaxi("player") then
     frame.arrow:Hide(); frame.here:Hide()
     frame.title:SetText(AR.goal and AR.goal.title or "")
-    frame.dist:SetText("|cffaaaaaaflying|r")
+    frame.dist:SetText("|cffaaaaaaflying|r"); shownYards = nil
     return
   end
-  local pos = on and t and ns.Game.Position()
+  local pos = on and t and ns.Game.Position(here)
   local east, north
   if pos then east, north = AR.Vector(pos, t, ns.Game.geo) end
   if not east then
     frame.arrow:Hide(); frame.here:Hide()
     frame.title:SetText(on and t and t.title or "")
-    frame.dist:SetText(on and t and "|cff999999far away|r" or "")
+    frame.dist:SetText(on and t and "|cff999999far away|r" or ""); shownYards = nil
     if not (on and t) then frame:Hide() end
     return
   end
@@ -135,7 +137,7 @@ function AR.Update()
   if d <= AR.ARRIVED_YARDS then
     frame.arrow:Hide()
     frame.here:Show()
-    frame.dist:SetText("|cff40ff40You are here|r")
+    frame.dist:SetText("|cff40ff40You are here|r"); shownYards = nil
     return
   end
   frame.here:Hide()
@@ -144,9 +146,15 @@ function AR.Update()
   if frame.arrow.SetRotation then frame.arrow:SetRotation(rot) end
   local r, g, b = AR.Color(rot)
   frame.arrow:SetVertexColor(r, g, b)
+  -- the text only when what it says changes (this runs ~30 times a second)
   local speed = GetUnitSpeed and GetUnitSpeed("player") or 0
-  local eta = AR.Eta(d, speed)
-  frame.dist:SetText(ns.Util.yards(d) .. (eta and ("  |cffaaaaaa" .. eta .. "|r") or ""))
+  local yards = math.floor(d + 0.5)
+  local secs = speed >= 0.5 and math.floor(d / speed + 0.5) or -1
+  if yards ~= shownYards or secs ~= shownEta then
+    shownYards, shownEta = yards, secs
+    local eta = AR.Eta(d, speed)
+    frame.dist:SetText(ns.Util.yards(d) .. (eta and ("  |cffaaaaaa" .. eta .. "|r") or ""))
+  end
 end
 
 function AR.Attach()

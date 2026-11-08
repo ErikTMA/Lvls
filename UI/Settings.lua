@@ -44,6 +44,7 @@ S.ITEMS = {
 function S.Get(key) return ns.db.settings[key] end
 function S.Set(key, value)
   ns.db.settings[key] = value
+  if ns.Invalidate then ns.Invalidate() end
   for _, it in ipairs(S.ITEMS) do
     if it.key == key and it.refresh and ns.Refresh then ns.Refresh(true) return end
   end

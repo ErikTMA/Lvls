@@ -121,6 +121,34 @@ local function unplanned(ds)
   return false
 end
 
+-- What the pins and the nearby list depend on, as a few numbers (no tables, no
+-- strings: this runs every few seconds): level, completed quests, the quest log
+-- (ids, complete, objective texts and states; an order-free sum), known flight
+-- points. Settings changes mark it dirty (ns.Invalidate).
+local function strHash(s, h)
+  for i = 1, #s do h = (h * 31 + s:byte(i)) % 2147483647 end
+  return h
+end
+local function stateOf(char)
+  local done = 0
+  for _ in pairs(char.completed or {}) do done = done + 1 end
+  local active, sum = 0, 0
+  for qid, e in pairs(char.active or {}) do
+    active = active + 1
+    local x = qid * 7 + (e.complete and 3 or 0)
+    for _, o in ipairs(e.objectives or {}) do x = strHash(o.text or "", x) + (o.finished and 1 or 0) end
+    sum = (sum + x) % 2147483647
+  end
+  local fly = 0
+  for _ in pairs(char.flyKnown or {}) do fly = fly + 1 end
+  return char.level or 0, done, active, sum, fly
+end
+local last = {}       -- the state the pins and the nearby list were made for
+local nearbyAt = {}   -- where the nearby list was made
+ns.NEARBY_MOVE = 0.5  -- map percent: moving this far makes a new nearby list
+
+function ns.Invalidate() ns.dirty = true end
+
 function ns.Refresh(replan)
   local ds = ns.ActiveDataset()
   if not ds then return end
@@ -133,9 +161,22 @@ function ns.Refresh(replan)
   for _, f in ipairs(known) do ns.char.flyKnown[f.id] = true end
   ns.flyUnknown = unknown
   local s = ns.db.settings
-  ns.nearby = ns.Quests.Nearby(ds, ns.char, ns.Game.geo, { limit = 10, maxDist = 3000,
-    showLow = false, showTrivial = s.showTrivial, showDungeon = s.showDungeon,
-    showRepeatable = s.showRepeatable })
+  local lv, done, active, sum, fly = stateOf(ns.char)
+  local pos = ns.char.pos
+  local map = pos and pos.map
+  local changed = replan or ns.dirty or lv ~= last.lv or done ~= last.done or active ~= last.active
+    or sum ~= last.sum or fly ~= last.fly
+  local newMap = map ~= last.map
+  ns.dirty = false
+  last.lv, last.done, last.active, last.sum, last.fly, last.map = lv, done, active, sum, fly, map
+  local moved = pos and (nearbyAt.map ~= pos.map or math.abs(pos.x - nearbyAt.x) > ns.NEARBY_MOVE
+    or math.abs(pos.y - nearbyAt.y) > ns.NEARBY_MOVE)
+  if changed or moved or not ns.nearby then
+    ns.nearby = ns.Quests.Nearby(ds, ns.char, ns.Game.geo, { limit = 10, maxDist = 3000,
+      showLow = false, showTrivial = s.showTrivial, showDungeon = s.showDungeon,
+      showRepeatable = s.showRepeatable })
+    if pos then nearbyAt.map, nearbyAt.x, nearbyAt.y = pos.map, pos.x, pos.y end
+  end
   if replan or not ns.steps then plan(ds) end
   ns.stepIndex = ns.Steps.Refresh(ds, ns.char, ns.steps, ns.Game.geo)
   -- a guide is short on purpose: it is re-planned when it runs out, not when it is short
@@ -154,11 +195,13 @@ function ns.Refresh(replan)
     ns.Arrow.SetTarget(nil)
   elseif not ns.Viewer.view and (st ~= ns.arrowStep or not ns.Arrow.goal) then
     ns.Arrow.SetTarget(st.spot, st.title, false)
-  else
-    ns.RefreshTravel()
+  elseif changed or moved then
+    ns.RefreshTravel() -- the way there only changes when you move or something changed
   end
   ns.arrowStep = st
   ns.Events.Fire("LVLS_UPDATED")
+  -- the pins only when what they show can have changed (they are the costly part)
+  if changed or newMap then ns.Events.Fire("LVLS_PINS") end
 end
 
 ns.Events.On("LVLS_STATE", function()
@@ -373,6 +416,7 @@ local TOGGLES = { accept = "autoAccept", deliver = "autoDeliver", reward = "auto
 for cmd, key in pairs(TOGGLES) do
   commands[cmd] = function()
     ns.db.settings[key] = not ns.db.settings[key]
+    ns.Invalidate()
     ns.Log("info", ("%s %s"):format(cmd, ns.db.settings[key] and "on" or "off"))
     ns.Refresh(key == "zoneFirst")
   end

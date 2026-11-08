@@ -19,6 +19,17 @@ function Q.Givers(ds, q, onMap)
   return addSpots(addSpots({}, ds, "n", q.sn, onMap), ds, "o", q.so, onMap)
 end
 
+-- Givers of a quest on every map, built once per dataset and shared: read only.
+-- (Nearby asks for all quests every time you move.)
+local giverCache = setmetatable({}, { __mode = "k" })
+function Q.SharedGivers(ds, q)
+  local c = giverCache[ds]
+  if not c then c = {}; giverCache[ds] = c end
+  local g = c[q.id]
+  if not g then g = Q.Givers(ds, q); c[q.id] = g end
+  return g
+end
+
 function Q.TurnIns(ds, q, onMap)
   return addSpots(addSpots({}, ds, "n", q.en, onMap), ds, "o", q.eo, onMap)
 end
@@ -148,7 +159,7 @@ function Q.Nearby(ds, char, geo, opts)
     if (q.sn or q.so) and not skipKind(q, opts) then
       local st = ns.Availability.Status(q, char)
       if showStatus(st, opts) then
-        local spot, d = G.Nearest(geo, from, Q.Givers(ds, q))
+        local spot, d = G.Nearest(geo, from, Q.SharedGivers(ds, q))
         if spot and (not opts.maxDist or d <= opts.maxDist) then
           out[#out + 1] = { quest = qid, status = st, spot = spot, dist = d }
         end
