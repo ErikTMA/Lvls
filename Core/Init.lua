@@ -45,17 +45,43 @@ end
 -- you play; re-planned when it runs short, goes wrong (a quest became impossible or
 -- was abandoned), or you took a quest it does not know about.
 ns.REPLAN_BELOW = 5
+-- The dungeon guide in use (LvlsCharDB.guide = its area): its quests, or nil.
+local function guideSet(ds)
+  local area = ns.cdb and ns.cdb.guide
+  ns.guide, ns.guideName = nil, nil
+  if not area then return nil end
+  local g = ns.Dungeons.Set(ds, ns.char, area)
+  local name = ns.DungeonInfo.Name(area)
+  if #g.order == 0 or ns.Dungeons.Done(ds, ns.char, g) then
+    ns.Log("info", ("%s guide: all done"):format(name))
+    ns.cdb.guide = nil
+    return nil
+  end
+  ns.guide, ns.guideName = g, name
+  return g
+end
+
 local function plan(ds)
   local ctx = ns.travelCtx
+  local g = guideSet(ds)
   local ok, route = pcall(ns.Route.Plan, ds, ns.char, ns.Game.geo, {
     speed = ctx and ctx.speed or 7,
     travel = ctx and function(a, b) return ns.Travel.Time(a, b, ctx) end,
     zoneFirst = ns.db.settings.zoneFirst,
     skip = ns.cdb and ns.cdb.skip,
+    focus = g and g.set,
+    dungeon = g and g.area,
   })
   if not ok then ns.Log("debug", "route: " .. tostring(route)); route = {} end
   ns.route = route
   ns.steps = ns.Steps.Build(ds, ns.char, route, ns.Game.geo)
+  if g then
+    -- the guide ends at the dungeon: go in and do its quests
+    local planned = {}
+    for _, a in ipairs(route) do if a.kind == "accept" then planned[a.quest] = true end end
+    local st = ns.Dungeons.Step(ds, ns.char, g, ns.guideName, ns.DungeonInfo.Entrance(g.area), planned)
+    if st then ns.steps[#ns.steps + 1] = st end
+  end
   ns.Steps.AddFlightPaths(ns.steps, ns.flyUnknown, ns.Game.geo)
   ns.Viewer.view = nil
 end
@@ -73,13 +99,23 @@ function ns.RefreshTravel()
 end
 
 local function unplanned(ds)
-  local known = {}
+  local known, handIn = {}, {}
   for _, st in ipairs(ns.steps or {}) do
-    for _, l in ipairs(st.lines) do if l.quest then known[l.quest] = true end end
+    for _, l in ipairs(st.lines) do
+      if l.quest then known[l.quest] = true end
+      if l.kind == "turnin" then handIn[l.quest] = true end
+    end
+  end
+  -- a guide quest finished (in the dungeon) that the plan does not hand in yet
+  if ns.guide then
+    for qid, entry in pairs(ns.char.active or {}) do
+      if ns.guide.set[qid] and entry.complete and not handIn[qid] then return true end
+    end
   end
   for qid in pairs(ns.char.active or {}) do
     local q = ds.quests[qid]
-    if q and not known[qid] and (q.sn or q.so) and not q.inst
+    local wanted = ns.guide and ns.guide.set[qid] or (not ns.guide and q and not q.inst)
+    if q and not known[qid] and (q.sn or q.so) and wanted
       and not (ns.cdb and ns.cdb.skip[qid]) then return true end
   end
   return false
@@ -89,6 +125,7 @@ function ns.Refresh(replan)
   local ds = ns.ActiveDataset()
   if not ds then return end
   ns.char = ns.Game.Character()
+  ns.DungeonInfo.Track(ns.char.pos)
   ns.travelCtx = ns.TravelData.Context(ds, ns.char)
   local known, unknown = {}, {}
   if ns.char.pos then known, unknown = ns.TravelData.FlyNodes(ds, ns.char.pos.map, ns.char.faction) end
@@ -101,7 +138,9 @@ function ns.Refresh(replan)
     showRepeatable = s.showRepeatable })
   if replan or not ns.steps then plan(ds) end
   ns.stepIndex = ns.Steps.Refresh(ds, ns.char, ns.steps, ns.Game.geo)
-  if not replan and (not ns.stepIndex or ns.Steps.Remaining(ns.steps, ns.stepIndex) < ns.REPLAN_BELOW
+  -- a guide is short on purpose: it is re-planned when it runs out, not when it is short
+  local short = not ns.guide and ns.Steps.Remaining(ns.steps, ns.stepIndex or 1) < ns.REPLAN_BELOW
+  if not replan and (not ns.stepIndex or short
       or not ns.Steps.Valid(ds, ns.char, ns.steps, ns.stepIndex) or unplanned(ds)) then
     plan(ds)
     ns.stepIndex = ns.Steps.Refresh(ds, ns.char, ns.steps, ns.Game.geo)
@@ -109,7 +148,9 @@ function ns.Refresh(replan)
   -- the arrow follows the current step unless you pointed it somewhere yourself
   -- (a manual target stays until the step changes; browsing steps keeps its own)
   local st = ns.stepIndex and ns.steps[ns.stepIndex]
-  if not st then
+  if st and st.kind == "dungeon" and ns.DungeonInfo.Inside(st.area) then
+    ns.Arrow.SetTarget(nil) -- in there: nothing to point at
+  elseif not st then
     ns.Arrow.SetTarget(nil)
   elseif not ns.Viewer.view and (st ~= ns.arrowStep or not ns.Arrow.goal) then
     ns.Arrow.SetTarget(st.spot, st.title, false)
@@ -236,6 +277,54 @@ commands.unskip = function(arg)
   ns.Refresh(true)
 end
 
+-- Dungeon guides ------------------------------------------------------------
+
+-- Dungeons with quests for this character (Engine/Dungeons.List).
+function ns.GuideList()
+  local ds = ns.ActiveDataset()
+  if not ds or not ns.char then return {} end
+  return ns.Dungeons.List(ds, ns.char, ns.DungeonInfo.env)
+end
+
+-- Start a dungeon guide (area id) or stop it (nil).
+function ns.SetGuide(area)
+  local ds = ns.ActiveDataset()
+  if not ds or not ns.cdb then return end
+  ns.cdb.guide = area
+  ns.Viewer.view = nil
+  if area then
+    local g = ns.Dungeons.Set(ds, ns.char, area)
+    local lead = #g.order - #g.roots
+    ns.Log("info", ("%s guide: %d quest%s there, %d leading up to them"):format(ns.DungeonInfo.Name(area),
+      #g.roots, #g.roots == 1 and "" or "s", lead))
+  else
+    ns.Log("info", "guide stopped: back to the leveling route")
+  end
+  ns.Refresh(true)
+end
+
+-- /lvls guide [<dungeon> | off]: without a name, the list
+commands.guide = function(arg)
+  arg = (arg or ""):lower()
+  if arg == "off" or arg == "stop" then ns.SetGuide(nil) return end
+  local list = ns.GuideList()
+  if arg == "" then
+    if #list == 0 then ns.Log("info", "no dungeon has quests for you") return end
+    for _, d in ipairs(list) do
+      if d.open > 0 then
+        ns.Log("info", ("%s%s (%s-%s): %d quest%s"):format(ns.cdb.guide == d.area and "> " or "", d.name,
+          d.minLevel or "?", d.maxLevel or "?", d.open, d.open == 1 and "" or "s"))
+      end
+    end
+    ns.Log("info", "/lvls guide <dungeon> starts a guide, /lvls guide off stops it")
+    return
+  end
+  for _, d in ipairs(list) do
+    if d.name:lower():find(arg, 1, true) then ns.SetGuide(d.area) return end
+  end
+  ns.Log("info", "no dungeon with quests for you matches " .. arg)
+end
+
 commands.settings = function()
   if not ns.Settings.Open() then ns.Log("info", "the settings page is not available: use /lvls help") end
 end
@@ -307,7 +396,7 @@ commands.debug = function()
 end
 
 commands.help = function()
-  ns.Log("info", "/lvls [show|settings|route|next|skip [quest]|unskip <quest|all>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|arrow|map|minimap|objectives|low|trivial|dungeon|repeatable|debug|help]")
+  ns.Log("info", "/lvls [show|settings|guide [dungeon|off]|route|next|skip [quest]|unskip <quest|all>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|arrow|map|minimap|objectives|low|trivial|dungeon|repeatable|debug|help]")
 end
 
 local function slash(input)

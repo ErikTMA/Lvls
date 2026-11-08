@@ -44,7 +44,12 @@ function V.Model(ds, char, steps, current, view)
   end
   m.stepNo = i
   m.header = st.title
-  m.sub = ("%s  %.1f, %.1f"):format(ds.maps[st.spot.map] or "", st.spot.x, st.spot.y)
+  if st.spot then
+    m.sub = ("%s  %.1f, %.1f"):format(ds.maps[st.spot.map] or "", st.spot.x, st.spot.y)
+  elseif st.kind == "dungeon" then
+    m.sub = "Entrance not known yet: Lvls! learns it when you walk in"
+  end
+  if ns.guideName then m.sub = (m.sub and (m.sub .. "  ·  ") or "") .. "Guide: " .. ns.guideName end
   m.spot = st.spot
   -- how to get there (current step only): "Talk to Thor, fly to Lakeshire", "Enter ..."
   if not view or view == current then
@@ -158,6 +163,8 @@ local function create()
   frame.stepNo:SetPoint("RIGHT", frame.nextBtn, "LEFT", -4, 0)
   frame.prevBtn = button(frame.bar, "<", 20, function() V.Browse(-1) end)
   frame.prevBtn:SetPoint("RIGHT", frame.stepNo, "LEFT", -4, 0)
+  frame.guides = button(frame.bar, "Guides", 44, function(b) V.GuideMenu(b) end)
+  frame.guides:SetPoint("LEFT", frame.name, "RIGHT", 6, 0)
   -- step box
   frame.step = CreateFrame("Button", nil, frame)
   frame.step:SetPoint("TOPLEFT", frame.bar, "BOTTOMLEFT", 4, -4)
@@ -193,6 +200,37 @@ local function create()
   frame.xp.fill:SetColorTexture(C.accent[1], C.accent[2], C.accent[3], 0.85)
   frame.xp.text = frame.xp:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
   frame.xp.text:SetPoint("CENTER", frame.xp, "CENTER", 0, 0)
+end
+
+-- The dungeon guide menu (Blizzard_Menu): one radio per dungeon with quests for
+-- you, and a way back to the leveling route.
+function V.GuideItems()
+  local items = {}
+  for _, d in ipairs(ns.GuideList()) do
+    if d.open > 0 then
+      local levels = d.minLevel and (" (%d-%d)"):format(d.minLevel, d.maxLevel or d.minLevel) or ""
+      items[#items + 1] = { area = d.area, text = ("%s%s: %d quest%s"):format(d.name, levels, d.open, d.open == 1 and "" or "s") }
+    end
+  end
+  return items
+end
+
+function V.GuideMenu(owner)
+  local items = V.GuideItems()
+  if not (MenuUtil and MenuUtil.CreateContextMenu) then
+    ns.commands.guide("")
+    return
+  end
+  MenuUtil.CreateContextMenu(owner, function(_, root)
+    root:CreateTitle("Dungeon guides")
+    for _, it in ipairs(items) do
+      root:CreateRadio(it.text, function() return ns.cdb and ns.cdb.guide == it.area end,
+        function() ns.SetGuide(it.area) end, it.area)
+    end
+    root:CreateDivider()
+    root:CreateRadio("Leveling route (no guide)", function() return not (ns.cdb and ns.cdb.guide) end,
+      function() ns.SetGuide(nil) end, 0)
+  end)
 end
 
 -- Point the arrow at a line's place (nil: the step itself).

@@ -3,7 +3,7 @@
 ## Notes: A leveling route computed for your character: step by step, with an arrow, on the map and minimap.
 ## Category: Quests
 ## Author: Erik Andersen
-## Version: 0.1.3
+## Version: 0.1.4
 ## SavedVariables: LvlsDB
 ## SavedVariablesPerCharacter: LvlsCharDB
 ## OptionalDeps: QuestieDB
@@ -23,6 +23,7 @@ Data/Schema.lua
 Data/Registry.lua
 Data/forever/Dataset.lua
 Data/forever/Travel.lua
+Data/forever/Dungeons.lua
 
 # Engine (pure Lua, unit tested headless)
 Engine/Geo.lua
@@ -33,6 +34,7 @@ Engine/Route.lua
 Engine/Steps.lua
 Engine/Travel.lua
 Engine/Gear.lua
+Engine/Dungeons.lua
 
 # Adapters (game and third-party APIs, feature detected)
 Adapters/Game.lua
@@ -40,6 +42,7 @@ Adapters/QuestieDB.lua
 Adapters/Travel.lua
 Adapters/Gear.lua
 Adapters/Automation.lua
+Adapters/Dungeons.lua
 
 # UI
 UI/Style.lua

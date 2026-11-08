@@ -29,6 +29,7 @@ S.ITEMS = {
   { key = "gearWeights", name = "Stat weights", choices = S.WEIGHTS, tip = "Which weights judge gear. Your spec always comes from your talents (most points spent) or the choice below, never from Pawn." },
   { spec = true, name = "Spec", tip = "Detected: the talent tree with most points; below level 10 the class's leveling weights." },
   { header = "Route and map" },
+  { guide = true, name = "Dungeon guide", tip = "Every quest for a dungeon and the chains leading to them, ending at its entrance. Also in the viewer's Guides menu and /lvls guide." },
   { key = "zoneFirst", name = "Finish the zone first", refresh = true },
   { key = "arrow", name = "Arrow" },
   { key = "worldMap", name = "Quest pins on the world map" },
@@ -68,7 +69,16 @@ function S.Register()
       end
     else
       local get, setv, default, kind, choices
-      if it.spec then
+      if it.guide then
+        get = function() return ns.cdb and ns.cdb.guide or 0 end
+        setv = function(v) ns.SetGuide(v ~= 0 and v or nil) end
+        default, kind = 0, Var.Number
+        choices = function()
+          local out = { { 0, "None: the leveling route" } }
+          for _, it2 in ipairs(ns.Viewer.GuideItems()) do out[#out + 1] = { it2.area, it2.text } end
+          return out
+        end
+      elseif it.spec then
         get = function() return ns.cdb and ns.cdb.spec or 0 end
         setv = function(v) if ns.cdb then ns.cdb.spec = v end end
         default, kind, choices = 0, Var.Number, S.SpecChoices
@@ -83,7 +93,7 @@ function S.Register()
           kind = Var.Boolean
         end
       end
-      local setting = Settings.RegisterProxySetting(category, "LVLS_" .. (it.key or "spec"):upper(), kind,
+      local setting = Settings.RegisterProxySetting(category, "LVLS_" .. (it.key or (it.guide and "guide") or "spec"):upper(), kind,
         it.name, default, get, setv)
       if choices then
         Settings.CreateDropdown(category, setting, function()

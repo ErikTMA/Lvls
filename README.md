@@ -20,6 +20,11 @@ A World of Warcraft addon for questing and leveling on **WoW Forever**.
   every cave you walk into. Flight points you have not found yet are picked up on the
   way ("Get the Lakeshire flight path").
 
+- **Dungeon guides.** Pick a dungeon (the viewer's Guides button, the settings, or
+  `/lvls guide deadmines`) and Lvls! finds every quest for it and every quest that
+  leads up to them (prerequisites, chains, breadcrumbs), routes you through them and
+  ends at the dungeon's entrance with the objectives to do inside. When you come
+  out, it hands them in and goes back to leveling.
 - **Hands-free questing (each part can be switched off).** Accepts quests and hands
   them in when you talk to the npc, takes the reward that is the best upgrade for
   your class and spec (or the one that sells for most when none is), and can put on
@@ -43,6 +48,7 @@ A World of Warcraft addon for questing and leveling on **WoW Forever**.
 |---|---|
 | `/lvls` | Show or hide the step viewer |
 | `/lvls settings` | Open the settings (also under Options, AddOns, Lvls!) |
+| `/lvls guide`, `/lvls guide <dungeon>`, `/lvls guide off` | List dungeons with quests for you, start a dungeon guide, back to leveling |
 | `/lvls accept`, `/lvls deliver`, `/lvls reward`, `/lvls gold` | Accept quests, hand them in, take the best reward, otherwise the most gold: on or off |
 | `/lvls equip`, `/lvls bind`, `/lvls quality <white\|green\|blue\|epic>` | Put on upgrades; also ones that bind when equipped, up to this quality |
 | `/lvls spec [auto\|<spec>]`, `/lvls weights <auto\|pawn\|lvls>`, `/lvls gear` | Spec for gear (auto: from talents), whose stat weights, and what is used now |

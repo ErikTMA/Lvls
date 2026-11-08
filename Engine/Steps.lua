@@ -29,6 +29,8 @@ local function objKind(o)
   return "event"
 end
 
+S.ObjectiveKind = objKind
+
 -- "Kobold Vermin slain" -> "Kill 10 Kobold Vermin"; "Tough Wolf Meat" -> "Collect 8 ..."
 function S.ObjectiveText(o)
   local text = o.text or "objective"
@@ -183,7 +185,7 @@ end
 -- Line icon names in Media/Icons.tga (32 px icons, see UI/Viewer.lua).
 S.ICON = { accept = "accept", turnin = "turnin", kill = "kill", collect = "collect",
   object = "goto", event = "goto", talk = "talk", work = "goto", fpath = "fly", fly = "fly",
-  transit = "transit", hearth = "hearth", enter = "enter", path = "path" }
+  transit = "transit", hearth = "hearth", enter = "enter", path = "path", dungeon = "enter" }
 
 -- Is the plan still good from the current step on? False when an open line can no
 -- longer happen: a quest to accept became impossible for this character, or a quest

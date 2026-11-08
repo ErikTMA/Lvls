@@ -1,0 +1,38 @@
+-- GENERATED dungeon data for Lvls!. Do not edit.
+-- From the forever client's Map, AreaTable, UiMapAssignment and UiMap tables (build 1.60.1.70862)
+-- and the quest dataset: [questArea] = { n = name, inst = instance map id, raid,
+-- size = players, e = { uiMap, x, y } the entrance (where a ghost revives) }.
+local _, ns = ...
+ns.DungeonData = {
+  [209]={n="Shadowfang Keep",inst=33,size=10,e={1421,44.7,67.8}},
+  [491]={n="Razorfen Kraul",inst=47,size=10,e={1413,42.3,89.9}},
+  [717]={n="The Stockade",inst=34,size=10,e={1453,50.4,66.2}},
+  [718]={n="Wailing Caverns",inst=43,size=10,e={1413,47.7,35.0}},
+  [719]={n="Blackfathom Deeps",inst=48,size=10,e={1440,16.5,11.0}},
+  [721]={n="Gnomeregan",inst=90,size=10,e={1426,17.7,39.2}},
+  [722]={n="Razorfen Downs",inst=129,size=10,e={1413,50.9,92.9}},
+  [796]={n="Scarlet Monastery",inst=189,size=10,e={1420,85.1,31.4}},
+  [1176]={n="Zul'Farrak",inst=209,size=10,e={1446,38.7,19.9}},
+  [1337]={n="Uldaman",inst=70,size=10,e={1418,35.2,10.3}},
+  [1477]={n="The Temple of Atal'Hakkar",inst=109,size=20,e={1435,77.3,35.9}},
+  [1581]={n="The Deadmines",inst=36,size=10,e={1436,38.2,77.5}},
+  [1583]={n="Blackrock Spire",inst=229,size=10,e={1428,33.0,25.2}},
+  [1584]={n="Blackrock Depths",inst=230,size=5,e={1427,27.1,72.5}},
+  [1977]={n="Zul'Gurub",inst=309,raid=true,size=20,e={1434,54.0,17.6}},
+  [2017]={n="Stratholme",inst=329,size=5,e={1423,26.1,10.4}},
+  [2057]={n="Scholomance",inst=289,size=5,e={1422,69.1,73.0}},
+  [2100]={n="Maraudon",inst=349,size=10,e={1443,29.1,62.9}},
+  [2159]={n="Onyxia's Lair",inst=249,raid=true,size=40,e={1445,52.9,77.7}},
+  [2437]={n="Ragefire Chasm",inst=389,size=10,e={1454,53.0,48.9}},
+  [2557]={n="Dire Maul",inst=429,size=5,e={1444,62.0,33.3}},
+  [2677]={n="Blackwing Lair",inst=469,raid=true,size=40,e={1428,32.5,32.4}},
+  [2717]={n="Molten Core",inst=409,raid=true,size=40,e={1427,32.0,94.8}},
+  [3428]={n="Ahn'Qiraj",inst=531,raid=true,size=40,e={1451,29.0,92.7}},
+  [3429]={n="Ruins of Ahn'Qiraj",inst=509,raid=true,size=20,e={1451,29.0,92.8}},
+  [3456]={n="Naxxramas",inst=533,raid=true,size=40},
+  [16074]={n="Karazhan Crypts",inst=2875},
+  [16114]={n="Deadwind Pass",inst=2853},
+  [16236]={n="Scarlet Enclave",inst=2856,raid=true},
+  [16611]={n="Ruins of Lordaeron",inst=2999},
+  [16919]={n="The Hall of Thanes",inst=3065},
+}
