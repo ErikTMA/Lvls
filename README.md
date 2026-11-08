@@ -37,6 +37,12 @@ A World of Warcraft addon for questing and leveling on **WoW Forever**.
   too hard, it may suggest finishing the level on easy mobs nearby first ("Kill
   Young Goretusk until level 14"). It also learns how long a kill takes you.
   `/lvls fights` shows what it learned.
+- **Questing together.** Group members who run Lvls! share which quests they have
+  done. When a friend has done quests you have not (or has ones in their log you
+  could share), Lvls! asks whether to catch up with them: it then routes you through
+  those quests and every quest you need before them. Your friend is asked whether to
+  follow your route to help, and their arrow and viewer go where you go. Both of
+  you need the same Lvls! version.
 - **Hands-free questing (each part can be switched off).** Accepts quests and hands
   them in when you talk to the npc, takes the reward that is the best upgrade for
   your class and spec (or the one that sells for most when none is), and can put on
@@ -64,6 +70,7 @@ A World of Warcraft addon for questing and leveling on **WoW Forever**.
 | `/lvls guide class`, `/lvls guide class <name>` | List your class quest chains, start one |
 | `/lvls classask` | Ask about class quests when they become possible: on or off |
 | `/lvls fights`, `/lvls fights reset` | What Lvls! learned from your fights; start over |
+| `/lvls sync`, `/lvls sync <name>`, `/lvls sync follow <name>`, `/lvls sync off` | Group members with Lvls! and what you could catch up on; catch up with one; follow one's route to help; stop |
 | `/lvls learn`, `/lvls grind` | Learn from fights; suggest grinding a level: on or off |
 | `/lvls accept`, `/lvls deliver`, `/lvls reward`, `/lvls gold` | Accept quests, hand them in, take the best reward, otherwise the most gold: on or off |
 | `/lvls equip`, `/lvls bind`, `/lvls quality <white\|green\|blue\|epic>` | Put on upgrades; also ones that bind when equipped, up to this quality |

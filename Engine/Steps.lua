@@ -59,6 +59,7 @@ end
 
 function S.LineState(ds, char, line)
   if line.kind == "fpath" then return char.flyKnown and char.flyKnown[line.node] or false end
+  if line.kind == "follow" then return line.done or false end -- as the member you follow says
   if line.kind == "grind" then
     -- the experience bar towards the level
     if (char.level or 0) >= line.level then return true end
@@ -200,7 +201,7 @@ end
 -- Line icon names in Media/Icons.tga (32 px icons, see UI/Viewer.lua).
 S.ICON = { accept = "accept", turnin = "turnin", kill = "kill", collect = "collect",
   object = "goto", event = "goto", talk = "talk", work = "goto", fpath = "fly", fly = "fly",
-  transit = "transit", hearth = "hearth", enter = "enter", path = "path", dungeon = "enter", grind = "kill" }
+  transit = "transit", hearth = "hearth", enter = "enter", path = "path", dungeon = "enter", grind = "kill", follow = "goto" }
 
 -- Is the plan still good from the current step on? False when an open line can no
 -- longer happen: a quest to accept became impossible for this character, or a quest

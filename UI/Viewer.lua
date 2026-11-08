@@ -49,7 +49,9 @@ function V.Model(ds, char, steps, current, view)
   elseif st.kind == "dungeon" then
     m.sub = "Entrance not known yet: Lvls! learns it when you walk in"
   end
-  if ns.guideName then m.sub = (m.sub and (m.sub .. "  ·  ") or "") .. "Guide: " .. ns.guideName end
+  if ns.guideName then
+    m.sub = (m.sub and (m.sub .. "  ·  ") or "") .. (ns.sync and "Sync: " or "Guide: ") .. ns.guideName
+  end
   m.spot = st.spot
   -- how to get there (current step only): "Talk to Thor, fly to Lakeshire", "Enter ..."
   if not view or view == current then
@@ -248,8 +250,25 @@ function V.GuideMenu(owner)
           function() ns.SetClassGuide(it.chain) end, -it.chain)
       end
     end
+    local peers = ns.SyncPeers()
+    if #peers > 0 then
+      root:CreateDivider()
+      root:CreateTitle("Group")
+      for _, p in ipairs(peers) do
+        if p.version == "ok" and p.count > 0 then
+          root:CreateRadio(("Catch up with %s: %d quest%s"):format(p.name, p.count, p.count == 1 and "" or "s"),
+            function() return ns.sync and ns.sync.mode == "catchup" and ns.sync.with == p.name end,
+            function() ns.SetSync(p.name, "catchup") end, "c" .. p.name)
+        end
+        if ns.GroupSync.requests[p.name] or (ns.sync and ns.sync.mode == "follow" and ns.sync.with == p.name) then
+          root:CreateRadio(("Follow %s (helping them catch up)"):format(p.name),
+            function() return ns.sync and ns.sync.mode == "follow" and ns.sync.with == p.name end,
+            function() ns.SetSync(p.name, "follow") end, "f" .. p.name)
+        end
+      end
+    end
     root:CreateDivider()
-    root:CreateRadio("Leveling route (no guide)", function() return not (ns.cdb and (ns.cdb.guide or ns.cdb.classGuide)) end,
+    root:CreateRadio("Leveling route (no guide)", function() return not (ns.sync or (ns.cdb and (ns.cdb.guide or ns.cdb.classGuide))) end,
       function() ns.SetGuide(nil) end, 0)
   end)
 end

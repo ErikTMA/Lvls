@@ -24,6 +24,8 @@ ns.DEFAULT_SETTINGS = {
   autoEquip = false, autoEquipBind = false, equipMaxQuality = 2, gearWeights = "auto",
   askClassQuests = true, -- ask to focus on a class quest chain when it becomes possible
   learnFights = true,    -- record fights (Adapters/FightLog) to learn what is hard for you
+  groupSync = true,      -- tell group members with Lvls! your quest state (Adapters/GroupSync)
+  askSync = true,        -- ask to catch up / to follow when it makes sense
   suggestGrind = true,   -- grind steps when quests here wait only because they are too hard
 }
 
@@ -58,6 +60,25 @@ local function guideSet(ds)
   local before = ns.guideName -- the name it ran under (a chain's name moves on with its parts)
   ns.guide, ns.guideName = nil, nil
   local g, name
+  -- group sync comes first: catching up with a member, or following one
+  local sync = ns.sync
+  if sync and sync.mode == "follow" then
+    ns.guide, ns.guideName = { set = {}, order = {}, roots = {}, follow = true }, "Helping " .. sync.with
+    return ns.guide
+  end
+  if sync and sync.mode == "catchup" then
+    local peer = ns.GroupSync.peers[sync.with]
+    if not (peer and peer.state) then return nil end
+    g = ns.Sync.Set(ds, ns.char, peer.state)
+    if #g.order == 0 or ns.Dungeons.Done(ds, ns.char, g) then
+      ns.Log("info", ("caught up with %s"):format(sync.with))
+      ns.GroupSync.Send("X")
+      ns.sync = nil
+      return guideSet(ds) -- back to the guide (or route) you had
+    end
+    ns.guide, ns.guideName = g, "Catching up with " .. sync.with
+    return g
+  end
   if area then
     g, name = ns.Dungeons.Set(ds, ns.char, area), ns.DungeonInfo.Name(area)
   elseif chainId then
@@ -99,6 +120,14 @@ local function plan(ds)
   local g = guideSet(ds)
   local dm = ns.DifficultyModel()
   local elite = dm.elite.n >= ns.Difficulty.MIN_FIGHTS and dm.elite.strain >= ns.Difficulty.HARD
+  if g and g.follow then
+    -- following a member: their step, as they send it
+    ns.route = {}
+    ns.steps = { ns.followStep or { kind = "follow", title = "Waiting for " .. ns.sync.with,
+      lines = { { kind = "follow", text = "their next step comes when they move on" } } } }
+    ns.Viewer.view = nil
+    return
+  end
   local ok, route = pcall(ns.Route.Plan, ds, ns.char, ns.Game.geo, {
     speed = ctx and ctx.speed or 7,
     travel = ctx and function(a, b) return ns.Travel.Time(a, b, ctx) end,
@@ -246,6 +275,7 @@ function ns.Refresh(replan)
     ns.RefreshTravel() -- the way there only changes when you move or something changed
   end
   ns.arrowStep = st
+  if ns.sync and ns.sync.mode == "catchup" then ns.GroupSync.SendStep(st) end
   ns.Events.Fire("LVLS_UPDATED")
   -- the pins only when what they show can have changed (they are the costly part)
   if changed or newMap then ns.Events.Fire("LVLS_PINS") end
@@ -382,6 +412,7 @@ function ns.SetGuide(area)
   local ds = ns.ActiveDataset()
   if not ds or not ns.cdb then return end
   ns.cdb.guide, ns.cdb.classGuide = area, nil
+  if ns.sync and not area then ns.SetSync(nil) return end
   ns.Viewer.view = nil
   if area then
     local g = ns.Dungeons.Set(ds, ns.char, area)
@@ -521,6 +552,108 @@ commands.fights = function(arg)
     m.killSecs and (math.floor(m.killSecs + 0.5) .. " s") or "about 15 s (not enough fights yet)"))
 end
 
+-- Group sync -------------------------------------------------------------------
+
+-- Members with Lvls! and what you could catch up on with each: { name, count, level, version }.
+function ns.SyncPeers()
+  local ds = ns.ActiveDataset()
+  local out = {}
+  if not ds or not ns.char then return out end
+  for name, p in pairs(ns.GroupSync.peers) do
+    local count = p.state and #ns.Sync.Missing(ds, ns.char, p.state) or 0
+    out[#out + 1] = { name = name, count = count, level = p.state and p.state.level, version = p.version }
+  end
+  table.sort(out, function(a, b) return a.name < b.name end)
+  return out
+end
+
+-- Catch up with a member (mode "catchup"), follow one ("follow"), or stop (nil).
+function ns.SetSync(name, mode)
+  local was = ns.sync
+  if was and was.mode == "catchup" and (not name or was.with ~= name) then ns.GroupSync.Send("X") end
+  if was and was.mode == "follow" and (not name or was.with ~= name or mode ~= "follow") then
+    ns.GroupSync.Send(("F|%s|off"):format(was.with))
+  end
+  ns.followStep = nil
+  if not name then
+    ns.sync = nil
+    if was then ns.Log("info", "sync stopped") end
+  else
+    ns.sync = { mode = mode or "catchup", with = name }
+    if ns.sync.mode == "catchup" then
+      local ds = ns.ActiveDataset()
+      local peer = ns.GroupSync.peers[name]
+      local count = (ds and peer and peer.state) and #ns.Sync.Missing(ds, ns.char, peer.state) or 0
+      ns.GroupSync.Send(("Q|%s|%d"):format(name, count))
+      ns.Log("info", ("catching up with %s: %d quest%s and what they need"):format(name, count, count == 1 and "" or "s"))
+    else
+      ns.GroupSync.Send(("F|%s|on"):format(name))
+      ns.GroupSync.requests[name] = nil
+      ns.Log("info", ("following %s's route"):format(name))
+    end
+  end
+  ns.asking = nil
+  ns.Refresh(true)
+end
+
+-- A member has done quests you have not: ask once (again when it grew by 3).
+local syncAsked = {}
+ns.Events.On("LVLS_PEERS", function(name)
+  if not ns.db or not ns.db.settings.askSync or ns.sync or ns.asking then return end
+  if type(InCombatLockdown) == "function" and InCombatLockdown() then return end
+  local ds = ns.ActiveDataset()
+  local peer = ns.GroupSync.peers[name]
+  if not ds or not ns.char or not (peer and peer.state) then return end
+  local count = #ns.Sync.Missing(ds, ns.char, peer.state)
+  if count < ns.SYNC_MIN or (syncAsked[name] and count < syncAsked[name] + 3) then return end
+  syncAsked[name] = count
+  ns.asking = "sync"
+  if ns.SyncPrompt and ns.SyncPrompt.AskCatchUp(name, count) then return end
+  ns.asking = nil
+  ns.Log("info", ("%s has done %d quests you have not: /lvls sync %s to catch up"):format(name, count, name:lower()))
+end)
+ns.SYNC_MIN = 2
+
+-- A member asks to catch up with you: follow their route?
+function ns.AskFollow(name, count)
+  if not ns.db or not ns.db.settings.askSync then return end
+  if ns.SyncPrompt and ns.SyncPrompt.AskFollow(name, count) then return end
+  ns.Log("info", ("%s wants to catch up with you (%d quests): /lvls sync follow %s to help"):format(name, count, name:lower()))
+end
+
+-- /lvls sync [<name> | follow <name> | off]
+commands.sync = function(arg)
+  arg = arg or ""
+  local low = arg:lower()
+  if low == "off" or low == "stop" then ns.SetSync(nil) return end
+  local function find(n)
+    for name in pairs(ns.GroupSync.peers) do if name:lower():find(n, 1, true) == 1 then return name end end
+  end
+  local who = low:match("^follow%s+(.+)$")
+  if who then
+    local name = find(who)
+    if name then ns.SetSync(name, "follow") else ns.Log("info", "no group member with Lvls! called " .. who) end
+    return
+  end
+  if low ~= "" then
+    local name = find(low)
+    if name then ns.SetSync(name, "catchup") else ns.Log("info", "no group member with Lvls! called " .. low) end
+    return
+  end
+  local peers = ns.SyncPeers()
+  if #peers == 0 then ns.Log("info", "nobody in your group runs Lvls! (or they have not answered yet)") return end
+  for _, p in ipairs(peers) do
+    if p.version ~= "ok" then
+      ns.Log("info", ("%s: another version of Lvls!, update both to sync"):format(p.name))
+    else
+      ns.Log("info", ("%s (level %s): %d quest%s you could catch up on"):format(p.name, p.level or "?", p.count,
+        p.count == 1 and "" or "s"))
+    end
+  end
+  if ns.sync then ns.Log("info", (ns.sync.mode == "catchup" and "catching up with %s" or "following %s"):format(ns.sync.with)) end
+  ns.Log("info", "/lvls sync <name> catches up, /lvls sync follow <name> helps, /lvls sync off stops")
+end
+
 commands.settings = function()
   if not ns.Settings.Open() then ns.Log("info", "the settings page is not available: use /lvls help") end
 end
@@ -565,7 +698,7 @@ end
 
 local TOGGLES = { accept = "autoAccept", deliver = "autoDeliver", reward = "autoReward", gold = "rewardGold",
   equip = "autoEquip", bind = "autoEquipBind", zone = "zoneFirst", classask = "askClassQuests",
-  grind = "suggestGrind", learn = "learnFights", map = "worldMap", minimap = "minimap", objectives = "objectives", arrow = "arrow", low = "showLow",
+  grind = "suggestGrind", learn = "learnFights", groupsync = "groupSync", asksync = "askSync", map = "worldMap", minimap = "minimap", objectives = "objectives", arrow = "arrow", low = "showLow",
   trivial = "showTrivial", dungeon = "showDungeon", repeatable = "showRepeatable" }
 for cmd, key in pairs(TOGGLES) do
   commands[cmd] = function()
@@ -594,7 +727,7 @@ commands.debug = function()
 end
 
 commands.help = function()
-  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|off]|classask|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|arrow|map|minimap|objectives|low|trivial|dungeon|repeatable|debug|help]")
+  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|off]|sync [name|follow name|off]|groupsync|asksync|classask|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|arrow|map|minimap|objectives|low|trivial|dungeon|repeatable|debug|help]")
 end
 
 local function slash(input)
