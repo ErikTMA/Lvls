@@ -23,6 +23,8 @@ ns.DEFAULT_SETTINGS = {
   autoAccept = true, autoDeliver = true, autoReward = true, rewardGold = true,
   autoEquip = false, autoEquipBind = false, equipMaxQuality = 2, gearWeights = "auto",
   askClassQuests = true, -- ask to focus on a class quest chain when it becomes possible
+  learnFights = true,    -- record fights (Adapters/FightLog) to learn what is hard for you
+  suggestGrind = true,   -- grind steps when quests here wait only because they are too hard
 }
 
 function ns.InitDB(db)
@@ -40,6 +42,7 @@ function ns.InitCharDB(cdb)
   if type(cdb.skip) ~= "table" then cdb.skip = {} end
   if type(cdb.spec) ~= "number" then cdb.spec = 0 end -- 0: from the talents
   if type(cdb.classAsked) ~= "table" then cdb.classAsked = {} end -- class quest questions answered
+  if type(cdb.fights) ~= "table" then cdb.fights = {} end -- Adapters/FightLog
   return cdb
 end
 
@@ -72,9 +75,30 @@ local function guideSet(ds)
   return g
 end
 
+-- What the fights say (Engine/Difficulty), kept until a fight is recorded.
+local model
+function ns.DifficultyModel()
+  if not model and ns.cdb then model = ns.Difficulty.Model(ns.cdb.fights, ns.lastModel) end
+  return model or ns.Difficulty.Model({})
+end
+ns.Events.On("LVLS_FIGHT", function()
+  local before = model and model.above
+  ns.lastModel = model
+  model = nil
+  local m = ns.DifficultyModel()
+  if before and m.above ~= before then
+    ns.Log("info", m.above < before
+      and ("fights have been hard lately: quests up to %+d levels for now"):format(m.above)
+      or ("fights are going well: quests up to %+d levels again"):format(m.above))
+    ns.replanSoon = true
+  end
+end)
+
 local function plan(ds)
   local ctx = ns.travelCtx
   local g = guideSet(ds)
+  local dm = ns.DifficultyModel()
+  local elite = dm.elite.n >= ns.Difficulty.MIN_FIGHTS and dm.elite.strain >= ns.Difficulty.HARD
   local ok, route = pcall(ns.Route.Plan, ds, ns.char, ns.Game.geo, {
     speed = ctx and ctx.speed or 7,
     travel = ctx and function(a, b) return ns.Travel.Time(a, b, ctx) end,
@@ -82,6 +106,11 @@ local function plan(ds)
     skip = ns.cdb and ns.cdb.skip,
     focus = g and g.set,
     dungeon = g and g.area,
+    -- what the fights say: how far above your level, how long a kill takes, grind steps
+    maxAbove = dm.above,
+    killSeconds = dm.killSecs,
+    grind = ns.db.settings.suggestGrind,
+    groupMargin = elite and 3 or 0,
   })
   if not ok then ns.Log("debug", "route: " .. tostring(route)); route = {} end
   ns.route = route
@@ -194,6 +223,7 @@ function ns.Refresh(replan)
       showRepeatable = s.showRepeatable })
     if pos then nearbyAt.map, nearbyAt.x, nearbyAt.y = pos.map, pos.x, pos.y end
   end
+  if ns.replanSoon then replan, ns.replanSoon = true, nil end
   if replan or not ns.steps then plan(ds) end
   ns.stepIndex = ns.Steps.Refresh(ds, ns.char, ns.steps, ns.Game.geo)
   -- a guide is short on purpose: it is re-planned when it runs out, not when it is short
@@ -467,6 +497,30 @@ commands.guide = function(arg)
   ns.Log("info", "no dungeon or class quest matches " .. arg)
 end
 
+-- /lvls fights [reset]: what Lvls! learned from your fights
+commands.fights = function(arg)
+  if arg == "reset" then
+    ns.cdb.fights = {}
+    ns.Events.Fire("LVLS_FIGHT", nil)
+    ns.Log("info", "fight history cleared")
+    return
+  end
+  local m = ns.DifficultyModel()
+  local n = #ns.cdb.fights
+  ns.Log("info", ("%d fights recorded (the last %d count)"):format(n, ns.Difficulty.RECENT))
+  for d = -5, 5 do
+    local b = m.diffs[d]
+    if b then
+      ns.Log("info", ("  mobs %+d levels: %d fights, strain %.2f, %d death%s%s"):format(d, b.n, b.strain, b.deaths,
+        b.deaths == 1 and "" or "s", m.hard[d] and "  HARD" or ""))
+    end
+  end
+  if m.elite.n > 0 then ns.Log("info", ("  elites and rares: %d fights, strain %.2f"):format(m.elite.n, m.elite.strain)) end
+  ns.Log("info", ("quests up to %+d levels%s; a kill takes %s"):format(m.above,
+    m.above < ns.Difficulty.DEFAULT_ABOVE and " (lowered by hard fights)" or "",
+    m.killSecs and (math.floor(m.killSecs + 0.5) .. " s") or "about 15 s (not enough fights yet)"))
+end
+
 commands.settings = function()
   if not ns.Settings.Open() then ns.Log("info", "the settings page is not available: use /lvls help") end
 end
@@ -510,7 +564,8 @@ commands.weights = function(arg)
 end
 
 local TOGGLES = { accept = "autoAccept", deliver = "autoDeliver", reward = "autoReward", gold = "rewardGold",
-  equip = "autoEquip", bind = "autoEquipBind", zone = "zoneFirst", classask = "askClassQuests", map = "worldMap", minimap = "minimap", objectives = "objectives", arrow = "arrow", low = "showLow",
+  equip = "autoEquip", bind = "autoEquipBind", zone = "zoneFirst", classask = "askClassQuests",
+  grind = "suggestGrind", learn = "learnFights", map = "worldMap", minimap = "minimap", objectives = "objectives", arrow = "arrow", low = "showLow",
   trivial = "showTrivial", dungeon = "showDungeon", repeatable = "showRepeatable" }
 for cmd, key in pairs(TOGGLES) do
   commands[cmd] = function()
@@ -539,7 +594,7 @@ commands.debug = function()
 end
 
 commands.help = function()
-  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|off]|classask|route|next|skip [quest]|unskip <quest|all>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|arrow|map|minimap|objectives|low|trivial|dungeon|repeatable|debug|help]")
+  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|off]|classask|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|arrow|map|minimap|objectives|low|trivial|dungeon|repeatable|debug|help]")
 end
 
 local function slash(input)

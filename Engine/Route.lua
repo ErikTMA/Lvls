@@ -60,6 +60,11 @@ R.DEFAULTS = {
   zoneFirst = true,    -- stay on the current map while there is work on it
   skip = nil,          -- { [questId] = true }: quests the player does not want
   focus = nil,         -- { [questId] = true }: a guide: only these quests (any kind, any distance)
+  grind = false,       -- suggest "grind to the next level" when quests here wait only on the margin
+  grindAbove = 3,      -- the margin quests would have without the difficulty model
+  grindNear = 700,     -- yards: quests and mobs this close count as "here"
+  grindMaxSecs = 600,  -- a grind step is at most this long (else: quests elsewhere first)
+  groupMargin = 0,     -- group (elite) quests need this many levels more
   dungeon = nil,       -- AreaTable id: objectives of quests in this instance wait for the dungeon step
 }
 
@@ -132,6 +137,77 @@ end
 local function nearestTarget(geo, from, targets)
   local best, d = G.Nearest(geo, from, targets)
   return best, d
+end
+
+-- "Grind to the next level": when the only quests left here wait on the difficulty
+-- margin (they would be planned without it) and one level more unlocks them, kill
+-- easy mobs close by until then. Returns the action or nil. Only the next level:
+-- more than that is the route's to solve by going elsewhere.
+-- npcs a quest asks you to kill once (named ones: Old Murk-Eye), per dataset
+local namedTargets = setmetatable({}, { __mode = "k" })
+local function named(ds)
+  local t = namedTargets[ds]
+  if t then return t end
+  t = {}
+  for _, q in pairs(ds.quests) do
+    for _, ob in ipairs(q.obj or {}) do
+      if ob.t == "kill" and ob.id and (ob.qty or 1) == 1 then t[ob.id] = true end
+    end
+  end
+  namedTargets[ds] = t
+  return t
+end
+
+local function grindAction(ds, o, st, sim, pos, geo, pool, consider, shapes, nothingElse)
+  if not o.grind or o.maxAbove >= o.grindAbove or st.level >= R.MAX_LEVEL then return nil end
+  local A, Df = ns.Availability, ns.Difficulty
+  local unlock, held = nil, 0
+  for _, q in ipairs(pool) do
+    if q.l and q.l > st.level + o.maxAbove and q.l <= st.level + o.grindAbove and not sim.completed[q.id]
+      and not sim.active[q.id] and A.Status(q, sim) == "available" and consider(q) then
+      local _, d = G.Nearest(geo, pos, shapes[q.id].givers)
+      if d <= o.grindNear then
+        held = held + 1
+        local need = q.l - o.maxAbove
+        if not unlock or need < unlock then unlock = need end
+      end
+    end
+  end
+  if not unlock or unlock ~= st.level + 1 then return nil end
+  -- easy mobs close by: at most your level (the margin is below it), worth experience
+  local best, bestScore
+  local skipNamed = named(ds)
+  for id, n in pairs(ds.npcs) do
+    local lv = n.lv
+    local top = lv and lv[2] or (lv and lv[1])
+    -- normal mobs only: no elites, rares or bosses, no named quest targets
+    if top and not n.elite and not skipNamed[id] and top <= st.level + math.min(0, o.maxAbove + 1)
+      and top >= st.level - 2 and n.p and n.p[pos.map] then
+      local near, nearest, nd = 0, nil, math.huge
+      for _, packed in ipairs(n.p[pos.map]) do
+        local x, y = G.Unpack(packed)
+        local d = G.Distance(geo, pos, { map = pos.map, x = x, y = y })
+        if d <= o.grindNear then
+          near = near + 1
+          if d < nd then nearest, nd = { map = pos.map, x = x, y = y }, d end
+        end
+      end
+      if near >= 4 then
+        local score = near / (1 + nd / 200)
+        if not bestScore or score > bestScore then best, bestScore = { id = id, n = n, level = top, spot = nearest }, score end
+      end
+    end
+  end
+  if not best then return nil end
+  local need = ((st.level == st.char.level and st.char.xpMax) or R.XP_TO_LEVEL[st.level] or 0) - st.xp
+  if need <= 0 then return nil end
+  local per = math.max(1, Df.MobXP(best.level, st.level))
+  local kills = math.ceil(need / per)
+  -- only the rest of a level, and only when it is short; a whole level of killing
+  -- only when there is nothing else to do at all
+  if not nothingElse and kills * o.killSeconds > o.grindMaxSecs then return nil end
+  return { kind = "grind", level = st.level + 1, xp = need, npc = best.id, name = best.n.n, spot = best.spot,
+    kills = math.ceil(need / per), held = held }
 end
 
 local function simLevel(st, xpGain)
@@ -317,7 +393,8 @@ function R.Plan(ds, char, geo, opts)
     local avail = {}
     if logCount() < o.logSize then
       for _, q in ipairs(pool) do
-        if not sim.completed[q.id] and not sim.active[q.id] and (not q.l or q.l <= st.level + o.maxAbove)
+        local above = q.kind == "group" and (o.maxAbove - o.groupMargin) or o.maxAbove
+        if not sim.completed[q.id] and not sim.active[q.id] and (not q.l or q.l <= st.level + above)
           and (A.Status(q, sim) == "available" or (o.focus and A.Status(q, sim) == "trivial")) and consider(q) and (o.focus or workSecs[q.id] <= o.maxWork) then
           local spot, d = G.Nearest(geo, pos, shapes[q.id].givers)
           local secs = d < math.huge and travelSecs(o, pos, spot, d) or math.huge
@@ -445,6 +522,17 @@ function R.Plan(ds, char, geo, opts)
       offer({ kind = "accept", quest = a.quest, spot = a.spot }, a.secs + 3, 3 + workSecs[a.quest])
     end
     best = R.Choose(cands, pos, o, point, gain)
+    -- nothing left close by but quests the margin holds back: grind the next level
+    if not here then
+      local close = false
+      for _, c in ipairs(cands) do
+        if c.secs <= o.localSecs and c.action.spot.map == pos.map then close = true; break end
+      end
+      if not close then
+        local g = grindAction(ds, o, st, sim, pos, geo, pool, consider, shapes, best == nil)
+        if g then best = g end
+      end
+    end
     -- a pick-up or hand-in close to the way there is done in passing
     if best and not here then
       local direct = G.Distance(geo, pos, best.spot)
@@ -463,7 +551,9 @@ function R.Plan(ds, char, geo, opts)
     if here then best = here end
     if not best then break end
     local q = ds.quests[best.quest]
-    if best.kind == "accept" then
+    if best.kind == "grind" then
+      st.level, st.xp, sim.level = best.level, 0, best.level
+    elseif best.kind == "accept" then
       sim.active[q.id] = { simulated = true }
       progress[q.id] = {}
     elseif best.kind == "do" then
@@ -507,6 +597,9 @@ end
 
 -- One-line description of a step.
 function R.Describe(ds, step)
+  if step.kind == "grind" then
+    return ("Grind to level %d: %s (about %d kills)"):format(step.level, step.name or "mobs", step.kills or 0)
+  end
   local q = ds.quests[step.quest]
   local name = q and q.n or ("quest " .. step.quest)
   if step.kind == "accept" then return "Accept: " .. name end

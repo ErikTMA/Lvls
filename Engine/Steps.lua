@@ -59,6 +59,12 @@ end
 
 function S.LineState(ds, char, line)
   if line.kind == "fpath" then return char.flyKnown and char.flyKnown[line.node] or false end
+  if line.kind == "grind" then
+    -- the experience bar towards the level
+    if (char.level or 0) >= line.level then return true end
+    if char.level == line.level - 1 and char.xpMax and char.xpMax > 0 then line.have, line.need = char.xp or 0, char.xpMax end
+    return false
+  end
   if line.kind == "accept" then
     return (char.active and char.active[line.quest] and not char.active[line.quest].simulated)
       or questDone(char, line.quest)
@@ -83,8 +89,15 @@ function S.Build(ds, char, route, geo)
   local steps = {}
   local cur
   for _, a in ipairs(route or {}) do
-    local q = ds.quests[a.quest]
-    if q then
+    local q = a.quest and ds.quests[a.quest]
+    if a.kind == "grind" then
+      -- "Grind to level 14": its own step, at the mobs
+      cur = { kind = "grind", spot = a.spot, title = ("Grind to level %d"):format(a.level), level = a.level - 1,
+        lines = { { kind = "grind", level = a.level, npc = a.npc,
+          text = ("Kill %s until level %d (about %d)"):format(a.name or "mobs", a.level, a.kills or 0) } } }
+      steps[#steps + 1] = cur
+      cur = nil
+    elseif q then
       local talk = a.kind == "accept" or a.kind == "turnin"
       local joins = cur and ((talk and cur.kind == "talk" and (
           (a.spot.id and a.spot.id == cur.spot.id and a.spot.kind == cur.spot.kind)
@@ -118,8 +131,10 @@ function S.Build(ds, char, route, geo)
       st.lines = first
       for _, l in ipairs(rest) do st.lines[#st.lines + 1] = l end
     end
-    local name = placeName(ds, st.spot)
-    if st.kind == "talk" then
+    local name = st.kind ~= "grind" and placeName(ds, st.spot)
+    if st.kind == "grind" then
+      -- titled when built
+    elseif st.kind == "talk" then
       st.title = name and ("Talk to " .. name) or "Talk"
     else
       st.title = (#st.lines > 1 and "Do these together" or "Objective")
@@ -185,7 +200,7 @@ end
 -- Line icon names in Media/Icons.tga (32 px icons, see UI/Viewer.lua).
 S.ICON = { accept = "accept", turnin = "turnin", kill = "kill", collect = "collect",
   object = "goto", event = "goto", talk = "talk", work = "goto", fpath = "fly", fly = "fly",
-  transit = "transit", hearth = "hearth", enter = "enter", path = "path", dungeon = "enter" }
+  transit = "transit", hearth = "hearth", enter = "enter", path = "path", dungeon = "enter", grind = "kill" }
 
 -- Is the plan still good from the current step on? False when an open line can no
 -- longer happen: a quest to accept became impossible for this character, or a quest
