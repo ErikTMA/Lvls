@@ -11,6 +11,8 @@ A World of Warcraft addon for questing and leveling on **WoW Forever**.
   objectives together. Lines tick off with their progress as you play, the next step
   is shown below, and an arrow points the way with the distance and time to go. It
   follows quest chains, respects your quest log size and re-plans when it has to.
+  It finishes the zone you are in before sending you elsewhere and picks up quests
+  on the way. Right-click a line to skip its quest: the route leaves it out.
 - **Travel.** The arrow takes the fastest way: to the flight master and onto a flight
   path you know, the boat or zeppelin, your hearthstone, the entrance of a cave. It
   learns as you play: how long your flights take, the boats you ride, the way into
@@ -32,6 +34,9 @@ A World of Warcraft addon for questing and leveling on **WoW Forever**.
 | `/lvls` | Show or hide the step viewer |
 | `/lvls route` | Re-plan from here |
 | `/lvls next` | Point the arrow back at the current step |
+| `/lvls skip <quest>`, `/lvls skip` | Skip quests whose name contains the text (or id); without text, list skipped quests |
+| `/lvls unskip <quest>`, `/lvls unskip all` | Take skipped quests back |
+| `/lvls zone` | Finish the current zone first (on by default) or not |
 | `/lvls arrow` | Arrow on or off |
 | `/lvls nearby` | List the nearest quests you can pick up |
 | `/lvls travel` | How the arrow gets you there, leg by leg |

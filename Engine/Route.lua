@@ -2,21 +2,27 @@
 -- character from the data, not a hand-written guide. Pure; positions through `geo`.
 --
 -- Method (first version: greedy simulation).
---   1. Pool: quests within ten levels of the character whose
---      giver, every objective and turn-in can be located. Each gets an efficiency:
---      experience / estimated time (giver -> objective areas -> turn-in, plus the
---      work: kills / drop chance).
+--   1. Pool: quests within ten levels of the character whose giver, every
+--      objective and turn-in can be located (and walked to from one another), and
+--      whose killing / looting takes at most maxWork seconds (drop chances count).
 --   2. Repeat: from the current position, every possible next action (accept an
 --      available quest when the log has room, work an objective of an accepted
---      quest, hand in a finished one) costs travel + work time; the action with the
---      lowest cost / efficiency wins. The cost includes the walk from the action's
---      spot back to the nearest other open work (accepted quests' next targets and
---      the nearest quests that could be picked up), so the route does not leave a
---      quest hub while there is still work in it. Everything at the npc you stand
---      at is done before walking off, and objectives close to the one being worked
---      are worked at the same time (one step: kill these, collect that). Turn-ins add experience (reduced for quests
---      below the simulated level), level the simulation up, and complete the quest,
---      which unlocks its follow-ups through the normal prerequisite rules.
+--      quest, hand in a finished one) is charged the seconds it adds: getting
+--      there, plus how much longer it makes the walk through the open work of
+--      accepted quests (nearest first). Work on the way costs next to nothing, a
+--      zig-zag costs its detour, and a far errand pays the walk back. With no
+--      accepted work, the walk back to the nearest quests to pick up counts
+--      instead. The cheapest wins. Experience does not order the work: everything
+--      accepted gets done anyway, and dividing by it sent the route across the map
+--      for one short, rewarding quest.
+--      Everything at the npc you stand at is done before walking off; zoneFirst
+--      keeps the route on the current map while there is work on it; a pick-up or
+--      hand-in within a small detour of the way to the chosen action is done in
+--      passing; objectives close to the one being worked are worked at the same
+--      time (one step: kill these, collect that); opts.skip leaves quests out.
+--      Turn-ins add experience (reduced for quests below the simulated level),
+--      level the simulation up, and complete the quest, which unlocks its
+--      follow-ups through the normal prerequisite rules.
 -- With opts.travel (Engine/Travel), long walks are priced by the fastest trip:
 -- a known flight path makes a far quest hub cheap.
 -- The route therefore follows chains and stays in an area while it pays, and moves
@@ -42,11 +48,15 @@ R.DEFAULTS = {
   speed = 7,           -- yards per second on foot
   killSeconds = 15,    -- per kill, including the walk between mobs
   objectSeconds = 15,  -- per object used / looted
+  maxWork = 1200,      -- seconds of killing / looting: longer quests are not picked up (grinds)
   maxSecs = 600,       -- travel seconds; farther actions are left for later
   travelAbove = 90,    -- walks longer than this many seconds ask opts.travel (flights, boats)
   maxAbove = 2,        -- quest level at most this far above the character (mobs too hard)
   here = 20,           -- yards: actions at the npc you stand at come first
   together = 250,      -- yards: open objectives this close are worked at the same time
+  onTheWay = 40,       -- yards: a pick-up / hand-in costing at most this detour is done in passing
+  zoneFirst = true,    -- stay on the current map while there is work on it
+  skip = nil,          -- { [questId] = true }: quests the player does not want
 }
 
 -- Experience a quest gives at a character level (classic reduction: 20% less per
@@ -142,27 +152,26 @@ function R.Plan(ds, char, geo, opts)
   if not pos then return {}, "position unknown" end
 
   -- pool and shapes
-  local shapes, eff = {}, {}
+  local shapes, workSecs = {}, {}
   local function consider(q)
     if shapes[q.id] ~= nil then return shapes[q.id] end
     local s = shape(ds, q)
     shapes[q.id] = s or false
     if s then
-      local g = s.givers[1]
-      local t, here = 0, g
+      -- giver -> objectives -> turn-in must be walkable (one continent)
+      local here = s.givers[1]
+      workSecs[q.id] = 0
       for i in ipairs(q.obj or {}) do
         local ob = s.objs[i]
         if ob and not ob.free then
+          workSecs[q.id] = workSecs[q.id] + workSeconds(q.obj[i], ob.spots, o)
           local tgt, d = nearestTarget(geo, here, ob.targets)
           if d == math.huge then shapes[q.id] = false; return false end
-          t = t + travelSecs(o, here, tgt, d) + workSeconds(q.obj[i], ob.spots, o)
           here = tgt
         end
       end
-      local tin, d = G.Nearest(geo, here, s.ends)
+      local _, d = G.Nearest(geo, here, s.ends)
       if d == math.huge then shapes[q.id] = false; return false end
-      t = t + travelSecs(o, here, tin, d) + 10
-      eff[q.id] = (q.xp or 0) / math.max(30, t)
     end
     return shapes[q.id]
   end
@@ -192,10 +201,13 @@ function R.Plan(ds, char, geo, opts)
     return true
   end
 
+  -- experience a quest gives now (reduced when it is low for the simulated level)
+  local function gain(qid) return math.max(1, R.QuestXP(ds.quests[qid], st.level)) end
+
   local steps = {}
   local pool = {}
   for qid, q in pairs(ds.quests) do
-    if (q.sn or q.so) and not q.rep and not q.inst and q.kind ~= "dungeon" and q.kind ~= "raid"
+    if (q.sn or q.so) and not (o.skip and o.skip[qid]) and not q.rep and not q.inst and q.kind ~= "dungeon" and q.kind ~= "raid"
       and q.kind ~= "pvp" and (not q.r or q.r <= char.level + 10) then
       pool[#pool + 1] = q
     end
@@ -205,12 +217,12 @@ function R.Plan(ds, char, geo, opts)
   local guard = 0
   while #steps < o.steps and guard < o.steps * 4 do
     guard = guard + 1
-    local best, bestScore
+    local best
     -- open work: the next target of every accepted quest, so an action that leads
     -- away from it pays for the walk back (greedy steps otherwise wander off)
     local pending = {}
     for qid in pairs(sim.active) do
-      local q = ds.quests[qid]
+      local q = not (o.skip and o.skip[qid]) and ds.quests[qid]
       local s = q and consider(q)
       if s and progress[qid] then
         if allDone(q) then
@@ -230,7 +242,7 @@ function R.Plan(ds, char, geo, opts)
     if logCount() < o.logSize then
       for _, q in ipairs(pool) do
         if not sim.completed[q.id] and not sim.active[q.id] and (not q.l or q.l <= st.level + o.maxAbove)
-          and A.Status(q, sim) == "available" and consider(q) then
+          and A.Status(q, sim) == "available" and consider(q) and workSecs[q.id] <= o.maxWork then
           local spot, d = G.Nearest(geo, pos, shapes[q.id].givers)
           local secs = d < math.huge and travelSecs(o, pos, spot, d) or math.huge
           if secs <= o.maxSecs then avail[#avail + 1] = { quest = q.id, spot = spot, d = d, secs = secs } end
@@ -239,38 +251,96 @@ function R.Plan(ds, char, geo, opts)
       table.sort(avail, function(x, y) if x.d ~= y.d then return x.d < y.d end return x.quest < y.quest end)
       for i = 1, math.min(#avail, 15) do pending[#pending + 1] = avail[i] end
     end
+    -- the walk through the open work of accepted quests (nearest first), in
+    -- seconds: an action is charged what it adds to that walk, so one on the way
+    -- costs nothing extra and a zig-zag costs the detour
+    local wp = {}
+    local function point(spot)
+      local p = wp[spot]
+      if not p then
+        local c, x, y
+        if geo and geo.world then c, x, y = geo.world(spot.map, spot.x, spot.y) end
+        if not c then
+          local w, h = 1000, 1000
+          if geo and geo.size then
+            local sw, sh = geo.size(spot.map)
+            if sw and sw > 0 and sh and sh > 0 then w, h = sw, sh end
+          end
+          c, x, y = "m" .. spot.map, spot.x / 100 * w, spot.y / 100 * h
+        end
+        p = { c, x, y }
+        wp[spot] = p
+      end
+      return p
+    end
+    local FAR = 2000 -- yards charged for work that cannot be walked to (another continent)
+    local work = {}
+    for _, p in ipairs(pending) do
+      if p.spot and not p.secs then work[#work + 1] = p end
+    end
+    local function tour(from, action)
+      local left = {}
+      for _, p in ipairs(work) do
+        if not (action and p.quest == action.quest and (action.kind ~= "do" or p.index == action.index)) then
+          left[#left + 1] = point(p.spot)
+        end
+      end
+      local at, yards = point(from), 0
+      while #left > 0 do
+        local k, kd = 1, math.huge
+        for i, q in ipairs(left) do
+          local d = FAR
+          if q[1] == at[1] then
+            local dx, dy = q[2] - at[2], q[3] - at[3]
+            d = math.sqrt(dx * dx + dy * dy)
+          end
+          if d < kd then k, kd = i, d end
+        end
+        yards = yards + kd
+        at = table.remove(left, k)
+      end
+      return yards / o.speed
+    end
+    local tourNow = tour(pos)
+    -- with no accepted work, the walk back to the nearest quests to pick up
     local function back(action)
+      if #work > 0 then return tour(action.spot, action) - tourNow end
       local d = math.huge
       for _, p in ipairs(pending) do
-        if p.spot and not (p.quest == action.quest and p.index == action.index) then
+        if p.spot and p.quest ~= action.quest then
           local x = G.Distance(geo, action.spot, p.spot)
           if x < d then d = x end
         end
       end
       if d == math.huge then return 0 end
-      return d / o.speed -- the walk back to open work
+      return d / o.speed
     end
     -- hand-ins and pick-ups at the npc you stand at always come first
     local here, hereScore
-    local function offer(action, score, e)
+    local cands = {}      -- { action, score } of everything that is not "here"
+    local talks = {}      -- pick-ups and hand-ins, for "on the way"
+    -- at the npc you stand at: the most experience per second first; elsewhere: the
+    -- seconds the action adds (see the method above)
+    local function offer(action, secs)
+      local xp = gain(action.quest)
       if action.kind ~= "do" and G.Distance(geo, pos, action.spot) <= o.here then
+        local score = secs / xp
         if not hereScore or score < hereScore then here, hereScore = action, score end
         return
       end
-      score = score + back(action) / e
-      if not bestScore or score < bestScore then best, bestScore = action, score end
+      if action.kind ~= "do" then talks[#talks + 1] = action end
+      cands[#cands + 1] = { action = action, score = secs + back(action) }
     end
     -- hand in / work accepted quests
     for qid in pairs(sim.active) do
-      local q = ds.quests[qid]
+      local q = not (o.skip and o.skip[qid]) and ds.quests[qid]
       local s = q and consider(q)
       if s and progress[qid] then
-        local e = eff[qid] or 1e-6
         if allDone(q) then
           local spot, d = G.Nearest(geo, pos, s.ends)
           local secs = d < math.huge and travelSecs(o, pos, spot, d) or math.huge
           if secs <= o.maxSecs then
-            offer({ kind = "turnin", quest = qid, spot = spot }, (secs + 5) / e, e)
+            offer({ kind = "turnin", quest = qid, spot = spot }, secs + 5)
           end
         else
           for i, ob in ipairs(q.obj or {}) do
@@ -283,7 +353,7 @@ function R.Plan(ds, char, geo, opts)
                 local secs = d < math.huge and travelSecs(o, pos, tgt, d) or math.huge
                 if secs <= o.maxSecs then
                   offer({ kind = "do", quest = qid, index = i, spot = tgt },
-                    (secs + workSeconds(ob, so.spots, o)) / e, e)
+                    secs)
                 end
               end
             end
@@ -293,7 +363,30 @@ function R.Plan(ds, char, geo, opts)
     end
     -- accept
     for _, a in ipairs(avail) do
-      offer({ kind = "accept", quest = a.quest, spot = a.spot }, (a.secs + 3) / eff[a.quest], eff[a.quest])
+      offer({ kind = "accept", quest = a.quest, spot = a.spot }, a.secs + 3)
+    end
+    -- zoneFirst: an action on another map only when there is nothing left on this one
+    local near, far
+    for _, c in ipairs(cands) do
+      if not o.zoneFirst or c.action.spot.map == pos.map then
+        if not near or c.score < near.score then near = c end
+      elseif not far or c.score < far.score then far = c end
+    end
+    best = (near or far) and (near or far).action
+    -- a pick-up or hand-in close to the way there is done in passing
+    if best and not here then
+      local direct = G.Distance(geo, pos, best.spot)
+      local pick, pickD
+      for _, t in ipairs(talks) do
+        if t ~= best and t.spot.map == best.spot.map then
+          local d1 = G.Distance(geo, pos, t.spot)
+          if d1 < direct and d1 + G.Distance(geo, t.spot, best.spot) - direct <= o.onTheWay
+            and (not pickD or d1 < pickD) then
+            pick, pickD = t, d1
+          end
+        end
+      end
+      if pick then best = pick end
     end
     if here then best = here end
     if not best then break end

@@ -1,7 +1,7 @@
 -- The step viewer: a dark panel with the current step, one line per goal (icon,
 -- check box, text, progress), the objectives you can do at the same time, a preview
 -- of the next step and the experience bar. Prev / next browse the plan; clicking a
--- line points the arrow at it.
+-- line points the arrow at it, right-clicking skips its quest.
 local _, ns = ...
 local V = ns:NewModule("Viewer")
 
@@ -23,6 +23,7 @@ local ICON_SLOTS = 16
 
 V.view = nil -- index of the step being shown (nil: follow the current step)
 local frame, rows = nil, {}
+V.rows = rows -- line buttons (tests click them)
 
 -- Texture coordinates of an icon in Media/Icons.tga (32 px icons in 512 x 32).
 function V.IconCoords(name)
@@ -109,7 +110,15 @@ local function row(i)
   local h = r:CreateTexture(nil, "HIGHLIGHT")
   h:SetAllPoints(r)
   h:SetColorTexture(1, 1, 1, 0.06)
-  r:SetScript("OnClick", function(self) V.PointAt(self.line) end)
+  if r.RegisterForClicks then r:RegisterForClicks("LeftButtonUp", "RightButtonUp") end
+  -- left: point the arrow there; right: skip the line's quest
+  r:SetScript("OnClick", function(self, button)
+    if button == "RightButton" then
+      if self.line and self.line.quest then ns.SetSkip(self.line.quest, true) end
+    else
+      V.PointAt(self.line)
+    end
+  end)
   rows[i] = r
   return r
 end

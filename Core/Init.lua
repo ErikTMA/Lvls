@@ -18,7 +18,7 @@ end
 ns.DEFAULT_SETTINGS = {
   worldMap = true, minimap = true, objectives = true, arrow = true, nativeArrow = false,
   showLow = true, showTrivial = false, showDungeon = false, showRepeatable = false,
-  debug = false,
+  zoneFirst = true, debug = false,
 }
 
 function ns.InitDB(db)
@@ -33,6 +33,7 @@ end
 function ns.InitCharDB(cdb)
   cdb = cdb or {}
   if cdb.viewer == nil then cdb.viewer = true end
+  if type(cdb.skip) ~= "table" then cdb.skip = {} end
   return cdb
 end
 
@@ -45,6 +46,8 @@ local function plan(ds)
   local ok, route = pcall(ns.Route.Plan, ds, ns.char, ns.Game.geo, {
     speed = ctx and ctx.speed or 7,
     travel = ctx and function(a, b) return ns.Travel.Time(a, b, ctx) end,
+    zoneFirst = ns.db.settings.zoneFirst,
+    skip = ns.cdb and ns.cdb.skip,
   })
   if not ok then ns.Log("debug", "route: " .. tostring(route)); route = {} end
   ns.route = route
@@ -72,7 +75,8 @@ local function unplanned(ds)
   end
   for qid in pairs(ns.char.active or {}) do
     local q = ds.quests[qid]
-    if q and not known[qid] and (q.sn or q.so) and not q.inst then return true end
+    if q and not known[qid] and (q.sn or q.so) and not q.inst
+      and not (ns.cdb and ns.cdb.skip[qid]) then return true end
   end
   return false
 end
@@ -174,13 +178,67 @@ commands.next = function()
   if st then ns.Arrow.SetTarget(st.spot, st.title, false) end
 end
 
-local TOGGLES = { map = "worldMap", minimap = "minimap", objectives = "objectives", arrow = "arrow", low = "showLow",
+-- Skip a quest (the route leaves it out) or take it back.
+function ns.SetSkip(qid, on)
+  local ds = ns.ActiveDataset()
+  local q = ds and ds.quests[qid]
+  if not q or not ns.cdb then return end
+  ns.cdb.skip[qid] = on and true or nil
+  ns.Log("info", (on and "skipping %s (/lvls unskip to take it back)" or "no longer skipping %s"):format(q.n))
+  ns.Refresh(true)
+end
+
+-- quests whose name contains `text` (or with that id) among `ids`
+local function matching(ds, ids, text)
+  local out, id, low = {}, tonumber(text), text:lower()
+  for qid in pairs(ids) do
+    local q = ds.quests[qid]
+    if q and (qid == id or (not id and q.n:lower():find(low, 1, true))) then out[#out + 1] = qid end
+  end
+  table.sort(out)
+  return out
+end
+
+commands.skip = function(arg)
+  local ds = ns.ActiveDataset()
+  if not ds then return end
+  if arg == "" then
+    local n = 0
+    for qid in pairs(ns.cdb.skip) do
+      local q = ds.quests[qid]
+      ns.Log("info", ("skipped: %s (%d)"):format(q and q.n or "?", qid)); n = n + 1
+    end
+    if n == 0 then ns.Log("info", "nothing skipped. Right-click a line in the viewer, or /lvls skip <quest name>") end
+    return
+  end
+  -- the quests of the current plan and the log first, then the whole dataset
+  local ids = {}
+  for _, st in ipairs(ns.steps or {}) do for _, l in ipairs(st.lines) do if l.quest then ids[l.quest] = true end end end
+  for qid in pairs(ns.char and ns.char.active or {}) do ids[qid] = true end
+  local found = matching(ds, ids, arg)
+  if #found == 0 then found = matching(ds, ds.quests, arg) end
+  if #found == 0 then ns.Log("info", "no quest matches " .. arg); return end
+  for _, qid in ipairs(found) do ns.cdb.skip[qid] = true end
+  ns.Log("info", ("skipping %d quest%s matching %s"):format(#found, #found == 1 and "" or "s", arg))
+  ns.Refresh(true)
+end
+
+commands.unskip = function(arg)
+  local ds = ns.ActiveDataset()
+  if not ds then return end
+  local found = arg:lower() == "all" and matching(ds, ns.cdb.skip, "") or matching(ds, ns.cdb.skip, arg)
+  for _, qid in ipairs(found) do ns.cdb.skip[qid] = nil end
+  ns.Log("info", ("no longer skipping %d quest%s"):format(#found, #found == 1 and "" or "s"))
+  ns.Refresh(true)
+end
+
+local TOGGLES = { zone = "zoneFirst", map = "worldMap", minimap = "minimap", objectives = "objectives", arrow = "arrow", low = "showLow",
   trivial = "showTrivial", dungeon = "showDungeon", repeatable = "showRepeatable" }
 for cmd, key in pairs(TOGGLES) do
   commands[cmd] = function()
     ns.db.settings[key] = not ns.db.settings[key]
     ns.Log("info", ("%s %s"):format(cmd, ns.db.settings[key] and "on" or "off"))
-    ns.Refresh()
+    ns.Refresh(key == "zoneFirst")
   end
 end
 
@@ -202,7 +260,7 @@ commands.debug = function()
 end
 
 commands.help = function()
-  ns.Log("info", "/lvls [show|route|next|nearby|travel|record|status|arrow|map|minimap|objectives|low|trivial|dungeon|repeatable|debug|help]")
+  ns.Log("info", "/lvls [show|route|next|skip [quest]|unskip <quest|all>|zone|nearby|travel|record|status|arrow|map|minimap|objectives|low|trivial|dungeon|repeatable|debug|help]")
 end
 
 local function slash(input)
