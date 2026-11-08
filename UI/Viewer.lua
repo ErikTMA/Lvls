@@ -32,9 +32,11 @@ function V.IconCoords(name)
 end
 
 -- What the viewer shows, as plain data. Pure: { header, sub, lines = { { icon,
--- check, text, progress, color, line } }, next, stepNo, stepCount }.
-function V.Model(ds, char, steps, current, view)
-  local m = { lines = {}, stepCount = steps and #steps or 0 }
+-- check, text, progress, color, line } }, next, stepNo, stepCount }. base: steps
+-- finished before this plan (the numbers go on across plans and sessions).
+function V.Model(ds, char, steps, current, view, base)
+  base = base or 0
+  local m = { lines = {}, stepCount = (steps and #steps or 0) + base }
   local i = view or current
   local st = steps and i and steps[i]
   if not st then
@@ -42,7 +44,7 @@ function V.Model(ds, char, steps, current, view)
     m.sub = "Accept a quest or move closer to quest givers"
     return m
   end
-  m.stepNo = i
+  m.stepNo = i + base
   m.header = st.title
   if st.spot then
     m.sub = ("%s  %.1f, %.1f"):format(ds.maps[st.spot.map] or "", st.spot.x, st.spot.y)
@@ -345,7 +347,7 @@ function V.Render()
   if not frame then return end
   local ds, char = ns.ActiveDataset(), ns.char
   if not ds or not char then return end
-  local m = V.Model(ds, char, ns.steps, ns.stepIndex, V.view)
+  local m = V.Model(ds, char, ns.steps, ns.stepIndex, V.view, ns.planBase)
   V.model = m
   local C = V.COLORS
   frame.header:SetText(m.header or "")
