@@ -51,9 +51,11 @@ R.DEFAULTS = {
   maxWork = 1200,      -- seconds of killing / looting: longer quests are not picked up (grinds)
   maxSecs = 600,       -- travel seconds; farther actions are left for later
   travelAbove = 90,    -- walks longer than this many seconds ask opts.travel (flights, boats)
-  maxAbove = 2,        -- quest level at most this far above the character (mobs too hard)
+  maxAbove = 3,        -- quest level at most this far above the character (mobs too hard)
   here = 20,           -- yards: actions at the npc you stand at come first
   together = 250,      -- yards: open objectives this close are worked at the same time
+  localSecs = 60,      -- travel seconds: closer work is done in walking order
+  hubYards = 300,      -- yards: farther work this close together is one destination
   onTheWay = 40,       -- yards: a pick-up / hand-in costing at most this detour is done in passing
   zoneFirst = true,    -- stay on the current map while there is work on it
   skip = nil,          -- { [questId] = true }: quests the player does not want
@@ -135,6 +137,69 @@ local function simLevel(st, xpGain)
     st.xp = st.xp - need
     st.level = st.level + 1
   end
+end
+
+-- Pick the next action from the candidates ({ action, score, secs, effort }).
+--   Work within localSecs is done in walking order (lowest score: the seconds it
+--   adds). Only when everything left is farther does the route travel, and then to
+--   the best destination, not the nearest action: far candidates are grouped into
+--   destinations (hubYards apart at most). A destination is worth the experience
+--   of the quests to pick up there, divided by what going there costs: the seconds
+--   the trip adds (travel, flight paths included, and how much longer it makes the
+--   way through the work of accepted quests; a place you must go to anyway to hand
+--   in costs next to nothing) plus the work of those quests. Hand-ins and
+--   objectives of accepted quests add no worth: they are done anyway, and counting
+--   them sent the route back and forth for one hand-in. One quest alone does not
+--   pull the route across the map when a hub with five is as far. With nothing to
+--   pick up anywhere, the cheapest action (accepted work in walking order).
+--   zoneFirst: destinations on another map only when this map has none.
+-- point(spot) -> { continent, x, y } in yards; gain(questId) -> experience.
+function R.Choose(cands, pos, o, point, gain)
+  local near, sameMap, otherMap = nil, {}, {}
+  for _, c in ipairs(cands) do
+    if c.secs <= o.localSecs and c.action.spot.map == pos.map then
+      if not near or c.score < near.score then near = c end
+    elseif not o.zoneFirst or c.action.spot.map == pos.map then
+      sameMap[#sameMap + 1] = c
+    else
+      otherMap[#otherMap + 1] = c
+    end
+  end
+  if near then return near.action end
+  local far = #sameMap > 0 and sameMap or otherMap
+  if #far == 0 then return nil end
+  table.sort(far, function(a, b) if a.secs ~= b.secs then return a.secs < b.secs end return a.score < b.score end)
+  local hubs, r2 = {}, o.hubYards * o.hubYards
+  for _, c in ipairs(far) do
+    local p, hub = point(c.action.spot), nil
+    for _, h in ipairs(hubs) do
+      local dx, dy = p[2] - h.p[2], p[3] - h.p[3]
+      if h.p[1] == p[1] and dx * dx + dy * dy <= r2 then hub = h; break end
+    end
+    if not hub then
+      hub = { p = p, secs = c.secs, effort = 0, quests = {}, xp = 0, first = c, members = {} }
+      hubs[#hubs + 1] = hub
+    end
+    hub.members[#hub.members + 1] = c
+    local q = c.action.quest
+    if c.action.kind == "accept" and not hub.quests[q] then
+      hub.quests[q] = true
+      hub.xp = hub.xp + gain(q)
+      hub.effort = hub.effort + c.effort
+    end
+    if c.score < hub.first.score then hub.first = c end
+  end
+  local best, bestRate, cheapest
+  for _, h in ipairs(hubs) do
+    local adds
+    for _, c in ipairs(h.members) do if not adds or c.adds < adds then adds = c.adds end end
+    h.cost = math.max(1, adds) + h.effort
+    h.rate = h.xp / h.cost
+    if h.xp > 0 and (not bestRate or h.rate > bestRate) then best, bestRate = h, h.rate end
+    if not cheapest or h.first.score < cheapest.first.score then cheapest = h end
+  end
+  R.lastHubs = hubs -- for debugging and tests
+  return (best or cheapest).first.action
 end
 
 function R.Plan(ds, char, geo, opts)
@@ -321,7 +386,7 @@ function R.Plan(ds, char, geo, opts)
     local talks = {}      -- pick-ups and hand-ins, for "on the way"
     -- at the npc you stand at: the most experience per second first; elsewhere: the
     -- seconds the action adds (see the method above)
-    local function offer(action, secs)
+    local function offer(action, secs, effort)
       local xp = gain(action.quest)
       if action.kind ~= "do" and G.Distance(geo, pos, action.spot) <= o.here then
         local score = secs / xp
@@ -329,7 +394,10 @@ function R.Plan(ds, char, geo, opts)
         return
       end
       if action.kind ~= "do" then talks[#talks + 1] = action end
-      cands[#cands + 1] = { action = action, score = secs + back(action) }
+      -- adds: the trip plus how much longer it makes the way through accepted work
+      local adds = secs + (#work > 0 and (tour(action.spot, action) - tourNow) or 0)
+      cands[#cands + 1] = { action = action, score = secs + back(action), secs = secs, adds = adds,
+        effort = effort or 0 }
     end
     -- hand in / work accepted quests
     for qid in pairs(sim.active) do
@@ -340,7 +408,7 @@ function R.Plan(ds, char, geo, opts)
           local spot, d = G.Nearest(geo, pos, s.ends)
           local secs = d < math.huge and travelSecs(o, pos, spot, d) or math.huge
           if secs <= o.maxSecs then
-            offer({ kind = "turnin", quest = qid, spot = spot }, secs + 5)
+            offer({ kind = "turnin", quest = qid, spot = spot }, secs + 5, 5)
           end
         else
           for i, ob in ipairs(q.obj or {}) do
@@ -353,7 +421,7 @@ function R.Plan(ds, char, geo, opts)
                 local secs = d < math.huge and travelSecs(o, pos, tgt, d) or math.huge
                 if secs <= o.maxSecs then
                   offer({ kind = "do", quest = qid, index = i, spot = tgt },
-                    secs)
+                    secs, workSeconds(ob, so.spots, o))
                 end
               end
             end
@@ -363,16 +431,9 @@ function R.Plan(ds, char, geo, opts)
     end
     -- accept
     for _, a in ipairs(avail) do
-      offer({ kind = "accept", quest = a.quest, spot = a.spot }, a.secs + 3)
+      offer({ kind = "accept", quest = a.quest, spot = a.spot }, a.secs + 3, 3 + workSecs[a.quest])
     end
-    -- zoneFirst: an action on another map only when there is nothing left on this one
-    local near, far
-    for _, c in ipairs(cands) do
-      if not o.zoneFirst or c.action.spot.map == pos.map then
-        if not near or c.score < near.score then near = c end
-      elseif not far or c.score < far.score then far = c end
-    end
-    best = (near or far) and (near or far).action
+    best = R.Choose(cands, pos, o, point, gain)
     -- a pick-up or hand-in close to the way there is done in passing
     if best and not here then
       local direct = G.Distance(geo, pos, best.spot)
