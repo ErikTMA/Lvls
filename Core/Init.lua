@@ -19,6 +19,9 @@ ns.DEFAULT_SETTINGS = {
   worldMap = true, minimap = true, objectives = true, arrow = true, nativeArrow = false,
   showLow = true, showTrivial = false, showDungeon = false, showRepeatable = false,
   zoneFirst = true, debug = false,
+  -- automation (Adapters/Automation.lua); hold Shift at an npc to pause it
+  autoAccept = true, autoDeliver = true, autoReward = true, rewardGold = true,
+  autoEquip = false, autoEquipBind = false, equipMaxQuality = 2, gearWeights = "auto",
 }
 
 function ns.InitDB(db)
@@ -34,6 +37,7 @@ function ns.InitCharDB(cdb)
   cdb = cdb or {}
   if cdb.viewer == nil then cdb.viewer = true end
   if type(cdb.skip) ~= "table" then cdb.skip = {} end
+  if type(cdb.spec) ~= "number" then cdb.spec = 0 end -- 0: from the talents
   return cdb
 end
 
@@ -232,7 +236,50 @@ commands.unskip = function(arg)
   ns.Refresh(true)
 end
 
-local TOGGLES = { zone = "zoneFirst", map = "worldMap", minimap = "minimap", objectives = "objectives", arrow = "arrow", low = "showLow",
+commands.settings = function()
+  if not ns.Settings.Open() then ns.Log("info", "the settings page is not available: use /lvls help") end
+end
+commands.options, commands.config = commands.settings, commands.settings
+
+-- /lvls spec [auto | <name> | 1-3]: the spec gear is judged for
+commands.spec = function(arg)
+  local token = ns.GearData.Class()
+  local specs = ns.Gear.SPECS[token] or {}
+  arg = (arg or ""):lower()
+  if arg ~= "" then
+    local pick
+    if arg == "auto" or arg == "0" then pick = 0 end
+    for i, sp in ipairs(specs) do
+      if arg == tostring(i) or sp.name:lower():find(arg, 1, true) == 1 then pick = i end
+    end
+    if not pick then ns.Log("info", "no such spec: " .. arg); return end
+    ns.cdb.spec = pick
+  end
+  local _, _, name, source = ns.GearData.Spec()
+  local points = table.concat(ns.GearData.Points(), "/")
+  ns.Log("info", ("spec: %s (%s; talent points %s)"):format(name or "?", source, points))
+end
+
+commands.gear = function()
+  local _, label = ns.GearData.Scorer()
+  ns.Log("info", "judging gear with " .. label)
+end
+
+local QUALITY = { white = 1, common = 1, green = 2, uncommon = 2, blue = 3, rare = 3, purple = 4, epic = 4 }
+commands.quality = function(arg)
+  local q = tonumber(arg) or QUALITY[(arg or ""):lower()]
+  if q and q >= 0 and q <= 4 then ns.db.settings.equipMaxQuality = q end
+  ns.Log("info", ("items that bind when equipped are put on up to quality %d"):format(ns.db.settings.equipMaxQuality))
+end
+
+commands.weights = function(arg)
+  arg = (arg or ""):lower()
+  if arg == "auto" or arg == "pawn" or arg == "lvls" then ns.db.settings.gearWeights = arg end
+  ns.Log("info", "stat weights: " .. ns.db.settings.gearWeights)
+end
+
+local TOGGLES = { accept = "autoAccept", deliver = "autoDeliver", reward = "autoReward", gold = "rewardGold",
+  equip = "autoEquip", bind = "autoEquipBind", zone = "zoneFirst", map = "worldMap", minimap = "minimap", objectives = "objectives", arrow = "arrow", low = "showLow",
   trivial = "showTrivial", dungeon = "showDungeon", repeatable = "showRepeatable" }
 for cmd, key in pairs(TOGGLES) do
   commands[cmd] = function()
@@ -260,7 +307,7 @@ commands.debug = function()
 end
 
 commands.help = function()
-  ns.Log("info", "/lvls [show|route|next|skip [quest]|unskip <quest|all>|zone|nearby|travel|record|status|arrow|map|minimap|objectives|low|trivial|dungeon|repeatable|debug|help]")
+  ns.Log("info", "/lvls [show|settings|route|next|skip [quest]|unskip <quest|all>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|arrow|map|minimap|objectives|low|trivial|dungeon|repeatable|debug|help]")
 end
 
 local function slash(input)

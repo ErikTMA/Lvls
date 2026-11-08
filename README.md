@@ -20,6 +20,15 @@ A World of Warcraft addon for questing and leveling on **WoW Forever**.
   every cave you walk into. Flight points you have not found yet are picked up on the
   way ("Get the Lakeshire flight path").
 
+- **Hands-free questing (each part can be switched off).** Accepts quests and hands
+  them in when you talk to the npc, takes the reward that is the best upgrade for
+  your class and spec (or the one that sells for most when none is), and can put on
+  upgrades from your bags out of combat. Items that bind when equipped are only put
+  on up to a quality you choose: a blue that drops stays in your bags unless you
+  allow blues. Hold Shift while talking to an npc to do it yourself. Your spec is the
+  talent tree with the most points (or the one you pick); gear is judged with Lvls'
+  own stat weights, or with your Pawn scale for that spec if you use Pawn.
+
 ## Install
 
 1. Download `Lvls-<version>.zip` from the latest release and unzip it into
@@ -33,6 +42,10 @@ A World of Warcraft addon for questing and leveling on **WoW Forever**.
 | Command | What it does |
 |---|---|
 | `/lvls` | Show or hide the step viewer |
+| `/lvls settings` | Open the settings (also under Options, AddOns, Lvls!) |
+| `/lvls accept`, `/lvls deliver`, `/lvls reward`, `/lvls gold` | Accept quests, hand them in, take the best reward, otherwise the most gold: on or off |
+| `/lvls equip`, `/lvls bind`, `/lvls quality <white\|green\|blue\|epic>` | Put on upgrades; also ones that bind when equipped, up to this quality |
+| `/lvls spec [auto\|<spec>]`, `/lvls weights <auto\|pawn\|lvls>`, `/lvls gear` | Spec for gear (auto: from talents), whose stat weights, and what is used now |
 | `/lvls route` | Re-plan from here |
 | `/lvls next` | Point the arrow back at the current step |
 | `/lvls skip <quest>`, `/lvls skip` | Skip quests whose name contains the text (or id); without text, list skipped quests |
