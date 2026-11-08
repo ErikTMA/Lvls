@@ -90,7 +90,9 @@ function S.Register()
         choices = function()
           local out = { { 0, "None: the leveling route" } }
           for _, it2 in ipairs(ns.Viewer.GuideItems()) do out[#out + 1] = { it2.area, it2.text } end
-          for _, it2 in ipairs(ns.Viewer.ClassItems()) do out[#out + 1] = { -it2.chain, "Class: " .. it2.text } end
+          for _, it2 in ipairs(ns.Viewer.ClassItems()) do
+            if it2.ready then out[#out + 1] = { -it2.chain, "Class: " .. it2.text } end
+          end
           return out
         end
       elseif it.spec then

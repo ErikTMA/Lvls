@@ -25,6 +25,10 @@ A World of Warcraft addon for questing and leveling on **WoW Forever**.
   leads up to them (prerequisites, chains, breadcrumbs), routes you through them and
   ends at the dungeon's entrance with the objectives to do inside. When you come
   out, it hands them in and goes back to leveling.
+- **The Guides menu.** Dungeons at your level come first, the rest are grouped per ten
+  levels with raids apart; class quests are split into ready now, coming up and later.
+  Each entry shows levels, quest count and zone, and its tooltip lists the quests with
+  who gives them, where, and whether you can take them yet.
 - **Class quest guides.** When a class quest chain becomes possible (the warrior's
   weapon quests at level 10, the druid's bear form, the hunter's pet), Lvls! asks
   whether to focus on it: **Focus** routes you through it, **Later** keeps it in the

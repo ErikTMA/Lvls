@@ -224,53 +224,91 @@ function V.ClassItems()
   local level = ns.char and ns.char.level or 1
   for _, c in ipairs(ns.ClassChains()) do
     local when = c.minLevel > level and (" (from level %d)"):format(c.minLevel) or ""
-    items[#items + 1] = { chain = c.id, text = ("%s: %d quest%s%s"):format(c.name, c.open, c.open == 1 and "" or "s", when) }
+    items[#items + 1] = { chain = c.id, ready = #c.reach > 0, text = ("%s: %d quest%s%s"):format(c.name, c.open, c.open == 1 and "" or "s", when) }
   end
   return items
 end
 
+-- The Guides menu: Engine/Picker's tree, shown with Blizzard_Menu (submenus,
+-- tooltips with each guide's quests).
+function V.MenuTree()
+  local ds = ns.ActiveDataset()
+  if not ds or not ns.char then return {} end
+  local tree = {}
+  local function add(it) tree[#tree + 1] = it end
+  local name = ns.guide and ns.guideName
+  add({ kind = "title", text = name and ("Guide: " .. name) or "Following the leveling route" })
+  add({ kind = "sub", text = "Dungeons", children = ns.Picker.Dungeons(ds, ns.char, ns.GuideList(), {
+    info = function(area)
+      local d = ns.DungeonInfo.Data(area)
+      local e = ns.DungeonInfo.Entrance(area)
+      return { raid = d and d.raid, size = d and d.size, map = e and e.map }
+    end,
+    current = function() return ns.cdb and ns.cdb.guide end,
+    select = function(area) ns.SetGuide(area) end,
+  }) })
+  add({ kind = "sub", text = "Class quests", children = ns.Picker.Classes(ds, ns.char, ns.ClassChains(), {
+    current = function() return ns.cdb and ns.cdb.classGuide end,
+    select = function(id) ns.SetClassGuide(id) end,
+  }) })
+  local group = {}
+  for _, p in ipairs(ns.SyncPeers()) do
+    if p.version == "ok" and p.count > 0 then
+      group[#group + 1] = { kind = "radio", key = "c" .. p.name,
+        text = ("Catch up with %s: %s"):format(p.name, p.count == 1 and "1 quest" or (p.count .. " quests")),
+        selected = function() return ns.sync and ns.sync.mode == "catchup" and ns.sync.with == p.name end,
+        select = function() ns.SetSync(p.name, "catchup") end }
+    end
+    if ns.GroupSync.requests[p.name] or (ns.sync and ns.sync.mode == "follow" and ns.sync.with == p.name) then
+      group[#group + 1] = { kind = "radio", key = "f" .. p.name, text = ("Follow %s (helping them catch up)"):format(p.name),
+        selected = function() return ns.sync and ns.sync.mode == "follow" and ns.sync.with == p.name end,
+        select = function() ns.SetSync(p.name, "follow") end }
+    end
+  end
+  if #group > 0 then add({ kind = "sub", text = "Group", children = group }) end
+  add({ kind = "divider" })
+  add({ kind = "radio", key = 0, text = "Leveling route (no guide)",
+    selected = function() return not (ns.sync or (ns.cdb and (ns.cdb.guide or ns.cdb.classGuide))) end,
+    select = function() ns.SetGuide(nil) end })
+  return tree
+end
+
+local function tooltip(el, it)
+  if not (it.tip and el.SetTooltip) then return end
+  el:SetTooltip(function(tt)
+    local t = it.tip()
+    if GameTooltip_SetTitle then GameTooltip_SetTitle(tt, t.title) else tt:SetText(t.title) end
+    for _, l in ipairs(t.lines) do
+      local c = l.color or { 1, 1, 1 }
+      tt:AddLine(l.text, c[1], c[2], c[3], true)
+    end
+  end)
+end
+
+function V.RenderMenu(parent, items)
+  for _, it in ipairs(items) do
+    if it.kind == "title" then
+      parent:CreateTitle(it.text)
+    elseif it.kind == "divider" then
+      parent:CreateDivider()
+    elseif it.kind == "sub" then
+      local sub = parent:CreateButton(it.text)
+      V.RenderMenu(sub, it.children)
+    elseif it.kind == "radio" then
+      local r = parent:CreateRadio(it.text, it.selected, it.select, it.key)
+      tooltip(r, it)
+      if it.disabled and r.SetEnabled then r:SetEnabled(false) end
+    end
+  end
+end
+
 function V.GuideMenu(owner)
-  local items = V.GuideItems()
   if not (MenuUtil and MenuUtil.CreateContextMenu) then
     ns.commands.guide("")
     return
   end
-  local classes = V.ClassItems()
-  MenuUtil.CreateContextMenu(owner, function(_, root)
-    root:CreateTitle("Dungeon guides")
-    for _, it in ipairs(items) do
-      root:CreateRadio(it.text, function() return ns.cdb and ns.cdb.guide == it.area end,
-        function() ns.SetGuide(it.area) end, it.area)
-    end
-    if #classes > 0 then
-      root:CreateDivider()
-      root:CreateTitle("Class quests")
-      for _, it in ipairs(classes) do
-        root:CreateRadio(it.text, function() return ns.cdb and ns.cdb.classGuide == it.chain end,
-          function() ns.SetClassGuide(it.chain) end, -it.chain)
-      end
-    end
-    local peers = ns.SyncPeers()
-    if #peers > 0 then
-      root:CreateDivider()
-      root:CreateTitle("Group")
-      for _, p in ipairs(peers) do
-        if p.version == "ok" and p.count > 0 then
-          root:CreateRadio(("Catch up with %s: %d quest%s"):format(p.name, p.count, p.count == 1 and "" or "s"),
-            function() return ns.sync and ns.sync.mode == "catchup" and ns.sync.with == p.name end,
-            function() ns.SetSync(p.name, "catchup") end, "c" .. p.name)
-        end
-        if ns.GroupSync.requests[p.name] or (ns.sync and ns.sync.mode == "follow" and ns.sync.with == p.name) then
-          root:CreateRadio(("Follow %s (helping them catch up)"):format(p.name),
-            function() return ns.sync and ns.sync.mode == "follow" and ns.sync.with == p.name end,
-            function() ns.SetSync(p.name, "follow") end, "f" .. p.name)
-        end
-      end
-    end
-    root:CreateDivider()
-    root:CreateRadio("Leveling route (no guide)", function() return not (ns.sync or (ns.cdb and (ns.cdb.guide or ns.cdb.classGuide))) end,
-      function() ns.SetGuide(nil) end, 0)
-  end)
+  local tree = V.MenuTree()
+  MenuUtil.CreateContextMenu(owner, function(_, root) V.RenderMenu(root, tree) end)
 end
 
 -- Point the arrow at a line's place (nil: the step itself).

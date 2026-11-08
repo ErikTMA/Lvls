@@ -4,6 +4,17 @@ local R = ns:NewModule("Registry")
 
 local datasets = {}
 
+-- Placeholder quests the client still carries ("<UNUSED>", "[Never used]",
+-- "<nyi> <TXT> ...", "zzOLD ..."): never real, never planned (Availability: wrong).
+local PLACEHOLDER = { "unused", "never used", "<nyi>", "<txt>", "^zz", "deprecated", "%[ph%]" }
+function R.IsPlaceholder(name)
+  local n = (name or ""):lower()
+  for _, p in ipairs(PLACEHOLDER) do
+    if n:find(p) then return true end
+  end
+  return false
+end
+
 -- giver / turn-in indexes: npc or object id -> { questId, ... }
 local function index(ds)
   local startsN, startsO, endsN, endsO = {}, {}, {}, {}
@@ -14,6 +25,7 @@ local function index(ds)
   end
   for qid, q in pairs(ds.quests) do
     q.id = qid
+    if R.IsPlaceholder(q.n) then q.unused = true end
     for _, i in ipairs(q.sn or {}) do add(startsN, i, qid) end
     for _, i in ipairs(q.so or {}) do add(startsO, i, qid) end
     for _, i in ipairs(q.en or {}) do add(endsN, i, qid) end

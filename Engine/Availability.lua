@@ -7,7 +7,8 @@
 -- Status (first rule that applies):
 --   "done"      completed
 --   "active"    in the quest log
---   "wrong"     never for this character (faction, race, class, profession)
+--   "wrong"     never for this character (faction, race, class, profession), or a
+--               placeholder the client still carries ("<UNUSED>": Registry)
 --   "locked"    a prerequisite is missing (reason says which)
 --   "low"       required level not reached yet
 --   "trivial"   grey: no longer worth experience
@@ -42,6 +43,7 @@ function A.Status(q, char)
   local id = q.id
   if char.completed[id] then return "done" end
   if char.active and char.active[id] then return "active" end
+  if q.unused then return "wrong", "placeholder" end
   if q.side and SIDE[char.faction] and q.side ~= SIDE[char.faction] then return "wrong", "faction" end
   local info = ns.Prereqs.Info(id)
   if not raceOk(info and info.races or q.races, char.race) then return "wrong", "race" end
