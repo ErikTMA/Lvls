@@ -71,6 +71,13 @@ function AR.SetTarget(spot, title, manual)
   if frame then frame:Show() end
 end
 
+-- The goal's title changed (a work step's progress): not for a place you picked.
+function AR.SetTitle(title)
+  local g = AR.goal
+  if not g or g.manual or g.title == title then return end
+  g.title = title
+end
+
 function AR.SetLeg(spot, title)
   if not AR.goal then return end
   if not spot then AR.target = AR.goal; return end

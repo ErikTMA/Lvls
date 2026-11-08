@@ -152,12 +152,27 @@ function S.Build(ds, char, route, geo)
       -- titled when built
     elseif st.kind == "talk" then
       st.title = name and ("Talk to " .. name) or "Talk"
-    else
-      st.title = (#st.lines > 1 and "Do these together" or "Objective")
-    end
+    end -- work steps: titled from their open objectives (S.Refresh)
   end
   S.Refresh(ds, char, steps, geo)
   return steps
+end
+
+-- A work step's title: what is left of it, with progress ("Kill 12 Kobold Laborer
+-- (3/12)"; two: "A & B"; more: "A +2 more"). All done: all of it.
+function S.WorkTitle(st)
+  local parts = {}
+  local function add(l)
+    local t = l.text or ""
+    if l.have and l.need and l.have > 0 and l.need > 1 then t = ("%s (%d/%d)"):format(t, l.have, l.need) end
+    parts[#parts + 1] = t
+  end
+  for _, l in ipairs(st.lines) do if not l.also and not l.done then add(l) end end
+  if #parts == 0 then for _, l in ipairs(st.lines) do if not l.also then add(l) end end end
+  if #parts == 0 then return "Objective" end
+  if #parts == 1 then return parts[1] end
+  if #parts == 2 then return parts[1] .. " & " .. parts[2] end
+  return ("%s +%d more"):format(parts[1], #parts - 1)
 end
 
 -- Re-evaluate done flags and the "also here" lines; returns the current step index.
@@ -175,6 +190,7 @@ function S.Refresh(ds, char, steps, geo)
     end
     st.done = open == 0
     if not st.done and not current then current = i end
+    if st.kind == "work" then st.title = S.WorkTitle(st) end
   end
   local st = current and steps[current]
   if st and st.kind == "work" then

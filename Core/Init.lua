@@ -299,6 +299,8 @@ function ns.Refresh(replan)
   elseif changed or moved then
     ns.RefreshTravel() -- the way there only changes when you move or something changed
   end
+  -- the same step, its title moved on ("Kill 12 Kobold Laborer (3/12)")
+  if st and st == ns.arrowStep then ns.Arrow.SetTitle(st.title) end
   ns.arrowStep = st
   if ns.sync and ns.sync.mode == "catchup" then ns.GroupSync.SendStep(st) end
   ns.Events.Fire("LVLS_UPDATED")
