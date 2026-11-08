@@ -84,6 +84,14 @@ function G.Position(out)
   return out
 end
 
+-- what a side part returns, or nil when it fails (the quest log must still be read)
+local function safe(fn)
+  local ok, v = pcall(fn)
+  if ok then return v end
+  if ns.Log then ns.Log("debug", "character: " .. tostring(v)) end
+  return nil
+end
+
 function G.Character()
   -- (not `UnitRace and UnitRace(...)`: `and` keeps only the first return value)
   -- (secret while identity is restricted: the last one read)
@@ -98,9 +106,9 @@ function G.Character()
     xp = UnitXP and UnitXP("player") or 0,
     xpMax = UnitXPMax and UnitXPMax("player") or nil,
     faction = faction, race = race, class = class,
-    completed = G.Completed(), active = G.QuestLog(), skills = G.Skills(),
-    pos = G.Position(),
-    bag = G.Bag(),
+    completed = G.Completed(), active = G.QuestLog(), skills = safe(G.Skills),
+    pos = safe(G.Position),
+    bag = safe(G.Bag) or {},
   }
 end
 

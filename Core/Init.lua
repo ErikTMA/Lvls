@@ -241,14 +241,26 @@ ns.NEARBY_MOVE = 0.5  -- map percent: moving this far makes a new nearby list
 
 function ns.Invalidate() ns.dirty = true end
 
+-- A side part of the refresh that fails (travel, dungeon tracking, the nearby list)
+-- must not stop the steps from following the quest log: logged once, skipped.
+local failed = {}
+local function try(what, fn, ...)
+  local ok, a, b = pcall(fn, ...)
+  if ok then return a, b end
+  local msg = what .. ": " .. tostring(a)
+  if not failed[msg] then failed[msg] = true; ns.Log("debug", msg) end
+  return nil
+end
+
 function ns.Refresh(replan)
   local ds = ns.ActiveDataset()
   if not ds then return end
   ns.char = ns.Game.Character()
-  ns.DungeonInfo.Track(ns.char.pos)
-  ns.travelCtx = ns.TravelData.Context(ds, ns.char)
-  local known, unknown = {}, {}
-  if ns.char.pos then known, unknown = ns.TravelData.FlyNodes(ds, ns.char.pos.map, ns.char.faction) end
+  try("dungeon tracking", ns.DungeonInfo.Track, ns.char.pos)
+  ns.travelCtx = try("travel", ns.TravelData.Context, ds, ns.char) or ns.travelCtx
+  local known, unknown
+  if ns.char.pos then known, unknown = try("flight points", ns.TravelData.FlyNodes, ds, ns.char.pos.map, ns.char.faction) end
+  known, unknown = known or {}, unknown or {}
   ns.char.flyKnown = {}
   for _, f in ipairs(known) do ns.char.flyKnown[f.id] = true end
   ns.flyUnknown = unknown
@@ -271,9 +283,9 @@ function ns.Refresh(replan)
   local moved = pos and (nearbyAt.map ~= pos.map or math.abs(pos.x - nearbyAt.x) > ns.NEARBY_MOVE
     or math.abs(pos.y - nearbyAt.y) > ns.NEARBY_MOVE)
   if changed or moved or not ns.nearby then
-    ns.nearby = ns.Quests.Nearby(ds, ns.char, ns.Game.geo, { limit = 10, maxDist = 3000,
+    ns.nearby = try("nearby", ns.Quests.Nearby, ds, ns.char, ns.Game.geo, { limit = 10, maxDist = 3000,
       showLow = false, showTrivial = s.showTrivial, showDungeon = s.showDungeon,
-      showRepeatable = s.showRepeatable })
+      showRepeatable = s.showRepeatable }) or ns.nearby or {}
     if pos then nearbyAt.map, nearbyAt.x, nearbyAt.y = pos.map, pos.x, pos.y end
   end
   if ns.replanSoon then replan, ns.replanSoon = true, nil end
