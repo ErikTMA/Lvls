@@ -64,13 +64,16 @@ function V.Model(ds, char, steps, current, view, base)
         line = { kind = t.kind, spot = t.spot, text = t.text }, travel = true }
     end
   end
+  -- a part that is done leaves the list: only what is still to do shows
   for _, l in ipairs(st.lines) do
     if #m.lines >= V.MAX_LINES then break end
-    local progress
-    if l.need and l.need > 1 and not l.done then progress = ("%d/%d"):format(l.have or 0, l.need) end
-    local c = l.done and V.COLORS.done or (l.also and V.COLORS.also or V.COLORS.text)
-    m.lines[#m.lines + 1] = { icon = ns.Steps.ICON[l.kind] or "goto", check = l.done and "checkon" or "checkoff",
-      text = (l.also and "Also: " or "") .. l.text, progress = progress, color = c, line = l }
+    if not l.done then
+      local progress
+      if l.need and l.need > 1 then progress = ("%d/%d"):format(l.have or 0, l.need) end
+      m.lines[#m.lines + 1] = { icon = ns.Steps.ICON[l.kind] or "goto", check = "checkoff",
+        text = (l.also and "Also: " or "") .. l.text, progress = progress,
+        color = l.also and V.COLORS.also or V.COLORS.text, line = l }
+    end
   end
   local nxt = steps[i + 1]
   if nxt then m.next = nxt.title .. ": " .. (nxt.lines[1] and nxt.lines[1].text or "") end
