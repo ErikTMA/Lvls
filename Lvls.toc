@@ -1,0 +1,49 @@
+## Interface: 16001
+## Title: Lvls!
+## Notes: A leveling route computed for your character: step by step, with an arrow, on the map and minimap.
+## Category: Quests
+## Author: Erik Andersen
+## Version: 0.1.0
+## SavedVariables: LvlsDB
+## SavedVariablesPerCharacter: LvlsCharDB
+## OptionalDeps: QuestieDB
+## IconTexture: Interface\AddOns\Lvls\Media\LvlsIcon
+## AddonCompartmentFunc: Lvls_OnAddonCompartmentClick
+## AddonCompartmentFuncOnEnter: Lvls_OnAddonCompartmentEnter
+## AddonCompartmentFuncOnLeave: Lvls_OnAddonCompartmentLeave
+## X-Target: WoW Forever 1.60.x
+
+# Core (pure Lua, no game API)
+Core/Namespace.lua
+Core/Util.lua
+Core/Events.lua
+
+# Data: schema, registry, generated dataset
+Data/Schema.lua
+Data/Registry.lua
+Data/forever/Dataset.lua
+Data/forever/Travel.lua
+
+# Engine (pure Lua, unit tested headless)
+Engine/Geo.lua
+Engine/Prereqs.lua
+Engine/Availability.lua
+Engine/Quests.lua
+Engine/Route.lua
+Engine/Steps.lua
+Engine/Travel.lua
+
+# Adapters (game and third-party APIs, feature detected)
+Adapters/Game.lua
+Adapters/QuestieDB.lua
+Adapters/Travel.lua
+
+# UI
+UI/Style.lua
+UI/MapPins.lua
+UI/MapPins.xml
+UI/Minimap.lua
+UI/Arrow.lua
+UI/Viewer.lua
+
+Core/Init.lua

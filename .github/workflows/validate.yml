@@ -1,0 +1,38 @@
+name: validate
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash  # -eo pipefail: a failing command inside a pipe fails the step
+jobs:
+  addon:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Lua 5.1
+        run: sudo apt-get update -q && sudo apt-get install -y -q lua5.1
+      - name: Every Lua file parses
+        run: |
+          find . -name '*.lua' -not -path './.git/*' -print0 | xargs -0 -n1 luac5.1 -p
+          echo "parsed $(find . -name '*.lua' -not -path './.git/*' | wc -l) files"
+      - name: TOC loads exactly the shipped code, in a valid order
+        run: |
+          set -eu
+          files=$(grep -v '^#' Lvls.toc | sed 's/\r$//' | grep -v '^[[:space:]]*$')
+          for f in $files; do test -f "$f" || { echo "TOC loads a missing file: $f"; exit 1; }; done
+          test "$(echo "$files" | head -1)" = "Core/Namespace.lua"
+          test "$(echo "$files" | tail -1)" = "Core/Init.lua"
+          find Core Data Engine Adapters UI -name '*.lua' | while read -r f; do
+            echo "$files" | grep -qx "$f" || { echo "not in the TOC: $f"; exit 1; }
+          done
+          for k in Interface Title Version IconTexture SavedVariables; do
+            grep -q "^## $k: ." Lvls.toc || { echo "TOC lacks ## $k"; exit 1; }
+          done
+          if grep -q '@project-version@' Lvls.toc; then echo "unstamped version"; exit 1; fi
+          for t in Media/Arrow.tga Media/ArrowHere.tga Media/Icons.tga Media/LvlsIcon.tga; do test -s "$t"; done
+          echo "TOC ok: $(echo "$files" | wc -l) files"

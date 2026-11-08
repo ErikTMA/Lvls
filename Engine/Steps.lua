@@ -1,0 +1,233 @@
+-- Steps: the route grouped the way a player works through it, one place at a time.
+-- Pure.
+--
+--   "talk" step   one npc / object: every hand-in and pick-up there, in route order
+--                 ("Talk to Marshal McBride: Turn in A Threat Within, Accept Kobold
+--                 Camp Cleanup")
+--   "work" step   objectives done together in one area ("Kill 10 Kobold Vermin,
+--                 Collect 8 Tough Wolf Meat"), plus "also here" lines: every other
+--                 open objective of an accepted quest whose area is close by
+--
+-- Every line knows whether it is done from the character's quest log, so a step
+-- ticks off live and the current step is the first one with an open line.
+--
+-- step = { kind = "talk" | "work", spot = {map, x, y}, title, lines = {
+--   { kind = "accept" | "turnin" | "kill" | "collect" | "object" | "event",
+--     quest, index, text, have, need, done, also } } }
+local _, ns = ...
+local S = ns:NewModule("Steps")
+local G = ns.Geo
+
+S.TALK_YARDS = 20   -- route actions this close to the same npc are one talk step
+S.WORK_YARDS = 250  -- objectives this close are worked together
+S.ALSO_YARDS = 300  -- open objectives this close are listed as "also here"
+
+local function objKind(o)
+  if o.t == "kill" then return "kill" end
+  if o.t == "item" then return "collect" end
+  if o.t == "object" then return "object" end
+  return "event"
+end
+
+-- "Kobold Vermin slain" -> "Kill 10 Kobold Vermin"; "Tough Wolf Meat" -> "Collect 8 ..."
+function S.ObjectiveText(o)
+  local text = o.text or "objective"
+  local n = o.qty and o.qty > 1 and (o.qty .. " ") or ""
+  if o.t == "kill" then return "Kill " .. n .. (text:gsub("%s+[Ss]lain$", "")) end
+  if o.t == "item" then return "Collect " .. n .. text end
+  if o.t == "object" then return "Use " .. text end
+  return text
+end
+
+local function questDone(char, qid) return char.completed[qid] == true end
+
+-- Live state of an objective line from the quest log.
+local function objectiveState(ds, char, qid, i)
+  local q = ds.quests[qid]
+  local o = q and q.obj and q.obj[i]
+  if not o then return true end
+  if questDone(char, qid) then return true, o.qty, o.qty end
+  local entry = char.active and char.active[qid]
+  if not entry or entry.simulated then return false, 0, o.qty end
+  if entry.complete then return true, o.qty, o.qty end
+  local lo = ns.Quests.LogObjective(entry, o, i)
+  if lo then return lo.finished and true or false, lo.have, lo.need or o.qty end
+  return false, 0, o.qty
+end
+
+function S.LineState(ds, char, line)
+  if line.kind == "fpath" then return char.flyKnown and char.flyKnown[line.node] or false end
+  if line.kind == "accept" then
+    return (char.active and char.active[line.quest] and not char.active[line.quest].simulated)
+      or questDone(char, line.quest)
+  end
+  if line.kind == "turnin" then return questDone(char, line.quest) end
+  local done, have, need = objectiveState(ds, char, line.quest, line.index)
+  line.have, line.need = have, need
+  return done
+end
+
+local function placeName(ds, spot)
+  local rec = spot and spot.id and (spot.kind == "o" and ds.objects or ds.npcs)[spot.id]
+  return rec and rec.n
+end
+
+local function close(geo, a, b, yards)
+  return G.Distance(geo, a, b) <= yards
+end
+
+-- Group route actions into steps (in route order), then mark lines done.
+function S.Build(ds, char, route, geo)
+  local steps = {}
+  local cur
+  for _, a in ipairs(route or {}) do
+    local q = ds.quests[a.quest]
+    if q then
+      local talk = a.kind == "accept" or a.kind == "turnin"
+      local joins = cur and ((talk and cur.kind == "talk" and (
+          (a.spot.id and a.spot.id == cur.spot.id and a.spot.kind == cur.spot.kind)
+          or close(geo, a.spot, cur.spot, S.TALK_YARDS)))
+        or (not talk and cur.kind == "work" and close(geo, a.spot, cur.spot, S.WORK_YARDS)))
+      if not joins then
+        cur = { kind = talk and "talk" or "work", spot = a.spot, lines = {}, level = a.level }
+        steps[#steps + 1] = cur
+      end
+      if talk then
+        cur.lines[#cur.lines + 1] = { kind = a.kind, quest = a.quest,
+          text = (a.kind == "accept" and "Accept " or "Turn in ") .. q.n }
+      else
+        local o = q.obj[a.index]
+        cur.lines[#cur.lines + 1] = { kind = objKind(o), quest = a.quest, index = a.index,
+          text = S.ObjectiveText(o) }
+      end
+      cur.level = a.level or cur.level
+    end
+  end
+  for _, st in ipairs(steps) do
+    if st.kind == "talk" then
+      -- hand in first, then pick up (a hand-in can unlock what is picked up); a quest
+      -- picked up and handed in right here keeps its order
+      local acceptedHere = {}
+      for _, l in ipairs(st.lines) do if l.kind == "accept" then acceptedHere[l.quest] = true end end
+      local first, rest = {}, {}
+      for _, l in ipairs(st.lines) do
+        if l.kind == "turnin" and not acceptedHere[l.quest] then first[#first + 1] = l else rest[#rest + 1] = l end
+      end
+      st.lines = first
+      for _, l in ipairs(rest) do st.lines[#st.lines + 1] = l end
+    end
+    local name = placeName(ds, st.spot)
+    if st.kind == "talk" then
+      st.title = name and ("Talk to " .. name) or "Talk"
+    else
+      st.title = (#st.lines > 1 and "Do these together" or "Objective")
+    end
+  end
+  S.Refresh(ds, char, steps, geo)
+  return steps
+end
+
+-- Re-evaluate done flags and the "also here" lines; returns the current step index.
+function S.Refresh(ds, char, steps, geo)
+  local current
+  for i, st in ipairs(steps) do
+    -- drop previous "also" lines
+    for k = #st.lines, 1, -1 do
+      if st.lines[k].also then table.remove(st.lines, k) end
+    end
+    local open = 0
+    for _, l in ipairs(st.lines) do
+      l.done = S.LineState(ds, char, l) and true or false
+      if not l.done then open = open + 1 end
+    end
+    st.done = open == 0
+    if not st.done and not current then current = i end
+  end
+  local st = current and steps[current]
+  if st and st.kind == "work" then
+    S.AddAlso(ds, char, st, geo)
+  end
+  return current
+end
+
+-- Other open objectives of accepted quests whose area is near this step's spot.
+function S.AddAlso(ds, char, st, geo)
+  local have = {}
+  for _, l in ipairs(st.lines) do
+    if l.index then have[l.quest .. ":" .. l.index] = true end
+  end
+  local extra = {}
+  for qid, entry in pairs(char.active or {}) do
+    local q = ds.quests[qid]
+    if q and not entry.complete then
+      for i, o in ipairs(q.obj or {}) do
+        if not have[qid .. ":" .. i] and not ns.Quests.ObjectiveDone(entry, o, i) then
+          local spots = ns.Quests.ObjectiveSpots(ds, q, i, st.spot.map)
+          local _, d = G.Nearest(geo, st.spot, spots)
+          if d <= S.ALSO_YARDS then
+            local l = { kind = objKind(o), quest = qid, index = i, text = S.ObjectiveText(o), also = true }
+            l.done = S.LineState(ds, char, l) and true or false
+            extra[#extra + 1] = l
+          end
+        end
+      end
+    end
+  end
+  table.sort(extra, function(a, b)
+    if a.quest ~= b.quest then return a.quest < b.quest end
+    return a.index < b.index
+  end)
+  for _, l in ipairs(extra) do st.lines[#st.lines + 1] = l end
+end
+
+-- Line icon names in Media/Icons.tga (32 px icons, see UI/Viewer.lua).
+S.ICON = { accept = "accept", turnin = "turnin", kill = "kill", collect = "collect",
+  object = "goto", event = "goto", talk = "talk", work = "goto", fpath = "fly", fly = "fly",
+  transit = "transit", hearth = "hearth", enter = "enter", path = "path" }
+
+-- Is the plan still good from the current step on? False when an open line can no
+-- longer happen: a quest to accept became impossible for this character, or a quest
+-- to work / hand in left the log (abandoned) and is not picked up again earlier.
+function S.Valid(ds, char, steps, from)
+  local accepting = {}
+  for i = from or 1, #steps do
+    for _, l in ipairs(steps[i].lines) do
+      if not l.done and not l.also and l.quest then
+        local q = ds.quests[l.quest]
+        if l.kind == "accept" then
+          accepting[l.quest] = true
+          if q and ns.Availability.Status(q, char) == "wrong" then return false, "cannot accept " .. q.n end
+        elseif not accepting[l.quest] and not (char.active and char.active[l.quest]) and not char.completed[l.quest] then
+          return false, "no longer in the log: " .. (q and q.n or l.quest)
+        end
+      end
+    end
+  end
+  return true
+end
+
+-- Steps still open from `from` on.
+function S.Remaining(steps, from)
+  local n = 0
+  for i = from or 1, #steps do if not steps[i].done then n = n + 1 end end
+  return n
+end
+
+-- "Get the <town> flight path": an undiscovered flight point of your faction close
+-- to a talk step becomes a line of that step (done once the client knows it).
+S.FLIGHT_PATH_YARDS = 150
+function S.AddFlightPaths(steps, undiscovered, geo)
+  local taken = {}
+  for _, st in ipairs(steps) do
+    if st.kind == "talk" and not st.done then
+      for _, f in ipairs(undiscovered or {}) do
+        if not taken[f.id] and G.Distance(geo, st.spot, f.spot) <= S.FLIGHT_PATH_YARDS then
+          taken[f.id] = true
+          local who = f.npc and f.npc.name
+          st.lines[#st.lines + 1] = { kind = "fpath", node = f.id, spot = f.spot,
+            text = "Get the " .. (f.name or "?") .. " flight path" .. (who and (" from " .. who) or "") }
+        end
+      end
+    end
+  end
+end
