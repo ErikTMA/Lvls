@@ -159,6 +159,46 @@ G.geo = {
   end,
 }
 
+-- The same spot on the zone map it lies in, or nil (already a zone's, an instance,
+-- or the client cannot tell). The client reports some places on a micro map (a
+-- building, a cave) or a continent map (at login, in a cinematic); the route
+-- compares maps to know what is "here", and a plan made on the wrong map left the
+-- zone you stand in for the next one.
+local ZONE, DUNGEON = 3, 4
+local zoneCache = {}
+function G.geo.zone(spot)
+  if not spot or not has(C_Map, "GetMapInfo") or not has(C_Map, "GetMapPosFromWorldPos") then return nil end
+  local info = C_Map.GetMapInfo(spot.map)
+  if not info or info.mapType == ZONE or info.mapType == DUNGEON then return nil end
+  local zone = zoneCache[spot.map]
+  if zone == nil then
+    zone = false
+    if info.mapType > ZONE then
+      -- a building or a cave: the zone above it
+      local m, guard = info, 0
+      while m and m.mapType and m.mapType > ZONE and m.parentMapID and guard < 8 do
+        m, guard = C_Map.GetMapInfo(m.parentMapID), guard + 1
+      end
+      if m and m.mapType == ZONE then zone = m.mapID end
+    end
+    if info.mapType > ZONE then zoneCache[spot.map] = zone end
+  end
+  if not zone and info.mapType < ZONE and has(C_Map, "GetMapInfoAtPosition") then
+    -- a continent: the zone under the spot (not cached, it depends on the spot)
+    local at = C_Map.GetMapInfoAtPosition(spot.map, spot.x / 100, spot.y / 100)
+    if at and at.mapType == ZONE and at.mapID ~= spot.map then zone = at.mapID end
+  end
+  if not zone then return nil end
+  local cont, wx, wy = G.geo.world(spot.map, spot.x, spot.y)
+  if not cont then return nil end
+  local _, v = C_Map.GetMapPosFromWorldPos(cont, CreateVector2D(wx, wy), zone)
+  if not v then return nil end
+  local x, y
+  if v.GetXY then x, y = v:GetXY() else x, y = v.x, v.y end
+  if not x or not y or x < 0 or x > 1 or y < 0 or y > 1 then return nil end
+  return { map = zone, x = x * 100, y = y * 100 }
+end
+
 function G.MapName(map)
   if has(C_Map, "GetMapInfo") then
     local info = C_Map.GetMapInfo(map)

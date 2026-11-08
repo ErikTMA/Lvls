@@ -1,7 +1,7 @@
 -- Steps: the route grouped the way a player works through it, one place at a time.
 -- Pure.
 --
---   "talk" step   one npc / object: every hand-in and pick-up there, in route order
+--   "talk" step   one npc / object: its hand-ins and pick-ups in a row, in route order
 --                 ("Talk to Marshal McBride: Turn in A Threat Within, Accept Kobold
 --                 Camp Cleanup")
 --   "work" step   objectives done together in one area ("Kill 10 Kobold Vermin,
@@ -18,7 +18,7 @@ local _, ns = ...
 local S = ns:NewModule("Steps")
 local G = ns.Geo
 
-S.TALK_YARDS = 20   -- route actions this close to the same npc are one talk step
+S.TALK_YARDS = 20   -- route actions this close at a spot without an npc are one talk step
 S.WORK_YARDS = 250  -- objectives this close are worked together
 S.ALSO_YARDS = 300  -- open objectives this close are listed as "also here"
 
@@ -39,6 +39,12 @@ function S.ObjectiveText(o)
   if o.t == "item" then return "Collect " .. n .. text end
   if o.t == "object" then return "Use " .. text end
   return text
+end
+
+-- "Use Odd Tome from your bags to start the quest" / "...: it starts Lost Letter"
+function S.UseText(item, q)
+  return item == q.n and ("Use %s from your bags to start the quest"):format(item)
+    or ("Use %s from your bags: it starts %s"):format(item, q.n)
 end
 
 local function questDone(char, qid) return char.completed[qid] == true end
@@ -118,16 +124,19 @@ function S.Build(ds, char, route, geo)
       local it = ns.Quests.StartItem(ds, q)
       local item = it and it.n or "the item"
       cur = { kind = "use", title = "Use " .. item, level = a.level, item = a.spot.id, lines = {
-        { kind = "accept", quest = a.quest, item = a.spot.id,
-          text = item == q.n and ("Use %s from your bags to start the quest"):format(item)
-            or ("Use %s from your bags: it starts %s"):format(item, q.n) } } }
+        { kind = "accept", quest = a.quest, item = a.spot.id, text = S.UseText(item, q) } } }
       steps[#steps + 1] = cur
       cur = nil
     elseif q then
       local talk = a.kind == "accept" or a.kind == "turnin"
+      -- a talk step is one npc: another one a few yards away (Daniel beside Brother
+      -- Paxton) is a step of its own, titled with its name; only spots without an
+      -- npc join by distance
+      local same = a.spot.id and cur and cur.spot.id
+        and a.spot.id == cur.spot.id and a.spot.kind == cur.spot.kind
+      local unnamed = cur and not (a.spot.id and cur.spot.id)
       local joins = cur and ((talk and cur.kind == "talk" and (
-          (a.spot.id and a.spot.id == cur.spot.id and a.spot.kind == cur.spot.kind)
-          or close(geo, a.spot, cur.spot, S.TALK_YARDS)))
+          same or (unnamed and close(geo, a.spot, cur.spot, S.TALK_YARDS))))
         or (not talk and cur.kind == "work" and close(geo, a.spot, cur.spot, S.WORK_YARDS)))
       if not joins then
         cur = { kind = talk and "talk" or "work", spot = a.spot, lines = {}, level = a.level }
@@ -212,6 +221,7 @@ function S.Refresh(ds, char, steps, geo)
   if st and st.kind == "work" then
     S.AddAlso(ds, char, st, geo)
   end
+  if st then S.AddBagStarts(ds, char, st) end
   return current
 end
 
@@ -284,10 +294,35 @@ function S.AddStarters(ds, char, st)
           text = ("Loot %s from %s (%s)"):format(it.n or "an item", rec and rec.n or "them",
             it.n == q.n and "it starts a quest" or ("it starts " .. q.n)) }
         l.done = S.LineState(ds, char, l) and true or false
-        if not l.done then st.lines[#st.lines + 1] = l end
+        -- looted: ticked off, and using it is the next line of the same step
+        if not l.done or (char.bag and char.bag[it.id]) then st.lines[#st.lines + 1] = l end
+        if char.bag and char.bag[it.id] then S.AddUse(ds, char, st, qid, it.id) end
       end
     end
   end
+end
+
+-- "Use Odd Tome from your bags": a line of this step, not a step of its own (the
+-- plan is made again once the quest is in the log). Not twice for a quest.
+function S.AddUse(ds, char, st, qid, item)
+  for _, l in ipairs(st.lines) do
+    if l.kind == "accept" and l.quest == qid then return end
+  end
+  local q = ds.quests[qid]
+  local it = ns.Quests.StartItem(ds, q)
+  local l = { kind = "accept", quest = qid, item = item, also = true,
+    text = S.UseText(it and it.n or "the item", q) }
+  l.done = S.LineState(ds, char, l) and true or false
+  st.lines[#st.lines + 1] = l
+end
+
+-- Every item in your bags that starts a quest you can take, on the current step.
+function S.AddBagStarts(ds, char, st)
+  if st.kind == "follow" then return end
+  local list = {}
+  for qid, item in pairs(ns.Quests.BagStarts(ds, char)) do list[#list + 1] = { qid, item } end
+  table.sort(list, function(a, b) return a[1] < b[1] end)
+  for _, e in ipairs(list) do S.AddUse(ds, char, st, e[1], e[2]) end
 end
 
 -- Line icon names in Media/Icons.tga (32 px icons, see UI/Viewer.lua).

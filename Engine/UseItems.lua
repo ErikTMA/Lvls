@@ -79,6 +79,10 @@ function UI.List(ds, char, steps, index, max)
       add(cur.item, l and l.quest, cur.kind == "use" and "start" or "use", 0)
     end
     for _, l in ipairs(cur.lines or {}) do
+      -- "Use Odd Tome from your bags" on this step: its button first
+      if l.item and l.kind == "accept" and not l.done and char.bag and char.bag[l.item] then
+        add(l.item, l.quest, "start", 0)
+      end
       if l.quest and not l.done then
         for _, id in ipairs(UI.ForQuest(ds, char, l.quest)) do add(id, l.quest, "use", 0) end
       end

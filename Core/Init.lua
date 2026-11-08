@@ -128,6 +128,34 @@ local function countSteps()
   ns.cdb.stepsDone = before + n
 end
 
+-- The player's spot on the zone's map (the client reports some places on a
+-- building's or the continent's map), a copy; nil when unknown.
+local function here(pos)
+  if not pos then return nil end
+  local z = ns.Game.geo.zone and ns.Game.geo.zone(pos)
+  z = z or pos
+  return { map = z.map, x = z.x, y = z.y }
+end
+
+-- A plan holds while you follow it. It is made again, without any command, when
+-- you are in another zone than the one it was made in, or OFF_ROUTE yards from
+-- where it was made with its first step still to do: it was made from a spot you
+-- are not at (a position the client reported wrong, a stale plan) or you went
+-- your own way.
+ns.OFF_ROUTE = 400
+local function offRoute()
+  local at, now = ns.planAt, here(ns.char and ns.char.pos)
+  if not at or not now or (ns.guide and ns.guide.follow) then return false end
+  if now.map ~= at.map then return true end
+  if (ns.stepIndex or 1) > 1 then return false end
+  local geo, D = ns.Game.geo, ns.Geo.Distance
+  if D(geo, at, now) <= ns.OFF_ROUTE then return false end
+  -- on the way to the first step (a long walk) is following it
+  local st = ns.steps and ns.steps[1]
+  local goal = st and st.spot and here(st.spot)
+  return not (goal and D(geo, now, goal) < D(geo, at, goal) - ns.OFF_ROUTE / 2)
+end
+
 local function plan(ds)
   -- what the old plan finished up to now (the change that replans may have finished a step)
   if ns.steps and ns.char then
@@ -163,6 +191,8 @@ local function plan(ds)
   })
   if not ok then ns.Log("debug", "route: " .. tostring(route)); route = {} end
   ns.route = route
+  -- where the plan was made (on the zone's map): going elsewhere plans again (offRoute)
+  ns.planAt = here(ns.char.pos)
   -- the log the plan was made for: a quest it leaves out on purpose (for later, no
   -- experience) is not a reason to plan again; one taken since is
   ns.planLog = {}
@@ -202,7 +232,7 @@ local function unplanned(ds)
   local known, handIn = {}, {}
   for _, st in ipairs(ns.steps or {}) do
     for _, l in ipairs(st.lines) do
-      if l.quest then known[l.quest] = true end
+      if l.quest and not l.also then known[l.quest] = true end
       if l.kind == "turnin" then handIn[l.quest] = true end
     end
   end
@@ -215,7 +245,7 @@ local function unplanned(ds)
   for qid in pairs(ns.char.active or {}) do
     local q = ds.quests[qid]
     local wanted = ns.guide and ns.guide.set[qid] or (not ns.guide and q and not q.inst)
-    if q and not known[qid] and (q.sn or q.so) and wanted and not (ns.planLog and ns.planLog[qid])
+    if q and not known[qid] and (q.sn or q.so or ns.Quests.StartItem(ds, q)) and wanted and not (ns.planLog and ns.planLog[qid])
       and not (ns.cdb and ns.cdb.skip[qid]) then return true end
   end
   return false
@@ -274,13 +304,9 @@ function ns.Refresh(replan)
   ns.flyUnknown = unknown
   local s = ns.db.settings
   local lv, done, active, sum, fly = stateOf(ns.char)
-  -- an item in your bags that starts a quest: plan again (it may be worth doing now)
-  local bagKey = 0
-  for qid, item in pairs(ns.Quests.BagStarts(ds, ns.char)) do bagKey = (bagKey + qid * 31 + item) % 2147483647 end
-  if bagKey ~= last.bagKey then
-    if last.bagKey ~= nil then replan = true end
-    last.bagKey = bagKey
-  end
+  -- an item in your bags that starts a quest is a line of the current step (Steps:
+  -- "Use Odd Tome"), not a reason to plan again: once used, the quest is in the log
+  -- and unplanned() plans it
   local pos = ns.char.pos
   local map = pos and pos.map
   local changed = replan or ns.dirty or lv ~= last.lv or done ~= last.done or active ~= last.active
@@ -302,7 +328,7 @@ function ns.Refresh(replan)
   -- a guide is short on purpose: it is re-planned when it runs out, not when it is short
   local short = not ns.guide and ns.Steps.Remaining(ns.steps, ns.stepIndex or 1) < ns.REPLAN_BELOW
   if not replan and (not ns.stepIndex or short
-      or not ns.Steps.Valid(ds, ns.char, ns.steps, ns.stepIndex) or unplanned(ds)) then
+      or not ns.Steps.Valid(ds, ns.char, ns.steps, ns.stepIndex) or unplanned(ds) or offRoute()) then
     plan(ds)
     ns.stepIndex = ns.Steps.Refresh(ds, ns.char, ns.steps, ns.Game.geo)
   end
@@ -315,7 +341,7 @@ function ns.Refresh(replan)
   elseif not st then
     ns.Arrow.SetTarget(nil)
   elseif not ns.Viewer.view and (st ~= ns.arrowStep or not ns.Arrow.goal) then
-    ns.Arrow.SetTarget(st.spot, st.title, false)
+    ns.Arrow.SetTarget(st.spot, st.title, false, st.kind == "work" and st.lines or nil)
   elseif changed or moved then
     ns.RefreshTravel() -- the way there only changes when you move or something changed
   end
@@ -349,8 +375,9 @@ local function onLogin()
   if not ds then
     ns.Log("warn", "no quest data for this client (" .. tostring(ns.Game.Flavor()) .. ")")
   elseif ok then
-    local n = ns.QuestieDB.Patch(ds)
+    local n, moved = ns.QuestieDB.Patch(ds)
     if n > 0 then ns.Log("debug", ("QuestieDB: Forever's levels and givers for %d quests"):format(n)) end
+    if (moved or 0) > 0 then ns.Log("debug", ("QuestieDB: where %d quest npcs stand"):format(moved)) end
   end
   ns.Events.Fire("LVLS_LOADED")
   ns.Refresh(true)
@@ -391,7 +418,7 @@ end
 
 commands.next = function()
   local st = ns.stepIndex and ns.steps[ns.stepIndex]
-  if st then ns.Arrow.SetTarget(st.spot, st.title, false) end
+  if st then ns.Arrow.SetTarget(st.spot, st.title, false, st.kind == "work" and st.lines or nil) end
 end
 
 -- Skip a quest (the route leaves it out) or take it back.

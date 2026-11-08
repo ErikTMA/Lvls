@@ -359,7 +359,10 @@ function V.Browse(delta)
   if i > n then i = n end
   V.view = (i ~= ns.stepIndex) and i or nil
   V.Render()
-  if V.model and V.model.spot then ns.Arrow.SetTarget(V.model.spot, V.model.header, V.view ~= nil) end
+  local st = ns.steps[i]
+  if V.model and V.model.spot then
+    ns.Arrow.SetTarget(V.model.spot, V.model.header, V.view ~= nil, st and st.kind == "work" and st.lines or nil)
+  end
 end
 
 function V.Render()

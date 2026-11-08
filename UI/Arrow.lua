@@ -6,7 +6,10 @@
 local _, ns = ...
 local AR = ns:NewModule("Arrow")
 
-AR.ARRIVED_YARDS = 12
+AR.ARRIVED_YARDS = 5  -- "You are here": about talking range
+AR.LEAVE_YARDS = 8    -- once there, the arrow comes back only past this (no flicker)
+AR.LEG_YARDS = 12     -- a leg's end (flight master, entrance, path point): on to the next
+AR.AREA_CHECK = 0.5 -- seconds between "am I in the quest area" checks
 AR.target = nil   -- { map, x, y, title, manual }
 local frame
 local here = {}            -- the player's position, refilled every update
@@ -57,14 +60,61 @@ function AR.Eta(yards, speed)
   return ("%d:%02d"):format(math.floor(s / 60), s % 60)
 end
 
+-- The quests whose objective area counts as "there" for a step: its own open
+-- objective lines (not the "also here" ones, not talking to someone). Pure.
+local AREA_KINDS = { kill = true, collect = true, object = true, event = true }
+function AR.AreaQuests(lines)
+  local out, seen = {}, {}
+  for _, l in ipairs(lines or {}) do
+    if AREA_KINDS[l.kind] and l.quest and not l.done and not l.also and not seen[l.quest] then
+      seen[l.quest] = true
+      out[#out + 1] = l.quest
+    end
+  end
+  return out
+end
+
+-- Is the player inside the game's own objective area (the blue shape on the map and
+-- the minimap) of one of these quests? The client draws that shape and can say
+-- which quest's shape covers a point, but does not hand out the shape itself.
+-- Only quests in the log have one. False when the client cannot tell.
+local blob          -- a hidden QuestPOIFrame; false when the client has none
+local blobKey       -- the map and quests drawn on it
+function AR.InArea(pos, quests)
+  if not pos or not quests or #quests == 0 or blob == false then return false end
+  if not blob then
+    local ok, f = pcall(CreateFrame, "QuestPOIFrame", nil, UIParent)
+    if not ok or not f or not f.DrawBlob or not f.UpdateMouseOverTooltip then blob = false; return false end
+    blob = f
+    blob:SetSize(1, 1)
+    if blob.SetFillAlpha then blob:SetFillAlpha(0) end
+    if blob.SetBorderAlpha then blob:SetBorderAlpha(0) end
+  end
+  local key = pos.map .. ":" .. table.concat(quests, ",")
+  local ok, hit = pcall(function()
+    if key ~= blobKey then
+      blobKey = key
+      blob:SetMapID(pos.map)
+      blob:DrawNone()
+      for _, q in ipairs(quests) do blob:DrawBlob(q, true) end
+    end
+    return blob:UpdateMouseOverTooltip(pos.x / 100, pos.y / 100)
+  end)
+  if not ok then blobKey = nil; return false end
+  return hit ~= nil
+end
+
 -- The goal (a step, a line, a pin you clicked) and the target the arrow points at
 -- now: the end of the trip's first leg (the flight master, the boat, the cave
 -- entrance, the next point of a path), see ns.RefreshTravel in Core/Init.lua.
-function AR.SetTarget(spot, title, manual)
+-- lines: a work step's lines; inside the game's area for one of its open quests
+-- is "there" wherever in it the spot is.
+function AR.SetTarget(spot, title, manual, lines)
+  AR.inArea, AR.areaAt, AR.arrived = false, nil, false
   if not spot then
     AR.goal, AR.target = nil, nil
   else
-    AR.goal = { map = spot.map, x = spot.x, y = spot.y, title = title, manual = manual }
+    AR.goal = { map = spot.map, x = spot.x, y = spot.y, title = title, manual = manual, lines = lines }
     AR.target = AR.goal
     if ns.RefreshTravel then ns.RefreshTravel() end
   end
@@ -80,8 +130,11 @@ end
 
 function AR.SetLeg(spot, title)
   if not AR.goal then return end
-  if not spot then AR.target = AR.goal; return end
-  AR.target = { map = spot.map, x = spot.x, y = spot.y, title = title or AR.goal.title, leg = true }
+  local old = AR.target
+  if not spot then AR.target = AR.goal
+  else AR.target = { map = spot.map, x = spot.x, y = spot.y, title = title or AR.goal.title, leg = true } end
+  local t = AR.target
+  if not old or old.map ~= t.map or old.x ~= t.x or old.y ~= t.y then AR.arrived = false end
 end
 
 local function create()
@@ -136,12 +189,29 @@ function AR.Update()
   frame:Show()
   local d = math.sqrt(east * east + north * north)
   frame.title:SetText(t.title or "")
-  if t.leg and d <= AR.ARRIVED_YARDS and ns.RefreshTravel then
+  -- in the step's quest area already: there, even if the spot is across it
+  local g = AR.goal
+  if g and g.lines then
+    local now = GetTime and GetTime() or 0
+    if not AR.areaAt or now - AR.areaAt >= AR.AREA_CHECK then
+      AR.areaAt = now
+      AR.inArea = AR.InArea(pos, AR.AreaQuests(g.lines))
+    end
+    if AR.inArea then
+      frame.title:SetText(g.title or "")
+      frame.arrow:Hide()
+      frame.here:Show()
+      frame.dist:SetText("|cff40ff40In the quest area|r"); shownYards = nil
+      return
+    end
+  end
+  if t.leg and d <= AR.LEG_YARDS and ns.RefreshTravel then
     -- reached a leg's end (flight master, entrance, path point): on to the next leg
     local now = GetTime and GetTime() or 0
     if not AR.lastLeg or now - AR.lastLeg > 1 then AR.lastLeg = now; ns.RefreshTravel() end
   end
-  if d <= AR.ARRIVED_YARDS then
+  AR.arrived = d <= (AR.arrived and AR.LEAVE_YARDS or AR.ARRIVED_YARDS)
+  if AR.arrived then
     frame.arrow:Hide()
     frame.here:Show()
     frame.dist:SetText("|cff40ff40You are here|r"); shownYards = nil

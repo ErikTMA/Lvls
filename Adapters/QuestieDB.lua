@@ -168,7 +168,50 @@ function QD.Patch(ds)
       if touched then changed = changed + 1 end
     end
   end
-  return changed
+  return changed, QD.PlaceQuestNpcs(ds)
+end
+
+-- Where the quest givers and takers stand: QuestieDB's Forever spawns over the
+-- dataset's, map by map (a map QuestieDB has no spot on keeps the dataset's). The
+-- dump put Daniel, who takes Book Inventory, on Brother Paxton's spot. Returns how
+-- many npcs / objects moved.
+function QD.PlaceQuestNpcs(ds)
+  if not lib then return 0 end
+  local seen, moved = {}, 0
+  local function place(kind, id)
+    local key = kind .. id
+    if seen[key] then return end
+    seen[key] = true
+    local t = kind == "o" and ds.objects or ds.npcs
+    local rec = t[id]
+    if not rec or not rec.p then return end -- unknown here: adopt() handles givers
+    local e = kind == "o" and lib.Object or lib.Npc
+    local spots = spawnSpots(get(e, id, "spawns"), {})
+    if #spots == 0 then return end
+    local by = {}
+    for _, sp in ipairs(spots) do
+      by[sp.map] = by[sp.map] or {}
+      table.insert(by[sp.map], pack(sp.x, sp.y))
+    end
+    local changed = false
+    for map, pts in pairs(by) do
+      local old = rec.p[map]
+      if not old or #old ~= #pts then
+        changed = true
+      else
+        for i = 1, #pts do if old[i] ~= pts[i] then changed = true; break end end
+      end
+      rec.p[map] = pts
+    end
+    if changed then moved = moved + 1 end
+  end
+  for _, q in pairs(ds.quests) do
+    for _, id in ipairs(q.sn or {}) do place("n", id) end
+    for _, id in ipairs(q.en or {}) do place("n", id) end
+    for _, id in ipairs(q.so or {}) do place("o", id) end
+    for _, id in ipairs(q.eo or {}) do place("o", id) end
+  end
+  return moved
 end
 
 -- The item that starts a quest (startedBy's third list) and where it drops:

@@ -359,6 +359,9 @@ function R.Plan(ds, char, geo, opts)
   local st = { level = char.level, xp = char.xp or 0, char = char }
   local pos = char.pos
   if not pos then return {}, "position unknown" end
+  -- on the zone's map (geo.zone, optional): what is "here" compares maps, and the
+  -- client reports some places on a building's or the continent's map
+  pos = geo and geo.zone and geo.zone(pos) or pos
 
   -- pool and shapes
   local shapes, workSecs = {}, {}
