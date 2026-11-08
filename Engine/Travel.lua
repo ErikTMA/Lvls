@@ -65,7 +65,7 @@ function T.Plan(from, to, ctx)
       if i ~= j and a.cont == b.cont then
         local secs = ctx.flyTime and ctx.flyTime(a.fly.id, b.fly.id)
         if not secs then secs = G.Distance(geo, a.spot, b.spot) / T.FLY_SPEED + T.FLY_OVERHEAD end
-        edge(a, b, secs, { mode = "fly", title = "Fly to " .. (b.fly.name or "?"), npc = a.fly.npc })
+        edge(a, b, secs, { mode = "fly", title = "Fly to " .. (b.fly.name or "?"), npc = a.fly.npc, node = b.fly.id, nodeName = b.fly.name })
       end
     end
   end
@@ -152,9 +152,119 @@ function T.Plan(from, to, ctx)
   return trip
 end
 
--- Seconds to get there (for the route's costs).
+-- Seconds to get there (for the route's costs): T.Plan(from, to, ctx).secs, fast.
+-- The route asks thousands of times per plan, and T.Plan builds and searches the
+-- whole graph each time (seconds per plan: the game froze). What does not depend
+-- on from / to is computed once per ctx: the fastest time between any two network
+-- nodes (flight points, transit ends, the hearth spot; Floyd-Warshall). A question
+-- is then walk(from -> node i) + net[i][j] + walk(node j -> to), against walking;
+-- and the first part, per `from`, once (the route asks from one spot many times).
+local nets = setmetatable({}, { __mode = "k" })
+
+local function network(ctx)
+  local net = nets[ctx]
+  if net then return net end
+  local geo = ctx.geo
+  local nodes = {}
+  local function add(n) nodes[#nodes + 1] = n; n.cont = continent(geo, n.spot); return n end
+  for _, f in ipairs(ctx.fly or {}) do add({ kind = "fly", fly = f, spot = f.spot }) end
+  local links = {}
+  for _, l in ipairs(ctx.transit or {}) do
+    local a, b = add({ spot = l.a }), add({ spot = l.b })
+    links[#links + 1] = { a, b, l.secs or T.TRANSIT_SECS, l.oneway }
+  end
+  local hearth = ctx.hearth and add({ kind = "hearth", spot = ctx.hearth.spot })
+  for i, n in ipairs(nodes) do n.i = i end
+  local n, speed, D = #nodes, ctx.speed or 7, {}
+  for i = 1, n do
+    D[i] = {}
+    for j = 1, n do
+      local a, b = nodes[i], nodes[j]
+      local d = 0
+      if i ~= j then
+        d = math.huge
+        if a.cont == b.cont then
+          local w = G.Distance(geo, a.spot, b.spot)
+          if w < math.huge then d = w / speed end
+          if a.kind == "fly" and b.kind == "fly" then
+            local secs = ctx.flyTime and ctx.flyTime(a.fly.id, b.fly.id)
+            if not secs then secs = w / T.FLY_SPEED + T.FLY_OVERHEAD end
+            if secs < d then d = secs end
+          end
+        end
+      end
+      D[i][j] = d
+    end
+  end
+  for _, l in ipairs(links) do
+    local a, b, secs = l[1].i, l[2].i, l[3]
+    if secs < D[a][b] then D[a][b] = secs end
+    if not l[4] and secs < D[b][a] then D[b][a] = secs end
+  end
+  for k = 1, n do
+    local Dk = D[k]
+    for i = 1, n do
+      local Di = D[i]
+      local dik = Di[k]
+      if dik < math.huge then
+        for j = 1, n do
+          local v = dik + Dk[j]
+          if v < Di[j] then Di[j] = v end
+        end
+      end
+    end
+  end
+  net = { nodes = nodes, D = D, hearth = hearth, speed = speed, from = {} }
+  nets[ctx] = net
+  return net
+end
+
+-- seconds from `from` to every node, through the network (best first leg per node)
+local function reach(net, from, geo)
+  local key = from.map .. ":" .. from.x .. ":" .. from.y
+  local r = net.from[key]
+  if r then return r end
+  local nodes, D, n = net.nodes, net.D, #net.nodes
+  local first = {}
+  for i = 1, n do
+    local w = G.Distance(geo, from, nodes[i].spot)
+    first[i] = w < math.huge and w / net.speed or math.huge
+  end
+  if net.hearth then
+    local h = net.hearth.i
+    if T.HEARTH_SECS < first[h] then first[h] = T.HEARTH_SECS end
+  end
+  r = {}
+  for j = 1, n do
+    local best = math.huge
+    for i = 1, n do
+      local v = first[i] + D[i][j]
+      if v < best then best = v end
+    end
+    r[j] = best
+  end
+  net.from[key] = r
+  return r
+end
+
 function T.Time(from, to, ctx)
-  return T.Plan(from, to, ctx).secs
+  local geo = ctx.geo
+  local net = network(ctx)
+  local walk = G.Distance(geo, from, to) / (ctx.speed or 7)
+  local r = reach(net, from, geo)
+  local best = walk
+  for j, node in ipairs(net.nodes) do
+    if r[j] < best then
+      local w = G.Distance(geo, node.spot, to)
+      if w < math.huge then
+        local v = r[j] + w / net.speed
+        if v < best then best = v end
+      end
+    end
+  end
+  -- as T.Plan: a trip that saves too little is not worth the hassle
+  if best < walk and walk - best < T.MIN_SAVING then return walk end
+  return best
 end
 
 -- What the arrow and the viewer show for a trip: the legs that are not plain walks

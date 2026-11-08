@@ -77,3 +77,47 @@ function U.yards(y)
   if y < 1000 then return ("%d yd"):format(U.round(y)) end
   return ("%.1fk yd"):format(y / 1000)
 end
+
+-- Work in slices: a long job (the route plan) runs in a coroutine and calls
+-- U.Yield() in its loops; it gives the frame back when its slice is used up and
+-- goes on the next frame (U.Job). Outside a job, U.Yield does nothing, so the same
+-- code runs straight through in tests and wherever it is called directly.
+-- Lua 5.1 (WoW): a coroutine cannot yield across pcall or a C call (table.sort's
+-- comparator, a metamethod): U.Yield only in a job's own loop bodies.
+U.SLICE_MS = 8
+local sliceStart, sliceCount = nil, 0
+local function nowMs()
+  if debugprofilestop then return debugprofilestop() end
+  return os.clock() * 1000
+end
+U.nowMs = nowMs
+
+function U.Yield()
+  if not sliceStart then return end
+  sliceCount = sliceCount + 1
+  if sliceCount < 16 then return end
+  sliceCount = 0
+  if nowMs() - sliceStart >= U.SLICE_MS then coroutine.yield() end
+end
+
+-- A job: fn(...) in a coroutine, one slice per Step(). Step() -> "running", or
+-- "done", results..., or "error", message.
+function U.Job(fn, ...)
+  local args, n = { ... }, select("#", ...)
+  local co = coroutine.create(function() return fn(unpack(args, 1, n)) end)
+  local job = { slices = 0 }
+  function job.Step(ms)
+    if coroutine.status(co) == "dead" then return "dead" end
+    local saved = U.SLICE_MS
+    U.SLICE_MS = ms or saved
+    sliceStart, sliceCount = nowMs(), 0
+    job.slices = job.slices + 1
+    local res = { coroutine.resume(co) }
+    sliceStart = nil
+    U.SLICE_MS = saved
+    if not res[1] then return "error", res[2] end
+    if coroutine.status(co) == "dead" then return "done", unpack(res, 2, table.maxn(res)) end
+    return "running"
+  end
+  return job
+end

@@ -468,8 +468,10 @@ function R.Plan(ds, char, geo, opts)
   table.sort(pool, function(a, b) return a.id < b.id end)
 
   local guard = 0
+  local yield = ns.Util.Yield -- a slice at a time when planned as a job (Core/Init)
   while #steps < o.steps and guard < o.steps * 4 do
     guard = guard + 1
+    yield()
     local best
     -- open work: the next target of every accepted quest, so an action that leads
     -- away from it pays for the walk back (greedy steps otherwise wander off)
@@ -494,6 +496,7 @@ function R.Plan(ds, char, geo, opts)
     local avail = {}
     if logCount() < o.logSize then
       for _, q in ipairs(pool) do
+        yield()
         local above = q.kind == "group" and (o.maxAbove - o.groupMargin) or o.maxAbove
         if not sim.completed[q.id] and not sim.active[q.id] and (not q.l or q.l <= st.level + above)
           and (A.Status(q, sim) == "available" or (o.focus and A.Status(q, sim) == "trivial")) and consider(q) and (o.focus or workSecs[q.id] <= o.maxWork)
@@ -593,6 +596,7 @@ function R.Plan(ds, char, geo, opts)
     end
     -- hand in / work accepted quests
     for qid in pairs(sim.active) do
+      yield()
       local q = not (o.skip and o.skip[qid]) and not (o.focus and not o.focus[qid]) and ds.quests[qid]
       local s = q and consider(q)
       if s and progress[qid] then
@@ -624,6 +628,7 @@ function R.Plan(ds, char, geo, opts)
     end
     -- accept
     for _, a in ipairs(avail) do
+      yield()
       offer({ kind = "accept", quest = a.quest, spot = a.spot }, a.secs + 3, 3 + workSecs[a.quest])
     end
     best = R.Choose(cands, pos, o, point, gain)

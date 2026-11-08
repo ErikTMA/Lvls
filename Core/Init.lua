@@ -16,7 +16,7 @@ function ns.ActiveDataset()
 end
 
 ns.DEFAULT_SETTINGS = {
-  worldMap = true, minimap = true, objectives = true, arrow = true, nativeArrow = false,
+  worldMap = true, mapRoute = true, minimap = true, objectives = true, arrow = true, nativeArrow = false,
   showLow = true, showTrivial = false, showDungeon = false, showRepeatable = false,
   zoneFirst = true, debug = false,
   -- automation (Adapters/Automation.lua); hold Shift at an npc to pause it
@@ -156,7 +156,48 @@ local function offRoute()
   return not (goal and D(geo, now, goal) < D(geo, at, goal) - ns.OFF_ROUTE / 2)
 end
 
-local function plan(ds)
+-- The plan's result in place: route, steps, and what the plan was made for. `char`
+-- is the character the plan was made for (planAt / planLog compare with it).
+local function finishPlan(ds, g, char, route)
+  ns.route = route
+  -- where the plan was made (on the zone's map): going elsewhere plans again (offRoute)
+  ns.planAt = here(char.pos)
+  -- the log the plan was made for: a quest it leaves out on purpose (for later, no
+  -- experience) is not a reason to plan again; one taken since is
+  ns.planLog = {}
+  for qid in pairs(char.active or {}) do ns.planLog[qid] = true end
+  ns.backlog = ns.Route.Backlog(ds, char, route) -- in the log, not handed in by this plan
+  ns.steps = ns.Steps.Build(ds, char, route, ns.Game.geo)
+  if g then
+    local planned = {}
+    for _, a in ipairs(route) do if a.kind == "accept" then planned[a.quest] = true end end
+    local st
+    if g.area then
+      -- the guide ends at the dungeon: go in and do its quests
+      st = ns.Dungeons.Step(ds, char, g, ns.guideName, ns.DungeonInfo.Entrance(g.area), planned)
+    else
+      -- a class quest guide ends with what the route could not place
+      st = ns.ClassQuests.Step(ds, char, g, ns.guideName, planned)
+    end
+    if st then ns.steps[#ns.steps + 1] = st end
+  end
+  ns.Steps.AddFlightPaths(ns.steps, ns.flyUnknown, ns.Game.geo)
+  ns.Viewer.view = nil
+end
+
+-- Plan again. With steps to show meanwhile, the route is planned as a job, a slice
+-- per frame (ns.PLAN_SLICE_MS; Core/Util U.Job), and the old steps stay until it is
+-- done: a plan takes from a tenth of a second to more, the game must not stop for
+-- it. The first plan (nothing to show yet) is made at once.
+--   forced   asked for (a guide, a setting, a skip): a plan already running is
+--            dropped and made again with what changed; otherwise it is left to finish.
+-- Returns "busy" when a plan is already running, "started", or nil (planned).
+ns.PLAN_SLICE_MS = 8
+local function plan(ds, forced)
+  if ns.planJob then
+    if forced then ns.planJob.again = true end
+    return "busy"
+  end
   -- what the old plan finished up to now (the change that replans may have finished a step)
   if ns.steps and ns.char then
     ns.stepIndex = ns.Steps.Refresh(ds, ns.char, ns.steps, ns.Game.geo)
@@ -175,7 +216,8 @@ local function plan(ds)
     ns.Viewer.view = nil
     return
   end
-  local ok, route = pcall(ns.Route.Plan, ds, ns.char, ns.Game.geo, {
+  local char = ns.char
+  local opts = {
     speed = ctx and ctx.speed or 7,
     travel = ctx and function(a, b) return ns.Travel.Time(a, b, ctx) end,
     zoneFirst = ns.db.settings.zoneFirst,
@@ -188,32 +230,37 @@ local function plan(ds)
     grind = ns.db.settings.suggestGrind,
     classQuests = ns.db.settings.classQuests,
     groupMargin = elite and 3 or 0,
-  })
-  if not ok then ns.Log("debug", "route: " .. tostring(route)); route = {} end
-  ns.route = route
-  -- where the plan was made (on the zone's map): going elsewhere plans again (offRoute)
-  ns.planAt = here(ns.char.pos)
-  -- the log the plan was made for: a quest it leaves out on purpose (for later, no
-  -- experience) is not a reason to plan again; one taken since is
-  ns.planLog = {}
-  for qid in pairs(ns.char.active or {}) do ns.planLog[qid] = true end
-  ns.backlog = ns.Route.Backlog(ds, ns.char, route) -- in the log, not handed in by this plan
-  ns.steps = ns.Steps.Build(ds, ns.char, route, ns.Game.geo)
-  if g then
-    local planned = {}
-    for _, a in ipairs(route) do if a.kind == "accept" then planned[a.quest] = true end end
-    local st
-    if g.area then
-      -- the guide ends at the dungeon: go in and do its quests
-      st = ns.Dungeons.Step(ds, ns.char, g, ns.guideName, ns.DungeonInfo.Entrance(g.area), planned)
-    else
-      -- a class quest guide ends with what the route could not place
-      st = ns.ClassQuests.Step(ds, ns.char, g, ns.guideName, planned)
-    end
-    if st then ns.steps[#ns.steps + 1] = st end
+  }
+  if ns.steps and ns.planAsync ~= false then
+    ns.planJob = { job = ns.Util.Job(ns.Route.Plan, ds, char, ns.Game.geo, opts), ds = ds, g = g, char = char,
+      started = ns.Util.nowMs() }
+    return "started"
   end
-  ns.Steps.AddFlightPaths(ns.steps, ns.flyUnknown, ns.Game.geo)
-  ns.Viewer.view = nil
+  local ok, route = pcall(ns.Route.Plan, ds, char, ns.Game.geo, opts)
+  if not ok then ns.Log("debug", "route: " .. tostring(route)); route = {} end
+  finishPlan(ds, g, char, route)
+end
+
+-- One slice of the running plan (every frame, Core/Init's ticker). When it is done:
+-- its steps in place and everything shown again; dropped and made again when asked
+-- to (forced) while it ran. Returns the job's status.
+function ns.PlanStep()
+  local pj = ns.planJob
+  if not pj then return nil end
+  local status, route = pj.job.Step(ns.PLAN_SLICE_MS)
+  if status == "running" then return status end
+  ns.planJob = nil
+  if pj.again then ns.Refresh(true); return "again" end
+  if status == "error" then
+    ns.Log("debug", "route: " .. tostring(route)) -- the old steps stay
+    return status
+  end
+  if ns.ActiveDataset() ~= pj.ds then return status end
+  finishPlan(pj.ds, pj.g, pj.char, route or {})
+  ns.Log("debug", ("plan: %d ms over %d frames"):format(ns.Util.nowMs() - pj.started, pj.job.slices))
+  ns.planFresh = true
+  ns.Refresh()
+  return status
 end
 
 -- The trip to the arrow's goal: legs, and where the arrow points now.
@@ -323,11 +370,14 @@ function ns.Refresh(replan)
     if pos then nearbyAt.map, nearbyAt.x, nearbyAt.y = pos.map, pos.x, pos.y end
   end
   if ns.replanSoon then replan, ns.replanSoon = true, nil end
-  if replan or not ns.steps then plan(ds) end
+  if replan or not ns.steps then plan(ds, replan) end
   ns.stepIndex = ns.Steps.Refresh(ds, ns.char, ns.steps, ns.Game.geo)
   -- a guide is short on purpose: it is re-planned when it runs out, not when it is short
   local short = not ns.guide and ns.Steps.Remaining(ns.steps, ns.stepIndex or 1) < ns.REPLAN_BELOW
-  if not replan and (not ns.stepIndex or short
+  -- a plan just finished (PlanStep) is taken as it is, as when it was made here
+  local fresh = ns.planFresh
+  ns.planFresh = nil
+  if not replan and not fresh and not ns.planJob and (not ns.stepIndex or short
       or not ns.Steps.Valid(ds, ns.char, ns.steps, ns.stepIndex) or unplanned(ds) or offRoute()) then
     plan(ds)
     ns.stepIndex = ns.Steps.Refresh(ds, ns.char, ns.steps, ns.Game.geo)
@@ -774,7 +824,7 @@ end
 
 local TOGGLES = { accept = "autoAccept", deliver = "autoDeliver", reward = "autoReward", gold = "rewardGold",
   equip = "autoEquip", bind = "autoEquipBind", zone = "zoneFirst", classquests = "classQuests",
-  grind = "suggestGrind", learn = "learnFights", groupsync = "groupSync", asksync = "askSync", map = "worldMap", minimap = "minimap", objectives = "objectives", arrow = "arrow", low = "showLow",
+  grind = "suggestGrind", learn = "learnFights", groupsync = "groupSync", asksync = "askSync", map = "worldMap", mapline = "mapRoute", minimap = "minimap", objectives = "objectives", arrow = "arrow", low = "showLow",
   trivial = "showTrivial", dungeon = "showDungeon", repeatable = "showRepeatable" }
 for cmd, key in pairs(TOGGLES) do
   commands[cmd] = function()
@@ -829,6 +879,7 @@ if CreateFrame then
   local acc = 0
   f:SetScript("OnUpdate", function(_, elapsed)
     acc = acc + (elapsed or 0)
+    if ns.planJob then ns.PlanStep() end -- a plan in the making: a slice per frame
     if acc >= 5 and ns.db and ns.char then acc = 0; ns.Refresh() end
   end)
   SLASH_LVLS1 = "/lvls"

@@ -42,6 +42,7 @@ S.ITEMS = {
   { key = "itemBar", name = "Buttons for quest items", tip = "A movable row of buttons for the items to use now: items that start a quest, and the items quests give you to use on someone or somewhere. Key bindings: Key Bindings -> AddOns -> Lvls!. Drag a button to move them." },
   { key = "lockItemBar", name = "Lock the item buttons", tip = "They cannot be dragged. /lvls items reset puts them back in their place." },
   { key = "worldMap", name = "Quest pins on the world map" },
+  { key = "mapRoute", name = "Route on the world map", tip = "The next steps as numbered waypoints joined by a line, starting where you stand; at a flight master, the flight point to fly to is ringed and its route drawn. /lvls mapline" },
   { key = "minimap", name = "Quest pins on the minimap" },
   { key = "objectives", name = "Objective areas" },
   { key = "showLow", name = "Show quests you are too low for" },

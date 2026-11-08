@@ -15,6 +15,11 @@ function R.IsPlaceholder(name)
   return false
 end
 
+-- Placeholders whose name gives no sign: "Of Mice and Milk" (Westfall's Mouse wants
+-- a cookie, hand-in Hemet Nesingwary in Stranglethorn; Wowhead forever's completion
+-- text is "(PH) Thanks!", Questie blacklists it).
+R.PLACEHOLDER_IDS = { [93928] = true }
+
 -- giver / turn-in indexes: npc or object id -> { questId, ... }
 local function index(ds)
   local startsN, startsO, endsN, endsO = {}, {}, {}, {}
@@ -25,7 +30,7 @@ local function index(ds)
   end
   for qid, q in pairs(ds.quests) do
     q.id = qid
-    if R.IsPlaceholder(q.n) then q.unused = true end
+    if R.IsPlaceholder(q.n) or R.PLACEHOLDER_IDS[qid] then q.unused = true end
     for _, i in ipairs(q.sn or {}) do add(startsN, i, qid) end
     for _, i in ipairs(q.so or {}) do add(startsO, i, qid) end
     for _, i in ipairs(q.en or {}) do add(endsN, i, qid) end

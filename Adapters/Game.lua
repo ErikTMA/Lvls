@@ -199,6 +199,30 @@ function G.geo.zone(spot)
   return { map = zone, x = x * 100, y = y * 100 }
 end
 
+-- Where a spot lies on another map, as 0..1 (the map canvas' units), or nil when it
+-- is off that map or on another continent. Through world coordinates: a step in
+-- Elwynn shows on the Eastern Kingdoms map, a Stormwind npc on Elwynn's.
+local onMapCache = {}
+function G.geo.onMap(spot, map)
+  if not spot or not map then return nil end
+  if spot.map == map then return spot.x / 100, spot.y / 100 end
+  if not has(C_Map, "GetMapPosFromWorldPos") or not CreateVector2D then return nil end
+  local key = map .. ":" .. spot.map .. ":" .. math.floor(spot.x * 10 + 0.5) .. ":" .. math.floor(spot.y * 10 + 0.5)
+  local c = onMapCache[key]
+  if c == nil then
+    c = false
+    local cont, wx, wy = G.geo.world(spot.map, spot.x, spot.y)
+    if cont then
+      local _, v = C_Map.GetMapPosFromWorldPos(cont, CreateVector2D(wx, wy), map)
+      local x, y
+      if v then if v.GetXY then x, y = v:GetXY() else x, y = v.x, v.y end end
+      if x and y and x >= 0 and x <= 1 and y >= 0 and y <= 1 then c = { x, y } end
+    end
+    onMapCache[key] = c
+  end
+  if c then return c[1], c[2] end
+end
+
 function G.MapName(map)
   if has(C_Map, "GetMapInfo") then
     local info = C_Map.GetMapInfo(map)
