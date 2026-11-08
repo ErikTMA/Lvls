@@ -77,18 +77,31 @@ end
 -- Is the player inside the game's own objective area (the blue shape on the map and
 -- the minimap) of one of these quests? The client draws that shape and can say
 -- which quest's shape covers a point, but does not hand out the shape itself.
--- Only quests in the log have one. False when the client cannot tell.
+-- Only quests in the log have one. False when the client cannot tell; AR.areaWhy
+-- says why (for /lvls area).
 local blob          -- a hidden QuestPOIFrame; false when the client has none
 local blobKey       -- the map and quests drawn on it
 function AR.InArea(pos, quests)
-  if not pos or not quests or #quests == 0 or blob == false then return false end
+  if not pos or not quests or #quests == 0 then AR.areaWhy = "no open objective"; return false end
+  if blob == false then return false end
   if not blob then
     local ok, f = pcall(CreateFrame, "QuestPOIFrame", nil, UIParent)
-    if not ok or not f or not f.DrawBlob or not f.UpdateMouseOverTooltip then blob = false; return false end
+    if not ok or not f or not f.DrawBlob or not f.UpdateMouseOverTooltip then
+      blob = false
+      AR.areaWhy = "this client has no QuestPOIFrame: " .. tostring(ok and "missing methods" or f)
+      return false
+    end
+    -- set up like Blizzard's own (QuestBlobPinTemplate): textures, a real size;
+    -- drawn see-through
     blob = f
-    blob:SetSize(1, 1)
+    blob:SetSize(512, 512)
+    blob:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+    if blob.SetFrameStrata then blob:SetFrameStrata("BACKGROUND") end
+    if blob.SetFillTexture then blob:SetFillTexture("Interface\\WorldMap\\UI-QuestBlob-Inside") end
+    if blob.SetBorderTexture then blob:SetBorderTexture("Interface\\WorldMap\\UI-QuestBlob-Outside") end
     if blob.SetFillAlpha then blob:SetFillAlpha(0) end
     if blob.SetBorderAlpha then blob:SetBorderAlpha(0) end
+    if blob.EnableMouse then blob:EnableMouse(false) end
   end
   local key = pos.map .. ":" .. table.concat(quests, ",")
   local ok, hit = pcall(function()
@@ -100,8 +113,37 @@ function AR.InArea(pos, quests)
     end
     return blob:UpdateMouseOverTooltip(pos.x / 100, pos.y / 100)
   end)
-  if not ok then blobKey = nil; return false end
+  if not ok then blobKey = nil; AR.areaWhy = "client error: " .. tostring(hit); return false end
+  AR.areaWhy = hit ~= nil and ("inside the area of quest " .. tostring(hit)) or "outside every drawn area"
   return hit ~= nil
+end
+
+-- Our own data: within AREA_YARDS of a spawn of one of the step's open objectives
+-- (the game's blue area is drawn around those spawns). Spots are looked up once per
+-- line. Returns the nearest distance too.
+AR.AREA_YARDS = 40
+function AR.NearObjective(pos, lines, ds, geo)
+  local best = math.huge
+  if not pos or not ds then return false, best end
+  for _, l in ipairs(lines or {}) do
+    if AREA_KINDS[l.kind] and l.quest and l.index and not l.done and not l.also then
+      if not l.areaSpots then
+        local q = ds.quests[l.quest]
+        l.areaSpots = q and ns.Quests.ObjectiveSpots(ds, q, l.index) or {}
+      end
+      local _, d = ns.Geo.Nearest(geo, pos, l.areaSpots)
+      if d < best then best = d end
+    end
+  end
+  return best <= AR.AREA_YARDS, best
+end
+
+-- In the step's area by either answer.
+function AR.CheckArea(pos, lines)
+  local near, d = AR.NearObjective(pos, lines, ns.ActiveDataset and ns.ActiveDataset(), ns.Game.geo)
+  local inside = AR.InArea(pos, AR.AreaQuests(lines))
+  AR.areaNearest = d
+  return near or inside, near, inside
 end
 
 -- The goal (a step, a line, a pin you clicked) and the target the arrow points at
@@ -140,12 +182,8 @@ end
 local function create()
   frame = CreateFrame("Frame", "LvlsArrowFrame", UIParent)
   frame:SetSize(84, 84)
-  frame:SetPoint("TOP", UIParent, "TOP", 0, -120)
-  frame:SetMovable(true)
-  frame:EnableMouse(true)
-  frame:RegisterForDrag("LeftButton")
-  frame:SetScript("OnDragStart", frame.StartMoving)
-  frame:SetScript("OnDragStop", frame.StopMovingOrSizing)
+  ns.Style.Place(frame, "arrow", "TOP", "TOP", 0, -120)
+  ns.Style.Draggable(frame, "arrow")
   frame.arrow = frame:CreateTexture(nil, "ARTWORK")
   frame.arrow:SetTexture("Interface\\AddOns\\Lvls\\Media\\Arrow")
   frame.arrow:SetAllPoints(frame)
@@ -195,7 +233,7 @@ function AR.Update()
     local now = GetTime and GetTime() or 0
     if not AR.areaAt or now - AR.areaAt >= AR.AREA_CHECK then
       AR.areaAt = now
-      AR.inArea = AR.InArea(pos, AR.AreaQuests(g.lines))
+      AR.inArea = AR.CheckArea(pos, g.lines)
     end
     if AR.inArea then
       frame.title:SetText(g.title or "")

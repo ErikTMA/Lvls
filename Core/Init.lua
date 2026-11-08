@@ -397,6 +397,22 @@ commands.nearby = function()
   end
 end
 
+-- Why the arrow does or does not count you as in the step's quest area.
+commands.area = function()
+  local g = ns.Arrow.goal
+  local pos = ns.Game.Position()
+  if not g or not g.lines then ns.Log("info", "the arrow's goal is not a work step"); return end
+  if not pos then ns.Log("info", "no position"); return end
+  local any, near, inside = ns.Arrow.CheckArea(pos, g.lines)
+  local d = ns.Arrow.areaNearest
+  ns.Log("info", ("quests %s on map %d at %.1f, %.1f"):format(table.concat(ns.Arrow.AreaQuests(g.lines), ","),
+    pos.map, pos.x, pos.y))
+  ns.Log("info", ("nearest objective spawn: %s (%s)"):format(d < math.huge and ns.Util.yards(d) or "none",
+    near and "near" or "not near"))
+  ns.Log("info", ("game's area: %s (%s)"):format(inside and "inside" or "not inside", tostring(ns.Arrow.areaWhy)))
+  ns.Log("info", any and "=> in the quest area" or "=> not in the quest area")
+end
+
 commands.status = function()
   local ds, flavor = ns.ActiveDataset()
   ns.Log("info", ("flavor %s, dataset %s"):format(flavor,

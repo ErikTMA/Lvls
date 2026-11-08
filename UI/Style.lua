@@ -80,3 +80,46 @@ function S.TooltipLines(ds, char, pin)
   if q.kind then lines[#lines + 1] = { q.kind:gsub("^%l", string.upper), 1, 0.5, 0.25 } end
   return lines
 end
+
+-- Where you dragged a window, kept across reloads (account-wide, by name). Saved by
+-- its top-left corner, so a window that grows with its content grows downwards.
+function S.SavePosition(f, key)
+  if not ns.db or not f then return end
+  local left, top = f.GetLeft and f:GetLeft(), f.GetTop and f:GetTop()
+  local pos
+  if left and top then
+    pos = { "TOPLEFT", "BOTTOMLEFT", left, top }
+  else
+    local point, _, rel, x, y = f:GetPoint(1)
+    if point then pos = { point, rel or point, x or 0, y or 0 } end
+  end
+  if pos then
+    ns.db.positions = ns.db.positions or {}
+    ns.db.positions[key] = pos
+  end
+end
+
+-- Put a window where it was left, or at its default point when it never moved.
+function S.Place(f, key, point, rel, x, y)
+  local p = ns.db and ns.db.positions and ns.db.positions[key]
+  f:ClearAllPoints()
+  if type(p) == "table" and p[1] then
+    f:SetPoint(p[1], UIParent, p[2], p[3], p[4])
+  else
+    f:SetPoint(point, UIParent, rel, x, y)
+  end
+end
+
+-- A window you drag: moving starts on the handle, the spot is saved when you let go.
+function S.Draggable(f, key, handle)
+  handle = handle or f
+  f:SetMovable(true)
+  handle:EnableMouse(true)
+  handle:RegisterForDrag("LeftButton")
+  handle:SetScript("OnDragStart", function() f:StartMoving() end)
+  handle:SetScript("OnDragStop", function()
+    f:StopMovingOrSizing()
+    if f.SetUserPlaced then f:SetUserPlaced(false) end -- ours, not the client's layout cache
+    S.SavePosition(f, key)
+  end)
+end
