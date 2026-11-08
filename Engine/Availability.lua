@@ -39,15 +39,25 @@ local function classOk(mask, class)
   return U.hasBit(mask, class)
 end
 
+-- "wrong" and why when the quest is never for this character whatever it does:
+-- a placeholder, the other faction, another race or class. Depends only on the
+-- quest, the provider and the character's faction / race / class (Engine/GuideCache
+-- keys on those), not on what the character has done.
+function A.Fixed(q, char)
+  if q.unused then return "wrong", "placeholder" end
+  if q.side and SIDE[char.faction] and q.side ~= SIDE[char.faction] then return "wrong", "faction" end
+  local info = ns.Prereqs.Info(q.id)
+  if not raceOk(info and info.races or q.races, char.race) then return "wrong", "race" end
+  if not classOk(info and info.classes or q.classes, char.class) then return "wrong", "class" end
+  return nil
+end
+
 function A.Status(q, char)
   local id = q.id
   if char.completed[id] then return "done" end
   if char.active and char.active[id] then return "active" end
-  if q.unused then return "wrong", "placeholder" end
-  if q.side and SIDE[char.faction] and q.side ~= SIDE[char.faction] then return "wrong", "faction" end
-  local info = ns.Prereqs.Info(id)
-  if not raceOk(info and info.races or q.races, char.race) then return "wrong", "race" end
-  if not classOk(info and info.classes or q.classes, char.class) then return "wrong", "class" end
+  local fixed, why = A.Fixed(q, char)
+  if fixed then return fixed, why end
   if q.prof and char.skills then
     local have = char.skills[q.prof[1]]
     if not have then return "wrong", "profession" end

@@ -12,8 +12,21 @@ local _, ns = ...
 local CQ = ns:NewModule("ClassQuests")
 local A, P = ns.Availability, ns.Prereqs
 
+-- Class names and colours (the client's class colours), by class id.
+CQ.CLASSES = {
+  [1] = { "Warrior", "C79C6E" }, [2] = { "Paladin", "F58CBA" }, [3] = { "Hunter", "ABD473" },
+  [4] = { "Rogue", "FFF569" }, [5] = { "Priest", "FFFFFF" }, [7] = { "Shaman", "0070DE" },
+  [8] = { "Mage", "69CCF0" }, [9] = { "Warlock", "9482C9" }, [11] = { "Druid", "FF7D0A" },
+}
+
+-- " [Paladin]" in the class colour after a class quest's name, "" for other quests.
+function CQ.Tag(q, char)
+  local c = char and CQ.CLASSES[char.class]
+  if not c or not q or not CQ.IsClassQuest(q) then return "" end
+  return (" |cff%s[%s]|r"):format(c[2], c[1])
+end
+
 CQ.LINK_LEVELS = 5
-CQ.ASK_MIN = 2 -- quests in reach before a chain is worth asking about
 CQ.SLACK = 5    -- without a required level: this many levels below its level
 
 -- The level a class quest can be taken from: its required level. Only when the data
@@ -43,17 +56,16 @@ function CQ.IsClassQuest(q)
   return type(m) == "number" and m > 0 and bits(m) <= 3
 end
 
--- Class quest chains for this character: { id, name, quests = { ids by level },
--- open (not done), reach (open ones your level allows), available (one can be
--- picked up now), entry (the first of those), minLevel (of the open ones), raid,
--- after = { [id] = the class quest it follows, where only the npc links them } }
--- open chains only, by level. A chain grows in parts as you level (the druid's
--- bear, then aquatic, then cat form); it is named after the last quest in reach,
--- else its last quest.
-function CQ.Chains(ds, char)
+-- The chain graph of a faction / race / class, built once (Engine/GuideCache):
+-- { list = { { id (lowest quest id, stable), quests = ids in order, after, raid } },
+--   of = { [quest id] = chain } }. Members are the class quests that are for this
+-- character at all (Availability.Fixed); a quest that becomes impossible later (an
+-- exclusive one taken) stays in the graph and is skipped per call, so a chain keeps
+-- its id and its links.
+local function graph(ds, char)
   local members = {}
   for id, q in pairs(ds.quests) do
-    if CQ.IsClassQuest(q) and A.Status(q, char) ~= "wrong" then members[id] = q end
+    if CQ.IsClassQuest(q) and not A.Fixed(q, char) then members[id] = q end
   end
   local parent = {}
   local function find(x)
@@ -113,33 +125,74 @@ function CQ.Chains(ds, char)
     by[r] = by[r] or {}
     table.insert(by[r], id)
   end
-  local out = {}
+  local list, of = {}, {}
   for root, ids in pairs(by) do
     table.sort(ids, before)
-    local open, available, minLevel, entry, raid = 0, false, nil, nil, false
-    local reach, links = {}, {}
+    local links, raid = {}, false
     for i, id in ipairs(ids) do
-      local q = ds.quests[id]
-      if q.kind == "raid" then raid = true end
+      if ds.quests[id].kind == "raid" then raid = true end
       -- nothing links it to an earlier quest: it follows the one before it in the chain
       if i > 1 and not linkedIn[id] and not after[id] then after[id] = ids[i - 1] end
       links[id] = after[id]
-      if not char.completed[id] then
-        open = open + 1
-        local r = CQ.MinLevel(q)
-        local inReach = r <= (char.level or 1)
-        if inReach and A.Status(q, char) == "available" and not (after[id] and not char.completed[after[id]]) then
-          available = true
-          entry = entry or id
+    end
+    local c = { id = root, quests = ids, after = links, raid = raid }
+    list[#list + 1] = c
+    for _, id in ipairs(ids) do of[id] = c end
+  end
+  table.sort(list, function(a, b) return a.id < b.id end)
+  return { list = list, of = of }
+end
+
+function CQ.Graph(ds, char) return ns.GuideCache.Get(ds, char, "classChains", graph) end
+
+-- Class quest chains for this character: { id, name, quests = { ids by level },
+-- open (not done), reach (open ones your level allows), available (one can be
+-- picked up now), entry (the first of those), minLevel (of the open ones), raid,
+-- after = { [id] = the class quest it follows, where only the npc links them } }
+-- open chains only, by level. A chain grows in parts as you level (the druid's
+-- bear, then aquatic, then cat form); it is named after the last quest in reach,
+-- else its last quest. The graph comes from the cache (CQ.Graph); this part is
+-- what this character has done and can do. A quest that became impossible is left
+-- out, and a quest that followed it follows the one before it instead.
+function CQ.Chains(ds, char)
+  local out = {}
+  for _, g in ipairs(CQ.Graph(ds, char).list) do
+    local status = {}
+    local function st(id)
+      local s = status[id]
+      if not s then s = A.Status(ds.quests[id], char); status[id] = s end
+      return s
+    end
+    local function follows(id)
+      local p, guard = g.after[id], 0
+      while p and st(p) == "wrong" and guard < 64 do p, guard = g.after[p], guard + 1 end
+      return p
+    end
+    local ids, links, reach = {}, {}, {}
+    local open, available, minLevel, entry = 0, false, nil, nil
+    for _, id in ipairs(g.quests) do
+      if st(id) ~= "wrong" then
+        ids[#ids + 1] = id
+        local prev = follows(id)
+        links[id] = prev
+        if not char.completed[id] then
+          open = open + 1
+          local q = ds.quests[id]
+          local r = CQ.MinLevel(q)
+          local inReach = r <= (char.level or 1)
+          if inReach and st(id) == "available" and not (prev and not char.completed[prev]) then
+            available = true
+            entry = entry or id
+          end
+          minLevel = math.min(minLevel or r, r)
+          if inReach then reach[#reach + 1] = id end
         end
-        minLevel = math.min(minLevel or r, r)
-        if inReach then reach[#reach + 1] = id end
       end
     end
     if open > 0 then
       local last = reach[#reach] or ids[#ids]
-      out[#out + 1] = { id = root, quests = ids, open = open, reach = reach, available = available, entry = entry,
-        minLevel = minLevel or 1, raid = raid, name = ds.quests[last].n, after = links }
+      out[#out + 1] = { id = g.id, quests = ids, open = open, reach = reach, available = available, entry = entry,
+        minLevel = minLevel or 1, raid = g.raid, name = ds.quests[last].n, after = links }
     end
   end
   table.sort(out, function(a, b)
@@ -149,22 +202,18 @@ function CQ.Chains(ds, char)
   return out
 end
 
+-- A chain by id. An id saved before chains were cached may be another member of
+-- the chain than its lowest one: then the chain that quest is in.
 function CQ.Find(ds, char, id)
-  for _, c in ipairs(CQ.Chains(ds, char)) do
+  local chains = CQ.Chains(ds, char)
+  for _, c in ipairs(chains) do
     if c.id == id then return c end
   end
-  return nil
-end
-
--- The key a question is remembered by: the chain and the quest that opened it, so
--- a later part of the same chain is asked about again.
-function CQ.AskKey(chain) return chain.id .. ":" .. tostring(chain.entry) end
-
--- The chain to ask about now: one can be picked up, at least ASK_MIN quests in
--- reach, not a raid's, not asked about before (asked = { [AskKey] = true }).
-function CQ.ToAsk(ds, char, asked)
-  for _, c in ipairs(CQ.Chains(ds, char)) do
-    if c.available and #c.reach >= CQ.ASK_MIN and not c.raid and not (asked and asked[CQ.AskKey(c)]) then return c end
+  local g = id and CQ.Graph(ds, char).of[id]
+  if g and g.id ~= id then
+    for _, c in ipairs(chains) do
+      if c.id == g.id then return c end
+    end
   end
   return nil
 end

@@ -74,7 +74,24 @@ function V.Model(ds, char, steps, current, view, base)
   end
   local nxt = steps[i + 1]
   if nxt then m.next = nxt.title .. ": " .. (nxt.lines[1] and nxt.lines[1].text or "") end
+  m.backlog = V.Backlog(ds, ns.backlog)
   return m
+end
+
+-- "In your log for later: 3 (Westfall, Elwynn Forest), 1 grey": quests in the log
+-- this plan does not hand in, so none of them is out of sight. nil when none.
+function V.Backlog(ds, list)
+  if not list or #list == 0 then return nil end
+  local maps, seen, grey = {}, {}, 0
+  for _, b in ipairs(list) do
+    local name = b.map and ds.maps and ds.maps[b.map]
+    if name and not seen[name] then seen[name] = true; maps[#maps + 1] = name end
+    if b.grey then grey = grey + 1 end
+  end
+  local t = ("In your log for later: %d"):format(#list)
+  if #maps > 0 then t = t .. " (" .. table.concat(maps, ", ", 1, math.min(#maps, 3)) .. (#maps > 3 and ", ..." or "") .. ")" end
+  if grey > 0 then t = t .. (", %d grey: abandon to free the log"):format(grey) end
+  return t
 end
 
 local function bg(f, c)
@@ -369,7 +386,9 @@ function V.Render()
   for i = #m.lines + 1, #rows do rows[i]:Hide() end
   local stepH = 44 + math.max(1, #m.lines) * V.LINE
   frame.step:SetHeight(stepH)
-  frame.next:SetText(m.next and ("Next: " .. m.next) or "")
+  local preview = m.next and ("Next: " .. m.next) or ""
+  if m.backlog then preview = preview ~= "" and (preview .. "  ·  " .. m.backlog) or m.backlog end
+  frame.next:SetText(preview)
   local xpMax = char.xpMax or 0
   local p = xpMax > 0 and math.min(1, (char.xp or 0) / xpMax) or 0
   frame.xp.fill:SetWidth(math.max(1, (V.WIDTH - 8) * p))

@@ -1,4 +1,4 @@
--- Group sync questions (StaticPopup, as UI/ClassPrompt.lua):
+-- Group sync questions (StaticPopup):
 --   "Alice has done 6 quests you have not. Catch up with Alice?"  Catch up / Not now
 --   "Bob wants to catch up with you (6 quests). Follow his route to help?"  Follow / No
 local _, ns = ...

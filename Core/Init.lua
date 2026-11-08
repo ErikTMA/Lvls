@@ -22,7 +22,7 @@ ns.DEFAULT_SETTINGS = {
   -- automation (Adapters/Automation.lua); hold Shift at an npc to pause it
   autoAccept = true, autoDeliver = true, autoReward = true, rewardGold = true,
   autoEquip = false, autoEquipBind = false, equipMaxQuality = 2, gearWeights = "auto",
-  askClassQuests = true, -- ask to focus on a class quest chain when it becomes possible
+  classQuests = true,    -- class quests in the leveling route (Engine/Route), marked with the class
   learnFights = true,    -- record fights (Adapters/FightLog) to learn what is hard for you
   groupSync = true,      -- tell group members with Lvls! your quest state (Adapters/GroupSync)
   askSync = true,        -- ask to catch up / to follow when it makes sense
@@ -32,6 +32,7 @@ ns.DEFAULT_SETTINGS = {
 function ns.InitDB(db)
   db = db or {}
   db.settings = db.settings or {}
+  db.settings.askClassQuests = nil -- replaced by classQuests (no more questions)
   for k, v in pairs(ns.DEFAULT_SETTINGS) do
     if db.settings[k] == nil then db.settings[k] = v end
   end
@@ -43,7 +44,6 @@ function ns.InitCharDB(cdb)
   if cdb.viewer == nil then cdb.viewer = true end
   if type(cdb.skip) ~= "table" then cdb.skip = {} end
   if type(cdb.spec) ~= "number" then cdb.spec = 0 end -- 0: from the talents
-  if type(cdb.classAsked) ~= "table" then cdb.classAsked = {} end -- class quest questions answered
   if type(cdb.stepsDone) ~= "number" then cdb.stepsDone = 0 end -- steps finished, over every plan
   if type(cdb.fights) ~= "table" then cdb.fights = {} end -- Adapters/FightLog
   return cdb
@@ -70,7 +70,7 @@ local function guideSet(ds)
   if sync and sync.mode == "catchup" then
     local peer = ns.GroupSync.peers[sync.with]
     if not (peer and peer.state) then return nil end
-    g = ns.Sync.Set(ds, ns.char, peer.state)
+    g = ns.Sync.Set(ds, ns.char, peer.state, sync.with)
     if #g.order == 0 or ns.Dungeons.Done(ds, ns.char, g) then
       ns.Log("info", ("caught up with %s"):format(sync.with))
       ns.GroupSync.Send("X")
@@ -156,10 +156,12 @@ local function plan(ds)
     maxAbove = dm.above,
     killSeconds = dm.killSecs,
     grind = ns.db.settings.suggestGrind,
+    classQuests = ns.db.settings.classQuests,
     groupMargin = elite and 3 or 0,
   })
   if not ok then ns.Log("debug", "route: " .. tostring(route)); route = {} end
   ns.route = route
+  ns.backlog = ns.Route.Backlog(ds, ns.char, route) -- in the log, not handed in by this plan
   ns.steps = ns.Steps.Build(ds, ns.char, route, ns.Game.geo)
   if g then
     local planned = {}
@@ -318,7 +320,6 @@ function ns.Refresh(replan)
   ns.Events.Fire("LVLS_UPDATED")
   -- the pins only when what they show can have changed (they are the costly part)
   if changed or newMap then ns.Events.Fire("LVLS_PINS") end
-  if changed and ns.AskClassQuest then ns.AskClassQuest(ds) end
 end
 
 ns.Events.On("LVLS_STATE", function()
@@ -432,6 +433,18 @@ commands.skip = function(arg)
   ns.Refresh(true)
 end
 
+-- /lvls why <quest>: why the route does or does not plan it
+commands.why = function(arg)
+  local ds = ns.ActiveDataset()
+  if not ds or not ns.char then return end
+  local found = matching(ds, ds.quests, arg or "")
+  if (arg or "") == "" or #found == 0 then ns.Log("info", "/lvls why <quest name or id>") return end
+  for i, qid in ipairs(found) do
+    if i > 5 then ns.Log("info", ("... and %d more"):format(#found - 5)) break end
+    ns.Log("info", ("%s (%d): %s"):format(ds.quests[qid].n, qid, ns.Route.Why(ds, ns.char, qid)))
+  end
+end
+
 commands.unskip = function(arg)
   local ds = ns.ActiveDataset()
   if not ds then return end
@@ -488,7 +501,6 @@ function ns.SetClassGuide(id)
     return
   end
   if chain then
-    ns.cdb.classAsked[ns.ClassQuests.AskKey(chain)] = true
     local g = ns.ClassQuests.Set(ds, ns.char, chain)
     ns.Log("info", ("%s guide: %d class quest%s, %d leading up to them"):format(chain.name, #g.roots,
       #g.roots == 1 and "" or "s", #g.order - #g.roots))
@@ -498,34 +510,6 @@ function ns.SetClassGuide(id)
   ns.Refresh(true)
 end
 
--- "Later": remember the question, the chain stays in the Guides menu.
-function ns.ClassLater(id)
-  local ds = ns.ActiveDataset()
-  local chain = ds and id and ns.ClassQuests.Find(ds, ns.char, id)
-  if chain and ns.cdb then
-    ns.cdb.classAsked[ns.ClassQuests.AskKey(chain)] = true
-    ns.Log("info", ("%s: later. It is in the Guides menu and /lvls guide class"):format(chain.name))
-  end
-  ns.asking = nil
-end
-
--- A class quest chain has just become possible: ask whether to focus on it (once
--- per part of a chain; not during a guide, a fight or a dungeon).
-local function askClassQuest(ds)
-  if ns.asking or ns.guide or not ns.db.settings.askClassQuests then return end
-  if type(InCombatLockdown) == "function" and InCombatLockdown() then return end
-  if ns.DungeonInfo.Instance() then return end
-  local chain = ns.ClassQuests.ToAsk(ds, ns.char, ns.cdb.classAsked)
-  if not chain then return end
-  ns.asking = chain.id
-  if ns.ClassPrompt and ns.ClassPrompt.Ask(chain) then return end
-  -- no dialog: say it in the chat, and do not ask again
-  ns.cdb.classAsked[ns.ClassQuests.AskKey(chain)] = true
-  ns.asking = nil
-  ns.Log("info", ("class quest available: %s (%d quests). /lvls guide class %s to focus on it"):format(
-    chain.name, #chain.reach, chain.name:lower()))
-end
-ns.AskClassQuest = askClassQuest
 
 -- /lvls guide [<dungeon or class quest> | class [<name>] | off]: without a name, the list
 commands.guide = function(arg)
@@ -740,7 +724,7 @@ commands.weights = function(arg)
 end
 
 local TOGGLES = { accept = "autoAccept", deliver = "autoDeliver", reward = "autoReward", gold = "rewardGold",
-  equip = "autoEquip", bind = "autoEquipBind", zone = "zoneFirst", classask = "askClassQuests",
+  equip = "autoEquip", bind = "autoEquipBind", zone = "zoneFirst", classquests = "classQuests",
   grind = "suggestGrind", learn = "learnFights", groupsync = "groupSync", asksync = "askSync", map = "worldMap", minimap = "minimap", objectives = "objectives", arrow = "arrow", low = "showLow",
   trivial = "showTrivial", dungeon = "showDungeon", repeatable = "showRepeatable" }
 for cmd, key in pairs(TOGGLES) do
@@ -770,7 +754,7 @@ commands.debug = function()
 end
 
 commands.help = function()
-  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|off]|sync [name|follow name|off]|groupsync|asksync|classask|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|arrow|map|minimap|objectives|low|trivial|dungeon|repeatable|debug|help]")
+  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|arrow|map|minimap|objectives|low|trivial|dungeon|repeatable|debug|help]")
 end
 
 local function slash(input)

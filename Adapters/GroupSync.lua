@@ -99,7 +99,7 @@ function GS.Roster()
     if name then names[short(name)] = true end
   end
   for name in pairs(GS.peers) do
-    if not names[name] then GS.peers[name] = nil; GS.helpers[name] = nil; GS.requests[name] = nil end
+    if not names[name] then GS.peers[name] = nil; GS.helpers[name] = nil; GS.requests[name] = nil; Sy.Forget(name) end
   end
   if ns.sync and not names[ns.sync.with] then
     ns.Log("info", ("%s left the group: sync over"):format(ns.sync.with))
@@ -125,6 +125,7 @@ local function onState(sender, id, i, n, chunk)
       ns.Log("info", ("%s runs another version of Lvls! (%s differs): no sync with them until you both update"):format(sender, why))
     end
     peer.state = nil
+    Sy.Forget(sender)
     return
   end
   peer.version, peer.state = "ok", state

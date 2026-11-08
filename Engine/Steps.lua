@@ -91,6 +91,16 @@ local function close(geo, a, b, yards)
 end
 
 -- Group route actions into steps (in route order), then mark lines done.
+-- The first quest a hand-in opens that you can do (why the route makes the trip),
+-- or nil.
+function S.Opens(ds, char, q)
+  for _, id in ipairs(ns.Route.Opens(ds, char)[q.id] or {}) do
+    local f = ds.quests[id]
+    if f and not char.completed[id] and not ns.Availability.Fixed(f, char) then return id end
+  end
+  return nil
+end
+
 function S.Build(ds, char, route, geo)
   local steps = {}
   local cur
@@ -125,7 +135,8 @@ function S.Build(ds, char, route, geo)
       end
       if talk then
         cur.lines[#cur.lines + 1] = { kind = a.kind, quest = a.quest,
-          text = (a.kind == "accept" and "Accept " or "Turn in ") .. q.n }
+          text = (a.kind == "accept" and "Accept " or "Turn in ") .. q.n .. ns.ClassQuests.Tag(q, char),
+          opens = a.kind == "turnin" and S.Opens(ds, char, q) or nil }
       else
         local o = q.obj[a.index]
         cur.lines[#cur.lines + 1] = { kind = objKind(o), quest = a.quest, index = a.index,
@@ -146,6 +157,11 @@ function S.Build(ds, char, route, geo)
       end
       st.lines = first
       for _, l in ipairs(rest) do st.lines[#st.lines + 1] = l end
+      -- "Turn in A (opens B)" unless B is picked up right here
+      for _, l in ipairs(st.lines) do
+        if l.opens and not acceptedHere[l.opens] then l.text = l.text .. " (opens " .. ds.quests[l.opens].n .. ")" end
+        l.opens = nil
+      end
     end
     local name = st.kind ~= "grind" and st.kind ~= "use" and placeName(ds, st.spot)
     if st.kind == "grind" or st.kind == "use" then

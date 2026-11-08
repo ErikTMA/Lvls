@@ -24,30 +24,23 @@ local function usable(q, char)
   return s ~= "wrong" and s ~= "done"
 end
 
--- Dungeons with quests for this character: { area, quests, open, minLevel,
--- maxLevel } sorted by level; env.name(area) names them (nil: "Dungeon <area>").
-function D.List(ds, char, env)
+-- Each dungeon's quests, built once (Engine/GuideCache): { [area] = { ids = every
+-- quest filed under it, sorted; minLevel, maxLevel of the ones for this character
+-- at all (Availability.Fixed), without strays far below the typical level (a level
+-- 1 quest filed under Blackrock Depths) } }.
+local function areas(ds, char)
   local by = {}
-  for _, q in pairs(ds.quests) do
-    if isDungeonQuest(q) and A.Status(q, char) ~= "wrong" then
+  for id, q in pairs(ds.quests) do
+    if isDungeonQuest(q) then
       local d = by[q.zone]
-      if not d then
-        d = { area = q.zone, quests = 0, open = 0 }
-        by[q.zone] = d
-      end
-      d.quests = d.quests + 1
-      if not char.completed[q.id] then d.open = d.open + 1 end
-      if q.l and q.l > 0 then
-        d.levels = d.levels or {}
-        d.levels[#d.levels + 1] = q.l
-      end
+      if not d then d = { ids = {}, levels = {} }; by[q.zone] = d end
+      d.ids[#d.ids + 1] = id
+      if q.l and q.l > 0 and not A.Fixed(q, char) then d.levels[#d.levels + 1] = q.l end
     end
   end
-  local out = {}
   for _, d in pairs(by) do
-    -- the level range of its quests, without strays far below the typical one
-    -- (a level 1 quest filed under Blackrock Depths)
-    if d.levels then
+    table.sort(d.ids)
+    if #d.levels > 0 then
       table.sort(d.levels)
       local median = d.levels[math.floor((#d.levels + 1) / 2)]
       for _, l in ipairs(d.levels) do
@@ -56,10 +49,30 @@ function D.List(ds, char, env)
           d.maxLevel = math.max(d.maxLevel or l, l)
         end
       end
-      d.levels = nil
     end
-    d.name = env and env.name and env.name(d.area) or ("Dungeon " .. d.area)
-    out[#out + 1] = d
+    d.levels = nil
+  end
+  return by
+end
+
+local function areaIndex(ds, char) return ns.GuideCache.Get(ds, char, "dungeons", areas) end
+
+-- Dungeons with quests for this character: { area, quests, open, minLevel,
+-- maxLevel } sorted by level; env.name(area) names them (nil: "Dungeon <area>").
+function D.List(ds, char, env)
+  local out = {}
+  for area, a in pairs(areaIndex(ds, char)) do
+    local d = { area = area, quests = 0, open = 0, minLevel = a.minLevel, maxLevel = a.maxLevel }
+    for _, id in ipairs(a.ids) do
+      if A.Status(ds.quests[id], char) ~= "wrong" then
+        d.quests = d.quests + 1
+        if not char.completed[id] then d.open = d.open + 1 end
+      end
+    end
+    if d.quests > 0 then
+      d.name = env and env.name and env.name(area) or ("Dungeon " .. area)
+      out[#out + 1] = d
+    end
   end
   table.sort(out, function(a, b)
     if (a.minLevel or 0) ~= (b.minLevel or 0) then return (a.minLevel or 0) < (b.minLevel or 0) end
@@ -68,8 +81,8 @@ function D.List(ds, char, env)
   return out
 end
 
--- breadcrumb index: target quest -> quests that lead to it (provider data)
-local function breadcrumbs(ds)
+-- breadcrumb index: target quest -> quests that lead to it (provider data), cached
+local function buildCrumbs(ds)
   local by = {}
   for id in pairs(ds.quests) do
     local info = P.Info(id)
@@ -83,12 +96,14 @@ local function breadcrumbs(ds)
   return by
 end
 
+function D.Breadcrumbs(ds, char) return ns.GuideCache.Get(ds, char, "crumbs", buildCrumbs) end
+
 -- A guide's quests from its main quests (roots): { set = { [id] = true }, roots =
 -- the open main quests, order = { ids, prerequisites first } }. Shared by the
 -- dungeon and the class quest guides.
 function D.Closure(ds, char, ids)
   local set, order, roots, seen = {}, {}, {}, {}
-  local crumbs = breadcrumbs(ds)
+  local crumbs = D.Breadcrumbs(ds, char)
   local function add(id, depth)
     if seen[id] or depth > 30 then return end
     seen[id] = true
@@ -134,12 +149,8 @@ end
 
 -- The dungeon guide's quests: its quests and what leads to them (D.Closure).
 function D.Set(ds, char, area)
-  local ids = {}
-  for id, q in pairs(ds.quests) do
-    if isDungeonQuest(q) and q.zone == area then ids[#ids + 1] = id end
-  end
-  table.sort(ids)
-  local g = D.Closure(ds, char, ids)
+  local a = areaIndex(ds, char)[area]
+  local g = D.Closure(ds, char, a and a.ids or {})
   g.area = area
   return g
 end

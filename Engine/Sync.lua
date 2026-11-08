@@ -93,34 +93,150 @@ function S.ParseState(ds, str)
     active = active, completed = completed }
 end
 
+-- Is quest id one you could catch up on, compared to a member? (see S.Missing)
+local function eligible(ds, me, peer, id, grey)
+  local inLog = peer.active and peer.active[id]
+  if not inLog and not (peer.completed and peer.completed[id]) then return false end
+  local q = ds.quests[id]
+  if not q or q.rep or me.completed[id] or (me.active and me.active[id]) then return false end
+  if q.l and q.l > (me.level or 1) + S.ABOVE then return false end
+  if not inLog and q.l and q.l <= grey then return false end
+  local st = ns.Availability.Status(q, me)
+  return st ~= "wrong" and st ~= "done" and st ~= "active"
+end
+
 -- Quests you could catch up on, compared to one member (sorted ids).
 function S.Missing(ds, me, peer)
-  local A = ns.Availability
   local out, seen = {}, {}
-  local grey = A.GreyLevel(me.level or 1)
-  local function consider(id, inLog)
+  local grey = ns.Availability.GreyLevel(me.level or 1)
+  local function consider(id)
     if seen[id] then return end
     seen[id] = true
-    local q = ds.quests[id]
-    if not q or q.rep or me.completed[id] or (me.active and me.active[id]) then return end
-    if q.l and q.l > (me.level or 1) + S.ABOVE then return end
-    if not inLog and q.l and q.l <= grey then return end
-    local st = A.Status(q, me)
-    if st == "wrong" or st == "done" or st == "active" then return end
-    out[#out + 1] = id
+    if eligible(ds, me, peer, id, grey) then out[#out + 1] = id end
   end
-  for id in pairs(peer.active or {}) do consider(id, true) end
-  for id in pairs(peer.completed or {}) do consider(id, false) end
+  for id in pairs(peer.active or {}) do consider(id) end
+  for id in pairs(peer.completed or {}) do consider(id) end
   table.sort(out)
   return out
 end
 
--- The catch-up guide for you: what you are missing compared to the member, and
--- everything needed before it.
-function S.Set(ds, me, peer)
-  local g = ns.Dungeons.Closure(ds, me, S.Missing(ds, me, peer))
+-- quest id -> quests that its being done or taken makes impossible (provider
+-- `excl`, and breadcrumbs that lead to it), cached (Engine/GuideCache)
+local function buildExcludes(ds, char)
+  local by = {}
+  local function add(id, other)
+    by[id] = by[id] or {}
+    table.insert(by[id], other)
+  end
+  for id in pairs(ds.quests) do
+    local info = ns.Prereqs.Info(id)
+    if info then
+      for _, e in ipairs(info.excl or {}) do add(e, id) end
+      if info.breadcrumbFor then add(info.breadcrumbFor, id) end
+    end
+  end
+  return by
+end
+
+-- Per member: what you are missing compared to them and the catch-up guide, kept
+-- and updated from what changed (their new state, your hand-ins), not rebuilt.
+-- Rebuilt only when something every quest depends on changed: the dataset, the
+-- provider, your level, faction, race, class or skills.
+local layers = {}
+S.stats = { full = 0, updates = 0, closures = 0 }
+
+function S.Forget(name)
+  if name then layers[name] = nil else layers = {} end
+end
+
+local function copy(t)
+  local c = {}
+  for k, v in pairs(t or {}) do c[k] = v end
+  return c
+end
+
+local function skillsSig(me)
+  local parts = {}
+  for k, v in pairs(me.skills or {}) do parts[#parts + 1] = tostring(k) .. "=" .. tostring(v) end
+  table.sort(parts)
+  return table.concat(parts, ",")
+end
+
+-- ids in a or b whose presence differs between them, into out
+local function diff(a, b, out)
+  a, b = a or {}, b or {}
+  for id in pairs(a) do if not b[id] then out[id] = true end end
+  for id in pairs(b) do if not a[id] then out[id] = true end end
+end
+
+local function sorted(set)
+  local out = {}
+  for id in pairs(set) do out[#out + 1] = id end
+  table.sort(out)
+  return out
+end
+
+local function closure(ds, me, missing)
+  S.stats.closures = S.stats.closures + 1
+  local g = ns.Dungeons.Closure(ds, me, sorted(missing))
   g.sync = true
   return g
+end
+
+-- The catch-up guide for you: what you are missing compared to the member, and
+-- everything needed before it. With the member's name the result is kept and
+-- updated on the next call; without it, worked out from scratch.
+function S.Set(ds, me, peer, name)
+  if not name then
+    local g = ns.Dungeons.Closure(ds, me, S.Missing(ds, me, peer))
+    g.sync = true
+    return g
+  end
+  local sig = table.concat({ tostring(ds), ns.Prereqs.generation, me.level or 1, tostring(me.faction),
+    tostring(me.race), tostring(me.class), skillsSig(me) }, ";")
+  local L = layers[name]
+  if not L or L.sig ~= sig then
+    S.stats.full = S.stats.full + 1
+    local missing = {}
+    for _, id in ipairs(S.Missing(ds, me, peer)) do missing[id] = true end
+    L = { sig = sig, peer = peer, completed = copy(me.completed), active = copy(me.active), missing = missing }
+    L.g = closure(ds, me, missing)
+    layers[name] = L
+    return L.g
+  end
+  local mine, theirs = {}, {}
+  diff(L.completed, me.completed, mine)
+  diff(L.active, me.active, mine)
+  if peer ~= L.peer then
+    diff(L.peer.completed, peer.completed, theirs)
+    diff(L.peer.active, peer.active, theirs)
+  end
+  if not next(mine) and not next(theirs) then
+    L.peer = peer
+    return L.g
+  end
+  S.stats.updates = S.stats.updates + 1
+  -- what to look at again: what changed, and what your change made impossible
+  local excludes = ns.GuideCache.Get(ds, me, "excludes", buildExcludes)
+  local look = {}
+  for id in pairs(theirs) do look[id] = true end
+  for id in pairs(mine) do
+    look[id] = true
+    for _, other in ipairs(excludes[id] or {}) do look[other] = true end
+  end
+  local grey = ns.Availability.GreyLevel(me.level or 1)
+  local changed = false
+  for id in pairs(look) do
+    local now = eligible(ds, me, peer, id, grey) or nil
+    if now ~= L.missing[id] then
+      L.missing[id] = now
+      changed = true
+    end
+  end
+  L.peer, L.completed, L.active = peer, copy(me.completed), copy(me.active)
+  -- what leads up to the missing quests depends on what you have done
+  if changed or next(mine) then L.g = closure(ds, me, L.missing) end
+  return L.g
 end
 
 -- A step as a line of text for the members who follow (title, spot, lines).

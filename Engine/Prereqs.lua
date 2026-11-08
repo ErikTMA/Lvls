@@ -13,7 +13,10 @@ local P = ns:NewModule("Prereqs")
 
 local provider
 
-function P.SetProvider(p) provider = p end
+-- Counts every SetProvider, so caches built from provider data (Engine/GuideCache)
+-- know when it changed, even to the same table again.
+P.generation = 0
+function P.SetProvider(p) provider = p; P.generation = P.generation + 1 end
 function P.Provider() return provider end
 
 function P.Info(qid)

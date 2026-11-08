@@ -126,8 +126,20 @@ function Q.StartsDroppedBy(ds, kind, id)
   return startIndex(ds).byDropper[kind .. id] or {}
 end
 
+-- Waypoints for objectives the dataset has no source for (Data/forever/Waypoints.lua),
+-- for the dataset they were made from: { {map, x, y}, ... } or nil.
+function Q.Waypoints(ds, qid, i)
+  local w = ns.ObjectiveWaypoints
+  if not w or not (ds.meta and ds.meta.generated == w.dataset) then return nil end
+  local flat = w[qid] and w[qid][i]
+  if not flat then return nil end
+  local out = {}
+  for k = 1, #flat - 2, 3 do out[#out + 1] = { map = flat[k], x = flat[k + 1], y = flat[k + 2] } end
+  return out
+end
+
 -- Spots of one objective: its sources from the dataset, else what the prerequisite
--- provider (QuestieDB) knows at runtime.
+-- provider (QuestieDB) knows at runtime, else the shipped waypoints.
 function Q.ObjectiveSpots(ds, q, i, onMap)
   local o = q.obj and q.obj[i]
   if not o then return {} end
@@ -148,6 +160,11 @@ function Q.ObjectiveSpots(ds, q, i, onMap)
           if not onMap or sp.map == onMap then out[#out + 1] = sp end
         end
       end
+    end
+  end
+  if #out == 0 then
+    for _, sp in ipairs(Q.Waypoints(ds, q.id, i) or {}) do
+      if not onMap or sp.map == onMap then sp.waypoint = true; out[#out + 1] = sp end
     end
   end
   return out
