@@ -8,6 +8,8 @@
 local _, ns = ...
 local G = ns:NewModule("Game")
 
+local bagInfo = {} -- see G.Bag
+
 local function has(t, k) return type(t) == "table" and type(t[k]) == "function" end
 G.has = has
 
@@ -48,6 +50,13 @@ function G.QuestLog()
       end
       out[id] = { title = info.title, level = info.level, complete = complete and true or false,
         objectives = objectives }
+      -- the quest log's item for it (the one the objective tracker shows a button for)
+      if GetQuestLogSpecialItemInfo then
+        local ok, link, _, _, whenDone = pcall(GetQuestLogSpecialItemInfo, i)
+        link = ok and ns.Util.plain(link)
+        local item = type(link) == "string" and tonumber(link:match("item:(%d+)"))
+        if item then out[id].item, out[id].itemDone = item, ns.Util.plain(whenDone) and true or nil end
+      end
     end
   end
   return out
@@ -101,6 +110,7 @@ function G.Character()
   race, class = race or G.lastRace, class or G.lastClass
   G.lastRace, G.lastClass = race, class
   local faction = UnitFactionGroup and UnitFactionGroup("player")
+  local items = safe(G.Bag) or {} -- (fills bagInfo)
   return {
     level = (UnitLevel and UnitLevel("player")) or 1,
     xp = UnitXP and UnitXP("player") or 0,
@@ -108,7 +118,7 @@ function G.Character()
     faction = faction, race = race, class = class,
     completed = G.Completed(), active = G.QuestLog(), skills = safe(G.Skills),
     pos = safe(G.Position),
-    bag = safe(G.Bag) or {},
+    bag = items, bagInfo = bagInfo,
   }
 end
 
@@ -172,21 +182,40 @@ function G.Waypoint(spot, title)
 end
 
 -- Item ids in your bags: { [itemId] = true }, read again after BAG_UPDATE_DELAYED.
--- (C_Container.GetContainerNumSlots / GetContainerItemID, forever 1.60.1)
+-- Also bagInfo (Engine/UseItems): { [itemId] = { starts = questId, use = true } }
+-- for items that start a quest you do not have, or have a use.
+-- (C_Container.GetContainerNumSlots / GetContainerItemID / GetContainerItemQuestInfo,
+-- C_Item.GetItemSpell, forever 1.60.1)
 local bag, bagDirty = {}, true
+local function itemInfo(b, s, id)
+  local info
+  if has(C_Container, "GetContainerItemQuestInfo") then
+    local ok, qi = pcall(C_Container.GetContainerItemQuestInfo, b, s)
+    local qid = ok and type(qi) == "table" and ns.Util.plain(qi.questID)
+    if qid and qid > 0 and not ns.Util.plain(qi.isActive) then info = { starts = qid } end
+  end
+  if has(C_Item, "GetItemSpell") then
+    local ok, spell = pcall(C_Item.GetItemSpell, id)
+    if ok and ns.Util.plain(spell) then info = info or {}; info.use = true end
+  end
+  return info
+end
 function G.Bag()
   if bagDirty then
     bagDirty = false
-    local new = {}
+    local new, info = {}, {}
     if has(C_Container, "GetContainerNumSlots") and has(C_Container, "GetContainerItemID") then
       for b = 0, (NUM_BAG_SLOTS or 4) do
         for s = 1, C_Container.GetContainerNumSlots(b) or 0 do
           local id = ns.Util.plain(C_Container.GetContainerItemID(b, s))
-          if id then new[id] = true end
+          if id then
+            new[id] = true
+            if not info[id] then info[id] = itemInfo(b, s, id) end
+          end
         end
       end
     end
-    bag = new
+    bag, bagInfo = new, info
   end
   return bag
 end
@@ -201,7 +230,8 @@ if CreateFrame then
   local pending = false
   f:SetScript("OnEvent", function(_, event)
     if event == "QUEST_TURNED_IN" then G.dirtyCompleted = true end
-    if event == "BAG_UPDATE_DELAYED" or event == "PLAYER_ENTERING_WORLD" then bagDirty = true end
+    if event == "BAG_UPDATE_DELAYED" or event == "PLAYER_ENTERING_WORLD" or event == "QUEST_ACCEPTED"
+      or event == "QUEST_REMOVED" or event == "QUEST_TURNED_IN" then bagDirty = true end
     if pending then return end
     pending = true
     local fire = function() pending = false; ns.Events.Fire("LVLS_STATE", event) end

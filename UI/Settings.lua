@@ -39,6 +39,8 @@ S.ITEMS = {
   { key = "classQuests", name = "Class quests in the route", tip = "The leveling route takes your class quests (spells, forms, pets, weapons) as they become possible, in their order, marked with your class. The Guides menu does a whole chain at once.", refresh = true },
   { key = "zoneFirst", name = "Finish the zone first", refresh = true },
   { key = "arrow", name = "Arrow" },
+  { key = "itemBar", name = "Buttons for quest items", tip = "A movable row of buttons for the items to use now: items that start a quest, and the items quests give you to use on someone or somewhere. Key bindings: Key Bindings -> AddOns -> Lvls!. Drag a button to move them." },
+  { key = "lockItemBar", name = "Lock the item buttons", tip = "They cannot be dragged. /lvls items reset puts them back in their place." },
   { key = "worldMap", name = "Quest pins on the world map" },
   { key = "minimap", name = "Quest pins on the minimap" },
   { key = "objectives", name = "Objective areas" },

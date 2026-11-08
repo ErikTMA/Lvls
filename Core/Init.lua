@@ -27,6 +27,8 @@ ns.DEFAULT_SETTINGS = {
   groupSync = true,      -- tell group members with Lvls! your quest state (Adapters/GroupSync)
   askSync = true,        -- ask to catch up / to follow when it makes sense
   suggestGrind = true,   -- grind steps when quests here wait only because they are too hard
+  itemBar = true,        -- buttons for the quest items to use (UI/ItemBar.lua)
+  lockItemBar = false,
 }
 
 function ns.InitDB(db)
@@ -161,6 +163,10 @@ local function plan(ds)
   })
   if not ok then ns.Log("debug", "route: " .. tostring(route)); route = {} end
   ns.route = route
+  -- the log the plan was made for: a quest it leaves out on purpose (for later, no
+  -- experience) is not a reason to plan again; one taken since is
+  ns.planLog = {}
+  for qid in pairs(ns.char.active or {}) do ns.planLog[qid] = true end
   ns.backlog = ns.Route.Backlog(ds, ns.char, route) -- in the log, not handed in by this plan
   ns.steps = ns.Steps.Build(ds, ns.char, route, ns.Game.geo)
   if g then
@@ -209,7 +215,7 @@ local function unplanned(ds)
   for qid in pairs(ns.char.active or {}) do
     local q = ds.quests[qid]
     local wanted = ns.guide and ns.guide.set[qid] or (not ns.guide and q and not q.inst)
-    if q and not known[qid] and (q.sn or q.so) and wanted
+    if q and not known[qid] and (q.sn or q.so) and wanted and not (ns.planLog and ns.planLog[qid])
       and not (ns.cdb and ns.cdb.skip[qid]) then return true end
   end
   return false
@@ -754,7 +760,7 @@ commands.debug = function()
 end
 
 commands.help = function()
-  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|arrow|map|minimap|objectives|low|trivial|dungeon|repeatable|debug|help]")
+  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|items [lock|unlock|reset]|arrow|map|minimap|objectives|low|trivial|dungeon|repeatable|debug|help]")
 end
 
 local function slash(input)

@@ -1,0 +1,7 @@
+<Bindings>
+  <!-- The item bar's first four buttons (UI/ItemBar.lua); names in BINDING_NAME_* there. -->
+  <Binding name="CLICK LvlsItemButton1:LeftButton" header="LVLS"/>
+  <Binding name="CLICK LvlsItemButton2:LeftButton"/>
+  <Binding name="CLICK LvlsItemButton3:LeftButton"/>
+  <Binding name="CLICK LvlsItemButton4:LeftButton"/>
+</Bindings>

@@ -51,7 +51,7 @@ function V.Model(ds, char, steps, current, view, base)
   elseif st.kind == "dungeon" then
     m.sub = "Entrance not known yet: Lvls! learns it when you walk in"
   elseif st.kind == "use" then
-    m.sub = "In your bags: right-click it"
+    m.sub = (ns.db and ns.db.settings.itemBar) and "Click its item button, or right-click it in your bags" or "In your bags: right-click it"
   end
   if ns.guideName then
     m.sub = (m.sub and (m.sub .. "  ·  ") or "") .. (ns.sync and "Sync: " or "Guide: ") .. ns.guideName
