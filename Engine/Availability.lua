@@ -44,7 +44,7 @@ end
 -- quest, the provider and the character's faction / race / class (Engine/GuideCache
 -- keys on those), not on what the character has done.
 function A.Fixed(q, char)
-  if q.unused then return "wrong", "placeholder" end
+  if q.unused then return "wrong", q.sod and "not in Forever (Season of Discovery)" or "placeholder" end
   if q.side and SIDE[char.faction] and q.side ~= SIDE[char.faction] then return "wrong", "faction" end
   local info = ns.Prereqs.Info(q.id)
   if not raceOk(info and info.races or q.races, char.race) then return "wrong", "race" end

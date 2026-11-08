@@ -145,12 +145,25 @@ end
 -- "Return to Delgren" is level 25 / required 1 in the dump, 30 / 22 in Forever
 -- (and QuestieDB). Also givers the dump lacks ("A Strange Artifact" starts at the
 -- Strange Orb in Darkshore). Once per dataset; returns how many quests changed.
+--
+-- The dump also carries Season of Discovery quests Forever never had (the warlock
+-- rune quest "Stolen Power", 77621: Wowhead forever has no such quest). Nothing in a
+-- dump row tells them apart, and their ids are not enough alone: Forever kept some
+-- quests in that id range (the Delgren chain, 78088-78093). A quest in the range
+-- QuestieDB's Forever data does not know is one of them: never planned (unused).
+QD.SOD_IDS = { 76000, 93999 }
+function QD.InSodRange(qid)
+  return qid >= QD.SOD_IDS[1] and qid <= QD.SOD_IDS[2]
+end
+
 function QD.Patch(ds)
   if not lib or not ds or ds.questiedbPatched == lib then return 0 end
   ds.questiedbPatched = lib
   local Q, changed = lib.Quest, 0
   for qid, q in pairs(ds.quests) do
-    if exists(Q, qid) then
+    if not exists(Q, qid) then
+      if QD.InSodRange(qid) and not q.unused then q.unused, q.sod = true, true; changed = changed + 1 end
+    else
       local touched = false
       local l, r = nz(get(Q, qid, "questLevel")), nz(get(Q, qid, "requiredLevel"))
       if l and l > 0 and l ~= q.l then q.l, touched = l, true end
