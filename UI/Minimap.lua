@@ -86,7 +86,7 @@ function MM.Update()
   local shown = 0
   if not (w and w > 0 and radius and radius > 0) then laid.pins = nil end -- hidden: lay out again next time
   if w and w > 0 and radius and radius > 0 then
-    local half = (Minimap:GetWidth() or 140) / 2
+    local half = (ns.Util.plain(Minimap:GetWidth()) or 140) / 2
     local facing
     if GetCVar and GetCVar("rotateMinimap") == "1" and GetPlayerFacing then facing = GetPlayerFacing() end
     -- standing still (same spot, facing, zoom and pins): the layout is as it was

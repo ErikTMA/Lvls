@@ -37,7 +37,7 @@ local sendId = 0
 local function has(t, k) return type(t) == "table" and type(t[k]) == "function" end
 local function now() return GetTime and GetTime() or 0 end
 
-local function me() return UnitName and UnitName("player") or "?" end
+local function me() return UnitName and ns.Util.plain(UnitName("player")) or "?" end
 
 local function short(name)
   if type(Ambiguate) == "function" then return Ambiguate(name, "none") end
@@ -93,7 +93,9 @@ function GS.Roster()
   local raid = type(IsInRaid) == "function" and IsInRaid()
   for i = 1, n do
     local unit = raid and ("raid" .. i) or ("party" .. i)
-    local name = UnitName and UnitName(unit)
+    local raw = UnitName and UnitName(unit)
+    local name = ns.Util.plain(raw)
+    if raw ~= nil and name == nil then return end -- names are secret now: nobody is dropped
     if name then names[short(name)] = true end
   end
   for name in pairs(GS.peers) do
@@ -131,6 +133,8 @@ end
 
 function GS.OnMessage(prefix, text, _, sender)
   if prefix ~= GS.PREFIX or not GS.Enabled() then return end
+  sender = ns.Util.plain(sender)
+  if type(sender) ~= "string" then return end
   sender = short(sender)
   if sender == me() then return end
   local kind, rest = text:match("^(%a)|?(.*)$")

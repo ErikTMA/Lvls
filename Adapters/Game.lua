@@ -86,9 +86,12 @@ end
 
 function G.Character()
   -- (not `UnitRace and UnitRace(...)`: `and` keeps only the first return value)
+  -- (secret while identity is restricted: the last one read)
   local race, class
-  if UnitRace then race = select(3, UnitRace("player")) end
-  if UnitClass then class = select(3, UnitClass("player")) end
+  if UnitRace then race = ns.Util.plain(select(3, UnitRace("player"))) end
+  if UnitClass then class = ns.Util.plain(select(3, UnitClass("player"))) end
+  race, class = race or G.lastRace, class or G.lastClass
+  G.lastRace, G.lastClass = race, class
   local faction = UnitFactionGroup and UnitFactionGroup("player")
   return {
     level = (UnitLevel and UnitLevel("player")) or 1,
@@ -105,7 +108,7 @@ end
 local runSpeed = 7
 function G.RunSpeed()
   if GetUnitSpeed and not (UnitOnTaxi and UnitOnTaxi("player")) then
-    local sp = GetUnitSpeed("player") or 0
+    local sp = ns.Util.plain(GetUnitSpeed("player")) or 0 -- secret in combat
     if sp > runSpeed and sp <= 20 then runSpeed = sp end
   end
   return runSpeed

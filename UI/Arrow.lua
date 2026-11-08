@@ -147,7 +147,8 @@ function AR.Update()
   local r, g, b = AR.Color(rot)
   frame.arrow:SetVertexColor(r, g, b)
   -- the text only when what it says changes (this runs ~30 times a second)
-  local speed = GetUnitSpeed and GetUnitSpeed("player") or 0
+  -- secret in combat: no time to arrival then
+  local speed = GetUnitSpeed and ns.Util.plain(GetUnitSpeed("player")) or 0
   local yards = math.floor(d + 0.5)
   local secs = speed >= 0.5 and math.floor(d / speed + 0.5) or -1
   if yards ~= shownYards or secs ~= shownEta then

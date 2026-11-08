@@ -3,6 +3,16 @@ local U = ns:NewModule("Util")
 
 U.INF = math.huge
 
+-- A value an addon may use, or nil. Some APIs return secret values (forever
+-- 1.60.1: GetUnitSpeed while unit stats are restricted, in combat; UnitName,
+-- UnitClass, UnitRace when identity is restricted; UnitHealth / UnitHealthMax;
+-- GetWidth of a region anchored to a secret one). A secret must not be compared,
+-- used in arithmetic or as a table key (issecretvalue tells).
+function U.plain(v)
+  if v ~= nil and type(issecretvalue) == "function" and issecretvalue(v) then return nil end
+  return v
+end
+
 function U.round(x) return math.floor(x + 0.5) end
 
 function U.clamp(x, lo, hi)

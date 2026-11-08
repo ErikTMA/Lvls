@@ -22,6 +22,10 @@ local function has(t, k) return type(t) == "table" and type(t[k]) == "function" 
 
 function GA.Class()
   local _, token, id = UnitClass("player")
+  token, id = ns.Util.plain(token), ns.Util.plain(id)
+  -- secret: the class read before
+  token, id = token or GA.lastToken, id or GA.lastId
+  GA.lastToken, GA.lastId = token, id
   return token, id
 end
 
@@ -60,6 +64,7 @@ function GA.PawnScale(token, spec, specName)
   if not (has(_G, "PawnGetAllScalesEx") and has(_G, "PawnGetItemData") and has(_G, "PawnGetSingleValueFromItem")) then
     return nil, "Pawn not installed"
   end
+  if not token then return nil, "class not known yet" end
   local ok, scales = pcall(PawnGetAllScalesEx)
   if not ok or type(scales) ~= "table" then return nil, "Pawn scales unreadable" end
   local suffix = ":" .. token .. tostring(spec)

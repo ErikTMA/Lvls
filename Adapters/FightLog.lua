@@ -46,8 +46,8 @@ local function target()
   if not readable(level) then return nil end
   if level < 0 then level = (UnitLevel("player") or 1) + 10 end -- "??"
   local cls = UnitClassification and UnitClassification("target") or "normal"
-  local name = UnitName and UnitName("target") or "?"
-  if type(name) ~= "string" then name = "?" end
+  local name = UnitName and ns.Util.plain(UnitName("target")) or "?"
+  if type(name) ~= "string" then name = "?" end -- secret: one key for every such mob
   return { key = name .. ":" .. level, level = level, cls = cls }
 end
 
