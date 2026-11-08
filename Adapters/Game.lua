@@ -100,6 +100,7 @@ function G.Character()
     faction = faction, race = race, class = class,
     completed = G.Completed(), active = G.QuestLog(), skills = G.Skills(),
     pos = G.Position(),
+    bag = G.Bag(),
   }
 end
 
@@ -162,15 +163,37 @@ function G.Waypoint(spot, title)
   return true
 end
 
+-- Item ids in your bags: { [itemId] = true }, read again after BAG_UPDATE_DELAYED.
+-- (C_Container.GetContainerNumSlots / GetContainerItemID, forever 1.60.1)
+local bag, bagDirty = {}, true
+function G.Bag()
+  if bagDirty then
+    bagDirty = false
+    local new = {}
+    if has(C_Container, "GetContainerNumSlots") and has(C_Container, "GetContainerItemID") then
+      for b = 0, (NUM_BAG_SLOTS or 4) do
+        for s = 1, C_Container.GetContainerNumSlots(b) or 0 do
+          local id = ns.Util.plain(C_Container.GetContainerItemID(b, s))
+          if id then new[id] = true end
+        end
+      end
+    end
+    bag = new
+  end
+  return bag
+end
+
 -- Bridge game events to one throttled "LVLS_STATE" message.
 local STATE_EVENTS = { "QUEST_LOG_UPDATE", "QUEST_TURNED_IN", "QUEST_ACCEPTED", "QUEST_REMOVED",
-  "PLAYER_LEVEL_UP", "ZONE_CHANGED_NEW_AREA", "SKILL_LINES_CHANGED", "PLAYER_ENTERING_WORLD" }
+  "PLAYER_LEVEL_UP", "ZONE_CHANGED_NEW_AREA", "SKILL_LINES_CHANGED", "PLAYER_ENTERING_WORLD",
+  "BAG_UPDATE_DELAYED" }
 if CreateFrame then
   local f = CreateFrame("Frame")
   for _, e in ipairs(STATE_EVENTS) do f:RegisterEvent(e) end
   local pending = false
   f:SetScript("OnEvent", function(_, event)
     if event == "QUEST_TURNED_IN" then G.dirtyCompleted = true end
+    if event == "BAG_UPDATE_DELAYED" or event == "PLAYER_ENTERING_WORLD" then bagDirty = true end
     if pending then return end
     pending = true
     local fire = function() pending = false; ns.Events.Fire("LVLS_STATE", event) end

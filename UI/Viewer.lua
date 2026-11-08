@@ -50,6 +50,8 @@ function V.Model(ds, char, steps, current, view, base)
     m.sub = ("%s  %.1f, %.1f"):format(ds.maps[st.spot.map] or "", st.spot.x, st.spot.y)
   elseif st.kind == "dungeon" then
     m.sub = "Entrance not known yet: Lvls! learns it when you walk in"
+  elseif st.kind == "use" then
+    m.sub = "In your bags: right-click it"
   end
   if ns.guideName then
     m.sub = (m.sub and (m.sub .. "  ·  ") or "") .. (ns.sync and "Sync: " or "Guide: ") .. ns.guideName

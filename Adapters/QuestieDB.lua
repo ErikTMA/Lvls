@@ -115,6 +115,32 @@ local function entitySpots(kind, id, out)
   return out
 end
 
+-- The item that starts a quest (startedBy's third list) and where it drops:
+-- { id, n, npcs, objects, spots } or nil. Forever's new quests are often only here
+-- (Nibbled-On Book: dropped by Kobold Vermin, Workers and Laborers).
+function QD.StartItem(qid)
+  if not lib then return nil end
+  local key = "si:" .. qid
+  local c = spotCache[key]
+  if c ~= nil then return c or nil end
+  local sb = get(lib.Quest, qid, "startedBy")
+  local items = type(sb) == "table" and list(sb[3])
+  local item = items and items[1]
+  if not item then spotCache[key] = false return nil end
+  local I = lib.Item
+  local out = { id = item, spots = {} }
+  if I then
+    local n = get(I, item, "name")
+    out.n = type(n) == "string" and n or nil
+    out.npcs = list(get(I, item, "npcDrops"))
+    out.objects = list(get(I, item, "objectDrops"))
+  end
+  for _, n in ipairs(out.npcs or {}) do entitySpots("n", n, out.spots) end
+  for _, o in ipairs(out.objects or {}) do entitySpots("o", o, out.spots) end
+  spotCache[key] = out
+  return out
+end
+
 -- Runtime fallback for an objective the dataset cannot locate.
 function QD.ObjectiveSpots(qid, i, o)
   if not lib or not o then return nil end

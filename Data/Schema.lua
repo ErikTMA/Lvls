@@ -12,6 +12,8 @@
 --              prof = { skillId [, value] }, rep = "daily" | "weekly",
 --              kind = "group" | "dungeon" | "raid" | "pvp" | "class" | "event",
 --              xp, money, provided = { itemId, ... },
+--              si = { id = itemId, n = name, src = { { "n" | "o", id, dropPercent }, ... } }:
+--                   the item that starts the quest (no giver) and where it drops,
 --              obj = { { t = "kill" | "item" | "object" | "faction" | "spell" | "event",
 --                        id, qty, text,
 --                        src = { { "n" | "o" | "v", id, dropPercent }, ... },
@@ -78,6 +80,17 @@ function S.Validate(ds)
       if q.side ~= nil and q.side ~= "A" and q.side ~= "H" then err(where .. ": side") end
       for _, k in ipairs({ "sn", "so", "en", "eo", "provided" }) do
         if not idList(q[k]) then err(where .. ": " .. k) end
+      end
+      if q.si ~= nil then
+        if type(q.si) ~= "table" or not isInt(q.si.id) then
+          err(where .. ": start item")
+        else
+          for _, s in ipairs(q.si.src or {}) do
+            if type(s) ~= "table" or (s[1] ~= "n" and s[1] ~= "o") or not isInt(s[2]) then
+              err(where .. ": start item source")
+            end
+          end
+        end
       end
       if q.obj ~= nil then
         if type(q.obj) ~= "table" then

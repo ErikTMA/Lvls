@@ -34,6 +34,98 @@ function Q.TurnIns(ds, q, onMap)
   return addSpots(addSpots({}, ds, "n", q.en, onMap), ds, "o", q.eo, onMap)
 end
 
+-- The item that starts a quest without a giver ("Nibbled-On Book"): { id, n, src =
+-- { { "n" | "o", id, pct }, ... }, spots } from the dataset (si), else the provider
+-- (QuestieDB). nil when the quest has a giver or nothing is known. Cached per
+-- dataset and provider.
+local startCache = setmetatable({}, { __mode = "k" })
+local function starts(ds)
+  local p = ns.Prereqs.Provider()
+  local c = startCache[ds]
+  if not c or c.provider ~= (p or false) then
+    c = { provider = p or false, quests = {} }
+    startCache[ds] = c
+  end
+  return c, p
+end
+
+function Q.StartItem(ds, q)
+  if q.sn or q.so then return nil end
+  local c, p = starts(ds)
+  local v = c.quests[q.id]
+  if v ~= nil then return v or nil end
+  local si, ext = q.si, nil
+  if p and p.StartItem then
+    local ok, r = pcall(p.StartItem, q.id)
+    if ok then ext = r end
+  end
+  if not (si and si.id) and not (ext and ext.id) then c.quests[q.id] = false return nil end
+  local out = { id = si and si.id or ext.id, n = si and si.n or ext and ext.n, src = {}, spots = {} }
+  for _, s in ipairs(si and si.src or {}) do
+    out.src[#out.src + 1] = s
+    local kind = s[1] == "o" and "o" or "n"
+    for _, sp in ipairs(G.Spots(ds, kind, s[2])) do
+      sp.kind, sp.id, sp.pct = kind, s[2], s[3]
+      out.spots[#out.spots + 1] = sp
+    end
+  end
+  if #out.src == 0 and ext and ext.id == out.id then
+    for _, n in ipairs(ext.npcs or {}) do out.src[#out.src + 1] = { "n", n, 0 } end
+    for _, o in ipairs(ext.objects or {}) do out.src[#out.src + 1] = { "o", o, 0 } end
+  end
+  if #out.spots == 0 and ext and ext.id == out.id then
+    for _, sp in ipairs(ext.spots or {}) do out.spots[#out.spots + 1] = sp end
+  end
+  c.quests[q.id] = out
+  return out
+end
+
+-- Quests started by items: item id -> { questId, ... } and npc / object -> { questId, ... }
+-- (who drops the item), over the quests without a giver.
+local function startIndex(ds)
+  local c = starts(ds)
+  if c.byItem then return c end
+  c.byItem, c.byDropper = {}, {}
+  for qid, q in pairs(ds.quests) do
+    if not q.sn and not q.so then
+      local it = Q.StartItem(ds, q)
+      if it then
+        c.byItem[it.id] = c.byItem[it.id] or {}
+        table.insert(c.byItem[it.id], qid)
+        for _, s in ipairs(it.src) do
+          local k = (s[1] == "o" and "o" or "n") .. s[2]
+          c.byDropper[k] = c.byDropper[k] or {}
+          table.insert(c.byDropper[k], qid)
+        end
+      end
+    end
+  end
+  for _, t in ipairs({ c.byItem, c.byDropper }) do
+    for _, l in pairs(t) do table.sort(l) end
+  end
+  return c
+end
+
+-- Quests you could start with an item in your bags now: { [questId] = itemId }
+-- (char.bag = { [itemId] = true }; not done, not in the log, not wrong for you).
+function Q.BagStarts(ds, char)
+  local out = {}
+  if not char.bag or not next(char.bag) then return out end
+  local idx = startIndex(ds)
+  for item in pairs(char.bag) do
+    for _, qid in ipairs(idx.byItem[item] or {}) do
+      local st = ns.Availability.Status(ds.quests[qid], char)
+      if st == "available" or st == "trivial" then out[qid] = item end
+    end
+  end
+  return out
+end
+
+-- Quests whose starting item this npc ("n") or object ("o") drops.
+function Q.StartsDroppedBy(ds, kind, id)
+  return startIndex(ds).byDropper[kind .. id] or {}
+end
+
 -- Spots of one objective: its sources from the dataset, else what the prerequisite
 -- provider (QuestieDB) knows at runtime.
 function Q.ObjectiveSpots(ds, q, i, onMap)

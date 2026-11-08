@@ -100,9 +100,13 @@ end
 
 -- Plannable shape of a quest: giver spots, per-objective target clusters, turn-in
 -- spots. nil when any part cannot be located.
-local function shape(ds, q, dungeon)
+local function shape(ds, q, dungeon, bagStart, pos)
   if not q.xp or q.xp <= 0 then return nil end
   local givers = ns.Quests.Givers(ds, q)
+  -- started by an item in your bags: picked up where you stand (use the item)
+  if #givers == 0 and bagStart and pos then
+    givers = { { map = pos.map, x = pos.x, y = pos.y, kind = "item", id = bagStart } }
+  end
   local ends = ns.Quests.TurnIns(ds, q)
   -- no known giver (it starts inside a dungeon): plannable once in the log
   if #ends == 0 then return nil end
@@ -304,9 +308,10 @@ function R.Plan(ds, char, geo, opts)
 
   -- pool and shapes
   local shapes, workSecs = {}, {}
+  local bagStarts = ns.Quests.BagStarts(ds, char)
   local function consider(q)
     if shapes[q.id] ~= nil then return shapes[q.id] end
-    local s = shape(ds, q, o.dungeon)
+    local s = shape(ds, q, o.dungeon, bagStarts[q.id], pos)
     shapes[q.id] = s or false
     if s then
       -- giver -> objectives -> turn-in must be walkable (one continent)
@@ -360,7 +365,7 @@ function R.Plan(ds, char, geo, opts)
   for qid, q in pairs(ds.quests) do
     local normal = not q.rep and not q.inst and q.kind ~= "dungeon" and q.kind ~= "raid"
       and q.kind ~= "pvp" and (not q.r or q.r <= char.level + 10)
-    if (q.sn or q.so) and not (o.skip and o.skip[qid]) and (o.focus and o.focus[qid] or (not o.focus and normal)) then
+    if (q.sn or q.so or bagStarts[qid]) and not (o.skip and o.skip[qid]) and (o.focus and o.focus[qid] or (not o.focus and normal)) then
       pool[#pool + 1] = q
     end
   end

@@ -66,6 +66,11 @@ function S.LineState(ds, char, line)
     if char.level == line.level - 1 and char.xpMax and char.xpMax > 0 then line.have, line.need = char.xp or 0, char.xpMax end
     return false
   end
+  if line.starter then
+    -- loot the item that starts a quest: done once it is in your bags (or the quest is on)
+    return (char.bag and char.bag[line.starter]) or (char.active and char.active[line.quest] and true)
+      or questDone(char, line.quest) or false
+  end
   if line.kind == "accept" then
     return (char.active and char.active[line.quest] and not char.active[line.quest].simulated)
       or questDone(char, line.quest)
@@ -96,6 +101,16 @@ function S.Build(ds, char, route, geo)
       cur = { kind = "grind", spot = a.spot, title = ("Grind to level %d"):format(a.level), level = a.level - 1,
         lines = { { kind = "grind", level = a.level, npc = a.npc,
           text = ("Kill %s until level %d (about %d)"):format(a.name or "mobs", a.level, a.kills or 0) } } }
+      steps[#steps + 1] = cur
+      cur = nil
+    elseif q and a.kind == "accept" and a.spot and a.spot.kind == "item" then
+      -- started by an item in your bags: its own step, right where you are
+      local it = ns.Quests.StartItem(ds, q)
+      local item = it and it.n or "the item"
+      cur = { kind = "use", title = "Use " .. item, level = a.level, item = a.spot.id, lines = {
+        { kind = "accept", quest = a.quest, item = a.spot.id,
+          text = item == q.n and ("Use %s from your bags to start the quest"):format(item)
+            or ("Use %s from your bags: it starts %s"):format(item, q.n) } } }
       steps[#steps + 1] = cur
       cur = nil
     elseif q then
@@ -132,8 +147,8 @@ function S.Build(ds, char, route, geo)
       st.lines = first
       for _, l in ipairs(rest) do st.lines[#st.lines + 1] = l end
     end
-    local name = st.kind ~= "grind" and placeName(ds, st.spot)
-    if st.kind == "grind" then
+    local name = st.kind ~= "grind" and st.kind ~= "use" and placeName(ds, st.spot)
+    if st.kind == "grind" or st.kind == "use" then
       -- titled when built
     elseif st.kind == "talk" then
       st.title = name and ("Talk to " .. name) or "Talk"
@@ -196,12 +211,57 @@ function S.AddAlso(ds, char, st, geo)
     return a.index < b.index
   end)
   for _, l in ipairs(extra) do st.lines[#st.lines + 1] = l end
+  S.AddStarters(ds, char, st)
+end
+
+-- The mobs (and objects) this step's objectives send you to: { "n12" = name, ... }
+local function targets(ds, st)
+  local out = {}
+  for _, l in ipairs(st.lines) do
+    local q = l.quest and ds.quests[l.quest]
+    local o = q and l.index and q.obj and q.obj[l.index]
+    if o then
+      if o.t == "kill" and o.id then out["n" .. o.id] = true end
+      if o.t == "object" and o.id then out["o" .. o.id] = true end
+      for _, s in ipairs(o.src or {}) do
+        if s[1] == "n" or s[1] == "o" then out[s[1] .. s[2]] = true end
+      end
+    end
+  end
+  return out
+end
+
+S.STARTER_ABOVE = 3 -- a quest an item starts is worth it up to this many levels above you
+
+-- Items that start a quest and drop from the mobs you are killing here anyway:
+-- "Also: loot Nibbled-On Book from Kobold Vermin (starts a quest)". Only for quests
+-- you can take and that are not grey or too high.
+function S.AddStarters(ds, char, st)
+  local level = char.level or 1
+  local seen = {}
+  for key in pairs(targets(ds, st)) do
+    local kind, id = key:sub(1, 1), tonumber(key:sub(2))
+    for _, qid in ipairs(ns.Quests.StartsDroppedBy(ds, kind, id)) do
+      local q = ds.quests[qid]
+      if not seen[qid] and q and ns.Availability.Status(q, char) == "available"
+        and (not q.l or q.l <= level + S.STARTER_ABOVE) then
+        seen[qid] = true
+        local it = ns.Quests.StartItem(ds, q)
+        local rec = (kind == "o" and ds.objects or ds.npcs)[id]
+        local l = { kind = "collect", quest = qid, starter = it.id, also = true,
+          text = ("Loot %s from %s (%s)"):format(it.n or "an item", rec and rec.n or "them",
+            it.n == q.n and "it starts a quest" or ("it starts " .. q.n)) }
+        l.done = S.LineState(ds, char, l) and true or false
+        if not l.done then st.lines[#st.lines + 1] = l end
+      end
+    end
+  end
 end
 
 -- Line icon names in Media/Icons.tga (32 px icons, see UI/Viewer.lua).
 S.ICON = { accept = "accept", turnin = "turnin", kill = "kill", collect = "collect",
   object = "goto", event = "goto", talk = "talk", work = "goto", fpath = "fly", fly = "fly",
-  transit = "transit", hearth = "hearth", enter = "enter", path = "path", dungeon = "enter", grind = "kill", follow = "goto" }
+  transit = "transit", hearth = "hearth", enter = "enter", path = "path", dungeon = "enter", grind = "kill", follow = "goto", use = "accept" }
 
 -- Is the plan still good from the current step on? False when an open line can no
 -- longer happen: a quest to accept became impossible for this character, or a quest

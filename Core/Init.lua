@@ -254,6 +254,13 @@ function ns.Refresh(replan)
   ns.flyUnknown = unknown
   local s = ns.db.settings
   local lv, done, active, sum, fly = stateOf(ns.char)
+  -- an item in your bags that starts a quest: plan again (it may be worth doing now)
+  local bagKey = 0
+  for qid, item in pairs(ns.Quests.BagStarts(ds, ns.char)) do bagKey = (bagKey + qid * 31 + item) % 2147483647 end
+  if bagKey ~= last.bagKey then
+    if last.bagKey ~= nil then replan = true end
+    last.bagKey = bagKey
+  end
   local pos = ns.char.pos
   local map = pos and pos.map
   local changed = replan or ns.dirty or lv ~= last.lv or done ~= last.done or active ~= last.active

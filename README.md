@@ -25,6 +25,10 @@ A World of Warcraft addon for questing and leveling on **WoW Forever**.
   leads up to them (prerequisites, chains, breadcrumbs), routes you through them and
   ends at the dungeon's entrance with the objectives to do inside. When you come
   out, it hands them in and goes back to leveling.
+- **Quests that start from an item.** When you loot an item that starts a quest worth
+  doing, the next step is "Use <item>" and the quest joins your route. While you kill
+  mobs that drop such an item anyway, the step says so ("Loot Nibbled-On Book from
+  Kobold Vermin"). Uses QuestieDB's data for the newer Forever quests.
 - **The Guides menu.** Dungeons at your level come first, the rest are grouped per ten
   levels with raids apart; class quests are split into ready now, coming up and later.
   Each entry shows levels, quest count and zone, and its tooltip lists the quests with
