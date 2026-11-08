@@ -29,7 +29,8 @@ S.ITEMS = {
   { key = "gearWeights", name = "Stat weights", choices = S.WEIGHTS, tip = "Which weights judge gear. Your spec always comes from your talents (most points spent) or the choice below, never from Pawn." },
   { spec = true, name = "Spec", tip = "Detected: the talent tree with most points; below level 10 the class's leveling weights." },
   { header = "Route and map" },
-  { guide = true, name = "Dungeon guide", tip = "Every quest for a dungeon and the chains leading to them, ending at its entrance. Also in the viewer's Guides menu and /lvls guide." },
+  { guide = true, name = "Guide", tip = "A dungeon: every quest for it and the chains leading to them, ending at its entrance. A class quest chain: its quests in reach. Also in the viewer's Guides menu and /lvls guide." },
+  { key = "askClassQuests", name = "Ask about class quests", tip = "When a class quest chain becomes possible, ask whether to focus on it. Later keeps it in the Guides menu." },
   { key = "zoneFirst", name = "Finish the zone first", refresh = true },
   { key = "arrow", name = "Arrow" },
   { key = "worldMap", name = "Quest pins on the world map" },
@@ -71,12 +72,19 @@ function S.Register()
     else
       local get, setv, default, kind, choices
       if it.guide then
-        get = function() return ns.cdb and ns.cdb.guide or 0 end
-        setv = function(v) ns.SetGuide(v ~= 0 and v or nil) end
+        -- one number: a dungeon's area, a class quest chain's id negated, 0 none
+        get = function()
+          if not ns.cdb then return 0 end
+          return ns.cdb.guide or (ns.cdb.classGuide and -ns.cdb.classGuide) or 0
+        end
+        setv = function(v)
+          if v and v < 0 then ns.SetClassGuide(-v) else ns.SetGuide(v ~= 0 and v or nil) end
+        end
         default, kind = 0, Var.Number
         choices = function()
           local out = { { 0, "None: the leveling route" } }
           for _, it2 in ipairs(ns.Viewer.GuideItems()) do out[#out + 1] = { it2.area, it2.text } end
+          for _, it2 in ipairs(ns.Viewer.ClassItems()) do out[#out + 1] = { -it2.chain, "Class: " .. it2.text } end
           return out
         end
       elseif it.spec then

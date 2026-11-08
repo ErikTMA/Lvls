@@ -83,9 +83,10 @@ local function breadcrumbs(ds)
   return by
 end
 
--- The guide's quests: { set = { [id] = true }, roots = { dungeon quest ids },
--- order = { ids, prerequisites first } }.
-function D.Set(ds, char, area)
+-- A guide's quests from its main quests (roots): { set = { [id] = true }, roots =
+-- the open main quests, order = { ids, prerequisites first } }. Shared by the
+-- dungeon and the class quest guides.
+function D.Closure(ds, char, ids)
   local set, order, roots, seen = {}, {}, {}, {}
   local crumbs = breadcrumbs(ds)
   local function add(id, depth)
@@ -107,23 +108,40 @@ function D.Set(ds, char, area)
         end
         if pick then add(pick, depth + 1) end
       end
-    elseif q.prev then
+    elseif q.prevAny then
+      local any = false
+      for _, p in ipairs(q.prevAny) do if char.completed[p] then any = true end end
+      if not any then
+        for _, p in ipairs(q.prevAny) do
+          local pq = ds.quests[p]
+          if pq and usable(pq, char) then add(p, depth + 1) break end
+        end
+      end
+    elseif q.prev and not q.prevLoop then
       add(q.prev, depth + 1)
     end
     for _, b in ipairs(crumbs[id] or {}) do add(b, depth + 1) end
     set[id] = true
     order[#order + 1] = id
   end
+  for _, id in ipairs(ids) do
+    local q = ds.quests[id]
+    if q and not char.completed[id] and usable(q, char) then roots[#roots + 1] = id end
+    add(id, 0)
+  end
+  return { set = set, roots = roots, order = order }
+end
+
+-- The dungeon guide's quests: its quests and what leads to them (D.Closure).
+function D.Set(ds, char, area)
   local ids = {}
   for id, q in pairs(ds.quests) do
     if isDungeonQuest(q) and q.zone == area then ids[#ids + 1] = id end
   end
   table.sort(ids)
-  for _, id in ipairs(ids) do
-    if not char.completed[id] and usable(ds.quests[id], char) then roots[#roots + 1] = id end
-    add(id, 0)
-  end
-  return { set = set, roots = roots, order = order, area = area }
+  local g = D.Closure(ds, char, ids)
+  g.area = area
+  return g
 end
 
 -- Is the guide finished? Every quest in the set is done (or became impossible).

@@ -22,6 +22,7 @@ ns.DEFAULT_SETTINGS = {
   -- automation (Adapters/Automation.lua); hold Shift at an npc to pause it
   autoAccept = true, autoDeliver = true, autoReward = true, rewardGold = true,
   autoEquip = false, autoEquipBind = false, equipMaxQuality = 2, gearWeights = "auto",
+  askClassQuests = true, -- ask to focus on a class quest chain when it becomes possible
 }
 
 function ns.InitDB(db)
@@ -38,6 +39,7 @@ function ns.InitCharDB(cdb)
   if cdb.viewer == nil then cdb.viewer = true end
   if type(cdb.skip) ~= "table" then cdb.skip = {} end
   if type(cdb.spec) ~= "number" then cdb.spec = 0 end -- 0: from the talents
+  if type(cdb.classAsked) ~= "table" then cdb.classAsked = {} end -- class quest questions answered
   return cdb
 end
 
@@ -46,15 +48,24 @@ end
 -- was abandoned), or you took a quest it does not know about.
 ns.REPLAN_BELOW = 5
 -- The dungeon guide in use (LvlsCharDB.guide = its area): its quests, or nil.
+-- The guide in use, or nil: a dungeon (LvlsCharDB.guide = its area) or a class
+-- quest chain (LvlsCharDB.classGuide = its id).
 local function guideSet(ds)
-  local area = ns.cdb and ns.cdb.guide
+  local area, chainId = ns.cdb and ns.cdb.guide, ns.cdb and ns.cdb.classGuide
+  local before = ns.guideName -- the name it ran under (a chain's name moves on with its parts)
   ns.guide, ns.guideName = nil, nil
-  if not area then return nil end
-  local g = ns.Dungeons.Set(ds, ns.char, area)
-  local name = ns.DungeonInfo.Name(area)
-  if #g.order == 0 or ns.Dungeons.Done(ds, ns.char, g) then
-    ns.Log("info", ("%s guide: all done"):format(name))
-    ns.cdb.guide = nil
+  local g, name
+  if area then
+    g, name = ns.Dungeons.Set(ds, ns.char, area), ns.DungeonInfo.Name(area)
+  elseif chainId then
+    local chain = ns.ClassQuests.Find(ds, ns.char, chainId)
+    if chain then g, name = ns.ClassQuests.Set(ds, ns.char, chain), chain.name end
+  else
+    return nil
+  end
+  if not g or #g.order == 0 or ns.Dungeons.Done(ds, ns.char, g) then
+    ns.Log("info", ("%s guide: all done"):format(before or name or "class quest"))
+    ns.cdb.guide, ns.cdb.classGuide = nil, nil
     return nil
   end
   ns.guide, ns.guideName = g, name
@@ -76,10 +87,16 @@ local function plan(ds)
   ns.route = route
   ns.steps = ns.Steps.Build(ds, ns.char, route, ns.Game.geo)
   if g then
-    -- the guide ends at the dungeon: go in and do its quests
     local planned = {}
     for _, a in ipairs(route) do if a.kind == "accept" then planned[a.quest] = true end end
-    local st = ns.Dungeons.Step(ds, ns.char, g, ns.guideName, ns.DungeonInfo.Entrance(g.area), planned)
+    local st
+    if g.area then
+      -- the guide ends at the dungeon: go in and do its quests
+      st = ns.Dungeons.Step(ds, ns.char, g, ns.guideName, ns.DungeonInfo.Entrance(g.area), planned)
+    else
+      -- a class quest guide ends with what the route could not place
+      st = ns.ClassQuests.Step(ds, ns.char, g, ns.guideName, planned)
+    end
     if st then ns.steps[#ns.steps + 1] = st end
   end
   ns.Steps.AddFlightPaths(ns.steps, ns.flyUnknown, ns.Game.geo)
@@ -202,6 +219,7 @@ function ns.Refresh(replan)
   ns.Events.Fire("LVLS_UPDATED")
   -- the pins only when what they show can have changed (they are the costly part)
   if changed or newMap then ns.Events.Fire("LVLS_PINS") end
+  if changed and ns.AskClassQuest then ns.AskClassQuest(ds) end
 end
 
 ns.Events.On("LVLS_STATE", function()
@@ -333,7 +351,7 @@ end
 function ns.SetGuide(area)
   local ds = ns.ActiveDataset()
   if not ds or not ns.cdb then return end
-  ns.cdb.guide = area
+  ns.cdb.guide, ns.cdb.classGuide = area, nil
   ns.Viewer.view = nil
   if area then
     local g = ns.Dungeons.Set(ds, ns.char, area)
@@ -346,10 +364,88 @@ function ns.SetGuide(area)
   ns.Refresh(true)
 end
 
--- /lvls guide [<dungeon> | off]: without a name, the list
+-- Class quest chains of this character (Engine/ClassQuests.Chains).
+function ns.ClassChains()
+  local ds = ns.ActiveDataset()
+  if not ds or not ns.char then return {} end
+  return ns.ClassQuests.Chains(ds, ns.char)
+end
+
+-- Start a class quest guide (chain id) or stop it (nil).
+function ns.SetClassGuide(id)
+  local ds = ns.ActiveDataset()
+  if not ds or not ns.cdb then return end
+  ns.cdb.guide, ns.cdb.classGuide = nil, id
+  ns.Viewer.view = nil
+  local chain = id and ns.ClassQuests.Find(ds, ns.char, id)
+  if chain and #chain.reach == 0 then
+    ns.cdb.classGuide = nil
+    ns.Log("info", ("%s: not before level %d"):format(chain.name, chain.minLevel))
+    return
+  end
+  if chain then
+    ns.cdb.classAsked[ns.ClassQuests.AskKey(chain)] = true
+    local g = ns.ClassQuests.Set(ds, ns.char, chain)
+    ns.Log("info", ("%s guide: %d class quest%s, %d leading up to them"):format(chain.name, #g.roots,
+      #g.roots == 1 and "" or "s", #g.order - #g.roots))
+  elseif not id then
+    ns.Log("info", "guide stopped: back to the leveling route")
+  end
+  ns.Refresh(true)
+end
+
+-- "Later": remember the question, the chain stays in the Guides menu.
+function ns.ClassLater(id)
+  local ds = ns.ActiveDataset()
+  local chain = ds and id and ns.ClassQuests.Find(ds, ns.char, id)
+  if chain and ns.cdb then
+    ns.cdb.classAsked[ns.ClassQuests.AskKey(chain)] = true
+    ns.Log("info", ("%s: later. It is in the Guides menu and /lvls guide class"):format(chain.name))
+  end
+  ns.asking = nil
+end
+
+-- A class quest chain has just become possible: ask whether to focus on it (once
+-- per part of a chain; not during a guide, a fight or a dungeon).
+local function askClassQuest(ds)
+  if ns.asking or ns.guide or not ns.db.settings.askClassQuests then return end
+  if type(InCombatLockdown) == "function" and InCombatLockdown() then return end
+  if ns.DungeonInfo.Instance() then return end
+  local chain = ns.ClassQuests.ToAsk(ds, ns.char, ns.cdb.classAsked)
+  if not chain then return end
+  ns.asking = chain.id
+  if ns.ClassPrompt and ns.ClassPrompt.Ask(chain) then return end
+  -- no dialog: say it in the chat, and do not ask again
+  ns.cdb.classAsked[ns.ClassQuests.AskKey(chain)] = true
+  ns.asking = nil
+  ns.Log("info", ("class quest available: %s (%d quests). /lvls guide class %s to focus on it"):format(
+    chain.name, #chain.reach, chain.name:lower()))
+end
+ns.AskClassQuest = askClassQuest
+
+-- /lvls guide [<dungeon or class quest> | class [<name>] | off]: without a name, the list
 commands.guide = function(arg)
   arg = (arg or ""):lower()
   if arg == "off" or arg == "stop" then ns.SetGuide(nil) return end
+  local classArg = arg:match("^class%s*(.*)$")
+  if classArg then
+    local chains = ns.ClassChains()
+    if classArg == "" then
+      if #chains == 0 then ns.Log("info", "no class quests left for you") return end
+      for _, c in ipairs(chains) do
+        local when = c.minLevel > (ns.char.level or 1) and (" (from level %d)"):format(c.minLevel) or ""
+        ns.Log("info", ("%s%s: %d quest%s%s"):format(ns.cdb.classGuide == c.id and "> " or "", c.name, c.open,
+          c.open == 1 and "" or "s", when))
+      end
+      ns.Log("info", "/lvls guide class <name> starts one")
+      return
+    end
+    for _, c in ipairs(chains) do
+      if c.name:lower():find(classArg, 1, true) then ns.SetClassGuide(c.id) return end
+    end
+    ns.Log("info", "no class quest chain matches " .. classArg)
+    return
+  end
   local list = ns.GuideList()
   if arg == "" then
     if #list == 0 then ns.Log("info", "no dungeon has quests for you") return end
@@ -359,13 +455,16 @@ commands.guide = function(arg)
           d.minLevel or "?", d.maxLevel or "?", d.open, d.open == 1 and "" or "s"))
       end
     end
-    ns.Log("info", "/lvls guide <dungeon> starts a guide, /lvls guide off stops it")
+    ns.Log("info", "/lvls guide <dungeon> starts a guide, /lvls guide class lists class quests, /lvls guide off stops it")
     return
   end
   for _, d in ipairs(list) do
     if d.name:lower():find(arg, 1, true) then ns.SetGuide(d.area) return end
   end
-  ns.Log("info", "no dungeon with quests for you matches " .. arg)
+  for _, c in ipairs(ns.ClassChains()) do
+    if c.name:lower():find(arg, 1, true) then ns.SetClassGuide(c.id) return end
+  end
+  ns.Log("info", "no dungeon or class quest matches " .. arg)
 end
 
 commands.settings = function()
@@ -411,7 +510,7 @@ commands.weights = function(arg)
 end
 
 local TOGGLES = { accept = "autoAccept", deliver = "autoDeliver", reward = "autoReward", gold = "rewardGold",
-  equip = "autoEquip", bind = "autoEquipBind", zone = "zoneFirst", map = "worldMap", minimap = "minimap", objectives = "objectives", arrow = "arrow", low = "showLow",
+  equip = "autoEquip", bind = "autoEquipBind", zone = "zoneFirst", classask = "askClassQuests", map = "worldMap", minimap = "minimap", objectives = "objectives", arrow = "arrow", low = "showLow",
   trivial = "showTrivial", dungeon = "showDungeon", repeatable = "showRepeatable" }
 for cmd, key in pairs(TOGGLES) do
   commands[cmd] = function()
@@ -440,7 +539,7 @@ commands.debug = function()
 end
 
 commands.help = function()
-  ns.Log("info", "/lvls [show|settings|guide [dungeon|off]|route|next|skip [quest]|unskip <quest|all>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|arrow|map|minimap|objectives|low|trivial|dungeon|repeatable|debug|help]")
+  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|off]|classask|route|next|skip [quest]|unskip <quest|all>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|arrow|map|minimap|objectives|low|trivial|dungeon|repeatable|debug|help]")
 end
 
 local function slash(input)

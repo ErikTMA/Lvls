@@ -25,6 +25,10 @@ A World of Warcraft addon for questing and leveling on **WoW Forever**.
   leads up to them (prerequisites, chains, breadcrumbs), routes you through them and
   ends at the dungeon's entrance with the objectives to do inside. When you come
   out, it hands them in and goes back to leveling.
+- **Class quest guides.** When a class quest chain becomes possible (the warrior's
+  weapon quests at level 10, the druid's bear form, the hunter's pet), Lvls! asks
+  whether to focus on it: **Focus** routes you through it, **Later** keeps it in the
+  Guides menu (and `/lvls guide class`) for when you want it.
 - **Hands-free questing (each part can be switched off).** Accepts quests and hands
   them in when you talk to the npc, takes the reward that is the best upgrade for
   your class and spec (or the one that sells for most when none is), and can put on
@@ -49,6 +53,8 @@ A World of Warcraft addon for questing and leveling on **WoW Forever**.
 | `/lvls` | Show or hide the step viewer |
 | `/lvls settings` | Open the settings (also under Options, AddOns, Lvls!) |
 | `/lvls guide`, `/lvls guide <dungeon>`, `/lvls guide off` | List dungeons with quests for you, start a dungeon guide, back to leveling |
+| `/lvls guide class`, `/lvls guide class <name>` | List your class quest chains, start one |
+| `/lvls classask` | Ask about class quests when they become possible: on or off |
 | `/lvls accept`, `/lvls deliver`, `/lvls reward`, `/lvls gold` | Accept quests, hand them in, take the best reward, otherwise the most gold: on or off |
 | `/lvls equip`, `/lvls bind`, `/lvls quality <white\|green\|blue\|epic>` | Put on upgrades; also ones that bind when equipped, up to this quality |
 | `/lvls spec [auto\|<spec>]`, `/lvls weights <auto\|pawn\|lvls>`, `/lvls gear` | Spec for gear (auto: from talents), whose stat weights, and what is used now |

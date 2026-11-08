@@ -27,6 +27,33 @@ local function index(ds)
   local mapsOfArea = {}
   for a, m in pairs(ds.zones) do mapsOfArea[m] = mapsOfArea[m] or a end
   ds.areaOfMap = mapsOfArea
+  -- A series whose predecessors lead back to the quest lists alternatives one after
+  -- another (one "Heeding the Call" per druid trainer), not prerequisites: quests
+  -- in such a loop need none of each other (prevLoop); a quest whose predecessor is
+  -- in one needs any one of them (prevAny = the loop's quests).
+  for _, q in pairs(ds.quests) do
+    local seen, cur = { [q.id] = true }, q
+    for _ = 1, 60 do
+      local p = cur.prev
+      if not p then break end
+      if p == q.id then
+        local members = { q.id }
+        local m = ds.quests[q.prev]
+        while m and m.id ~= q.id do members[#members + 1] = m.id; m = ds.quests[m.prev] end
+        table.sort(members)
+        q.prevLoop, q.loop = true, members
+        break
+      end
+      if seen[p] then break end
+      seen[p] = true
+      cur = ds.quests[p]
+      if not cur then break end
+    end
+  end
+  for _, q in pairs(ds.quests) do
+    local p = q.prev and ds.quests[q.prev]
+    if p and p.prevLoop and not q.prevLoop then q.prevAny = p.loop end
+  end
 end
 
 function R.Register(flavor, ds)

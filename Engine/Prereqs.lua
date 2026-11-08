@@ -67,7 +67,11 @@ function P.Check(q, char)
     end
     return true
   end
-  if q.prev and not done(char, q.prev) then
+  if q.prevAny then
+    local any = false
+    for _, id in ipairs(q.prevAny) do if done(char, id) then any = true; break end end
+    if not any then return false, "series: needs one of " .. table.concat(q.prevAny, ","), "locked" end
+  elseif q.prev and not q.prevLoop and not done(char, q.prev) then
     return false, "series: needs " .. q.prev, "locked"
   end
   return true

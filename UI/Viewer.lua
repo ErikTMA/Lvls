@@ -215,20 +215,41 @@ function V.GuideItems()
   return items
 end
 
+-- Class quest chains for the menu: { chain, text } ("Heirloom Weapon: 5 quests",
+-- "Whirlwind Weapon: 6 quests (from level 30)").
+function V.ClassItems()
+  local items = {}
+  local level = ns.char and ns.char.level or 1
+  for _, c in ipairs(ns.ClassChains()) do
+    local when = c.minLevel > level and (" (from level %d)"):format(c.minLevel) or ""
+    items[#items + 1] = { chain = c.id, text = ("%s: %d quest%s%s"):format(c.name, c.open, c.open == 1 and "" or "s", when) }
+  end
+  return items
+end
+
 function V.GuideMenu(owner)
   local items = V.GuideItems()
   if not (MenuUtil and MenuUtil.CreateContextMenu) then
     ns.commands.guide("")
     return
   end
+  local classes = V.ClassItems()
   MenuUtil.CreateContextMenu(owner, function(_, root)
     root:CreateTitle("Dungeon guides")
     for _, it in ipairs(items) do
       root:CreateRadio(it.text, function() return ns.cdb and ns.cdb.guide == it.area end,
         function() ns.SetGuide(it.area) end, it.area)
     end
+    if #classes > 0 then
+      root:CreateDivider()
+      root:CreateTitle("Class quests")
+      for _, it in ipairs(classes) do
+        root:CreateRadio(it.text, function() return ns.cdb and ns.cdb.classGuide == it.chain end,
+          function() ns.SetClassGuide(it.chain) end, -it.chain)
+      end
+    end
     root:CreateDivider()
-    root:CreateRadio("Leveling route (no guide)", function() return not (ns.cdb and ns.cdb.guide) end,
+    root:CreateRadio("Leveling route (no guide)", function() return not (ns.cdb and (ns.cdb.guide or ns.cdb.classGuide)) end,
       function() ns.SetGuide(nil) end, 0)
   end)
 end
