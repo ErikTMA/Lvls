@@ -23,6 +23,17 @@ function PinMixin:OnAcquired(pin)
   self:SetPosition(pin.x / 100, pin.y / 100)
 end
 
+-- Blizzard's version calls SetPassThroughButtons (so a right click on a pin zooms the
+-- map out), and that is protected in combat for an addon's pins: in combat, a new pin
+-- goes without it (ADDON_ACTION_BLOCKED otherwise), and the pins are made again
+-- when the combat ends (MP.Refresh).
+local basePassthrough
+local function combat() return InCombatLockdown and InCombatLockdown() end
+function PinMixin:CheckMouseButtonPassthrough(...)
+  if combat() then MP.afterCombat = true; return end
+  if basePassthrough then return basePassthrough(self, ...) end
+end
+
 function PinMixin:OnMouseEnter()
   if not GameTooltip or not self.pin then return end
   local ds = ns.ActiveDataset()
@@ -76,6 +87,7 @@ function MP.Attach()
     or not MapCanvasDataProviderMixin or not MapCanvasPinMixin then
     return MP.provider ~= nil
   end
+  basePassthrough = MapCanvasPinMixin.CheckMouseButtonPassthrough
   for k, v in pairs(MapCanvasPinMixin) do
     if PinMixin[k] == nil then PinMixin[k] = v end
   end
@@ -86,8 +98,20 @@ function MP.Attach()
   return true
 end
 
+-- The map makes its pins itself when it opens: nothing to do while it is closed.
+-- In combat, wait for it to end.
 function MP.Refresh()
-  if MP.provider and MP.provider.GetMap and MP.provider:GetMap() then MP.provider:RefreshAllData() end
+  local map = MP.provider and MP.provider.GetMap and MP.provider:GetMap()
+  if not map or (map.IsShown and not map:IsShown()) then return end
+  if combat() then MP.afterCombat = true; return end
+  MP.afterCombat = false
+  MP.provider:RefreshAllData()
+end
+
+local combatFrame = CreateFrame and CreateFrame("Frame")
+if combatFrame then
+  combatFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+  combatFrame:SetScript("OnEvent", function() if MP.afterCombat then MP.Refresh() end end)
 end
 
 ns.Events.On("LVLS_LOADED", function() MP.Attach() end)
