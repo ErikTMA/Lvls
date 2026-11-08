@@ -7,7 +7,13 @@
 --     minRep = {factionId, value}, parent = id,
 --     classes / races = masks that replace the dataset's (QuestieDB corrects Wowhead) }
 -- Without provider data the quest's predecessor in Wowhead's linear series must be
--- completed (a weaker rule: the series also lists optional breadcrumbs).
+-- completed (a weaker rule: the series also lists optional breadcrumbs). So must it
+-- for a Forever quest (id FOREVER_FROM and up) the provider lists no prerequisites
+-- for: QuestieDB has those from Wowhead too, without prerequisites ("Stepping
+-- Stones" comes after "...and that note you found", QuestieDB says nothing).
+-- The series links quests across factions and races (the new races' "Taming the
+-- Beast" follows the dwarf's "The Hunter's Path"): a predecessor the character can
+-- never do is not required.
 local _, ns = ...
 local P = ns:NewModule("Prereqs")
 
@@ -26,7 +32,32 @@ function P.Info(qid)
   return nil
 end
 
+P.FOREVER_FROM = 76000
+
 local function done(char, id) return char.completed[id] end
+
+-- can this character ever do the quest? (unknown quest: assume so)
+local function possible(q, char, id)
+  local ds = ns.Registry and ns.Registry.DatasetOf(q)
+  local p = ds and ds.quests[id]
+  return not (p and ns.Availability.Fixed(p, char))
+end
+
+local function series(q, char)
+  if q.prevAny then
+    local any, need = false, {}
+    for _, id in ipairs(q.prevAny) do
+      if possible(q, char, id) then
+        need[#need + 1] = id
+        if done(char, id) then any = true; break end
+      end
+    end
+    if not any and #need > 0 then return false, "series: needs one of " .. table.concat(need, ","), "locked" end
+  elseif q.prev and not q.prevLoop and not done(char, q.prev) and possible(q, char, q.prev) then
+    return false, "series: needs " .. q.prev, "locked"
+  end
+  return true
+end
 local function active(char, id) return char.active and char.active[id] end
 
 -- ok (bool), reason (string when not ok), kind: "wrong" when it can never become
@@ -68,14 +99,8 @@ function P.Check(q, char)
     if info.parent and info.parent > 0 and not active(char, info.parent) then
       return false, "needs " .. info.parent .. " active", "locked"
     end
-    return true
+    local listed = (info.group and #info.group > 0) or (info.single and #info.single > 0)
+    if listed or (q.id or 0) < P.FOREVER_FROM then return true end
   end
-  if q.prevAny then
-    local any = false
-    for _, id in ipairs(q.prevAny) do if done(char, id) then any = true; break end end
-    if not any then return false, "series: needs one of " .. table.concat(q.prevAny, ","), "locked" end
-  elseif q.prev and not q.prevLoop and not done(char, q.prev) then
-    return false, "series: needs " .. q.prev, "locked"
-  end
-  return true
+  return series(q, char)
 end

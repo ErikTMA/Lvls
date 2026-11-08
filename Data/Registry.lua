@@ -20,6 +20,10 @@ end
 -- text is "(PH) Thanks!", Questie blacklists it).
 R.PLACEHOLDER_IDS = { [93928] = true }
 
+-- the dataset a quest belongs to (Prereqs looks up a quest's predecessor)
+local owner = setmetatable({}, { __mode = "k" })
+function R.DatasetOf(q) return q and owner[q] end
+
 -- giver / turn-in indexes: npc or object id -> { questId, ... }
 local function index(ds)
   local startsN, startsO, endsN, endsO = {}, {}, {}, {}
@@ -30,6 +34,7 @@ local function index(ds)
   end
   for qid, q in pairs(ds.quests) do
     q.id = qid
+    owner[q] = ds
     if R.IsPlaceholder(q.n) or R.PLACEHOLDER_IDS[qid] then q.unused = true end
     for _, i in ipairs(q.sn or {}) do add(startsN, i, qid) end
     for _, i in ipairs(q.so or {}) do add(startsO, i, qid) end
