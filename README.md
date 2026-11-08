@@ -43,8 +43,9 @@ A World of Warcraft addon for questing and leveling on **WoW Forever**.
   those quests and every quest you need before them. Your friend is asked whether to
   follow your route to help, and their arrow and viewer go where you go. Both of
   you need the same Lvls! version.
-- **Hands-free questing (each part can be switched off).** Accepts quests and hands
-  them in when you talk to the npc, takes the reward that is the best upgrade for
+- **Hands-free questing (each part can be switched off).** Accepts the quests your
+  route or guide tells you to pick up (others are left to you) and hands quests in
+  when you talk to the npc, takes the reward that is the best upgrade for
   your class and spec (or the one that sells for most when none is), and can put on
   upgrades from your bags out of combat. Items that bind when equipped are only put
   on up to a quality you choose: a blue that drops stays in your bags unless you

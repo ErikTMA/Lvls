@@ -3,7 +3,7 @@
 -- Client calls (forever 1.60.1; wow-ui-source branch forever, QuestFrame.lua,
 -- GossipFrameShared.lua, GameDialogDefs.lua):
 --   QUEST_DETAIL: AcceptQuest() (QuestGetAutoAccept(): AcknowledgeAutoAcceptQuest())
---   QUEST_ACCEPT_CONFIRM: ConfirmAcceptQuest()
+--   QUEST_ACCEPT_CONFIRM(name, questTitle, questID): ConfirmAcceptQuest()
 --   GOSSIP_SHOW: C_GossipInfo.GetActiveQuests / GetAvailableQuests -> { questID,
 --     isComplete, isTrivial, isIgnored }, SelectActiveQuest(questID) / SelectAvailableQuest(questID)
 --   QUEST_GREETING: GetNumActiveQuests, GetActiveTitle(i) -> title, isComplete,
@@ -25,10 +25,23 @@ local function skipped(qid) return qid and ns.cdb and ns.cdb.skip and ns.cdb.ski
 
 -- quests --------------------------------------------------------------------
 
+-- Is the quest one the plan tells you to pick up now or later (an open "Accept" /
+-- "Pick up" line: the leveling route, a dungeon or class guide, a catch-up)? Only
+-- those are accepted automatically; anything else is yours to decide.
+function A.Planned(qid)
+  if not qid then return false end
+  for _, st in ipairs(ns.steps or {}) do
+    for _, l in ipairs(st.lines or {}) do
+      if l.kind == "accept" and l.quest == qid and not l.done then return true end
+    end
+  end
+  return false
+end
+
 function A.OnDetail()
   if not set("autoAccept") or paused() then return end
   local qid = type(GetQuestID) == "function" and GetQuestID() or nil
-  if skipped(qid) then return end
+  if skipped(qid) or not A.Planned(qid) then return end
   -- a quest that flags you for PvP keeps its confirmation: yours to accept
   if type(QuestFlagsPVP) == "function" and QuestFlagsPVP() then return end
   if type(QuestGetAutoAccept) == "function" and QuestGetAutoAccept() then
@@ -38,14 +51,15 @@ function A.OnDetail()
   AcceptQuest()
 end
 
-function A.OnAcceptConfirm()
-  if not set("autoAccept") or paused() then return end
+-- a group member shares an escort quest: QUEST_ACCEPT_CONFIRM(name, questTitle, questID)
+function A.OnAcceptConfirm(_, _, qid)
+  if not set("autoAccept") or paused() or not A.Planned(qid) then return end
   ConfirmAcceptQuest()
   if type(StaticPopup_Hide) == "function" then StaticPopup_Hide("QUEST_ACCEPT") end
 end
 
 local function wanted(qid, trivial, ignored)
-  if skipped(qid) or ignored then return false end
+  if skipped(qid) or ignored or not A.Planned(qid) then return false end
   return not trivial or set("showTrivial")
 end
 
@@ -197,7 +211,7 @@ end
 
 local HANDLERS = {
   QUEST_DETAIL = function() A.OnDetail() end,
-  QUEST_ACCEPT_CONFIRM = function() A.OnAcceptConfirm() end,
+  QUEST_ACCEPT_CONFIRM = function(...) A.OnAcceptConfirm(...) end,
   GOSSIP_SHOW = function() A.OnGossip() end,
   QUEST_GREETING = function() A.OnGreeting() end,
   QUEST_PROGRESS = function() A.OnProgress() end,

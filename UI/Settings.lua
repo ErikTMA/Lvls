@@ -18,7 +18,7 @@ S.WEIGHTS = { { "auto", "Pawn when it has a scale for my spec, else Lvls" }, { "
 -- Everything on the page, in order. key: LvlsDB.settings key; refresh: re-plan.
 S.ITEMS = {
   { header = "Quests" },
-  { key = "autoAccept", name = "Accept quests", tip = "Accept quests when an npc offers them (not skipped ones, not PvP ones). Hold Shift to pause." },
+  { key = "autoAccept", name = "Accept the quests the guide picks", tip = "Accept a quest when an npc offers it and the plan (route, guide, catch-up) tells you to pick it up. Other quests are left to you. Hold Shift to pause." },
   { key = "autoDeliver", name = "Hand in quests", tip = "Hand in finished quests when you talk to the npc." },
   { key = "autoReward", name = "Choose the best reward", tip = "Take the reward that is the biggest upgrade you can use, judged for your class and spec." },
   { key = "rewardGold", name = "Otherwise the most gold", tip = "When no reward is a usable upgrade, take the one that sells for most." },
