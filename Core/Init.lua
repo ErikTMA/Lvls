@@ -16,7 +16,7 @@ function ns.ActiveDataset()
 end
 
 ns.DEFAULT_SETTINGS = {
-  worldMap = true, mapRoute = true, minimap = true, objectives = true, arrow = true, nativeArrow = false,
+  worldMap = true, mapRoute = true, minimap = true, objectives = true, arrow = true, nativeArrow = false, groundRoute = true,
   showLow = true, showTrivial = false, showDungeon = false, showRepeatable = false,
   zoneFirst = true, debug = false,
   -- automation (Adapters/Automation.lua); hold Shift at an npc to pause it
@@ -273,6 +273,11 @@ function ns.RefreshTravel()
   end
   local spot, title = ns.Travel.NextSpot(ns.trip)
   if ns.trip and #ns.trip.legs > 1 then ns.Arrow.SetLeg(spot, title) else ns.Arrow.SetLeg(nil) end
+  -- the way on foot to where the arrow points now (around walls, up the hill)
+  if ns.Ground then
+    local ok, err = pcall(ns.Ground.Want, goal and (spot or goal) or nil)
+    if not ok then ns.Log("debug", "ground route: " .. tostring(err)) end
+  end
 end
 
 local function unplanned(ds)

@@ -18,6 +18,7 @@ MR.MERGE = 0.004   -- points this close on the map (0..1) are one waypoint ("3-4
 MR.DOT = 18        -- dot size and line thickness on screen, whatever the zoom
 MR.LINE = 3
 local ACCENT = { 1, 0.48, 0.1 }
+MR.ACCENT = ACCENT
 local AHEAD_COLOR = { 1, 0.86, 0.55 }
 
 -- The waypoints of `steps` from step `from` on, placed on a map. Pure.
@@ -134,7 +135,8 @@ function MR.Draw(map)
   local mapID = map and map.GetMapID and map:GetMapID()
   if not mapID then return {} end
   ensureLayer(map)
-  MR.drawn = { steps = ns.steps, from = ns.stepIndex, trip = ns.trip, map = mapID, on = enabled() }
+  local way = ns.Ground and ns.Ground.Leading() or nil
+  MR.drawn = { steps = ns.steps, from = ns.stepIndex, trip = ns.trip, map = mapID, on = enabled(), way = way }
   local pts = {}
   if enabled() and ns.steps and ns.stepIndex then
     pts = MR.Points(ns.steps, ns.stepIndex, function(spot) return ns.Game.geo.onMap(spot, mapID) end, lead())
@@ -173,10 +175,11 @@ function MR.Draw(map)
     end
   end
   hideFrom(layer.dots, #pts + 1)
-  -- from where you stand to the first waypoint
+  -- from where you stand to the first waypoint (the way on foot draws that stretch
+  -- itself when it leads there, around the walls: UI/Ground.lua)
   layer.playerLine = nil
   local first = pts[1]
-  if first and (first.current or first.travel) and not first.gap then
+  if first and (first.current or first.travel) and not first.gap and not way then
     local px, py = playerXY(mapID)
     if px then
       nl = nl + 1
@@ -195,7 +198,8 @@ function MR.Tick()
   if not map or not layer then return end
   local d = MR.drawn or {}
   local mapID = map:GetMapID()
-  if d.steps ~= ns.steps or d.from ~= ns.stepIndex or d.trip ~= ns.trip or d.map ~= mapID or d.on ~= enabled() then
+  if d.steps ~= ns.steps or d.from ~= ns.stepIndex or d.trip ~= ns.trip or d.map ~= mapID or d.on ~= enabled()
+    or d.way ~= (ns.Ground and ns.Ground.Leading() or nil) then
     MR.Draw(map)
     return
   end

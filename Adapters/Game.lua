@@ -157,6 +157,25 @@ G.geo = {
     if not has(C_Map, "GetMapWorldSize") then return nil end
     return C_Map.GetMapWorldSize(map)
   end,
+  -- world() without the cache, for a position that keeps moving (the player's)
+  worldNow = function(map, x, y)
+    if not has(C_Map, "GetWorldPosFromMapPos") or not CreateVector2D then return nil end
+    local cont, pos = C_Map.GetWorldPosFromMapPos(map, CreateVector2D(x / 100, y / 100))
+    if not cont or not pos then return nil end
+    if pos.GetXY then return cont, pos:GetXY() end
+    return cont, pos.x, pos.y
+  end,
+  -- the other way: world yards on a continent -> map percent on `map` (may lie
+  -- outside 0..100 when the place is not on that map), or nil
+  mapPos = function(cont, wx, wy, map)
+    if not has(C_Map, "GetMapPosFromWorldPos") or not CreateVector2D then return nil end
+    local _, v = C_Map.GetMapPosFromWorldPos(cont, CreateVector2D(wx, wy), map)
+    if not v then return nil end
+    local x, y
+    if v.GetXY then x, y = v:GetXY() else x, y = v.x, v.y end
+    if not x or not y then return nil end
+    return x * 100, y * 100
+  end,
 }
 
 -- The same spot on the zone map it lies in, or nil (already a zone's, an instance,
@@ -238,7 +257,13 @@ function G.Waypoint(spot, title)
   if not spot then return false end
   if ns.Arrow then ns.Arrow.SetTarget(spot, title, true) end
   if not (ns.db and ns.db.settings.nativeArrow) then return true end
-  if not has(C_Map, "SetUserWaypoint") or not UiMapPoint then return false end
+  return G.NativeWaypoint(spot)
+end
+
+-- The client's own map pin + super-tracked marker (drawn in the world, with its
+-- distance) at a spot. The way on foot (UI/Ground.lua) moves it corner to corner.
+function G.NativeWaypoint(spot)
+  if not spot or not has(C_Map, "SetUserWaypoint") or not UiMapPoint then return false end
   if has(C_Map, "CanSetUserWaypointOnMap") and not C_Map.CanSetUserWaypointOnMap(spot.map) then return false end
   C_Map.SetUserWaypoint(UiMapPoint.CreateFromCoordinates(spot.map, spot.x / 100, spot.y / 100))
   if has(C_SuperTrack, "SetSuperTrackedUserWaypoint") then C_SuperTrack.SetSuperTrackedUserWaypoint(true) end

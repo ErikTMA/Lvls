@@ -155,6 +155,7 @@ function AR.SetTarget(spot, title, manual, lines)
   AR.inArea, AR.areaAt, AR.arrived = false, nil, false
   if not spot then
     AR.goal, AR.target = nil, nil
+    if ns.Ground then ns.Ground.Want(nil) end
   else
     AR.goal = { map = spot.map, x = spot.x, y = spot.y, title = title, manual = manual, lines = lines }
     AR.target = AR.goal
@@ -257,6 +258,13 @@ function AR.Update()
   end
   frame.here:Hide()
   frame.arrow:Show()
+  -- the way on foot (UI/Ground.lua): point at its next corner, count the yards along it
+  local c, left
+  if ns.Ground then c, left = ns.Ground.Next(pos) end
+  if c then
+    local ce, cn = AR.Vector(pos, c, ns.Game.geo)
+    if ce then east, north, d = ce, cn, left or d end
+  end
   local rot = AR.Rotation(east, north, GetPlayerFacing and GetPlayerFacing() or 0)
   if frame.arrow.SetRotation then frame.arrow:SetRotation(rot) end
   local r, g, b = AR.Color(rot)
