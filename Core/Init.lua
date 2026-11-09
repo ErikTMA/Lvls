@@ -23,6 +23,7 @@ ns.DEFAULT_SETTINGS = {
   autoAccept = true, autoDeliver = true, autoReward = true, rewardGold = true,
   autoEquip = false, autoEquipBind = false, equipMaxQuality = 2, gearWeights = "auto",
   classQuests = true,    -- class quests in the leveling route (Engine/Route), marked with the class
+  trainSteps = true,     -- go to your class trainer when spells wait there (Engine/Training)
   learnFights = true,    -- record fights (Adapters/FightLog) to learn what is hard for you
   groupSync = true,      -- tell group members with Lvls! your quest state (Adapters/GroupSync)
   askSync = true,        -- ask to catch up / to follow when it makes sense
@@ -230,6 +231,8 @@ local function plan(ds, forced)
     grind = ns.db.settings.suggestGrind,
     classQuests = ns.db.settings.classQuests,
     groupMargin = elite and 3 or 0,
+    training = ns.db.settings.trainSteps and char.training and {
+      afford = char.training.afford, trainers = ns.Training.Trainers(ds, char.class, char.faction) } or nil,
   }
   if ns.steps and ns.planAsync ~= false then
     ns.planJob = { job = ns.Util.Job(ns.Route.Plan, ds, char, ns.Game.geo, opts), ds = ds, g = g, char = char,
@@ -346,6 +349,9 @@ function ns.Refresh(replan)
   local ds = ns.ActiveDataset()
   if not ds then return end
   ns.char = ns.Game.Character()
+  -- what waits at your class trainer (Engine/Training), and when you last had one open
+  ns.char.training = try("training", ns.TrainingData.Summary, ns.char.level)
+  ns.char.trainedAt = ns.cdb and ns.cdb.trainer and ns.cdb.trainer.time or nil
   try("dungeon tracking", ns.DungeonInfo.Track, ns.char.pos)
   ns.travelCtx = try("travel", ns.TravelData.Context, ds, ns.char) or ns.travelCtx
   local known, unknown
@@ -828,7 +834,7 @@ commands.weights = function(arg)
 end
 
 local TOGGLES = { accept = "autoAccept", deliver = "autoDeliver", reward = "autoReward", gold = "rewardGold",
-  equip = "autoEquip", bind = "autoEquipBind", zone = "zoneFirst", classquests = "classQuests",
+  equip = "autoEquip", bind = "autoEquipBind", zone = "zoneFirst", classquests = "classQuests", trainsteps = "trainSteps",
   grind = "suggestGrind", learn = "learnFights", groupsync = "groupSync", asksync = "askSync", map = "worldMap", mapline = "mapRoute", minimap = "minimap", objectives = "objectives", arrow = "arrow", low = "showLow",
   trivial = "showTrivial", dungeon = "showDungeon", repeatable = "showRepeatable" }
 for cmd, key in pairs(TOGGLES) do
@@ -838,6 +844,21 @@ for cmd, key in pairs(TOGGLES) do
     ns.Log("info", ("%s %s"):format(cmd, ns.db.settings[key] and "on" or "off"))
     ns.Refresh(key == "zoneFirst")
   end
+end
+
+-- /lvls train: what waits at your class trainer
+commands.train = function()
+  local t = ns.char and ns.char.training
+  if not t then ns.Log("info", "nothing known about your trainer yet: open a class trainer's window once"); return end
+  local line = ns.Training.Line(t, ns.TrainingData.Money())
+  ns.Log("info", line or ("nothing to train now" .. (t.nextLevel and (", next at level %d"):format(t.nextLevel) or "")))
+  for _, e in ipairs(t.spells) do
+    ns.Log("info", ("  %s%s (level %d, %s)%s"):format(e.n, e.rank and (" " .. e.rank) or "", e.l or 0,
+      e.kind == "new" and "new" or e.kind == "used" and "on your bars" or "not on your bars",
+      e.c > 0 and (", " .. ns.Util.money(e.c)) or ""))
+  end
+  if t.source == "spellbook" then ns.Log("info", "  (from the spellbook: open a class trainer's window once for ranks and costs)") end
+  if t.nextLevel then ns.Log("info", ("  next at level %d"):format(t.nextLevel)) end
 end
 
 commands.record = function(arg) ns.TravelData.Record(arg) end
@@ -858,7 +879,7 @@ commands.debug = function()
 end
 
 commands.help = function()
-  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|items [lock|unlock|reset]|arrow|map|minimap|objectives|low|trivial|dungeon|repeatable|debug|help]")
+  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|items [lock|unlock|reset]|arrow|map|minimap|objectives|low|trivial|dungeon|repeatable|debug|help]")
 end
 
 local function slash(input)

@@ -14,6 +14,9 @@
 -- step = { kind = "talk" | "work", spot = {map, x, y}, title, lines = {
 --   { kind = "accept" | "turnin" | "kill" | "collect" | "object" | "event",
 --     quest, index, text, have, need, done, also } } }
+-- plus "grind", "use" and "train" steps (Route's grind / train actions; a train
+-- step is done once you had a class trainer open after it was planned, or nothing
+-- you can pay for is waiting any more).
 local _, ns = ...
 local S = ns:NewModule("Steps")
 local G = ns.Geo
@@ -72,6 +75,11 @@ function S.LineState(ds, char, line)
     if char.level == line.level - 1 and char.xpMax and char.xpMax > 0 then line.have, line.need = char.xp or 0, char.xpMax end
     return false
   end
+  if line.kind == "train" then
+    if (char.trainedAt or 0) > (line.after or 0) then return true end
+    local t = char.training
+    return not t or (t.afford or 0) < ns.Training.PASS
+  end
   if line.starter then
     -- loot the item that starts a quest: done once it is in your bags (or the quest is on)
     return (char.bag and char.bag[line.starter]) or (char.active and char.active[line.quest] and true)
@@ -117,6 +125,14 @@ function S.Build(ds, char, route, geo)
       cur = { kind = "grind", spot = a.spot, title = ("Grind to level %d"):format(a.level), level = a.level - 1,
         lines = { { kind = "grind", level = a.level, npc = a.npc,
           text = ("Kill %s until level %d (about %d)"):format(a.name or "mobs", a.level, a.kills or 0) } } }
+      steps[#steps + 1] = cur
+      cur = nil
+    elseif a.kind == "train" then
+      -- "Train at Jaxon": its own step, at the trainer
+      local t = char.training
+      cur = { kind = "train", spot = a.spot, title = "Train at " .. (a.name or "your class trainer"), level = a.level,
+        lines = { { kind = "train", after = char.trainedAt or 0,
+          text = t and t.count > 0 and ns.Training.StepText(t) or "Learn your new spells" } } }
       steps[#steps + 1] = cur
       cur = nil
     elseif q and a.kind == "accept" and a.spot and a.spot.kind == "item" then
@@ -172,8 +188,8 @@ function S.Build(ds, char, route, geo)
         l.opens = nil
       end
     end
-    local name = st.kind ~= "grind" and st.kind ~= "use" and placeName(ds, st.spot)
-    if st.kind == "grind" or st.kind == "use" then
+    local name = st.kind ~= "grind" and st.kind ~= "use" and st.kind ~= "train" and placeName(ds, st.spot)
+    if st.kind == "grind" or st.kind == "use" or st.kind == "train" then
       -- titled when built
     elseif st.kind == "talk" then
       st.title = name and ("Talk to " .. name) or "Talk"
@@ -328,7 +344,7 @@ end
 -- Line icon names in Media/Icons.tga (32 px icons, see UI/Viewer.lua).
 S.ICON = { accept = "accept", turnin = "turnin", kill = "kill", collect = "collect",
   object = "goto", event = "goto", talk = "talk", work = "goto", fpath = "fly", fly = "fly",
-  transit = "transit", hearth = "hearth", enter = "enter", path = "path", dungeon = "enter", grind = "kill", follow = "goto", use = "accept" }
+  transit = "transit", hearth = "hearth", enter = "enter", path = "path", dungeon = "enter", grind = "kill", follow = "goto", use = "accept", train = "talk" }
 
 -- Is the plan still good from the current step on? False when an open line can no
 -- longer happen: a quest to accept became impossible for this character, or a quest

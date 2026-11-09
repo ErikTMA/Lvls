@@ -78,6 +78,7 @@ function V.Model(ds, char, steps, current, view, base)
   local nxt = steps[i + 1]
   if nxt then m.next = nxt.title .. ": " .. (nxt.lines[1] and nxt.lines[1].text or "") end
   m.backlog = V.Backlog(ds, ns.backlog)
+  m.train = V.Train(char and char.training)
   return m
 end
 
@@ -95,6 +96,13 @@ function V.Backlog(ds, list)
   if #maps > 0 then t = t .. " (" .. table.concat(maps, ", ", 1, math.min(#maps, 3)) .. (#maps > 3 and ", ..." or "") .. ")" end
   if grey > 0 then t = t .. (", %d grey: abandon to free the log"):format(grey) end
   return t
+end
+
+-- On the experience bar: "3 to train" ("worth a trip" when it is), nil with nothing
+-- you can pay for waiting at your trainer. /lvls train lists them.
+function V.Train(t)
+  if not t or t.count == 0 or (t.afford or 0) < ns.Training.PASS then return nil end
+  return ("%d to train%s"):format(t.count, t.worth == "trip" and ", worth a trip" or "")
 end
 
 local function bg(f, c)
@@ -395,7 +403,8 @@ function V.Render()
   local xpMax = char.xpMax or 0
   local p = xpMax > 0 and math.min(1, (char.xp or 0) / xpMax) or 0
   frame.xp.fill:SetWidth(math.max(1, (V.WIDTH - 8) * p))
-  frame.xp.text:SetText(("Level %d  %d / %d xp"):format(char.level or 0, char.xp or 0, xpMax))
+  frame.xp.text:SetText(("Level %d  %d / %d xp"):format(char.level or 0, char.xp or 0, xpMax)
+    .. (m.train and ("  ·  " .. m.train) or ""))
   frame:SetHeight(22 + 4 + stepH + 20 + 18)
 end
 

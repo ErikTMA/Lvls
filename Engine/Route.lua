@@ -26,6 +26,11 @@
 --      Turn-ins add experience (reduced for quests below the simulated level),
 --      level the simulation up, and complete the quest, which unlocks its
 --      follow-ups through the normal prerequisite rules.
+--      opts.training (Engine/Training: what a trainer of your class has waiting,
+--      and the trainers): a "train" action at the nearest one, once per plan,
+--      worth trainShare of a level's experience per point of what you can pay for,
+--      so it is taken when the route passes a trainer or goes to the city anyway,
+--      and a trip of its own once enough waits.
 -- With opts.travel (Engine/Travel), long walks are priced by the fastest trip:
 -- a known flight path makes a far quest hub cheap.
 -- The route therefore follows chains and stays in an area while it pays, and moves
@@ -77,6 +82,9 @@ R.DEFAULTS = {
   classQuests = true,  -- class quests in the route (their order kept, farther trips allowed)
   classWeight = 2,     -- a class quest counts this much more than its experience (spells, forms, pets)
   classMaxSecs = 1800, -- travel seconds a class quest may be away (instead of maxSecs)
+  training = nil,      -- { afford = points (Engine/Training), trainers = { spot, ... } }
+  trainShare = 0.03,   -- a point of training is worth this share of the level's experience
+  trainSecs = 30,      -- seconds at the trainer
 }
 
 -- Experience a quest gives at a character level (classic reduction: 20% less per
@@ -456,6 +464,11 @@ function R.Plan(ds, char, geo, opts)
     return w
   end
 
+  -- training: once, at the nearest trainer of your class
+  local trainAt = not o.focus and o.training and (o.training.afford or 0) >= ns.Training.PASS
+    and o.training.trainers and #o.training.trainers > 0 and o.training.trainers or nil
+  local trained = false
+
   local steps = {}
   local pool = {}
   for qid, q in pairs(ds.quests) do
@@ -631,6 +644,17 @@ function R.Plan(ds, char, geo, opts)
       yield()
       offer({ kind = "accept", quest = a.quest, spot = a.spot }, a.secs + 3, 3 + workSecs[a.quest])
     end
+    if trainAt and not trained then
+      local spot, d = G.Nearest(geo, pos, trainAt)
+      local secs = spot and d < math.huge and travelSecs(o, pos, spot, d) or math.huge
+      if secs <= math.max(o.maxSecs, o.classMaxSecs) then
+        local action = { kind = "train", spot = spot, npc = spot.id, name = spot.name }
+        local levelXP = (st.level == char.level and char.xpMax) or R.XP_TO_LEVEL[st.level] or 0
+        cands[#cands + 1] = { action = action, score = secs + back(action), secs = secs,
+          adds = secs + (#work > 0 and (tour(spot, action) - tourNow) or 0), effort = o.trainSecs,
+          worth = o.training.afford * o.trainShare * levelXP }
+      end
+    end
     best = R.Choose(cands, pos, o, point, gain)
     -- nothing left close by but quests the margin holds back: grind the next level
     if not here then
@@ -663,6 +687,8 @@ function R.Plan(ds, char, geo, opts)
     local q = ds.quests[best.quest]
     if best.kind == "grind" then
       st.level, st.xp, sim.level = best.level, 0, best.level
+    elseif best.kind == "train" then
+      trained = true
     elseif best.kind == "accept" then
       sim.active[q.id] = { simulated = true }
       progress[q.id] = {}
@@ -751,6 +777,7 @@ function R.Describe(ds, step)
   if step.kind == "grind" then
     return ("Grind to level %d: %s (about %d kills)"):format(step.level, step.name or "mobs", step.kills or 0)
   end
+  if step.kind == "train" then return "Train at " .. (step.name or "your class trainer") end
   local q = ds.quests[step.quest]
   local name = q and q.n or ("quest " .. step.quest)
   if step.kind == "accept" then return "Accept: " .. name end

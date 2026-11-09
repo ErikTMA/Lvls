@@ -24,6 +24,7 @@
 --   zones    [areaId] = uiMapId
 --   maps     [uiMapId] = name
 --   travel   { fly = {npcIds}, zeppelin = {...}, ship = {...}, inn = {...} } (optional)
+--   trainers [classId] = {npcIds}: class trainers (UnitClass' third value) (optional)
 -- A packed point is x*10*1000 + y*10 (map percent, tenths).
 local _, ns = ...
 local S = ns:NewModule("Schema")
@@ -122,6 +123,13 @@ function S.Validate(ds)
     if type(ds.travel) ~= "table" then err("travel") else
       for kind, ids in pairs(ds.travel) do
         if not idList(ids) then err("travel " .. tostring(kind)) end
+      end
+    end
+  end
+  if ds.trainers ~= nil then
+    if type(ds.trainers) ~= "table" then err("trainers") else
+      for cls, ids in pairs(ds.trainers) do
+        if not isInt(cls) or not idList(ids) then err("trainers " .. tostring(cls)) end
       end
     end
   end

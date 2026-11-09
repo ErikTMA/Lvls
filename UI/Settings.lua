@@ -36,6 +36,7 @@ S.ITEMS = {
   { key = "askSync", name = "Ask to catch up / to help", tip = "When a member has done quests you have not, ask whether to catch up; when one wants to catch up with you, ask whether to follow their route." },
   { header = "Route and map" },
   { guide = true, name = "Guide", tip = "A dungeon: every quest for it and the chains leading to them, ending at its entrance. A class quest chain: its quests in reach. Also in the viewer's Guides menu and /lvls guide." },
+  { key = "trainSteps", name = "Train in the route", tip = "When spells, forms or new ranks wait at your class trainer, the route goes there: on the way when you pass one, a trip of its own once enough waits. Lvls! learns what your trainer teaches the first time you open its window.", refresh = true },
   { key = "classQuests", name = "Class quests in the route", tip = "The leveling route takes your class quests (spells, forms, pets, weapons) as they become possible, in their order, marked with your class. The Guides menu does a whole chain at once.", refresh = true },
   { key = "zoneFirst", name = "Finish the zone first", refresh = true },
   { key = "arrow", name = "Arrow" },
