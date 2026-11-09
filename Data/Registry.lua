@@ -76,6 +76,32 @@ local function index(ds)
     local p = q.prev and ds.quests[q.prev]
     if p and p.prevLoop and not q.prevLoop then q.prevAny = p.loop end
   end
+  -- Alternatives: quests of one name leading to the same next quest are one step
+  -- from different givers (three "The Hunter's Path" for a dwarf hunter, "The New
+  -- Frontier" from three trainers), and so are the quests of a loop. One taken, the
+  -- others are not for you (q.alts: the other ids; Engine/Prereqs).
+  local groups = {}
+  for id, q in pairs(ds.quests) do
+    if q.next and q.n then
+      local k = q.n .. "\0" .. q.next
+      groups[k] = groups[k] or {}
+      table.insert(groups[k], id)
+    end
+  end
+  local function addAlts(list)
+    if #list < 2 then return end
+    for _, id in ipairs(list) do
+      local q, seen = ds.quests[id], {}
+      q.alts = q.alts or {}
+      for _, a in ipairs(q.alts) do seen[a] = true end
+      for _, other in ipairs(list) do
+        if other ~= id and not seen[other] then table.insert(q.alts, other); seen[other] = true end
+      end
+      table.sort(q.alts)
+    end
+  end
+  for _, list in pairs(groups) do addAlts(list) end
+  for _, q in pairs(ds.quests) do if q.loop then addAlts(q.loop) end end
 end
 
 function R.Register(flavor, ds)

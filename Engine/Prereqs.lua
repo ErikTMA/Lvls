@@ -65,6 +65,13 @@ local function active(char, id) return char.active and char.active[id] end
 -- profession missing), "locked" when a prerequisite can still be done
 function P.Check(q, char)
   local info = P.Info(q.id)
+  -- one of its alternatives taken (Data/Registry: q.alts), unless the provider says
+  -- which quests exclude it
+  if q.alts and not (info and info.excl and #info.excl > 0) then
+    for _, id in ipairs(q.alts) do
+      if done(char, id) or active(char, id) then return false, "alternative " .. id .. " taken", "wrong" end
+    end
+  end
   if info then
     if info.group and #info.group > 0 then
       for _, id in ipairs(info.group) do

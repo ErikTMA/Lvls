@@ -259,11 +259,12 @@ end
 --   pick up anywhere, the cheapest action (accepted work in walking order).
 --   Worth beyond the pick-ups (c.worth, from R.Plan): an overdue quest in the log,
 --   a hand-in that opens a chain, a class quest. A plain hand-in still adds none.
---   zoneFirst: a destination on another map is charged leaveSecs, so it wins only
---   when it is clearly worth more; while the log has work on this map (objectives,
---   hand-ins), pick-ups elsewhere do not count at all, only worth beyond them (a
---   chain, an overdue or class quest); and before leaving, finished quests handed
---   in on this map come first.
+--   zoneFirst: while the log has work on this map (objectives, hand-ins), the route
+--   stays: nothing elsewhere counts, not even a chain, an overdue or a class quest
+--   (each of them pulled it away with open work left behind, and back again later).
+--   With only pick-ups left here, a destination on another map is charged leaveSecs,
+--   so it wins only when it is clearly worth more; and before leaving, finished
+--   quests handed in on this map come first.
 -- point(spot) -> { continent, x, y } in yards; gain(questId) -> experience.
 function R.Choose(cands, pos, o, point, gain)
   local near, far = nil, {}
@@ -286,7 +287,7 @@ function R.Choose(cands, pos, o, point, gain)
     end
     if not hub then
       hub = { p = p, map = c.action.spot.map, secs = c.secs, effort = 0, quests = {}, worths = {}, xp = 0,
-        extra = 0, first = c, members = {} }
+        first = c, members = {} }
       hubs[#hubs + 1] = hub
     end
     hub.members[#hub.members + 1] = c
@@ -300,7 +301,6 @@ function R.Choose(cands, pos, o, point, gain)
     if (c.worth or 0) > 0 and not hub.worths[wk] then
       hub.worths[wk] = true
       hub.xp = hub.xp + c.worth
-      hub.extra = hub.extra + c.worth
     end
     if (c.action.kind == "do" or c.action.kind == "turnin") and c.action.spot.map == pos.map then workHere = true end
     if c.score < hub.first.score then hub.first = c end
@@ -312,14 +312,14 @@ function R.Choose(cands, pos, o, point, gain)
     for _, c in ipairs(h.members) do if not adds or c.adds < adds then adds = c.adds end end
     local away = h.map ~= pos.map and leave or 0
     h.cost = math.max(1, adds) + h.effort + away
-    -- work of the log left here: pick-ups elsewhere wait for it (it adds no worth
-    -- of its own, so they would always win); a chain, an overdue quest, a class
-    -- quest or training elsewhere still may pull the route away (charged leaveSecs)
-    local xp = (o.zoneFirst and workHere and h.map ~= pos.map) and h.extra or h.xp
-    h.rate = xp / h.cost
-    if xp > 0 and (not bestRate or h.rate > bestRate) then best, bestRate = h, h.rate end
-    local score = h.first.score + away
-    if not cheapest or score < cheapestScore then cheapest, cheapestScore = h, score end
+    h.rate = h.xp / h.cost
+    -- work of the log left here: the route does not leave (it adds no worth of its
+    -- own, so anything worth something elsewhere would always win)
+    if not (o.zoneFirst and workHere and h.map ~= pos.map) then
+      if h.xp > 0 and (not bestRate or h.rate > bestRate) then best, bestRate = h, h.rate end
+      local score = h.first.score + away
+      if not cheapest or score < cheapestScore then cheapest, cheapestScore = h, score end
+    end
   end
   R.lastHubs = hubs -- for debugging and tests
   local pick = (best or cheapest).first

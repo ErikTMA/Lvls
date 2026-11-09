@@ -110,9 +110,15 @@ function TR.Hearth()
   return { spot = h.spot, name = (GetBindLocation and GetBindLocation()) or h.name }
 end
 
--- shipped (Data/forever/Travel.lua) + learned
-function TR.Transit()
-  local out = {}
+-- from the client's tables (Data/forever/Transports.lua: boats, zeppelins, the tram;
+-- a link with a side is for that faction only) + shipped hints (Data/forever/Travel.lua)
+-- + learned
+local SIDES = { Alliance = "A", Horde = "H" }
+function TR.Transit(faction)
+  local out, side = {}, SIDES[faction]
+  for _, l in ipairs(ns.TravelTransports or {}) do
+    if not l.side or not side or l.side == side then out[#out + 1] = l end
+  end
   for _, l in ipairs((ns.TravelShipped and ns.TravelShipped.transit) or {}) do out[#out + 1] = l end
   for _, l in ipairs(db().transit or {}) do out[#out + 1] = l end
   return out
@@ -157,7 +163,7 @@ function TR.Context(ds, char)
   local known = pos and TR.FlyNodes(ds, pos.map, char.faction) or {}
   return {
     geo = ns.Game.geo, speed = ns.Game.RunSpeed and ns.Game.RunSpeed() or 7,
-    fly = known, flyTime = TR.FlyTime, transit = TR.Transit(), hearth = TR.Hearth(),
+    fly = known, flyTime = TR.FlyTime, transit = TR.Transit(char.faction), hearth = TR.Hearth(),
     entrance = TR.Entrance, path = TR.PathTo,
   }
 end
