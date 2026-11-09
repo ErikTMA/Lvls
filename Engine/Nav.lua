@@ -236,11 +236,14 @@ function N.SegmentDistance(px, py, a, b)
 end
 
 -- Following a way: the index of the point to walk to now, given the last one (i).
--- A point within `reach` yards is reached; so is one close by (within N.PAST yards)
--- that you are already past: closer to the point after it than the point itself is
--- (a start that snapped behind you, a corner you cut). Only close by: around a
--- thin wall, the point after a far corner can be near you on the other side.
+-- A point within `reach` yards is reached. So is one you are already past: you are
+-- closer to the point after it than the point itself is (a start that snapped
+-- behind you, a corner you cut, walking towards the goal before the way was ready)
+-- -- unless the point is about as far from you as from the point after it. That is a
+-- hairpin (a switchback, the far end of a thin wall): the point after it is near you,
+-- but on the other side. Close by (within N.PAST yards) it is past either way.
 N.PAST = 20
+N.HAIRPIN = 0.8       -- farther from you than this part of the way to the next: kept
 function N.Advance(pts, i, px, py, reach)
   while i < #pts do
     local p, q = pts[i], pts[i + 1]
@@ -248,7 +251,9 @@ function N.Advance(pts, i, px, py, reach)
     local here = sqrt(dx * dx + dy * dy)
     local ex, ey = q.x - px, q.y - py
     local fx, fy = q.x - p.x, q.y - p.y
-    if here <= reach or (here <= N.PAST and sqrt(ex * ex + ey * ey) < sqrt(fx * fx + fy * fy)) then
+    local pq = sqrt(fx * fx + fy * fy)
+    local past = sqrt(ex * ex + ey * ey) < pq and (here <= N.PAST or here < pq * N.HAIRPIN)
+    if here <= reach or past then
       i = i + 1
     else
       break
