@@ -1,10 +1,12 @@
 -- The way on foot: where the arrow should walk you is often behind a wall, a
 -- building or up a cliff. This finds the way there (Engine/Nav over the client's
--- own map data, Data/forever/Nav*.lua) and leads along it:
---   * the arrow points at the next corner and counts the yards left along the way
+-- own map data, Data/forever/Nav*.lua) and leads along it, but only where the
+-- straight line would not do (Nav.Worth: a cave, a mountain path, a walled city):
+--   * the arrow points at the next turn and counts the yards left along the way
 --   * the world map draws the way as a line
---   * with the game's own waypoint on (nativeArrow), its marker in the world moves
---     from corner to corner
+--   * the game's own waypoint (nativeArrow) stays on the goal
+-- Where the straight line does, the plain arrow; it looks again when you are halfway
+-- there (the cave may only start near the end).
 -- The search runs a few milliseconds per frame (a long way across a continent takes
 -- a few hundred); the old way stays shown until the new one is ready.
 local _, ns = ...
@@ -19,6 +21,9 @@ GR.BUDGET_MS = 4      -- search time per frame
 GR.async = true       -- tests switch the search to one go
 GR.route = nil        -- { cont, pts = { { x, y }, ... }, i, length, key, at }
 GR.want = nil         -- the spot the way should lead to, { map, x, y }
+GR.straight = nil     -- the straight line does: { key, x, y, d } (world, from where)
+GR.RECHECK = 0.5      -- look again after this part of the straight line
+GR.RECHECK_MIN = 60   -- yards: but not sooner than this
 
 local job             -- the search running now
 local corner = {}     -- the next corner on the player's map, reused
@@ -42,7 +47,7 @@ local function changed()
 end
 
 function GR.Clear()
-  GR.want, GR.route, job = nil, nil, nil
+  GR.want, GR.route, job, GR.straight = nil, nil, nil, nil
   nextYards = nil
   changed()
 end
@@ -56,7 +61,16 @@ local function finish(j, pts, length)
     if GR.route and GR.route.key == j.key then GR.route = nil; changed() end
     return
   end
-  GR.route = { cont = j.cont, pts = pts, i = 1, length = length, key = j.key, at = now() }
+  if not N.Worth(pts, length) then
+    -- the straight line does: the plain arrow, until you are part of the way there
+    local a, b = pts[1], pts[#pts]
+    local dx, dy = b.x - a.x, b.y - a.y
+    GR.straight = { key = j.key, x = a.x, y = a.y, d = math.sqrt(dx * dx + dy * dy) }
+    if GR.route then GR.route = nil; changed() end
+    return
+  end
+  GR.straight = nil
+  GR.route = { cont = j.cont, pts = N.Simplify(pts), i = 1, length = length, key = j.key, at = now() }
   changed()
 end
 
@@ -118,6 +132,8 @@ function GR.Want(spot)
   end
   local key = keyOf(spot)
   if GR.want and keyOf(GR.want) == key and (GR.route or job) then return end
+  if GR.straight and GR.straight.key == key and GR.want and keyOf(GR.want) == key then return end
+  GR.straight = nil
   GR.want = { map = spot.map, x = spot.x, y = spot.y }
   -- a new goal: the old way leads elsewhere
   if GR.route and GR.route.key ~= key then GR.route = nil; changed() end
@@ -129,6 +145,17 @@ end
 -- Called every arrow update; does its work only when the player moved.
 function GR.Next(pos)
   local r = GR.route
+  local s = GR.straight
+  if not r and s and pos and not job then
+    -- the straight line did from back there: look again when you are part of the way
+    local _, px, py = ns.Game.geo.worldNow(pos.map, pos.x, pos.y)
+    if px then
+      local dx, dy = px - s.x, py - s.y
+      local far = math.max(GR.RECHECK_MIN, s.d * GR.RECHECK)
+      if dx * dx + dy * dy >= far * far then GR.straight = nil; plan() end
+    end
+    return nil
+  end
   if not r or not pos then return nil end
   if pos.x ~= lastX or pos.y ~= lastY or pos.map ~= lastMap then
     lastX, lastY, lastMap = pos.x, pos.y, pos.map
@@ -145,22 +172,14 @@ function GR.Next(pos)
     end
     nextYards = N.Remaining(r.pts, r.i, px, py)
   end
-  -- the last point is the goal itself: the arrow goes there on its own (and the
-  -- game's marker back to it)
-  if r.i >= #r.pts then
-    if cornerFor ~= "end" then
-      cornerFor = "end"
-      if ns.db and ns.db.settings.nativeArrow and GR.want then ns.Game.NativeWaypoint(GR.want) end
-    end
-    return nil
-  end
+  -- the last point is the goal itself: the arrow goes there on its own
+  if r.i >= #r.pts then return nil end
   if cornerFor ~= r.pts[r.i] or corner.map ~= pos.map then
     local p = r.pts[r.i]
     local x, y = ns.Game.geo.mapPos(r.cont, p.x, p.y, pos.map)
     if not x then return nil end
     corner.map, corner.x, corner.y = pos.map, x, y
     cornerFor = p
-    if ns.db and ns.db.settings.nativeArrow then ns.Game.NativeWaypoint(corner) end
   end
   return corner, nextYards
 end

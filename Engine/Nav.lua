@@ -270,3 +270,44 @@ function N.Remaining(pts, i, px, py)
   end
   return d
 end
+
+-- Worth leading: only when the way on foot is clearly longer than the straight line
+-- (into a cave, up a mountain path, around a city's walls). Across open ground you
+-- walk straight at the goal and step around a tree or a fence yourself.
+N.DETOUR = 1.3        -- the way is at least this many times the straight line
+N.DETOUR_YARDS = 30   -- and at least this many yards longer
+function N.Worth(pts, length)
+  local a, b = pts[1], pts[#pts]
+  local dx, dy = b.x - a.x, b.y - a.y
+  local straight = sqrt(dx * dx + dy * dy)
+  return length >= straight * N.DETOUR and length - straight >= N.DETOUR_YARDS
+end
+
+-- The turns that matter: the way with every point dropped that lies within `tol`
+-- yards of the line between the points kept around it (Douglas-Peucker). The arrow
+-- then holds still along a street instead of twitching from corner to corner.
+N.TURN_YARDS = 10
+function N.Simplify(pts, tol)
+  tol = tol or N.TURN_YARDS
+  local n = #pts
+  if n <= 2 then return pts end
+  local keep = { [1] = true, [n] = true }
+  local stack = { 1, n }
+  while #stack > 0 do
+    local j = table.remove(stack)
+    local i = table.remove(stack)
+    local far, at = tol, nil
+    for k = i + 1, j - 1 do
+      local d = N.SegmentDistance(pts[k].x, pts[k].y, pts[i], pts[j])
+      if d > far then far, at = d, k end
+    end
+    if at then
+      keep[at] = true
+      stack[#stack + 1] = i; stack[#stack + 1] = at
+      stack[#stack + 1] = at; stack[#stack + 1] = j
+    end
+  end
+  local out = {}
+  for k = 1, n do if keep[k] then out[#out + 1] = pts[k] end end
+  return out
+end
