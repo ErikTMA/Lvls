@@ -404,6 +404,9 @@ function ns.Refresh(replan)
   -- the arrow follows the current step unless you pointed it somewhere yourself
   -- (a manual target stays until the step changes; browsing steps keeps its own)
   local st = ns.stepIndex and ns.steps[ns.stepIndex]
+  -- the route moved on: browsing ends, the viewer and arrow show the new step (a step
+  -- browsed to would otherwise stay on screen once it, or the steps before it, are done)
+  if st ~= ns.arrowStep then ns.Viewer.view = nil end
   if st and st.kind == "dungeon" and ns.DungeonInfo.Inside(st.area) then
     ns.Arrow.SetTarget(nil) -- in there: nothing to point at
   elseif not st then
