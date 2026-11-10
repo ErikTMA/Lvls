@@ -518,20 +518,43 @@ function S.Remaining(steps, from)
 end
 
 -- "Get the <town> flight path": an undiscovered flight point of your faction close
--- to a talk step becomes a line of that step (done once the client knows it).
+-- to a talk step becomes a line of that step (done once the client knows it). One
+-- the route passes near (an open step within FLIGHT_PATH_DETOUR yards) gets its own
+-- step, just before the first such step: a short detour to the flight master.
 S.FLIGHT_PATH_YARDS = 150
+S.FLIGHT_PATH_DETOUR = 400
 function S.AddFlightPaths(steps, undiscovered, geo)
   local taken = {}
+  local function line(f)
+    local who = f.npc and f.npc.name
+    return { kind = "fpath", node = f.id, spot = f.spot,
+      text = "Get the " .. (f.name or "?") .. " flight path" .. (who and (" from " .. who) or "") }
+  end
   for _, st in ipairs(steps) do
     if st.kind == "talk" and not st.done then
       for _, f in ipairs(undiscovered or {}) do
         if not taken[f.id] and G.Distance(geo, st.spot, f.spot) <= S.FLIGHT_PATH_YARDS then
           taken[f.id] = true
-          local who = f.npc and f.npc.name
-          st.lines[#st.lines + 1] = { kind = "fpath", node = f.id, spot = f.spot,
-            text = "Get the " .. (f.name or "?") .. " flight path" .. (who and (" from " .. who) or "") }
+          st.lines[#st.lines + 1] = line(f)
         end
       end
     end
+  end
+  local before = {} -- [step index] = { step, ... }
+  for _, f in ipairs(undiscovered or {}) do
+    if not taken[f.id] then
+      for i, st in ipairs(steps) do
+        if not st.done and st.spot and G.Distance(geo, st.spot, f.spot) <= S.FLIGHT_PATH_DETOUR then
+          taken[f.id] = true
+          local l = line(f)
+          before[i] = before[i] or {}
+          table.insert(before[i], { kind = "fpath", spot = f.spot, title = l.text, lines = { l } })
+          break
+        end
+      end
+    end
+  end
+  for i = #steps, 1, -1 do
+    for k = #(before[i] or {}), 1, -1 do table.insert(steps, i, before[i][k]) end
   end
 end

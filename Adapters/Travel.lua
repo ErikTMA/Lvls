@@ -89,7 +89,12 @@ function TR.FlyNodes(ds, map, faction)
         f.npc = { kind = "n", id = npc.id, name = npc.name }
         f.spot = { map = npc.map, x = npc.x, y = npc.y }
       end
-      if n.isUndiscovered then unknown[#unknown + 1] = f else known[#known + 1] = f end
+      -- what a flight master's map showed beats the client's isUndiscovered, which
+      -- calls flight points discovered that you never got (Darkshire at level 28)
+      local seen = TR.Seen(f.name)
+      local undiscovered = n.isUndiscovered
+      if seen ~= nil then undiscovered = not seen end
+      if undiscovered then unknown[#unknown + 1] = f else known[#known + 1] = f end
     end
   end
   flyCache[key] = { known, unknown }
@@ -97,6 +102,51 @@ function TR.FlyNodes(ds, map, faction)
 end
 
 function TR.Forget() flyCache = {} end
+
+-- The flight points a flight master's map showed you know (true) or not (false),
+-- by name without the zone suffix; kept per character in LvlsCharDB.taxi. nil:
+-- never seen at a flight master.
+local function short(name) return (tostring(name or ""):gsub(",.*$", "")) end
+function TR.Seen(name)
+  local t = ns.cdb and ns.cdb.taxi
+  if t then return t[short(name)] end
+end
+
+-- A flight master's map is open: learn which points you know. The TaxiFrame lists
+-- every point of the continent, "NONE" for the ones you have not found; the
+-- FlightMapFrame's C_TaxiMap.GetAllTaxiNodes only the ones you have. Returns true
+-- when something changed.
+function TR.LearnTaxi()
+  if not ns.cdb then return false end
+  local found = {}
+  local n = type(NumTaxiNodes) == "function" and NumTaxiNodes() or 0
+  if n > 0 and type(TaxiNodeName) == "function" and type(TaxiNodeGetType) == "function" then
+    for i = 1, n do
+      local name, kind = TaxiNodeName(i), TaxiNodeGetType(i)
+      if name and kind then found[short(name)] = kind ~= "NONE" end
+    end
+  elseif has(C_TaxiMap, "GetAllTaxiNodes") and type(GetTaxiMapID) == "function" then
+    local map = GetTaxiMapID()
+    local nodes = map and C_TaxiMap.GetAllTaxiNodes(map) or {}
+    if #nodes == 0 then return false end
+    for _, node in ipairs(nodes) do found[short(node.name)] = true end
+    -- the continent's other points of your faction: not yours yet
+    local pos = ns.Game.Position and ns.Game.Position()
+    local cont = pos and TR.Continent(pos.map)
+    local fac = FACTION[UnitFactionGroup and UnitFactionGroup("player") or ""]
+    for _, node in ipairs(cont and has(C_TaxiMap, "GetTaxiNodesForMap") and C_TaxiMap.GetTaxiNodesForMap(cont) or {}) do
+      local nf = node.faction or 0
+      if (nf == 0 or nf == fac) and found[short(node.name)] == nil then found[short(node.name)] = false end
+    end
+  end
+  local t = ns.cdb.taxi or {}
+  ns.cdb.taxi = t
+  local changed = false
+  for name, v in pairs(found) do
+    if t[name] ~= v then t[name] = v; changed = true end
+  end
+  return changed
+end
 
 function TR.FlyTime(a, b)
   local f = db().flights
@@ -382,6 +432,14 @@ function TR.OnEvent(event, unit, _, spell)
   elseif event == "UNIT_SPELLCAST_SUCCEEDED" and unit == "player" and portById[spell] then
     hearthCast = now() -- no boat link learned from it
     if portById[spell].map then portCast = { id = spell, t = hearthCast } end
+  elseif event == "TAXIMAP_OPENED" then
+    TR.Forget()
+    if TR.LearnTaxi() and ns.Refresh and ns.db then
+      -- plan again now: the trip must not fly to a point you do not have, and the
+      -- open map rings the one it flies to instead
+      ns.Refresh(true)
+      if ns.FlightMap and TaxiFrame and TaxiFrame.IsShown and TaxiFrame:IsShown() then ns.FlightMap.OnTaxiShow() end
+    end
   elseif event == "TAXIMAP_CLOSED" or event == "TAXI_NODE_STATUS_CHANGED" then
     TR.Forget()
   end
@@ -406,7 +464,7 @@ end
 
 if CreateFrame then
   local f = CreateFrame("Frame")
-  for _, e in ipairs({ "HEARTHSTONE_BOUND", "UNIT_SPELLCAST_SUCCEEDED", "TAXIMAP_CLOSED", "TAXI_NODE_STATUS_CHANGED" }) do
+  for _, e in ipairs({ "HEARTHSTONE_BOUND", "UNIT_SPELLCAST_SUCCEEDED", "TAXIMAP_OPENED", "TAXIMAP_CLOSED", "TAXI_NODE_STATUS_CHANGED" }) do
     f:RegisterEvent(e)
   end
   f:SetScript("OnEvent", function(_, ...) TR.OnEvent(...) end)
