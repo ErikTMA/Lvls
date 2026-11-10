@@ -50,7 +50,8 @@ R.XP_TO_LEVEL = {
   101000, 106300, 111800, 117500, 123200, 129100, 135100, 141200, 147500, 153900, 160400,
   167100, 173900, 180800, 187900, 195000, 202300, 209800,
 }
-R.MAX_LEVEL = 60
+R.MAX_LEVEL = 60 -- classic's; the client's cap (char.maxLevel) when it says
+local function maxLevel(st) return st.char.maxLevel or R.MAX_LEVEL end
 R.EVENT_SORT = 9 -- quest sort (Wowhead category2) of world events
 
 R.DEFAULTS = {
@@ -225,7 +226,7 @@ end
 -- that opens them (or nil), how many have a giver within grindNear, and whether any
 -- of those is a next-level one.
 local function heldNext(o, st, sim, pos, geo, pool, consider, shapes, workSecs)
-  if st.level >= R.MAX_LEVEL then return nil, 0, false end
+  if st.level >= maxLevel(st) then return nil, 0, false end
   local A = ns.Availability
   local unlock, held, byLevel = nil, 0, false
   local nextL = st.level + 1
@@ -254,7 +255,7 @@ local function heldNext(o, st, sim, pos, geo, pool, consider, shapes, workSecs)
 end
 
 local function grindAction(ds, o, st, sim, pos, geo, pool, consider, shapes, nothingElse, workSecs)
-  if not o.grind or st.level >= R.MAX_LEVEL then return nil end
+  if not o.grind or st.level >= maxLevel(st) then return nil end
   local Df = ns.Difficulty
   local unlock, held, byLevel = heldNext(o, st, sim, pos, geo, pool, consider, shapes, workSecs)
   if not unlock then return nil end
@@ -296,7 +297,7 @@ end
 
 local function simLevel(st, xpGain)
   st.xp = st.xp + xpGain
-  while st.level < R.MAX_LEVEL do
+  while st.level < maxLevel(st) do
     local need = (st.level == st.char.level and st.char.xpMax) or R.XP_TO_LEVEL[st.level]
     if not need or st.xp < need then break end
     st.xp = st.xp - need

@@ -355,6 +355,7 @@ function ns.Refresh(replan)
   local ds = ns.ActiveDataset()
   if not ds then return end
   ns.char = ns.Game.Character()
+  ns.Availability.Calibrate(ns.char.level, ns.char.trivialRange)
   -- what waits at your class trainer (Engine/Training), and when you last had one open
   ns.char.training = try("training", ns.TrainingData.Summary, ns.char.level)
   ns.char.trainedAt = ns.cdb and ns.cdb.trainer and ns.cdb.trainer.time or nil

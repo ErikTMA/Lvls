@@ -4,7 +4,7 @@
 --   GetMaxNumQuestsCanAccept / IsComplete / ReadyForTurnIn / GetQuestObjectives, C_Map.GetBestMapForUnit /
 --   GetPlayerMapPosition / GetWorldPosFromMapPos / GetMapWorldSize / GetMapInfo,
 --   C_Map.SetUserWaypoint + C_SuperTrack.SetSuperTrackedUserWaypoint,
---   C_Minimap.GetViewRadius, UnitPosition-free (map positions only).
+--   C_Minimap.GetViewRadius, UnitQuestTrivialLevelRange, GetMaxLevelForPlayerExpansion, UnitPosition-free (map positions only).
 local _, ns = ...
 local G = ns:NewModule("Game")
 
@@ -126,6 +126,11 @@ function G.Character()
     level = (UnitLevel and UnitLevel("player")) or 1,
     xp = UnitXP and UnitXP("player") or 0,
     xpMax = UnitXPMax and UnitXPMax("player") or nil,
+    -- the client's grey range and level cap (nil: the engine's classic values)
+    trivialRange = UnitQuestTrivialLevelRange and tonumber(safe(function()
+      return ns.Util.plain(UnitQuestTrivialLevelRange("player")) end)) or nil,
+    maxLevel = GetMaxLevelForPlayerExpansion and tonumber(safe(function()
+      return ns.Util.plain(GetMaxLevelForPlayerExpansion()) end)) or nil,
     faction = faction, race = race, class = class,
     completed = G.Completed(), active = G.QuestLog(), skills = safe(G.Skills),
     pos = safe(G.Position),

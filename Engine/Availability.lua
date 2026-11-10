@@ -20,11 +20,28 @@ local U = ns.Util
 local SIDE = { Alliance = "A", Horde = "H" }
 
 -- Classic "grey" level: a quest at or below it gives (almost) no experience.
-function A.GreyLevel(level)
+local function classicGrey(level)
   if level <= 5 then return 0 end
   if level <= 39 then return level - 5 - math.floor(level / 10) end
   if level <= 59 then return level - 1 - math.floor(level / 5) end
   return level - 9
+end
+
+-- What the client says at your level (A.Calibrate) moves the classic table by the
+-- difference, so the levels the route simulates ahead follow the client too.
+A.greyShift = 0
+function A.GreyLevel(level)
+  if level <= 5 then return 0 end
+  return math.max(0, classicGrey(level) + A.greyShift)
+end
+
+-- The client's rule (DifficultyUtil.GetRelativeDifficultyColor): a quest is grey when
+-- your level is more than UnitQuestTrivialLevelRange above it. range nil: classic.
+function A.Calibrate(level, range)
+  A.greyShift = 0
+  if type(level) == "number" and level > 5 and type(range) == "number" and range >= 0 then
+    A.greyShift = (level - range - 1) - classicGrey(level)
+  end
 end
 
 -- Ids above 26 (forever's Skyborne races) are not in Wowhead's masks: skip the
