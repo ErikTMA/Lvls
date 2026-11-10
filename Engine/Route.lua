@@ -537,6 +537,16 @@ function R.Plan(ds, char, geo, opts)
     end
   end
 
+  -- what needs no work (a provided item) is done as soon as the quest is taken, so
+  -- a lone delivery is handed in even when nothing else is on offer
+  local function markFree(q)
+    local s = consider(q)
+    for i in ipairs(q.obj or {}) do
+      if s and s.objs[i] and s.objs[i].free then progress[q.id][i] = true end
+    end
+  end
+  for qid in pairs(progress) do if ds.quests[qid] then markFree(ds.quests[qid]) end end
+
   local function logCount()
     local n = 0
     for _ in pairs(sim.active) do n = n + 1 end
@@ -608,6 +618,28 @@ function R.Plan(ds, char, geo, opts)
     end
   end
   table.sort(pool, function(a, b) return a.id < b.id end)
+  local inPool = {}
+  for _, q in ipairs(pool) do inPool[q.id] = true end
+
+  -- A chain's later quest that can be picked up on its own shuts its earlier ones
+  -- off (Engine/Prereqs). It waits while an earlier one is worth doing: one the
+  -- route would pick up itself, or one in the log (until it is handed in). An
+  -- earlier one not worth it (grey, too high, too long, skipped, not on the map)
+  -- holds nothing: the later quest is taken and the earlier one is left out.
+  local function aboveFor(q) return q.kind == "group" and (o.maxAbove - o.groupMargin) or o.maxAbove end
+  local function held(q)
+    for _, e in ipairs(q.earlier or {}) do
+      local eq = ds.quests[e]
+      if eq and not sim.completed[e] and not (o.skip and o.skip[e]) and not (o.focus and not o.focus[e]) then
+        if sim.active[e] then
+          if consider(eq) then return e end
+        elseif inPool[e] and (not eq.l or eq.l <= st.level + aboveFor(eq)) and A.Status(eq, sim) == "available"
+          and consider(eq) and (o.focus or workSecs[e] <= o.maxWork) then
+          return e
+        end
+      end
+    end
+  end
 
   local guard = 0
   local yield = ns.Util.Yield -- a slice at a time when planned as a job (Core/Init)
@@ -653,10 +685,10 @@ function R.Plan(ds, char, geo, opts)
     if logCount() < o.logSize then
       for _, q in ipairs(pool) do
         yield()
-        local above = q.kind == "group" and (o.maxAbove - o.groupMargin) or o.maxAbove
-        if not sim.completed[q.id] and not sim.active[q.id] and (not q.l or q.l <= st.level + above)
+        if not sim.completed[q.id] and not sim.active[q.id] and (not q.l or q.l <= st.level + aboveFor(q))
           and (A.Status(q, sim) == "available" or (o.focus and A.Status(q, sim) == "trivial")) and consider(q) and (o.focus or workSecs[q.id] <= o.maxWork)
-          and not (classOf[q.id] and classAfter(q.id) and not sim.completed[classAfter(q.id)]) then
+          and not (classOf[q.id] and classAfter(q.id) and not sim.completed[classAfter(q.id)])
+          and not held(q) then
           local givers = shapes[q.id].givers
           local spot, d = G.Nearest(geo, pos, givers)
           if spot then
@@ -854,6 +886,7 @@ function R.Plan(ds, char, geo, opts)
     elseif best.kind == "accept" then
       sim.active[q.id] = { simulated = true }
       progress[q.id] = {}
+      markFree(q)
     elseif best.kind == "do" then
       progress[q.id][best.index] = true
       -- everything else open close by is done in the same go
@@ -919,6 +952,13 @@ function R.Why(ds, char, qid)
   if st == "locked" or st == "low" then return "plannable once possible: " .. tostring(why) end
   if st == "trivial" then return "plannable, but grey for you (no experience worth the trip)" end
   if q.inst or q.kind == "dungeon" or q.kind == "raid" then return "a dungeon quest: in a dungeon guide (Guides menu)" end
+  for _, e in ipairs(q.earlier or {}) do
+    local eq = ds.quests[e]
+    local es = eq and ns.Availability.Status(eq, char)
+    if es == "available" or es == "active" then
+      return ("plannable after %s (%d), earlier in its chain, if that one is worth doing: taking this one first shuts it off"):format(eq.n, e)
+    end
+  end
   return "plannable" .. (st == "active" and " (in your log)" or "")
 end
 

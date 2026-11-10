@@ -85,6 +85,27 @@ local function index(ds)
     local p = q.prev and ds.quests[q.prev]
     if p and p.prevLoop and not q.prevLoop then q.prevAny = p.loop end
   end
+  -- Chains: a quest's earlier members (q.earlier, nearest first) and later ones
+  -- (q.later), through prev, loops left out. Forever stops offering a chain's
+  -- earlier quests once a later one is taken (Engine/Prereqs); the route holds a
+  -- later quest back while an earlier one is worth doing (Engine/Route).
+  for _, q in pairs(ds.quests) do q.earlier, q.later = nil, nil end
+  for _, q in pairs(ds.quests) do
+    if not q.prevLoop and not q.prevAny then
+      local seen, cur = { [q.id] = true }, q
+      for _ = 1, 60 do
+        local p = cur.prev and ds.quests[cur.prev]
+        if not p or seen[p.id] or p.prevLoop then break end
+        seen[p.id] = true
+        q.earlier = q.earlier or {}
+        q.earlier[#q.earlier + 1] = p.id
+        p.later = p.later or {}
+        p.later[#p.later + 1] = q.id
+        cur = p
+      end
+    end
+  end
+  for _, q in pairs(ds.quests) do if q.later then table.sort(q.later) end end
   -- Alternatives: quests of one name leading to the same next quest are one step
   -- from different givers (three "The Hunter's Path" for a dwarf hunter, "The New
   -- Frontier" from three trainers), and so are the quests of a loop. One taken, the

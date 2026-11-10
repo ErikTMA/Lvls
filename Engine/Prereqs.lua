@@ -61,11 +61,37 @@ local function series(q, char)
 end
 local function active(char, id) return char.active and char.active[id] end
 
+-- Can quest `later` be picked up without `earlier`, the quest before it in its
+-- chain? Only when the provider knows it and lists prerequisites without `earlier`,
+-- or lists none for a classic quest (the series is not used then: P.Check).
+-- Without the provider the series rule makes it wait for `earlier`.
+local EMPTY = {}
+local PAST = {} -- reasons by quest id, built once: the nearby list asks thousands of times
+function P.Independent(later, earlier)
+  local info = P.Info(later)
+  if not info then return false end
+  local listed = (info.group and #info.group > 0) or (info.single and #info.single > 0)
+  if not listed then return later < P.FOREVER_FROM end
+  for _, id in ipairs(info.group or EMPTY) do if id == earlier then return false end end
+  for _, id in ipairs(info.single or EMPTY) do if id == earlier then return false end end
+  return true
+end
+
 -- ok (bool), reason (string when not ok), kind: "wrong" when it can never become
 -- available to this character (exclusive quest taken, breadcrumb obsolete, too high,
 -- profession missing), "locked" when a prerequisite can still be done
 function P.Check(q, char)
   local info = P.Info(q.id)
+  -- a later quest of its chain, one that needs nothing of it, taken: forever no
+  -- longer offers it (Daily Delivery once Young Crocolisk Skins is in the log or
+  -- handed in; Data/Registry: q.later)
+  for _, id in ipairs(q.later or {}) do
+    if (done(char, id) or active(char, id)) and P.Independent(id, q.id) then
+      local why = PAST[id]
+      if not why then why = "chain moved past it: " .. id .. " taken"; PAST[id] = why end
+      return false, why, "wrong"
+    end
+  end
   -- one of its alternatives taken (Data/Registry: q.alts), unless the provider says
   -- which quests exclude it
   if q.alts and not (info and info.excl and #info.excl > 0) then
