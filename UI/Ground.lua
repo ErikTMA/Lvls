@@ -1,7 +1,8 @@
 -- The way on foot: where the arrow should walk you is often behind a wall, a
 -- building or up a cliff. This finds the way there (Engine/Nav over the client's
 -- own map data, Data/forever/Nav*.lua) and leads along it, but only where the
--- straight line would not do (Nav.Worth: a cave, a mountain path, a walled city):
+-- straight line would not do (Nav.Worth: a cave, a mountain path, a walled city;
+-- how readily is the "Lead the way on foot" slider):
 --   * the arrow points at the next turn and counts the yards left along the way
 --   * the world map draws the way as a line
 --   * the game's own waypoint (nativeArrow) stays on the goal
@@ -31,7 +32,8 @@ local cornerFor       -- route, index and map `corner` was made for
 local lastX, lastY, lastMap
 local nextYards
 
-local function on() return ns.db and ns.db.settings.groundRoute end
+local function help() return ns.db and ns.db.settings.groundHelp or 0 end
+local function on() return help() > 0 end
 local function now() return GetTime and GetTime() or 0 end
 local function ms()
   if debugprofilestop then return debugprofilestop() end
@@ -61,7 +63,7 @@ local function finish(j, pts, length)
     if GR.route and GR.route.key == j.key then GR.route = nil; changed() end
     return
   end
-  if not N.Worth(pts, length) then
+  if not N.Worth(pts, length, help()) then
     -- the straight line does: the plain arrow, until you are part of the way there
     local a, b = pts[1], pts[#pts]
     local dx, dy = b.x - a.x, b.y - a.y

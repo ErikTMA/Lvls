@@ -16,7 +16,8 @@ function ns.ActiveDataset()
 end
 
 ns.DEFAULT_SETTINGS = {
-  worldMap = true, mapRoute = true, minimap = true, minimapRoute = true, minimapButton = true, objectives = true, arrow = true, nativeArrow = false, groundRoute = true,
+  worldMap = true, mapRoute = true, minimap = true, minimapRoute = true, minimapButton = true, objectives = true, arrow = true, nativeArrow = false,
+  groundHelp = 2,        -- lead the way on foot: 0 straight line .. 4 every turn (Engine/Nav.lua N.HELP)
   showLow = true, showTrivial = false, showDungeon = false, showRepeatable = false,
   zoneFirst = true, debug = false,
   -- automation (Adapters/Automation.lua); hold Shift at an npc to pause it
@@ -37,6 +38,9 @@ function ns.InitDB(db)
   db = db or {}
   db.settings = db.settings or {}
   db.settings.askClassQuests = nil -- replaced by classQuests (no more questions)
+  -- the old on/off for the way on foot: off stays off on the slider
+  if db.settings.groundRoute == false and db.settings.groundHelp == nil then db.settings.groundHelp = 0 end
+  db.settings.groundRoute = nil
   for k, v in pairs(ns.DEFAULT_SETTINGS) do
     if db.settings[k] == nil then db.settings[k] = v end
   end
@@ -878,6 +882,13 @@ commands.train = function()
   if t.nextLevel then ns.Log("info", ("  next at level %d"):format(t.nextLevel)) end
 end
 
+-- /lvls walk [0-4]: how much the arrow leads the way on foot
+commands.walk = function(arg)
+  local v = tonumber(arg)
+  if v and v >= 0 and v <= ns.Nav.HELP_MAX then ns.Settings.Set("groundHelp", math.floor(v)) end
+  ns.Log("info", "lead the way on foot: " .. ns.Settings.HelpLabel(ns.db.settings.groundHelp))
+end
+
 commands.record = function(arg) ns.TravelData.Record(arg) end
 
 commands.travel = function()
@@ -904,7 +915,7 @@ commands.debug = function()
 end
 
 commands.help = function()
-  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|items [lock|unlock|reset]|arrow|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|debug|help]")
+  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|debug|help]")
 end
 
 local function slash(input)

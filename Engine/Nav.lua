@@ -287,12 +287,20 @@ N.DETOUR = 1.3        -- the way is at least this many times the straight line
 N.DETOUR_YARDS = 30   -- and at least this many yards longer
 N.HOLE = 3            -- but a way over this many times the straight line
 N.HOLE_YARDS = 800    -- and this many yards longer is a hole in the graph
-function N.Worth(pts, length)
+-- How much help (the "Lead the way on foot" slider, LvlsDB.settings.groundHelp):
+-- 0 the straight line always, 1 only big detours, 2 around walls (N.DETOUR and
+-- N.DETOUR_YARDS), 3 small detours too, 4 every turn of the way.
+N.HELP_MAX = 4
+N.HELP = { [1] = { 1.6, 60 }, [3] = { 1.15, 15 }, [4] = { 1, 0 } }
+function N.Worth(pts, length, help)
   local a, b = pts[1], pts[#pts]
   local dx, dy = b.x - a.x, b.y - a.y
   local straight = sqrt(dx * dx + dy * dy)
   if length > straight * N.HOLE and length - straight > N.HOLE_YARDS then return false end
-  return length >= straight * N.DETOUR and length - straight >= N.DETOUR_YARDS
+  local h = help and N.HELP[help]
+  local detour, yards = N.DETOUR, N.DETOUR_YARDS
+  if h then detour, yards = h[1], h[2] end
+  return length >= straight * detour and length - straight >= yards
 end
 
 -- The turns that matter: the way with every point dropped that lies within `tol`

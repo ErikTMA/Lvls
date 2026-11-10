@@ -7,12 +7,17 @@
 --   Settings.CreateCheckbox(category, setting, tooltip)
 --   Settings.CreateDropdown(category, setting, optionsFn, tooltip), optionsFn ->
 --     Settings.CreateControlTextContainer():Add(value, label) ... :GetData()
+--   Settings.CreateSlider(category, setting, options, tooltip), options =
+--     Settings.CreateSliderOptions(min, max, step) with
+--     :SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right, fn)
 --   CreateSettingsListSectionHeaderInitializer(name), layout:AddInitializer(init)
 --   Settings.RegisterAddOnCategory(category), Settings.OpenToCategory(category:GetID())
 local _, ns = ...
 local S = ns:NewModule("Settings")
 
 S.QUALITIES = { { 1, "Common (white)" }, { 2, "Uncommon (green)" }, { 3, "Rare (blue)" }, { 4, "Epic (purple)" } }
+S.HELP = { [0] = "Straight line", "Only big detours", "Around walls", "Small detours too", "Every turn" }
+function S.HelpLabel(v) return S.HELP[v] or tostring(v) end
 S.WEIGHTS = { { "auto", "Pawn when it has a scale for my spec, else Lvls" }, { "pawn", "Pawn" }, { "lvls", "Lvls' own weights" } }
 
 -- Everything on the page, in order. key: LvlsDB.settings key; refresh: re-plan.
@@ -40,7 +45,7 @@ S.ITEMS = {
   { key = "classQuests", name = "Class quests in the route", tip = "The leveling route takes your class quests (spells, forms, pets, weapons) as they become possible, in their order, marked with your class. The Guides menu does a whole chain at once.", refresh = true },
   { key = "zoneFirst", name = "Finish the zone first", tip = "Zone by zone: everything left in this zone (quests to pick up, work, hand-ins) comes first. Then the next zone is chosen by everything there, deliveries in your log included, so they are made when the route goes there anyway. Off: the route goes wherever the next quest is worth the most.", refresh = true },
   { key = "arrow", name = "Arrow" },
-  { key = "groundRoute", name = "Lead the way around walls", travel = true, tip = "On foot, where walking straight at the goal will not get you there (into a cave, up a mountain path, through a walled city), the arrow leads turn by turn and the world map draws the way. Everywhere else it points straight at the goal. Worked out from the game's own map data." },
+  { key = "groundHelp", name = "Lead the way on foot", travel = true, slider = { 0, 4, 1 }, label = S.HelpLabel, tip = "How much the arrow leads you on foot, turn by turn, with the way drawn on the world map and the minimap. Straight line: it always points at the goal. Only big detours: walled cities and long caves. Around walls: also mountain paths and buildings. Small detours too: also round smaller things in the way. Every turn: it follows the whole way. Worked out from the game's own map data. /lvls walk 0-4" },
   { key = "nativeArrow", name = "Also the game's waypoint marker", travel = true, tip = "Also set the game's own map waypoint: its marker shows in the world with the distance. It stays on the goal, also while the arrow leads the way on foot." },
   { key = "itemBar", name = "Buttons for quest items", tip = "A movable row of buttons for the items to use now: items that start a quest, and the items quests give you to use on someone or somewhere. Key bindings: Key Bindings -> AddOns -> Lvls!. Drag a button to move them." },
   { key = "lockItemBar", name = "Lock the item buttons", tip = "They cannot be dragged. /lvls items reset puts them back in their place." },
@@ -63,7 +68,10 @@ function S.Set(key, value)
   if ns.Invalidate then ns.Invalidate() end
   for _, it in ipairs(S.ITEMS) do
     if it.key == key and it.refresh and ns.Refresh then ns.Refresh(true) return end
-    if it.key == key and it.travel and ns.RefreshTravel then ns.RefreshTravel() end
+    if it.key == key and it.travel and ns.RefreshTravel then
+      if ns.Ground then ns.Ground.Clear() end -- the way is decided again
+      ns.RefreshTravel()
+    end
     if it.key == key and it.viewer and ns.Viewer and ns.Viewer.Anchor then ns.Viewer.Anchor() end
   end
   if ns.Refresh and ns.char then ns.Refresh() end
@@ -114,7 +122,9 @@ function S.Register()
         get = function() return S.Get(it.key) end
         setv = function(v) S.Set(it.key, v) end
         default = ns.DEFAULT_SETTINGS[it.key]
-        if it.choices then
+        if it.slider then
+          kind = Var.Number
+        elseif it.choices then
           kind = it.number and Var.Number or Var.String
           choices = function() return it.choices end
         else
@@ -123,7 +133,20 @@ function S.Register()
       end
       local setting = Settings.RegisterProxySetting(category, "LVLS_" .. (it.key or (it.guide and "guide") or "spec"):upper(), kind,
         it.name, default, get, setv)
-      if choices then
+      if it.slider and Settings.CreateSlider and Settings.CreateSliderOptions then
+        local o = Settings.CreateSliderOptions(it.slider[1], it.slider[2], it.slider[3])
+        if o.SetLabelFormatter and MinimalSliderWithSteppersMixin and MinimalSliderWithSteppersMixin.Label then
+          o:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right, function(v) return it.label(math.floor(v + 0.5)) end)
+        end
+        Settings.CreateSlider(category, setting, o, it.tip)
+      elseif it.slider then
+        -- no slider on this client: the same steps as a dropdown
+        Settings.CreateDropdown(category, setting, function()
+          local c = Settings.CreateControlTextContainer()
+          for v = it.slider[1], it.slider[2], it.slider[3] do c:Add(v, it.label(v)) end
+          return c:GetData()
+        end, it.tip)
+      elseif choices then
         Settings.CreateDropdown(category, setting, function()
           local c = Settings.CreateControlTextContainer()
           for _, o in ipairs(choices()) do c:Add(o[1], o[2]) end
