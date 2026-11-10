@@ -1,7 +1,8 @@
 -- The step viewer: a dark panel with the current step, one line per goal (icon,
 -- check box, text, progress), the objectives you can do at the same time, a preview
 -- of the next step and the experience bar. Prev / next browse the plan; clicking a
--- line points the arrow at it, right-clicking skips its quest. The gear opens the
+-- line points the arrow at it, right-clicking skips its quest (hover: a tooltip
+-- says so, and that WoW Forever's quests may still lack prerequisites). The gear opens the
 -- settings page.
 local _, ns = ...
 local V = ns:NewModule("Viewer")
@@ -159,8 +160,33 @@ local function row(i)
       V.PointAt(self.line)
     end
   end)
+  r:SetScript("OnEnter", function(self)
+    local tip = GameTooltip and V.LineTip(self.line)
+    if not tip then return end
+    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+    GameTooltip:SetText(tip[1][1], tip[1][2], tip[1][3], tip[1][4], true)
+    for k = 2, #tip do GameTooltip:AddLine(tip[k][1], tip[k][2], tip[k][3], tip[k][4], true) end
+    GameTooltip:Show()
+  end)
+  r:SetScript("OnLeave", function() if GameTooltip then GameTooltip:Hide() end end)
   rows[i] = r
   return r
+end
+
+-- A quest line's tooltip: { {text, r, g, b}, ... } (nil: not a quest line). WoW
+-- Forever's own quests (Prereqs.FOREVER_FROM and up) come without prerequisites
+-- (Wowhead has none yet): the guide can send you to one the giver does not offer.
+function V.LineTip(line)
+  if not (line and line.quest) then return nil end
+  local ds = ns.ActiveDataset()
+  local q = ds and ds.quests[line.quest]
+  local tip = { { q and q.n or line.text or ("Quest " .. line.quest), 1, 0.82, 0.25 } }
+  if line.quest >= ns.Prereqs.FOREVER_FROM then
+    tip[#tip + 1] = { "A WoW Forever quest: its data (prerequisites, chains) is still being gathered,"
+      .. " so the guide may send you to it before it is offered.", 0.9, 0.9, 0.9 }
+  end
+  tip[#tip + 1] = { "Right-click: skip this quest (/lvls unskip takes it back)", 0.6, 0.8, 1 }
+  return tip
 end
 
 -- Grow upwards: the viewer keeps its bottom edge, else its top edge.
