@@ -12,6 +12,7 @@
 ## AddonCompartmentFuncOnEnter: Lvls_OnAddonCompartmentEnter
 ## AddonCompartmentFuncOnLeave: Lvls_OnAddonCompartmentLeave
 ## X-Target: WoW Forever 1.60.x
+## X-Curse-Project-ID: 1796463
 
 # Core (pure Lua, no game API)
 Core/Namespace.lua
