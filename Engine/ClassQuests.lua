@@ -8,6 +8,8 @@
 --   is often its own quest): a quest whose giver is the npc an earlier class quest
 --   ends at, within LINK_LEVELS levels.
 -- A chain is named after its last quest (usually the reward: "Heirloom Weapon").
+-- Repeatable quests are no part of one (the shaman's "Earth Sapta": a lost sapta
+-- again): nobody does them on the way, so they would keep a done chain open.
 local _, ns = ...
 local CQ = ns:NewModule("ClassQuests")
 local A, P = ns.Availability, ns.Prereqs
@@ -65,7 +67,10 @@ end
 local function graph(ds, char)
   local members = {}
   for id, q in pairs(ds.quests) do
-    if CQ.IsClassQuest(q) and not A.Fixed(q, char) then members[id] = q end
+    local info = P.Info(id)
+    if CQ.IsClassQuest(q) and not A.Fixed(q, char) and not q.rep and not (info and info.repeatable) then
+      members[id] = q
+    end
   end
   local parent = {}
   local function find(x)

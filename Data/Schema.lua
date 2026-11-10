@@ -9,7 +9,7 @@
 --              zone = AreaTable id (inst = true for dungeon / raid zones), sort = Wowhead
 --              category2 when the quest is filed under a sort instead of a zone,
 --              prev / next = neighbours in Wowhead's linear series,
---              prof = { skillId [, value] }, rep = "daily" | "weekly",
+--              prof = { skillId [, value] }, rep = "daily" | "weekly" | "repeatable",
 --              kind = "group" | "dungeon" | "raid" | "pvp" | "class" | "event",
 --              xp, money, provided = { itemId, ... },
 --              si = { id = itemId, n = name, src = { { "n" | "o", id, dropPercent }, ... } }:

@@ -79,6 +79,10 @@ function QD.Info(qid)
     skill = pair(get(Q, qid, "requiredSkill")),
     minRep = pair(get(Q, qid, "requiredMinRep")),
     parent = nz(get(Q, qid, "parentQuest")),
+    -- offered until that quest is done ("Call of Earth" 96243 until 94373)
+    untilDone = nz(get(Q, qid, "availableUntilCompleted")),
+    -- specialFlags bit 1: repeatable (the shaman's "Earth Sapta", a lost sapta again)
+    repeatable = (nz(get(Q, qid, "specialFlags")) or 0) % 2 == 1 or nil,
     -- QuestieDB corrects Wowhead here (forever's "A Scribbled Letter" is a hunter
     -- quest, Wowhead says warrior): its masks win when it has them
     classes = nz(get(Q, qid, "requiredClasses")),
@@ -171,6 +175,7 @@ function QD.Patch(ds)
       local l, r = nz(get(Q, qid, "questLevel")), nz(get(Q, qid, "requiredLevel"))
       if l and l > 0 and l ~= q.l then q.l, touched = l, true end
       if r and r > 0 and r ~= q.r then q.r, touched = r, true end
+      if not q.rep and QD.Info(qid).repeatable then q.rep, touched = "repeatable", true end
       if not q.sn and not q.so then
         local sb = get(Q, qid, "startedBy")
         if type(sb) == "table" then

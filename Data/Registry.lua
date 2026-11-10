@@ -21,6 +21,13 @@ end
 -- text is "(PH) Thanks!", Questie blacklists it).
 R.PLACEHOLDER_IDS = { [93928] = true }
 
+-- The shaman's "Earth Sapta", "Fire Sapta", "Water Sapta": a new sapta when you lost
+-- yours, never part of the totem quests (no experience). QuestieDB flags most of them
+-- repeatable (QuestieDB.Patch), not all (Forever's Water Sapta, 94616).
+function R.IsReplacement(q)
+  return q.classes ~= nil and not q.xp and (q.n or ""):find("^%a+ Sapta$") ~= nil
+end
+
 -- the dataset a quest belongs to (Prereqs looks up a quest's predecessor)
 local owner = setmetatable({}, { __mode = "k" })
 function R.DatasetOf(q) return q and owner[q] end
@@ -37,6 +44,7 @@ local function index(ds)
     q.id = qid
     owner[q] = ds
     if R.IsPlaceholder(q.n) or R.PLACEHOLDER_IDS[qid] then q.unused = true end
+    if not q.rep and R.IsReplacement(q) then q.rep = "repeatable" end
     for _, i in ipairs(q.sn or {}) do add(startsN, i, qid) end
     for _, i in ipairs(q.so or {}) do add(startsO, i, qid) end
     for _, i in ipairs(q.en or {}) do add(endsN, i, qid) end

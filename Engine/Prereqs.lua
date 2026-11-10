@@ -4,7 +4,8 @@
 -- provider.Info(questId) -> nil when the provider does not know the quest, else
 --   { group = {ids} (all of), single = {ids} (any one of), excl = {ids},
 --     breadcrumbFor = id, maxLevel = n, skill = {skillId, value},
---     minRep = {factionId, value}, parent = id,
+--     minRep = {factionId, value}, parent = id, untilDone = id (offered until that
+--     one is done), repeatable = true,
 --     classes / races = masks that replace the dataset's (QuestieDB corrects Wowhead) }
 -- Without provider data the quest's predecessor in Wowhead's linear series must be
 -- completed (a weaker rule: the series also lists optional breadcrumbs). So must it
@@ -90,6 +91,9 @@ function P.Check(q, char)
     end
     if info.breadcrumbFor and (done(char, info.breadcrumbFor) or active(char, info.breadcrumbFor)) then
       return false, "breadcrumb no longer needed", "wrong"
+    end
+    if info.untilDone and (done(char, info.untilDone) or active(char, info.untilDone)) then
+      return false, "no longer offered after " .. info.untilDone, "wrong"
     end
     if info.maxLevel and info.maxLevel > 0 and char.level and char.level > info.maxLevel then
       return false, "above level " .. info.maxLevel, "wrong"
