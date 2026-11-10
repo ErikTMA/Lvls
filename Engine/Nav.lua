@@ -279,12 +279,19 @@ end
 -- Worth leading: only when the way on foot is clearly longer than the straight line
 -- (into a cave, up a mountain path, around a city's walls). Across open ground you
 -- walk straight at the goal and step around a tree or a fence yourself.
+-- Not when the way is many times the straight line and far longer: then the graph
+-- has a hole (two samples on open ground left unjoined, as on the road south of Dun
+-- Modr: Menethil to Longbraid went 9.4k yards round by Arathi for 1.9k straight).
+-- Pointing straight is right far more often than such a way.
 N.DETOUR = 1.3        -- the way is at least this many times the straight line
 N.DETOUR_YARDS = 30   -- and at least this many yards longer
+N.HOLE = 3            -- but a way over this many times the straight line
+N.HOLE_YARDS = 800    -- and this many yards longer is a hole in the graph
 function N.Worth(pts, length)
   local a, b = pts[1], pts[#pts]
   local dx, dy = b.x - a.x, b.y - a.y
   local straight = sqrt(dx * dx + dy * dy)
+  if length > straight * N.HOLE and length - straight > N.HOLE_YARDS then return false end
   return length >= straight * N.DETOUR and length - straight >= N.DETOUR_YARDS
 end
 
