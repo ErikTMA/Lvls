@@ -164,8 +164,9 @@ function S.Build(ds, char, route, geo)
           opens = a.kind == "turnin" and S.Opens(ds, char, q) or nil }
       else
         local o = q.obj[a.index]
+        -- at: the line's own area (one worked along with another has none)
         cur.lines[#cur.lines + 1] = { kind = objKind(o), quest = a.quest, index = a.index,
-          text = S.ObjectiveText(o) }
+          text = S.ObjectiveText(o), at = not a.along and a.spot or nil }
       end
       cur.level = a.level or cur.level
     end
@@ -216,6 +217,32 @@ function S.WorkTitle(st)
   return ("%s +%d more"):format(parts[1], #parts - 1)
 end
 
+-- A work step stands where its open objectives are. It was placed at the area of
+-- its first objective, and the others close by were added to be worked from there;
+-- once that one is done (Uncovering the Past ready to hand in, the raptors and
+-- screechers still to kill) the spot moves to the area of an objective still open:
+-- its own, or the one the route would choose for it from where you are (the current
+-- step; a later one: from where it stood).
+function S.Place(ds, char, st, geo, isCurrent)
+  local open, own
+  for _, l in ipairs(st.lines) do
+    if l.index and not l.also and not l.done then
+      if l.at == st.spot then return end
+      open = open or l
+      own = own or (l.at and l)
+    end
+  end
+  if own then st.spot = own.at; return end
+  if not open then return end
+  local q = ds.quests[open.quest]
+  local from = isCurrent and char.pos and st.spot and char.pos.map == st.spot.map and char.pos or st.spot
+  local spot = q and ns.Route.WorkTarget(ds, q, open.index, geo, from)
+  if spot then
+    st.spot = { map = spot.map, x = spot.x, y = spot.y }
+    open.at = st.spot
+  end
+end
+
 -- Re-evaluate done flags and the "also here" lines; returns the current step index.
 function S.Refresh(ds, char, steps, geo)
   local current
@@ -231,7 +258,10 @@ function S.Refresh(ds, char, steps, geo)
     end
     st.done = open == 0
     if not st.done and not current then current = i end
-    if st.kind == "work" then st.title = S.WorkTitle(st) end
+    if st.kind == "work" then
+      if not st.done then S.Place(ds, char, st, geo, current == i) end
+      st.title = S.WorkTitle(st)
+    end
   end
   local st = current and steps[current]
   if st and st.kind == "work" then

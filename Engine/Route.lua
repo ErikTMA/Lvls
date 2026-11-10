@@ -224,6 +224,20 @@ local function bestTarget(o, geo, from, targets)
   return best, bestD
 end
 
+-- The area to work one objective in, from `from`, as the route chooses it (walk plus
+-- respawn waits; opts as R.DEFAULTS). nil when the data cannot place it.
+function R.WorkTarget(ds, q, i, geo, from, opts)
+  local o = q.obj and q.obj[i]
+  if not o or not from then return nil end
+  local spots = ns.Quests.ObjectiveSpots(ds, q, i, from.map)
+  if #spots == 0 then spots = ns.Quests.ObjectiveSpots(ds, q, i) end
+  if #spots == 0 then return nil end
+  local oo = { speed = opts and opts.speed or R.DEFAULTS.speed,
+    respawnSecs = opts and opts.respawnSecs or R.DEFAULTS.respawnSecs }
+  local targets = objectiveTargets(o, spots)
+  return bestTarget(oo, geo, from, targets) or targets[1]
+end
+
 -- The spot to go to and the seconds it takes: the nearest on this continent, else
 -- (all on another one) the fastest by opts.travel, which knows boats and zeppelins.
 -- Returns spot, yards (math.huge across continents), seconds (math.huge: unreachable).
@@ -970,7 +984,8 @@ function R.Plan(ds, char, geo, opts)
             local so = s.objs[i]
             if so and so.targets and not progress[qid][i] then
               local tgt, d = G.Nearest(geo, best.spot, so.targets)
-              if d <= o.together then also[#also + 1] = { kind = "do", quest = qid, index = i, spot = tgt } end
+              -- along: worked from best's spot, not its own area
+              if d <= o.together then also[#also + 1] = { kind = "do", quest = qid, index = i, spot = tgt, along = true } end
             end
           end
         end
