@@ -1,4 +1,4 @@
--- The item bar: a movable row of buttons for the items to use now (Engine/UseItems):
+-- The item bar: a movable row of buttons for the current step's items (Engine/UseItems):
 -- an item that starts a quest, the quest log's item for a quest (use it on an npc,
 -- a corpse, at a place), items a quest gives you that have a use. Click to use;
 -- key bindings for the first four (Bindings.xml: Key Bindings -> AddOns -> Lvls!).
@@ -61,8 +61,15 @@ local function newButton(i)
   b:SetPoint("LEFT", bar, "LEFT", (i - 1) * (IB.SIZE + IB.GAP), 0)
   b:RegisterForClicks("AnyUp", "AnyDown") -- the client acts on down or up (ActionButtonUseKeyDown)
   b:SetAttribute("type", "item")
+  b.bg = b:CreateTexture(nil, "BACKGROUND") -- a dark edge around the icon
+  b.bg:SetColorTexture(0, 0, 0, 0.9)
+  b.bg:SetPoint("TOPLEFT", b, "TOPLEFT", -2, 2)
+  b.bg:SetPoint("BOTTOMRIGHT", b, "BOTTOMRIGHT", 2, -2)
   b.icon = b:CreateTexture(nil, "ARTWORK")
   b.icon:SetAllPoints(b)
+  b.border = b:CreateTexture(nil, "OVERLAY") -- the bags' gold quest-item border
+  b.border:SetTexture(TEXTURE_ITEM_QUEST_BORDER or "Interface\\ContainerFrame\\UI-Icon-QuestBorder")
+  b.border:SetAllPoints(b)
   if b.icon.SetTexCoord then b.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93) end
   b.bang = b:CreateTexture(nil, "OVERLAY")
   b.bang:SetTexture(TEXTURE_ITEM_QUEST_BANG or "Interface\\ContainerFrame\\UI-Icon-QuestBang")
@@ -95,7 +102,7 @@ function IB.Paint()
     if it and b:IsShown() then
       local icon = C_Item and C_Item.GetItemIconByID and C_Item.GetItemIconByID(it.id)
       b.icon:SetTexture(icon or "Interface\\Icons\\INV_Misc_QuestionMark")
-      if it.kind == "start" then b.bang:Show() else b.bang:Hide() end
+      if it.kind == "start" then b.bang:Show(); b.border:Hide() else b.bang:Hide(); b.border:Show() end
       local n = C_Item and C_Item.GetItemCount and ns.Util.plain(C_Item.GetItemCount(it.id)) or 0
       b.count:SetText(n > 1 and tostring(n) or "")
       if C_Container and C_Container.GetItemCooldown then
@@ -133,7 +140,7 @@ function IB.Apply()
   IB.Paint()
 end
 
--- The items for the current step and the quest log; the bar changes only when they do.
+-- The items for the current step; the bar changes only when they do.
 function IB.Update()
   local ds = ns.ActiveDataset and ns.ActiveDataset()
   if not ds or not ns.char then return end
