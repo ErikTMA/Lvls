@@ -61,6 +61,49 @@ function MR.Label(p)
   return tostring(p.n)
 end
 
+-- What a waypoint is, for its tooltip: the step(s) at it and what to do there. Pure.
+-- Returns { { text, r, g, b }, ... }; the first is the title.
+function MR.TooltipLines(steps, p)
+  local out = {}
+  if p.travel or not p.n then
+    out[1] = { p.title or "On the way", 1, 0.82, 0 }
+    return out
+  end
+  for i = p.n, p.last or p.n do
+    local st = steps and steps[i]
+    if st then
+      local c = i == p.n and p.current and ACCENT or { 1, 0.82, 0 }
+      out[#out + 1] = { ("%d. %s"):format(i, st.title or "?"), c[1], c[2], c[3] }
+      for _, l in ipairs(st.lines or {}) do
+        if l.text and not l.also then
+          local text = l.text
+          if l.need and l.need > 1 then text = ("%s (%d/%d)"):format(text, l.have or 0, l.need) end
+          local v = l.done and 0.5 or 1
+          out[#out + 1] = { "  " .. text, v, v, v }
+        end
+      end
+    end
+  end
+  return out
+end
+
+-- Hovering a waypoint shows MR.TooltipLines; clicks go through to the map below.
+function MR.Hoverable(f)
+  if f.EnableMouse then f:EnableMouse(true) end
+  if f.SetMouseClickEnabled then f:SetMouseClickEnabled(false) end
+  f:SetScript("OnEnter", function(self)
+    if not GameTooltip or not self.point then return end
+    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+    for k, l in ipairs(MR.TooltipLines(ns.steps, self.point)) do
+      if k == 1 then GameTooltip:SetText(l[1], l[2], l[3], l[4]) else GameTooltip:AddLine(l[1], l[2], l[3], l[4]) end
+    end
+    GameTooltip:Show()
+  end)
+  f:SetScript("OnLeave", function(self)
+    if GameTooltip and GameTooltip:IsOwned(self) then GameTooltip:Hide() end
+  end)
+end
+
 -- --- drawing ------------------------------------------------------------------------
 
 local Provider = {}
@@ -158,6 +201,7 @@ function MR.Draw(map)
       f.label = f:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
       f.label:SetPoint("CENTER", f, "CENTER", 0, 0)
       f.label:SetTextColor(0.1, 0.1, 0.1)
+      MR.Hoverable(f)
       return f
     end)
     local c = (p.current or p.travel) and ACCENT or AHEAD_COLOR
@@ -167,6 +211,7 @@ function MR.Draw(map)
     d:ClearAllPoints()
     d:SetPoint("CENTER", layer, "TOPLEFT", p.x * w * s, -p.y * h * s)
     d.label:SetText(MR.Label(p))
+    d.point = p
     local prev = pts[i - 1]
     if prev and not p.gap then
       nl = nl + 1

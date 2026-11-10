@@ -242,6 +242,7 @@ local function drawRoute(pos, w, h, radius, half, facing)
         m.label = m:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
         m.label:SetPoint("CENTER", m, "CENTER", 0, 0)
         m.label:SetTextColor(0.1, 0.1, 0.1)
+        MR.Hoverable(m)
         marks[nm] = m
       end
       local near = p.current or p.travel
@@ -249,6 +250,7 @@ local function drawRoute(pos, w, h, radius, half, facing)
       m.dot:SetVertexColor(c[1], c[2], c[3])
       m:SetAlpha(near and 1 or 0.85)
       m.label:SetText(MR.Label(p))
+      m.point = p
       m:ClearAllPoints()
       m:SetPoint("CENTER", Minimap, "CENTER", v[1], v[2])
       m:Show()

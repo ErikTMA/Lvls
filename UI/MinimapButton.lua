@@ -8,7 +8,7 @@ local _, ns = ...
 local MB = ns:NewModule("MinimapButton")
 
 MB.ANGLE = 210   -- the default spot: lower left
-MB.SIZE = 31
+MB.SIZE = 26
 local button
 
 local function angle()
@@ -60,19 +60,16 @@ local function create()
   b:SetFrameLevel((Minimap:GetFrameLevel() or 1) + 8)
   b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
   b:RegisterForDrag("LeftButton")
-  b:SetHighlightTexture("Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight")
-  local bg = b:CreateTexture(nil, "BACKGROUND")
-  bg:SetTexture("Interface\\Minimap\\UI-Minimap-Background")
-  bg:SetSize(20, 20)
-  bg:SetPoint("CENTER", b, "CENTER", 0, 0)
+  -- its own round badge (Media/MinimapIcon: drawn for this size; the painted logo
+  -- blurs into a squiggle here), no border of the client's round it
   b.icon = b:CreateTexture(nil, "ARTWORK")
-  b.icon:SetTexture("Interface\\AddOns\\Lvls\\Media\\LvlsIcon")
-  b.icon:SetSize(18, 18)
-  b.icon:SetPoint("CENTER", b, "CENTER", 0, 0)
-  local border = b:CreateTexture(nil, "OVERLAY")
-  border:SetTexture("Interface\\Minimap\\MiniMap-TrackingBorder")
-  border:SetSize(53, 53)
-  border:SetPoint("TOPLEFT", b, "TOPLEFT", 0, 0)
+  b.icon:SetTexture("Interface\\AddOns\\Lvls\\Media\\MinimapIcon")
+  b.icon:SetAllPoints(b)
+  local hl = b:CreateTexture(nil, "HIGHLIGHT")
+  hl:SetTexture("Interface\\AddOns\\Lvls\\Media\\MinimapIcon")
+  hl:SetAllPoints(b)
+  hl:SetBlendMode("ADD")
+  hl:SetAlpha(0.35)
   b:SetScript("OnClick", function(self, btn)
     MB.Click(btn)
     if GameTooltip and GameTooltip:IsOwned(self) then tooltip(self) end
