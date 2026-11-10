@@ -214,6 +214,13 @@ function V.LineTip(line)
     tip[#tip + 1] = { "A WoW Forever quest: its data (prerequisites, chains) is still being gathered,"
       .. " so the guide may send you to it before it is offered.", 0.9, 0.9, 0.9 }
   end
+  local o = q and line.index and q.obj and q.obj[line.index]
+  if o and o.t == "item" and not o.from then
+    local verb, names = ns.Steps.ItemSources(ds, o, line.quest, line.index)
+    if names and #names > ns.Steps.SOURCE_NAMES then
+      tip[#tip + 1] = { (verb == "Buy" and "Sold by: " or "From: ") .. table.concat(names, ", "), 0.9, 0.9, 0.9 }
+    end
+  end
   if q and q.kind == "group" then
     tip[#tip + 1] = { "An elite quest: made for a group.", 1, 0.5, 0.25 }
   end

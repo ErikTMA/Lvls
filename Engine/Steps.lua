@@ -50,7 +50,7 @@ local function marked(rec, name)
   return c and (name .. " (" .. c .. ")") or name
 end
 
-S.SOURCE_NAMES = 2 -- sources named in an item objective's line; the rest are counted
+S.SOURCE_NAMES = 2 -- up to this many sources are named in a line; more: the best and a count
 
 -- Where an item objective comes from: verb, names (best source first). "Loot" from
 -- creatures, "Collect" from objects only, "Buy" from vendors when nothing drops it.
@@ -91,15 +91,11 @@ function S.ItemSources(ds, o, qid, i)
   if #vendors > 0 then return "Buy", vendors end
 end
 
--- "A", "A or B", "A, B or 3 others"
+-- "A", "A or B", "A +5 more": the viewer is 330 px wide; the tooltip lists them all
 local function anyOf(names)
-  local k = S.SOURCE_NAMES
-  if #names <= k then
-    if #names == 1 then return names[1] end
-    return table.concat(names, ", ", 1, #names - 1) .. " or " .. names[#names]
-  end
-  local rest = #names - k
-  return table.concat(names, ", ", 1, k) .. (" or %d other%s"):format(rest, rest > 1 and "s" or "")
+  if #names == 1 then return names[1] end
+  if #names <= S.SOURCE_NAMES then return names[1] .. " or " .. names[2] end
+  return ("%s +%d more"):format(names[1], #names - 1)
 end
 
 -- "Kobold Vermin slain" -> "Kill 10 Kobold Vermin"; "Razormaw Incisor" -> "Loot 10
