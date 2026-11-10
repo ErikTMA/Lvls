@@ -47,7 +47,7 @@ function ns.InitCharDB(cdb)
   if cdb.viewer == nil then cdb.viewer = true end
   if type(cdb.skip) ~= "table" then cdb.skip = {} end
   if type(cdb.spec) ~= "number" then cdb.spec = 0 end -- 0: from the talents
-  if type(cdb.stepsDone) ~= "number" then cdb.stepsDone = 0 end -- steps finished, over every plan
+  cdb.stepsDone = nil -- the old step counter, gone
   if type(cdb.fights) ~= "table" then cdb.fights = {} end -- Adapters/FightLog
   return cdb
 end
@@ -118,16 +118,6 @@ ns.Events.On("LVLS_FIGHT", function()
     ns.replanSoon = true
   end
 end)
-
--- Step numbers go on across plans (a new plan holds only what is left): the steps
--- finished before this plan, and those finished in it so far.
-local function countSteps()
-  if not ns.cdb then return end
-  local before = ns.planBase or ns.cdb.stepsDone
-  ns.planBase = before
-  local n = ns.stepIndex and (ns.stepIndex - 1) or #(ns.steps or {})
-  ns.cdb.stepsDone = before + n
-end
 
 -- The player's spot on the zone's map (the client reports some places on a
 -- building's or the continent's map), a copy; nil when unknown.
@@ -203,9 +193,7 @@ local function plan(ds, forced)
   -- what the old plan finished up to now (the change that replans may have finished a step)
   if ns.steps and ns.char then
     ns.stepIndex = ns.Steps.Refresh(ds, ns.char, ns.steps, ns.Game.geo)
-    countSteps()
   end
-  ns.planBase = ns.cdb and ns.cdb.stepsDone or 0
   local ctx = ns.travelCtx
   local g = guideSet(ds)
   local dm = ns.DifficultyModel()
@@ -400,7 +388,6 @@ function ns.Refresh(replan)
     plan(ds)
     ns.stepIndex = ns.Steps.Refresh(ds, ns.char, ns.steps, ns.Game.geo)
   end
-  countSteps()
   -- the arrow follows the current step unless you pointed it somewhere yourself
   -- (a manual target stays until the step changes; browsing steps keeps its own)
   local st = ns.stepIndex and ns.steps[ns.stepIndex]
