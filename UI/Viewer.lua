@@ -63,15 +63,16 @@ function V.Model(ds, char, steps, current, view)
         line = { kind = t.kind, spot = t.spot, text = t.text }, travel = true }
     end
   end
-  -- a part that is done leaves the list: only what is still to do shows
+  -- a part that is done leaves the list: only what is still to do shows. A step that
+  -- is all done (browsed to) shows its lines ticked off, not an empty box.
   for _, l in ipairs(st.lines) do
     if #m.lines >= V.MAX_LINES then break end
-    if not l.done then
+    if not l.done or (st.done and not l.also) then
       local progress
       if l.need and l.need > 1 then progress = ("%d/%d"):format(l.have or 0, l.need) end
-      m.lines[#m.lines + 1] = { icon = ns.Steps.ICON[l.kind] or "goto", check = "checkoff",
+      m.lines[#m.lines + 1] = { icon = ns.Steps.ICON[l.kind] or "goto", check = l.done and "checkon" or "checkoff",
         text = (l.also and "Also: " or "") .. l.text, progress = progress,
-        color = l.also and V.COLORS.also or V.COLORS.text, line = l }
+        color = l.done and V.COLORS.done or l.also and V.COLORS.also or V.COLORS.text, line = l }
     end
   end
   local nxt = steps[i + 1]
@@ -383,6 +384,8 @@ function V.Browse(delta)
   if i < 1 then i = 1 end
   if i > n then i = n end
   V.view = (i ~= ns.stepIndex) and i or nil
+  -- a step browsed to while still open: browsing ends once it is done (Core/Init)
+  V.viewOpen = V.view ~= nil and not (ns.steps[i] and ns.steps[i].done)
   V.Render()
   local st = ns.steps[i]
   if V.model and V.model.spot then

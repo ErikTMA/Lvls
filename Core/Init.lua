@@ -396,6 +396,10 @@ function ns.Refresh(replan)
   -- the route moved on: browsing ends, the viewer and arrow show the new step (a step
   -- browsed to would otherwise stay on screen once it, or the steps before it, are done)
   if st ~= ns.arrowStep then ns.Viewer.view = nil end
+  -- the step browsed to got done while the current one did not (handed in ahead of
+  -- the route): browsing ends too, the arrow goes back to the current step
+  local seen = ns.Viewer.view and ns.steps[ns.Viewer.view]
+  if seen and ns.Viewer.viewOpen and seen.done then ns.Viewer.view, ns.arrowStep = nil, nil end
   if st and st.kind == "dungeon" and ns.DungeonInfo.Inside(st.area) then
     ns.Arrow.SetTarget(nil) -- in there: nothing to point at
   elseif not st then
