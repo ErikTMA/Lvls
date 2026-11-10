@@ -1,64 +1,21 @@
--- Navigation arrow: points at the current step (or a spot you clicked), turns from
--- red (behind you) through yellow to green (straight ahead), shows the step, the
--- distance and the time to get there, and a "here" marker when you arrive.
--- Art: Media/Arrow.tga (a light grey arrow pointing up, tinted and rotated here)
--- and Media/ArrowHere.tga.
+-- Navigation arrow: points at the current step (or a spot you clicked). The arrow
+-- itself (the frame, its turn and colour, distance and time, "You are here") is
+-- Libs/WaypointArrow.lua, shared with Profs!: one arrow when both are installed. This
+-- module says where Lvls! wants it to point and adds Lvls!'s own rules: inside the
+-- step's quest area is "there", the trip's legs, the way on foot (UI/Ground.lua).
 local _, ns = ...
 local AR = ns:NewModule("Arrow")
+local WA = _G.WaypointArrow
 
-AR.ARRIVED_YARDS = 5  -- "You are here": about talking range
-AR.LEAVE_YARDS = 8    -- once there, the arrow comes back only past this (no flicker)
+AR.OWNER = "Lvls!"
+AR.ARRIVED_YARDS = WA.ARRIVED_YARDS
+AR.LEAVE_YARDS = WA.LEAVE_YARDS
 AR.LEG_YARDS = 12     -- a leg's end (flight master, entrance, path point): on to the next
 AR.AREA_CHECK = 0.5 -- seconds between "am I in the quest area" checks
 AR.target = nil   -- { map, x, y, title, manual }
-local frame
-local here = {}            -- the player's position, refilled every update
-local shownYards, shownEta -- what the distance line says now
 
--- Direction to a target. Pure. Returns east / north yards from the player.
--- Same map: map percent times the map's size in yards. Different maps: world
--- positions from geo.world, whose axes in WoW are x = north, y = west.
-function AR.Vector(player, target, geo)
-  if not player or not target then return nil end
-  if player.map == target.map then
-    if not geo.size then return nil end
-    local w, h = geo.size(player.map)
-    if not w or w <= 0 or not h or h <= 0 then return nil end
-    return (target.x - player.x) / 100 * w, -(target.y - player.y) / 100 * h
-  end
-  if not geo.world then return nil end
-  local c1, px, py = geo.world(player.map, player.x, player.y)
-  local c2, tx, ty = geo.world(target.map, target.x, target.y)
-  if not c1 or c1 ~= c2 then return nil end
-  return -(ty - py), tx - px
-end
-
--- Arrow rotation (radians, counter-clockwise, 0 = straight ahead) from the vector and
--- the player's facing (radians counter-clockwise from north).
-function AR.Rotation(east, north, facing)
-  local bearing = math.atan2(-east, north) -- counter-clockwise from north
-  local r = (bearing - (facing or 0)) % (2 * math.pi)
-  if r > math.pi then r = r - 2 * math.pi end
-  return r
-end
-
--- Colour by how far off the heading is: 0 green, 90 degrees yellow, 180 red.
-function AR.Color(rotation)
-  local t = math.min(1, math.abs(rotation) / math.pi) -- 0 ahead .. 1 behind
-  if t < 0.5 then
-    local k = t / 0.5
-    return 0.2 + 0.8 * k, 1, 0.2 * (1 - k)
-  end
-  local k = (t - 0.5) / 0.5
-  return 1, 1 - 0.85 * k, 0
-end
-
--- "1:05" for seconds; nil when unknown.
-function AR.Eta(yards, speed)
-  if not yards or not speed or speed < 0.5 then return nil end
-  local s = math.floor(yards / speed + 0.5)
-  return ("%d:%02d"):format(math.floor(s / 60), s % 60)
-end
+-- Direction, turn, colour and time to arrival (pure; Libs/WaypointArrow.lua).
+AR.Vector, AR.Rotation, AR.Color, AR.Eta = WA.Vector, WA.Rotation, WA.Color, WA.Eta
 
 -- The quests whose objective area counts as "there" for a step: its own open
 -- objective lines (not the "also here" ones, not talking to someone). Pure.
@@ -151,17 +108,50 @@ end
 -- entrance, the next point of a path), see ns.RefreshTravel in Core/Init.lua.
 -- lines: a work step's lines; inside the game's area for one of its open quests
 -- is "there" wherever in it the spot is.
+-- Lvls!'s rules on top of the shared arrow: inside the step's quest area is there;
+-- at a leg's end (flight master, entrance, path point) on to the next leg.
+local hooks = {
+  enabled = function() return ns.db and ns.db.settings.arrow end,
+  position = function(buf) return ns.Game.Position(buf) end,
+  steer = function(pos) if ns.Ground then return ns.Ground.Next(pos) end end,
+  status = function(pos, d, t)
+    local g = AR.goal
+    if g and g.lines then
+      local now = GetTime and GetTime() or 0
+      if not AR.areaAt or now - AR.areaAt >= AR.AREA_CHECK then
+        AR.areaAt = now
+        AR.inArea = AR.CheckArea(pos, g.lines)
+      end
+      if AR.inArea then return { text = "|cff40ff40In the quest area|r", title = g.title } end
+    end
+    if t.leg and d <= AR.LEG_YARDS and ns.RefreshTravel then
+      local now = GetTime and GetTime() or 0
+      if not AR.lastLeg or now - AR.lastLeg > 1 then AR.lastLeg = now; ns.RefreshTravel() end
+    end
+  end,
+}
+hooks.geo = setmetatable({}, { __index = function(_, k) return ns.Game.geo[k] end })
+
+local function push(fresh)
+  local t = AR.target
+  if not t then return WA.Clear(AR.OWNER) end
+  WA.Set(AR.OWNER, { map = t.map, x = t.x, y = t.y, title = t.title, leg = t.leg,
+    goalTitle = AR.goal and AR.goal.title }, { manual = AR.goal and AR.goal.manual or false,
+    fresh = fresh, hooks = hooks })
+end
+
 function AR.SetTarget(spot, title, manual, lines)
-  AR.inArea, AR.areaAt, AR.arrived = false, nil, false
+  AR.inArea, AR.areaAt = false, nil
   if not spot then
     AR.goal, AR.target = nil, nil
     if ns.Ground then ns.Ground.Want(nil) end
+    push(true)
   else
     AR.goal = { map = spot.map, x = spot.x, y = spot.y, title = title, manual = manual, lines = lines }
     AR.target = AR.goal
+    push(true)
     if ns.RefreshTravel then ns.RefreshTravel() end
   end
-  if frame then frame:Show() end
 end
 
 -- The goal's title changed (a work step's progress): not for a place you picked.
@@ -169,121 +159,29 @@ function AR.SetTitle(title)
   local g = AR.goal
   if not g or g.manual or g.title == title then return end
   g.title = title
+  if AR.target == g then push(false) end
 end
 
 function AR.SetLeg(spot, title)
   if not AR.goal then return end
-  local old = AR.target
   if not spot then AR.target = AR.goal
   else AR.target = { map = spot.map, x = spot.x, y = spot.y, title = title or AR.goal.title, leg = true } end
-  local t = AR.target
-  if not old or old.map ~= t.map or old.x ~= t.x or old.y ~= t.y then AR.arrived = false end
+  push(false)
 end
 
-local function create()
-  frame = CreateFrame("Frame", "LvlsArrowFrame", UIParent)
-  frame:SetSize(84, 84)
-  ns.Style.Place(frame, "arrow", "TOP", "TOP", 0, -120)
-  ns.Style.Draggable(frame, "arrow")
-  frame.arrow = frame:CreateTexture(nil, "ARTWORK")
-  frame.arrow:SetTexture("Interface\\AddOns\\Lvls\\Media\\Arrow")
-  frame.arrow:SetAllPoints(frame)
-  frame.here = frame:CreateTexture(nil, "ARTWORK")
-  frame.here:SetTexture("Interface\\AddOns\\Lvls\\Media\\ArrowHere")
-  frame.here:SetSize(64, 64)
-  frame.here:SetPoint("CENTER", frame, "CENTER", 0, 0)
-  frame.here:SetVertexColor(0.25, 1, 0.25)
-  frame.here:Hide()
-  frame.title = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-  frame.title:SetPoint("TOP", frame, "BOTTOM", 0, -2)
-  frame.dist = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-  frame.dist:SetPoint("TOP", frame.title, "BOTTOM", 0, -2)
-  local acc = 0
-  frame:SetScript("OnUpdate", function(_, elapsed)
-    acc = acc + (elapsed or 0)
-    if acc >= 0.03 then acc = 0; AR.Update() end
-  end)
-end
+-- Redraw now (the frame also does it ~30 times a second).
+function AR.Update() WA.Update() end
 
-function AR.Update()
-  if not frame then return end
-  local t = AR.target
-  local on = ns.db and ns.db.settings.arrow
-  if on and t and UnitOnTaxi and UnitOnTaxi("player") then
-    frame.arrow:Hide(); frame.here:Hide()
-    frame.title:SetText(AR.goal and AR.goal.title or "")
-    frame.dist:SetText("|cffaaaaaaflying|r"); shownYards = nil
-    return
-  end
-  local pos = on and t and ns.Game.Position(here)
-  local east, north
-  if pos then east, north = AR.Vector(pos, t, ns.Game.geo) end
-  if not east then
-    frame.arrow:Hide(); frame.here:Hide()
-    frame.title:SetText(on and t and t.title or "")
-    frame.dist:SetText(on and t and "|cff999999far away|r" or ""); shownYards = nil
-    if not (on and t) then frame:Hide() end
-    return
-  end
-  frame:Show()
-  local d = math.sqrt(east * east + north * north)
-  frame.title:SetText(t.title or "")
-  -- in the step's quest area already: there, even if the spot is across it
-  local g = AR.goal
-  if g and g.lines then
-    local now = GetTime and GetTime() or 0
-    if not AR.areaAt or now - AR.areaAt >= AR.AREA_CHECK then
-      AR.areaAt = now
-      AR.inArea = AR.CheckArea(pos, g.lines)
-    end
-    if AR.inArea then
-      frame.title:SetText(g.title or "")
-      frame.arrow:Hide()
-      frame.here:Show()
-      frame.dist:SetText("|cff40ff40In the quest area|r"); shownYards = nil
-      return
-    end
-  end
-  if t.leg and d <= AR.LEG_YARDS and ns.RefreshTravel then
-    -- reached a leg's end (flight master, entrance, path point): on to the next leg
-    local now = GetTime and GetTime() or 0
-    if not AR.lastLeg or now - AR.lastLeg > 1 then AR.lastLeg = now; ns.RefreshTravel() end
-  end
-  AR.arrived = d <= (AR.arrived and AR.LEAVE_YARDS or AR.ARRIVED_YARDS)
-  if AR.arrived then
-    frame.arrow:Hide()
-    frame.here:Show()
-    frame.dist:SetText("|cff40ff40You are here|r"); shownYards = nil
-    return
-  end
-  frame.here:Hide()
-  frame.arrow:Show()
-  -- the way on foot (UI/Ground.lua): point at its next corner, count the yards along it
-  local c, left
-  if ns.Ground then c, left = ns.Ground.Next(pos) end
-  if c then
-    local ce, cn = AR.Vector(pos, c, ns.Game.geo)
-    if ce then east, north, d = ce, cn, left or d end
-  end
-  local rot = AR.Rotation(east, north, GetPlayerFacing and GetPlayerFacing() or 0)
-  if frame.arrow.SetRotation then frame.arrow:SetRotation(rot) end
-  local r, g, b = AR.Color(rot)
-  frame.arrow:SetVertexColor(r, g, b)
-  -- the text only when what it says changes (this runs ~30 times a second)
-  -- secret in combat: no time to arrival then
-  local speed = GetUnitSpeed and ns.Util.plain(GetUnitSpeed("player")) or 0
-  local yards = math.floor(d + 0.5)
-  local secs = speed >= 0.5 and math.floor(d / speed + 0.5) or -1
-  if yards ~= shownYards or secs ~= shownEta then
-    shownYards, shownEta = yards, secs
-    local eta = AR.Eta(d, speed)
-    frame.dist:SetText(ns.Util.yards(d) .. (eta and ("  |cffaaaaaa" .. eta .. "|r") or ""))
-  end
-end
-
+-- The shared arrow goes where it was dragged (LvlsDB.positions.arrow, as before).
 function AR.Attach()
-  if frame or not CreateFrame then return end
-  create()
+  WA.Register(AR.OWNER, {
+    load = function() return ns.db and ns.db.positions and ns.db.positions.arrow end,
+    save = function(pos)
+      if not ns.db then return end
+      ns.db.positions = ns.db.positions or {}
+      ns.db.positions.arrow = pos
+    end,
+  })
 end
 
 ns.Events.On("LVLS_LOADED", function() AR.Attach() end)
