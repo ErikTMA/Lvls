@@ -123,9 +123,14 @@ end
 
 -- Plannable shape of a quest: giver spots, per-objective target clusters, turn-in
 -- spots. nil and why when any part cannot be located.
-local function shape(ds, q, dungeon, bagStart, pos, opens)
+-- entry: the quest log's entry when the quest is in the log. Then the log decides:
+-- an objective it reports done is done, whatever the data knows of it; one the route
+-- cannot plan (no location, reputation, a spell, inside a dungeon) is left to you,
+-- and the quest is handed in once the client says it is complete. No experience
+-- or giver needed: it is yours already.
+local function shape(ds, q, dungeon, bagStart, pos, opens, entry)
   -- no experience: only a link that opens others (a delivery, a breadcrumb chain)
-  if (not q.xp or q.xp <= 0) and not opens then return nil, "no experience and opens nothing" end
+  if not entry and (not q.xp or q.xp <= 0) and not opens then return nil, "no experience and opens nothing" end
   local givers = ns.Quests.Givers(ds, q)
   -- started by an item in your bags: picked up where you stand (use the item)
   if #givers == 0 and bagStart and pos then
@@ -136,16 +141,24 @@ local function shape(ds, q, dungeon, bagStart, pos, opens)
   if #ends == 0 then return nil, "no known place to hand it in" end
   local objs = {}
   for i, o in ipairs(q.obj or {}) do
-    if o.t == "faction" or o.t == "spell" then return nil, ("objective %d needs %s"):format(i, o.t == "faction" and "reputation" or "a spell") end
-    if o.from == "provided" or o.dup then
+    local why
+    if o.from == "provided" or o.dup or (entry and ns.Quests.ObjectiveDone(entry, o, i)) then
       objs[i] = { free = true }
-    elseif dungeon and q.inst and q.zone == dungeon then
-      objs[i] = { dungeon = true } -- done inside: never planned as field work
+    elseif (dungeon and q.inst and q.zone == dungeon) or (entry and q.inst) then
+      objs[i] = { dungeon = true } -- done inside: never planned as field work (a dungeon guide)
+    elseif o.t == "faction" or o.t == "spell" then
+      why = ("objective %d needs %s"):format(i, o.t == "faction" and "reputation" or "a spell")
     else
       local spots = ns.Quests.ObjectiveSpots(ds, q, i)
-      if #spots == 0 then return nil, ("no location known for: %s"):format(o.text or ("objective " .. i)) end
-      local clusters = G.Group(spots, 5)
-      objs[i] = { targets = clusters, spots = spots }
+      if #spots > 0 then
+        objs[i] = { targets = G.Group(spots, 5), spots = spots }
+      else
+        why = ("no location known for: %s"):format(o.text or ("objective " .. i))
+      end
+    end
+    if why then
+      if not entry then return nil, why end
+      objs[i] = { blocked = true } -- in the log: yours to do; handed in once complete
     end
   end
   return { givers = givers, ends = ends, objs = objs }
@@ -486,23 +499,27 @@ function R.Plan(ds, char, geo, opts)
   local opens = R.Opens(ds, char)
   local function consider(q)
     if shapes[q.id] ~= nil then return shapes[q.id] end
-    local s = shape(ds, q, o.dungeon, bagStarts[q.id], pos, opens[q.id] ~= nil)
+    -- in the log: the log decides (shape); where it was picked up no longer matters
+    -- (Unrequited Love: given in Darkshore, handed in at Menethil Harbor), each
+    -- objective and the turn-in are reached on their own, across the sea by opts.travel
+    local entry = char.active and char.active[q.id]
+    local s = shape(ds, q, o.dungeon, bagStarts[q.id], pos, opens[q.id] ~= nil, entry)
     shapes[q.id] = s or false
     if s then
-      -- giver -> objectives -> turn-in must be walkable (one continent)
+      -- not in the log: giver -> objectives -> turn-in must be walkable (one continent)
       local here = s.givers[1] or s.ends[1]
       workSecs[q.id] = 0
       for i in ipairs(q.obj or {}) do
         local ob = s.objs[i]
-        if ob and not ob.free and not ob.dungeon then
+        if ob and ob.targets then
           workSecs[q.id] = workSecs[q.id] + workSeconds(q.obj[i], ob.spots, o)
           local tgt, d = nearestTarget(geo, here, ob.targets)
-          if d == math.huge then shapes[q.id] = false; return false end
-          here = tgt
+          if not entry and d == math.huge then shapes[q.id] = false; return false end
+          here = tgt or here
         end
       end
       local _, d = G.Nearest(geo, here, s.ends)
-      if d == math.huge then shapes[q.id] = false; return false end
+      if not entry and d == math.huge then shapes[q.id] = false; return false end
     end
     return shapes[q.id]
   end
@@ -609,7 +626,7 @@ function R.Plan(ds, char, geo, opts)
         else
           for i in ipairs(q.obj or {}) do
             local so = s.objs[i]
-            if so and not so.free and not so.dungeon and not progress[qid][i] then
+            if so and so.targets and not progress[qid][i] then
               pending[#pending + 1] = { quest = qid, index = i, spot = nearestTarget(geo, pos, so.targets) or so.targets[1] }
             end
           end
@@ -767,7 +784,7 @@ function R.Plan(ds, char, geo, opts)
               local so = s.objs[i]
               if so and so.free then
                 progress[qid][i] = true
-              elseif so and not so.dungeon then
+              elseif so and so.targets then
                 local tgt, _, secs = reachSpot(o, geo, pos, so.targets, busy())
                 if secs < math.huge then
                   offer({ kind = "do", quest = qid, index = i, spot = tgt },
@@ -846,7 +863,7 @@ function R.Plan(ds, char, geo, opts)
         if s and progress[qid] then
           for i in ipairs(oq.obj or {}) do
             local so = s.objs[i]
-            if so and not so.free and not so.dungeon and not progress[qid][i] then
+            if so and so.targets and not progress[qid][i] then
               local tgt, d = nearestTarget(geo, best.spot, so.targets)
               if d <= o.together then also[#also + 1] = { kind = "do", quest = qid, index = i, spot = tgt } end
             end
@@ -886,8 +903,18 @@ function R.Why(ds, char, qid)
     if not (char.active and char.active[qid]) then return "starts from an item or inside a dungeon: plannable once in your log" end
   end
   local opens = R.Opens(ds, char)[qid] ~= nil
-  local s, reason = shape(ds, q, nil, nil, char.pos, opens)
+  local entry = char.active and char.active[qid]
+  local s, reason = shape(ds, q, nil, nil, char.pos, opens, entry)
   if not s then return "cannot be planned: " .. tostring(reason) end
+  if entry then
+    for i in ipairs(q.obj or {}) do
+      local so = s.objs[i]
+      if so and (so.blocked or so.dungeon) then
+        return ("in your log: objective %d is yours to do%s; then it is handed in"):format(i, so.dungeon and " in the dungeon" or "")
+      end
+    end
+    return "plannable (in your log)"
+  end
   if st == "locked" or st == "low" then return "plannable once possible: " .. tostring(why) end
   if st == "trivial" then return "plannable, but grey for you (no experience worth the trip)" end
   if q.inst or q.kind == "dungeon" or q.kind == "raid" then return "a dungeon quest: in a dungeon guide (Guides menu)" end

@@ -164,9 +164,10 @@ local function finishPlan(ds, g, char, route)
   -- where the plan was made (on the zone's map): going elsewhere plans again (offRoute)
   ns.planAt = here(char.pos)
   -- the log the plan was made for: a quest it leaves out on purpose (for later, no
-  -- experience) is not a reason to plan again; one taken since is
+  -- experience) is not a reason to plan again; one taken since is, and so is one
+  -- finished since (in a dungeon, or work the route left to you): its hand-in
   ns.planLog = {}
-  for qid in pairs(char.active or {}) do ns.planLog[qid] = true end
+  for qid, entry in pairs(char.active or {}) do ns.planLog[qid] = entry.complete and "complete" or true end
   ns.backlog = ns.Route.Backlog(ds, char, route) -- in the log, not handed in by this plan
   ns.steps = ns.Steps.Build(ds, char, route, ns.Game.geo)
   if g then
@@ -297,14 +298,18 @@ local function unplanned(ds)
       if ns.guide.set[qid] and entry.complete and not handIn[qid] then return true end
     end
   end
-  for qid in pairs(ns.char.active or {}) do
+  for qid, entry in pairs(ns.char.active or {}) do
     local q = ds.quests[qid]
+    -- finished since the plan was made, and the plan does not hand it in
+    if q and entry.complete and not handIn[qid] and ns.planLog and ns.planLog[qid] == true
+      and not (ns.cdb and ns.cdb.skip[qid]) then return true end
     local wanted = ns.guide and ns.guide.set[qid] or (not ns.guide and q and not q.inst)
     if q and not known[qid] and (q.sn or q.so or ns.Quests.StartItem(ds, q)) and wanted and not (ns.planLog and ns.planLog[qid])
       and not (ns.cdb and ns.cdb.skip[qid]) then return true end
   end
   return false
 end
+ns.Unplanned = unplanned -- tests
 
 -- What the pins and the nearby list depend on, as a few numbers (no tables, no
 -- strings: this runs every few seconds): level, completed quests, the quest log
