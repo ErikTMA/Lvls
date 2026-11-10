@@ -1,7 +1,8 @@
 -- The step viewer: a dark panel with the current step, one line per goal (icon,
 -- check box, text, progress), the objectives you can do at the same time, a preview
 -- of the next step and the experience bar. Prev / next browse the plan; clicking a
--- line points the arrow at it, right-clicking skips its quest.
+-- line points the arrow at it, right-clicking skips its quest. The gear opens the
+-- settings page.
 local _, ns = ...
 local V = ns:NewModule("Viewer")
 
@@ -18,7 +19,7 @@ V.COLORS = {
 }
 local ICONS = "Interface\\AddOns\\Lvls\\Media\\Icons"
 local ICON_SLOT = { checkoff = 0, checkon = 1, accept = 2, turnin = 3, kill = 4, collect = 5, talk = 6, ["goto"] = 7,
-  fly = 8, transit = 9, hearth = 10, enter = 11, path = 12 }
+  fly = 8, transit = 9, hearth = 10, enter = 11, path = 12, settings = 13 }
 local ICON_SLOTS = 16
 
 V.view = nil -- index of the step being shown (nil: follow the current step)
@@ -206,8 +207,23 @@ local function create()
   frame.name:SetTextColor(C.accent[1], C.accent[2], C.accent[3])
   frame.close = button(frame.bar, "x", 20, function() V.Show(false) end)
   frame.close:SetPoint("RIGHT", frame.bar, "RIGHT", -2, 0)
+  -- the settings page (/lvls settings): a gear
+  frame.settings = button(frame.bar, "", 20, function() V.OpenSettings() end)
+  frame.settings:SetPoint("RIGHT", frame.close, "LEFT", -2, 0)
+  frame.settings.icon = frame.settings:CreateTexture(nil, "ARTWORK")
+  frame.settings.icon:SetSize(14, 14)
+  frame.settings.icon:SetPoint("CENTER", frame.settings, "CENTER", 0, 0)
+  frame.settings.icon:SetTexture(ICONS)
+  frame.settings.icon:SetTexCoord(V.IconCoords("settings"))
+  frame.settings:SetScript("OnEnter", function(self)
+    if not GameTooltip then return end
+    GameTooltip:SetOwner(self, "ANCHOR_TOP")
+    GameTooltip:AddLine("Settings")
+    GameTooltip:Show()
+  end)
+  frame.settings:SetScript("OnLeave", function() if GameTooltip then GameTooltip:Hide() end end)
   frame.nextBtn = button(frame.bar, ">", 20, function() V.Browse(1) end)
-  frame.nextBtn:SetPoint("RIGHT", frame.close, "LEFT", -2, 0)
+  frame.nextBtn:SetPoint("RIGHT", frame.settings, "LEFT", -2, 0)
   frame.stepNo = frame.bar:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
   frame.stepNo:SetPoint("RIGHT", frame.nextBtn, "LEFT", -4, 0)
   frame.prevBtn = button(frame.bar, "<", 20, function() V.Browse(-1) end)
@@ -250,6 +266,9 @@ local function create()
   frame.xp.text = frame.xp:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
   frame.xp.text:SetPoint("CENTER", frame.xp, "CENTER", 0, 0)
 end
+
+-- The gear on the title bar: the settings page, as /lvls settings.
+function V.OpenSettings() ns.Slash("settings") end
 
 -- The dungeon guide menu (Blizzard_Menu): one radio per dungeon with quests for
 -- you, and a way back to the leveling route.
