@@ -201,10 +201,14 @@ end
 -- Lvls!'s rules on top of the shared arrow: inside the step's quest area is there;
 -- at a leg's end (flight master, entrance, path point) on to the next leg.
 local hooks = {
-  enabled = function() return ns.db and ns.db.settings.arrow and (not ns.Viewer or ns.Viewer.Shown()) end,
+  -- dead: the corpse even with the guide hidden
+  enabled = function()
+    return ns.db and ns.db.settings.arrow and (AR.corpse or not ns.Viewer or ns.Viewer.Shown()) and true or false
+  end,
   position = function(buf) return ns.Game.Position(buf) end,
-  steer = function(pos) if ns.Ground then return ns.Ground.Next(pos) end end,
+  steer = function(pos) if ns.Ground and not AR.corpse then return ns.Ground.Next(pos) end end,
   status = function(pos, d, t)
+    if AR.corpse then return end
     local g = AR.goal
     if g and g.lines then
       local now = GetTime and GetTime() or 0
@@ -224,6 +228,12 @@ local hooks = {
 hooks.geo = setmetatable({}, { __index = function(_, k) return ns.Game.geo[k] end })
 
 function push(fresh)
+  local c = AR.corpse
+  if c then
+    -- picked "by hand" so it beats every other target (Profs!'s too)
+    return WA.Set(AR.OWNER, { map = c.map, x = c.x, y = c.y, title = AR.CORPSE_TITLE },
+      { manual = true, fresh = fresh, hooks = hooks })
+  end
   local t = AR.target
   if not t then return WA.Clear(AR.OWNER) end
   WA.Set(AR.OWNER, { map = t.map, x = t.x, y = t.y, title = t.title, leg = t.leg,
@@ -261,6 +271,61 @@ function AR.SetLeg(spot, title)
   push(false)
 end
 
+-- Dead or a ghost: the arrow points at your corpse, whatever the step or a spot you
+-- picked; alive again it goes back to them. Where the corpse lies: the client's
+-- (C_DeathInfo.GetCorpseMapPosition, asked on your map and the maps around it), else
+-- where you died (inside a dungeon: its door, the last spot outside).
+AR.CORPSE_TITLE = "Your corpse"
+
+local function isDead()
+  return UnitIsDeadOrGhost and UnitIsDeadOrGhost("player") and true or false
+end
+
+-- The client's corpse spot, on the first map up from yours that has it. Nil when
+-- the client does not say (not released yet, or the corpse is in an instance).
+function AR.CorpseSpot()
+  if not (C_DeathInfo and C_DeathInfo.GetCorpseMapPosition and C_Map and C_Map.GetBestMapForUnit) then return nil end
+  local map = C_Map.GetBestMapForUnit("player")
+  for _ = 1, 6 do
+    if not map or map == 0 then return nil end
+    local ok, v = pcall(C_DeathInfo.GetCorpseMapPosition, map)
+    if ok and type(v) == "table" then
+      local x, y = v.x, v.y
+      if v.GetXY then x, y = v:GetXY() end
+      if x and y and not (x == 0 and y == 0) then return { map = map, x = x * 100, y = y * 100 } end
+    end
+    local info = C_Map.GetMapInfo and C_Map.GetMapInfo(map)
+    map = info and info.parentMapID
+  end
+end
+
+-- Where you just died, as a fallback for the client's answer.
+function AR.Died()
+  local DI = ns.DungeonInfo
+  local inside = DI and DI.Instance and DI.Instance()
+  local spot = inside and DI.outside or ns.Game.Position()
+  if spot then AR.deathSpot = { map = spot.map, x = spot.x, y = spot.y } end
+  AR.CheckDead()
+end
+
+-- Dead or alive now: point at the corpse, or give the arrow back.
+function AR.CheckDead()
+  if not isDead() then
+    AR.deathSpot = nil
+    if not AR.corpse then return end
+    AR.corpse = nil
+    push(true)
+    if ns.RefreshTravel then ns.RefreshTravel() end
+    return
+  end
+  local c = AR.CorpseSpot() or AR.deathSpot
+  if not c then return end
+  local old = AR.corpse
+  if old and old.map == c.map and old.x == c.x and old.y == c.y then return end
+  AR.corpse = c
+  push(not old)
+end
+
 -- Redraw now (the frame also does it ~30 times a second).
 function AR.Update() WA.Update() end
 
@@ -276,7 +341,16 @@ function AR.Attach()
   })
 end
 
-ns.Events.On("LVLS_LOADED", function() AR.Attach() end)
+ns.Events.On("LVLS_LOADED", function() AR.Attach(); AR.CheckDead() end)
+-- logged in or zoned as a ghost, released, back alive
+ns.Events.On("LVLS_STATE", function() AR.CheckDead() end)
+if CreateFrame then
+  local f = CreateFrame("Frame")
+  for _, e in ipairs({ "PLAYER_DEAD", "PLAYER_ALIVE", "PLAYER_UNGHOST" }) do f:RegisterEvent(e) end
+  f:SetScript("OnEvent", function(_, event)
+    if event == "PLAYER_DEAD" then AR.Died() else AR.CheckDead() end
+  end)
+end
 -- the guide shown again: the arrow is Lvls!'s again (a hidden frame has no OnUpdate
 -- to notice by itself); hidden: the next owner's, or none
 ns.Events.On("LVLS_GUIDE", function(on)

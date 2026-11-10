@@ -195,7 +195,7 @@ function D.Step(ds, char, guide, name, entrance, planned)
       for i, o in ipairs(q.obj or {}) do
         if o.from ~= "provided" then
           lines[#lines + 1] = { kind = ns.Steps.ObjectiveKind(o), quest = id, index = i,
-            text = ns.Steps.ObjectiveText(o), dungeon = true }
+            text = ns.Steps.ObjectiveText(o, ds, id, i), dungeon = true }
         end
       end
     end

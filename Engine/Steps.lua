@@ -34,12 +34,92 @@ end
 
 S.ObjectiveKind = objKind
 
--- "Kobold Vermin slain" -> "Kill 10 Kobold Vermin"; "Tough Wolf Meat" -> "Collect 8 ..."
-function S.ObjectiveText(o)
+S.QUEST_TAGS = { group = "Elite", dungeon = "Dungeon", raid = "Raid", pvp = "PvP" }
+
+-- " (Elite)": the quest log's tag of a quest, "" for none
+function S.QuestTag(q)
+  local tag = q and S.QUEST_TAGS[q.kind]
+  return tag and (" (" .. tag .. ")") or ""
+end
+
+-- Wowhead's npc classification (the dataset's elite): how a mob is marked by name
+S.CLASSIFICATION = { [1] = "elite", [2] = "rare elite", [3] = "boss", [4] = "rare" }
+
+local function marked(rec, name)
+  local c = rec and S.CLASSIFICATION[rec.elite]
+  return c and (name .. " (" .. c .. ")") or name
+end
+
+S.SOURCE_NAMES = 2 -- sources named in an item objective's line; the rest are counted
+
+-- Where an item objective comes from: verb, names (best source first). "Loot" from
+-- creatures, "Collect" from objects only, "Buy" from vendors when nothing drops it.
+-- The dataset's sources, else what the provider (QuestieDB) places at runtime; nil
+-- when neither knows (Forever's new quests are often not in either yet).
+function S.ItemSources(ds, o, qid, i)
+  local list = {}
+  for _, s in ipairs(o.src or {}) do list[#list + 1] = { s[1], s[2] } end
+  local p = ns.Prereqs and ns.Prereqs.Provider()
+  if #list == 0 and qid and i and p and p.ObjectiveSpots then
+    local ok, spots = pcall(p.ObjectiveSpots, qid, i, o)
+    if ok and type(spots) == "table" then
+      for _, sp in ipairs(spots) do
+        if sp.id then list[#list + 1] = { sp.vendor and "v" or sp.kind, sp.id } end
+      end
+    end
+  end
+  local drops, vendors, seen, npc = {}, {}, {}, false
+  for _, s in ipairs(list) do
+    local kind, id = s[1], s[2]
+    local rec = (kind == "o" and ds.objects or ds.npcs)[id]
+    local name = rec and rec.n
+    if not name and p and p.Name then
+      local ok, n = pcall(p.Name, kind == "o" and "o" or "n", id)
+      name = ok and n or nil
+    end
+    if name and name ~= o.text and not seen[name] then
+      seen[name] = true
+      if kind == "n" then name = marked(rec, name) end
+      if kind == "v" then vendors[#vendors + 1] = name
+      else
+        drops[#drops + 1] = name
+        npc = npc or kind == "n"
+      end
+    end
+  end
+  if #drops > 0 then return npc and "Loot" or "Collect", drops end
+  if #vendors > 0 then return "Buy", vendors end
+end
+
+-- "A", "A or B", "A, B or 3 others"
+local function anyOf(names)
+  local k = S.SOURCE_NAMES
+  if #names <= k then
+    if #names == 1 then return names[1] end
+    return table.concat(names, ", ", 1, #names - 1) .. " or " .. names[#names]
+  end
+  local rest = #names - k
+  return table.concat(names, ", ", 1, k) .. (" or %d other%s"):format(rest, rest > 1 and "s" or "")
+end
+
+-- "Kobold Vermin slain" -> "Kill 10 Kobold Vermin"; "Razormaw Incisor" -> "Loot 10
+-- Razormaw Incisor from Highland Razormaw": who drops it, or "Collect 8 ..." when no
+-- one knows. ds (and the quest id and objective index, for the provider) name it.
+function S.ObjectiveText(o, ds, qid, i)
   local text = o.text or "objective"
   local n = o.qty and o.qty > 1 and (o.qty .. " ") or ""
-  if o.t == "kill" then return "Kill " .. n .. (text:gsub("%s+[Ss]lain$", "")) end
-  if o.t == "item" then return "Collect " .. n .. text end
+  if o.t == "kill" then
+    local name = text:gsub("%s+[Ss]lain$", "")
+    local s1 = o.src and o.src[1]
+    if ds and s1 and s1[1] == "n" and #o.src == 1 then name = marked(ds.npcs[s1[2]], name) end
+    return "Kill " .. n .. name
+  end
+  if o.t == "item" then
+    local verb, names
+    if ds and not o.from then verb, names = S.ItemSources(ds, o, qid, i) end
+    if verb then return ("%s %s%s from %s"):format(verb, n, text, anyOf(names)) end
+    return "Collect " .. n .. text
+  end
   if o.t == "object" then return "Use " .. text end
   return text
 end
@@ -160,13 +240,13 @@ function S.Build(ds, char, route, geo)
       end
       if talk then
         cur.lines[#cur.lines + 1] = { kind = a.kind, quest = a.quest,
-          text = (a.kind == "accept" and "Accept " or "Turn in ") .. q.n .. ns.ClassQuests.Tag(q, char),
+          text = (a.kind == "accept" and "Accept " or "Turn in ") .. q.n .. S.QuestTag(q) .. ns.ClassQuests.Tag(q, char),
           opens = a.kind == "turnin" and S.Opens(ds, char, q) or nil }
       else
         local o = q.obj[a.index]
         -- at: the line's own area (one worked along with another has none)
         cur.lines[#cur.lines + 1] = { kind = objKind(o), quest = a.quest, index = a.index,
-          text = S.ObjectiveText(o), at = not a.along and a.spot or nil }
+          text = S.ObjectiveText(o, ds, a.quest, a.index), at = not a.along and a.spot or nil }
       end
       cur.level = a.level or cur.level
     end
@@ -294,7 +374,7 @@ function S.AddAlso(ds, char, st, geo)
             near = d <= S.ALSO_YARDS
           end
           if near then
-            local l = { kind = objKind(o), quest = qid, index = i, text = S.ObjectiveText(o), also = true }
+            local l = { kind = objKind(o), quest = qid, index = i, text = S.ObjectiveText(o, ds, qid, i), also = true }
             l.done = S.LineState(ds, char, l) and true or false
             extra[#extra + 1] = l
           end

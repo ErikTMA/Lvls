@@ -67,14 +67,38 @@ function V.Model(ds, char, steps, current, view)
   end
   -- a part that is done leaves the list: only what is still to do shows. A step that
   -- is all done (browsed to) shows its lines ticked off, not an empty box.
+  local shown = {}
   for _, l in ipairs(st.lines) do
-    if #m.lines >= V.MAX_LINES then break end
-    if not l.done or (st.done and not l.also) then
-      local progress
-      if l.need and l.need > 1 then progress = ("%d/%d"):format(l.have or 0, l.need) end
-      m.lines[#m.lines + 1] = { icon = ns.Steps.ICON[l.kind] or "goto", check = l.done and "checkon" or "checkoff",
-        text = (l.also and "Also: " or "") .. l.text, progress = progress,
-        color = l.done and V.COLORS.done or l.also and V.COLORS.also or V.COLORS.text, line = l }
+    if not l.done or (st.done and not l.also) then shown[#shown + 1] = l end
+  end
+  -- objectives stand under their quest's name ("[29] Razormaw Needling (Elite)"):
+  -- right-click it to skip the quest; a quest only worked "also here" says so there
+  local byQuest, order = {}, {}
+  for _, l in ipairs(shown) do
+    if l.index and l.quest and ds.quests[l.quest] then
+      if not byQuest[l.quest] then byQuest[l.quest] = {}; order[#order + 1] = l.quest end
+      table.insert(byQuest[l.quest], l)
+    end
+  end
+  local function add(l, indent)
+    if #m.lines >= V.MAX_LINES then return end
+    local progress
+    if l.need and l.need > 1 then progress = ("%d/%d"):format(l.have or 0, l.need) end
+    m.lines[#m.lines + 1] = { icon = ns.Steps.ICON[l.kind] or "goto", check = l.done and "checkon" or "checkoff",
+      text = (l.also and not indent and "Also: " or "") .. l.text, progress = progress, indent = indent,
+      color = l.done and V.COLORS.done or l.also and V.COLORS.also or V.COLORS.text, line = l }
+  end
+  local headed = {}
+  for _, l in ipairs(shown) do
+    local group = l.index and byQuest[l.quest]
+    if not group then add(l)
+    elseif not headed[l.quest] and #m.lines < V.MAX_LINES then
+      headed[l.quest] = true
+      local also = true
+      for _, g in ipairs(group) do also = also and g.also and true or false end
+      m.lines[#m.lines + 1] = { quest = true, text = (also and "Also: " or "") .. V.QuestLabel(ds.quests[l.quest], char),
+        color = also and V.COLORS.also or V.COLORS.title, line = { quest = l.quest, kind = "quest" } }
+      for _, g in ipairs(group) do add(g, true) end
     end
   end
   local nxt = steps[i + 1]
@@ -82,6 +106,11 @@ function V.Model(ds, char, steps, current, view)
   m.backlog = V.Backlog(ds, ns.backlog)
   m.train = V.Train(char and char.training)
   return m
+end
+
+-- "[29] Razormaw Needling (Elite)": a quest's name, its level and the quest log's tag.
+function V.QuestLabel(q, char)
+  return (q.l and ("[%d] "):format(q.l) or "") .. q.n .. ns.Steps.QuestTag(q) .. ns.ClassQuests.Tag(q, char)
 end
 
 -- "In your log for later: 3 (Westfall, Elwynn Forest), 1 grey": quests in the log
@@ -184,6 +213,9 @@ function V.LineTip(line)
   if line.quest >= ns.Prereqs.FOREVER_FROM then
     tip[#tip + 1] = { "A WoW Forever quest: its data (prerequisites, chains) is still being gathered,"
       .. " so the guide may send you to it before it is offered.", 0.9, 0.9, 0.9 }
+  end
+  if q and q.kind == "group" then
+    tip[#tip + 1] = { "An elite quest: made for a group.", 1, 0.5, 0.25 }
   end
   tip[#tip + 1] = { "Right-click: skip this quest (/lvls unskip takes it back)", 0.6, 0.8, 1 }
   return tip
@@ -452,8 +484,15 @@ function V.Render()
   for i, l in ipairs(m.lines) do
     local r = row(i)
     r.line = l.line
-    r.check:SetTexCoord(V.IconCoords(l.check))
-    r.icon:SetTexCoord(V.IconCoords(l.icon))
+    -- a quest's name: no box, no icon; its objectives under it, indented
+    r.check:ClearAllPoints()
+    r.check:SetPoint("LEFT", r, "LEFT", l.indent and 12 or 0, 0)
+    r.text:ClearAllPoints()
+    r.text:SetPoint("LEFT", l.quest and r or r.icon, l.quest and "LEFT" or "RIGHT", l.quest and 0 or 5, 0)
+    r.text:SetPoint("RIGHT", r.progress, "LEFT", -4, 0)
+    if l.quest then r.check:Hide(); r.icon:Hide() else r.check:Show(); r.icon:Show() end
+    if l.check then r.check:SetTexCoord(V.IconCoords(l.check)) end
+    if l.icon then r.icon:SetTexCoord(V.IconCoords(l.icon)) end
     r.text:SetText(l.text)
     r.text:SetTextColor(l.color[1], l.color[2], l.color[3])
     r.progress:SetText(l.progress or "")

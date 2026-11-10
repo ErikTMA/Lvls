@@ -261,6 +261,13 @@ function QD.StartItem(qid)
   return out
 end
 
+-- Name of an npc ("n") or object ("o") QuestieDB knows; nil otherwise.
+function QD.Name(kind, id)
+  if not lib or not id then return nil end
+  local n = get(kind == "o" and lib.Object or lib.Npc, id, "name")
+  return type(n) == "string" and n ~= "" and n or nil
+end
+
 -- Runtime fallback for an objective the dataset cannot locate.
 function QD.ObjectiveSpots(qid, i, o)
   if not lib or not o then return nil end
