@@ -44,6 +44,7 @@ S.ITEMS = {
   { key = "nativeArrow", name = "Also the game's waypoint marker", travel = true, tip = "Also set the game's own map waypoint: its marker shows in the world with the distance. It stays on the goal, also while the arrow leads the way on foot." },
   { key = "itemBar", name = "Buttons for quest items", tip = "A movable row of buttons for the items to use now: items that start a quest, and the items quests give you to use on someone or somewhere. Key bindings: Key Bindings -> AddOns -> Lvls!. Drag a button to move them." },
   { key = "lockItemBar", name = "Lock the item buttons", tip = "They cannot be dragged. /lvls items reset puts them back in their place." },
+  { key = "viewerGrowUp", name = "Step viewer grows upwards", viewer = true, tip = "The step viewer keeps its bottom edge where you put it and grows upwards as a step gets more lines. Off: it keeps its top edge and grows downwards. /lvls growup" },
   { key = "worldMap", name = "Quest pins on the world map" },
   { key = "mapRoute", name = "Route on the world map", tip = "The next steps as numbered waypoints joined by a line, starting where you stand; at a flight master, the flight point to fly to is ringed and its route drawn. /lvls mapline" },
   { key = "minimap", name = "Quest pins on the minimap" },
@@ -63,6 +64,7 @@ function S.Set(key, value)
   for _, it in ipairs(S.ITEMS) do
     if it.key == key and it.refresh and ns.Refresh then ns.Refresh(true) return end
     if it.key == key and it.travel and ns.RefreshTravel then ns.RefreshTravel() end
+    if it.key == key and it.viewer and ns.Viewer and ns.Viewer.Anchor then ns.Viewer.Anchor() end
   end
   if ns.Refresh and ns.char then ns.Refresh() end
 end

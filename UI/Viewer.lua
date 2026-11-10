@@ -161,6 +161,24 @@ local function row(i)
   return r
 end
 
+-- Grow upwards: the viewer keeps its bottom edge, else its top edge.
+function V.GrowUp() return ns.db and ns.db.settings.viewerGrowUp and true or false end
+
+-- Pin the viewer by the edge the setting keeps, where it stands now (the setting
+-- changed, or a position saved by the other edge).
+function V.Anchor()
+  if not frame then return end
+  local up = V.GrowUp()
+  local p = ns.db and ns.db.positions and ns.db.positions.viewer
+  if type(p) ~= "table" or not p[1] then
+    if not up then return end -- never moved: the default spot, growing downwards is fine
+  elseif p[1] == (up and "BOTTOMLEFT" or "TOPLEFT") then
+    return
+  end
+  ns.Style.SavePosition(frame, "viewer", up)
+  ns.Style.Place(frame, "viewer", "RIGHT", "RIGHT", -40, 80)
+end
+
 local function create()
   local C = V.COLORS
   frame = CreateFrame("Frame", "LvlsViewerFrame", UIParent)
@@ -176,7 +194,7 @@ local function create()
   frame.bar:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, 0)
   frame.bar:SetPoint("TOPRIGHT", frame, "TOPRIGHT", 0, 0)
   bg(frame.bar, C.bar)
-  ns.Style.Draggable(frame, "viewer", frame.bar)
+  ns.Style.Draggable(frame, "viewer", frame.bar, V.GrowUp)
   frame.logo = frame.bar:CreateTexture(nil, "ARTWORK")
   frame.logo:SetTexture("Interface\\AddOns\\Lvls\\Media\\LvlsIcon")
   frame.logo:SetSize(18, 18)
@@ -405,6 +423,7 @@ function V.Render()
   frame.xp.text:SetText(("Level %d  %d / %d xp"):format(char.level or 0, char.xp or 0, xpMax)
     .. (m.train and ("  ·  " .. m.train) or ""))
   frame:SetHeight(22 + 4 + stepH + 20 + 18)
+  V.Anchor()
 end
 
 function V.Show(on)

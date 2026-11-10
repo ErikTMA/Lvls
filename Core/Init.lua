@@ -30,6 +30,7 @@ ns.DEFAULT_SETTINGS = {
   suggestGrind = true,   -- grind steps when quests here wait only because they are too hard
   itemBar = true,        -- buttons for the quest items to use (UI/ItemBar.lua)
   lockItemBar = false,
+  viewerGrowUp = false,  -- the step viewer keeps its bottom edge and grows upwards (UI/Viewer.lua)
 }
 
 function ns.InitDB(db)
@@ -835,12 +836,13 @@ end
 local TOGGLES = { accept = "autoAccept", deliver = "autoDeliver", reward = "autoReward", gold = "rewardGold",
   equip = "autoEquip", bind = "autoEquipBind", zone = "zoneFirst", classquests = "classQuests", trainsteps = "trainSteps",
   grind = "suggestGrind", learn = "learnFights", groupsync = "groupSync", asksync = "askSync", map = "worldMap", mapline = "mapRoute", minimap = "minimap", miniroute = "minimapRoute", button = "minimapButton", objectives = "objectives", arrow = "arrow", low = "showLow",
-  trivial = "showTrivial", dungeon = "showDungeon", repeatable = "showRepeatable" }
+  trivial = "showTrivial", dungeon = "showDungeon", repeatable = "showRepeatable", growup = "viewerGrowUp" }
 for cmd, key in pairs(TOGGLES) do
   commands[cmd] = function()
     ns.db.settings[key] = not ns.db.settings[key]
     ns.Invalidate()
     ns.Log("info", ("%s %s"):format(cmd, ns.db.settings[key] and "on" or "off"))
+    if key == "viewerGrowUp" and ns.Viewer then ns.Viewer.Anchor() end
     ns.Refresh(key == "zoneFirst")
   end
 end
@@ -886,7 +888,7 @@ commands.debug = function()
 end
 
 commands.help = function()
-  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|items [lock|unlock|reset]|arrow|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|debug|help]")
+  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|items [lock|unlock|reset]|arrow|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|debug|help]")
 end
 
 local function slash(input)
