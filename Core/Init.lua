@@ -396,10 +396,22 @@ function ns.Refresh(replan)
   -- the route moved on: browsing ends, the viewer and arrow show the new step (a step
   -- browsed to would otherwise stay on screen once it, or the steps before it, are done)
   if st ~= ns.arrowStep then ns.Viewer.view = nil end
-  -- the step browsed to got done while the current one did not (handed in ahead of
-  -- the route): browsing ends too, the arrow goes back to the current step
-  local seen = ns.Viewer.view and ns.steps[ns.Viewer.view]
-  if seen and ns.Viewer.viewOpen and seen.done then ns.Viewer.view, ns.arrowStep = nil, nil end
+  -- the step browsed to got done while the current one did not (you browsed past a
+  -- step you will not do, a pre-quest whose follow-up you did): browsing moves on to
+  -- the next open step after it, the arrow with it (none left: the current step)
+  local V = ns.Viewer
+  local seen = V.view and ns.steps[V.view]
+  if seen and V.viewOpen and seen.done then
+    local j = V.view + 1
+    while ns.steps[j] and ns.steps[j].done do j = j + 1 end
+    local nxt = ns.steps[j]
+    if nxt then
+      V.view = j
+      ns.Arrow.SetTarget(nxt.spot, nxt.title, true, nxt.kind == "work" and nxt.lines or nil)
+    else
+      V.view, ns.arrowStep = nil, nil
+    end
+  end
   if st and st.kind == "dungeon" and ns.DungeonInfo.Inside(st.area) then
     ns.Arrow.SetTarget(nil) -- in there: nothing to point at
   elseif not st then
