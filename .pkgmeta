@@ -1,0 +1,8 @@
+package-as: Lvls
+
+enable-nolib-creation: no
+
+ignore:
+  - .github
+  - .gitattributes
+  - .pkgmeta
