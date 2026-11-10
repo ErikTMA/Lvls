@@ -111,7 +111,7 @@ end
 -- Lvls!'s rules on top of the shared arrow: inside the step's quest area is there;
 -- at a leg's end (flight master, entrance, path point) on to the next leg.
 local hooks = {
-  enabled = function() return ns.db and ns.db.settings.arrow end,
+  enabled = function() return ns.db and ns.db.settings.arrow and (not ns.Viewer or ns.Viewer.Shown()) end,
   position = function(buf) return ns.Game.Position(buf) end,
   steer = function(pos) if ns.Ground then return ns.Ground.Next(pos) end end,
   status = function(pos, d, t)
@@ -185,3 +185,9 @@ function AR.Attach()
 end
 
 ns.Events.On("LVLS_LOADED", function() AR.Attach() end)
+-- the guide shown again: the arrow is Lvls!'s again (a hidden frame has no OnUpdate
+-- to notice by itself); hidden: the next owner's, or none
+ns.Events.On("LVLS_GUIDE", function(on)
+  if on and AR.target then push(false) end
+  WA.Update()
+end)

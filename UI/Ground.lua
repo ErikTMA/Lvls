@@ -230,7 +230,7 @@ local function draw(provider)
     if layer.SetFrameLevel and canvas.GetFrameLevel then layer:SetFrameLevel(canvas:GetFrameLevel() + 5) end
   end
   for _, l in ipairs(lines) do l:Hide() end
-  if not on() or not GR.route then return end
+  if not on() or not GR.route or (ns.Viewer and not ns.Viewer.Shown()) then return end
   local mapID = map:GetMapID()
   local px, py
   if C_Map and C_Map.GetPlayerMapPosition then
@@ -304,3 +304,4 @@ function GR.Attach()
 end
 
 ns.Events.On("LVLS_LOADED", function() GR.Attach() end)
+ns.Events.On("LVLS_GUIDE", function() GR.Redraw() end)

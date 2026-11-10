@@ -136,7 +136,9 @@ local verts, flat, spotBuf = {}, {}, {}
 local proj = { key = nil }   -- the route's spots on the player's map, as fractions
 local wayProj = { key = nil } -- the way on foot's corners, as fractions
 
-local function routeOn() return ns.db and ns.db.settings.minimapRoute and ns.MapRoute end
+local function routeOn()
+  return ns.db and ns.db.settings.minimapRoute and ns.MapRoute and (not ns.Viewer or ns.Viewer.Shown())
+end
 
 local function lead()
   local trip = ns.trip

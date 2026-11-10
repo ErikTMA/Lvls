@@ -66,7 +66,7 @@ end
 local Provider = {}
 local layer -- the frame on the canvas, with pools of waypoints and lines
 
-local function enabled() return ns.db and ns.db.settings.mapRoute end
+local function enabled() return ns.db and ns.db.settings.mapRoute and (not ns.Viewer or ns.Viewer.Shown()) end
 
 local function lead()
   local trip = ns.trip

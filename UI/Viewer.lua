@@ -413,9 +413,16 @@ function V.Show(on)
   if not frame then create() end
   if on == nil then on = not frame:IsShown() end
   if on then frame:Show() else frame:Hide() end
+  local was = V.Shown()
   if ns.cdb then ns.cdb.viewer = on end
   V.Render()
+  if was ~= on then ns.Events.Fire("LVLS_GUIDE", on) end
 end
+
+-- The guide is shown: the viewer, and with it Lvls!'s arrow and route lines. Hidden
+-- (the minimap button's right-click, the viewer's x), Lvls! lets go of the shared
+-- arrow: it shows Profs!'s target if it has one, else it hides.
+function V.Shown() return not ns.cdb or ns.cdb.viewer ~= false end
 
 ns.Events.On("LVLS_LOADED", function()
   if ns.cdb and ns.cdb.viewer ~= false then V.Show(true) end
