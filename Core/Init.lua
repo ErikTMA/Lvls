@@ -269,7 +269,7 @@ function ns.RefreshTravel()
   if ns.trip and #ns.trip.legs > 1 then ns.Arrow.SetLeg(spot, title) else ns.Arrow.SetLeg(nil) end
   -- the way on foot to where the arrow points now (around walls, up the hill)
   if ns.Ground then
-    local ok, err = pcall(ns.Ground.Want, goal and (spot or goal) or nil)
+    local ok, err = pcall(ns.Ground.Want, goal and (ns.Arrow.pickup or spot or goal) or nil)
     if not ok then ns.Log("debug", "ground route: " .. tostring(err)) end
   end
 end

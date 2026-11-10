@@ -103,6 +103,96 @@ function AR.CheckArea(pos, lines)
   return near or inside, near, inside
 end
 
+-- Pickups: an item that lies on the ground (a fossil, a crate, a herb) or an object
+-- to use. The client does not tell addons where objects are, so near their spawns
+-- (our data) the arrow leads to the nearest one instead of "in the quest area", and
+-- on to the next once you were there (looted, or someone else got it first). A
+-- spawn you were at is skipped for PICKUP_RESPAWN seconds.
+AR.PICKUP_YARDS = 150   -- this close to a spawn: lead to it
+AR.PICKUP_REACH = 5     -- at it
+AR.PICKUP_LEAVE = 10    -- walked off it: on to the next
+AR.PICKUP_RESPAWN = 300
+AR.visited = {}         -- "map:x:y" -> when you were at that spawn
+
+local PICKUP_KINDS = { collect = true, object = true }
+local function spotKey(s) return ("%d:%.1f:%.1f"):format(s.map, s.x, s.y) end
+
+-- The object spawns of the step's open pickup lines (not mob drops). Looked up once
+-- per line.
+function AR.PickupSpots(lines, ds)
+  local out = {}
+  if not ds then return out end
+  for _, l in ipairs(lines or {}) do
+    if PICKUP_KINDS[l.kind] and l.quest and l.index and not l.done and not l.also then
+      if not l.pickupSpots then
+        l.pickupSpots = {}
+        local q = ds.quests[l.quest]
+        for _, sp in ipairs(q and ns.Quests.ObjectiveSpots(ds, q, l.index) or {}) do
+          if sp.kind == "o" and not sp.waypoint then
+            local o = ds.objects and ds.objects[sp.id]
+            sp.name = o and o.n
+            l.pickupSpots[#l.pickupSpots + 1] = sp
+          end
+        end
+      end
+      for _, sp in ipairs(l.pickupSpots) do out[#out + 1] = sp end
+    end
+  end
+  return out
+end
+
+-- The spawn to lead to: the nearest one within PICKUP_YARDS you were not at lately.
+-- Pure but for `visited` and `now`.
+function AR.NextPickup(pos, spots, visited, now, geo)
+  local best, bestD = nil, math.huge
+  for _, sp in ipairs(spots) do
+    local at = visited[spotKey(sp)]
+    if not at or now - at >= AR.PICKUP_RESPAWN then
+      local d = ns.Geo.Distance(geo, pos, sp)
+      if d < bestD then best, bestD = sp, d end
+    end
+  end
+  if bestD <= AR.PICKUP_YARDS then return best, bestD end
+end
+
+local push
+
+-- Lead to this spawn (nil: back to the goal).
+local function setPickup(sp)
+  AR.pickup, AR.pickupHere = sp, false
+  if sp then
+    AR.target = { map = sp.map, x = sp.x, y = sp.y, title = sp.name or (AR.goal and AR.goal.title), pickup = true }
+    push(false)
+    if ns.Ground then pcall(ns.Ground.Want, sp) end
+  else
+    AR.target = AR.goal
+    push(false)
+    if ns.RefreshTravel then ns.RefreshTravel() end
+  end
+end
+
+-- Every area check: at the spawn (remember it), walked off it (the next one), or a
+-- nearer one / none in range.
+function AR.CheckPickup(pos, lines, now)
+  local geo = ns.Game.geo
+  local spots = AR.PickupSpots(lines, ns.ActiveDataset and ns.ActiveDataset())
+  local cur = AR.pickup
+  if cur then
+    local d = ns.Geo.Distance(geo, pos, cur)
+    if d <= AR.PICKUP_REACH then
+      AR.visited[spotKey(cur)] = now
+      AR.pickupHere = true
+    end
+    -- still on one of the step's open lines, and you are at it: stay
+    local live = false
+    for _, sp in ipairs(spots) do if sp == cur then live = true; break end end
+    if live and AR.pickupHere and d <= AR.PICKUP_LEAVE then return cur end
+  end
+  local nxt = AR.NextPickup(pos, spots, AR.visited, now, geo)
+  if nxt ~= cur then setPickup(nxt) end
+  return nxt
+end
+
 -- The goal (a step, a line, a pin you clicked) and the target the arrow points at
 -- now: the end of the trip's first leg (the flight master, the boat, the cave
 -- entrance, the next point of a path), see ns.RefreshTravel in Core/Init.lua.
@@ -120,7 +210,8 @@ local hooks = {
       local now = GetTime and GetTime() or 0
       if not AR.areaAt or now - AR.areaAt >= AR.AREA_CHECK then
         AR.areaAt = now
-        AR.inArea = AR.CheckArea(pos, g.lines)
+        -- near a pickup: the arrow leads to it, the area does not count
+        AR.inArea = not (not g.manual and AR.CheckPickup(pos, g.lines, now)) and AR.CheckArea(pos, g.lines)
       end
       if AR.inArea then return { text = "|cff40ff40In the quest area|r", title = g.title } end
     end
@@ -132,7 +223,7 @@ local hooks = {
 }
 hooks.geo = setmetatable({}, { __index = function(_, k) return ns.Game.geo[k] end })
 
-local function push(fresh)
+function push(fresh)
   local t = AR.target
   if not t then return WA.Clear(AR.OWNER) end
   WA.Set(AR.OWNER, { map = t.map, x = t.x, y = t.y, title = t.title, leg = t.leg,
@@ -142,6 +233,7 @@ end
 
 function AR.SetTarget(spot, title, manual, lines)
   AR.inArea, AR.areaAt = false, nil
+  AR.pickup, AR.pickupHere = nil, false
   if not spot then
     AR.goal, AR.target = nil, nil
     if ns.Ground then ns.Ground.Want(nil) end
@@ -163,7 +255,7 @@ function AR.SetTitle(title)
 end
 
 function AR.SetLeg(spot, title)
-  if not AR.goal then return end
+  if not AR.goal or AR.pickup then return end
   if not spot then AR.target = AR.goal
   else AR.target = { map = spot.map, x = spot.x, y = spot.y, title = title or AR.goal.title, leg = true } end
   push(false)
