@@ -18,6 +18,7 @@ local S = ns:NewModule("Settings")
 S.QUALITIES = { { 1, "Common (white)" }, { 2, "Uncommon (green)" }, { 3, "Rare (blue)" }, { 4, "Epic (purple)" } }
 S.HELP = { [0] = "Straight line", "Only big detours", "Around walls", "Small detours too", "Every turn" }
 function S.HelpLabel(v) return S.HELP[v] or tostring(v) end
+function S.MinutesLabel(v) return ("%d min"):format(v) end
 S.WEIGHTS = { { "auto", "Pawn when it has a scale for my spec, else Lvls" }, { "pawn", "Pawn" }, { "lvls", "Lvls' own weights" } }
 
 -- Everything on the page, in order. key: LvlsDB.settings key; refresh: re-plan.
@@ -27,6 +28,8 @@ S.ITEMS = {
   { key = "autoDeliver", name = "Hand in quests", tip = "Hand in finished quests when you talk to the npc." },
   { key = "autoReward", name = "Choose the best reward", tip = "Take the reward that is the biggest upgrade you can use, judged for your class and spec." },
   { key = "rewardGold", name = "Otherwise the most gold", tip = "When no reward is a usable upgrade, take the one that sells for most." },
+  { key = "farGrey", name = "Offer to abandon far grey quests", grey = true, tip = "When grey quests in your log (no experience left in them) are further away than the time below, ask whether to abandon them. One you are close to is left alone; ones you keep are not asked about again until you log in. The trash can next to the viewer's gear abandons every grey quest. /lvls abandon" },
+  { key = "farGreyMinutes", name = "Further than", grey = true, slider = { 1, 30, 1 }, label = S.MinutesLabel, tip = "Travel time to where you would go next for the quest: its hand-in when it is finished, else its objectives. Flights, boats and your hearthstone count." },
   { header = "Gear" },
   { key = "autoEquip", name = "Put on upgrades (out of combat)", tip = "Equip new items in your bags that are upgrades for your spec." },
   { key = "autoEquipBind", name = "Also items that bind when equipped", tip = "Equip upgrades that bind when you put them on, up to the quality below. Better ones stay in your bags to sell or decide." },
@@ -73,6 +76,7 @@ function S.Set(key, value)
       ns.RefreshTravel()
     end
     if it.key == key and it.viewer and ns.Viewer and ns.Viewer.Anchor then ns.Viewer.Anchor() end
+    if it.key == key and it.grey and ns.Abandon then ns.Abandon.Reset() end
   end
   if ns.Refresh and ns.char then ns.Refresh() end
 end

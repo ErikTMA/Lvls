@@ -20,7 +20,7 @@ V.COLORS = {
 }
 local ICONS = "Interface\\AddOns\\Lvls\\Media\\Icons"
 local ICON_SLOT = { checkoff = 0, checkon = 1, accept = 2, turnin = 3, kill = 4, collect = 5, talk = 6, ["goto"] = 7,
-  fly = 8, transit = 9, hearth = 10, enter = 11, path = 12, settings = 13 }
+  fly = 8, transit = 9, hearth = 10, enter = 11, path = 12, settings = 13, trash = 14 }
 local ICON_SLOTS = 16
 
 V.view = nil -- index of the step being shown (nil: follow the current step)
@@ -125,7 +125,7 @@ function V.Backlog(ds, list)
   end
   local t = ("In your log for later: %d"):format(#list)
   if #maps > 0 then t = t .. " (" .. table.concat(maps, ", ", 1, math.min(#maps, 3)) .. (#maps > 3 and ", ..." or "") .. ")" end
-  if grey > 0 then t = t .. (", %d grey: abandon to free the log"):format(grey) end
+  if grey > 0 then t = t .. (", %d grey: the trash can abandons them"):format(grey) end
   return t
 end
 
@@ -134,6 +134,21 @@ end
 function V.Train(t)
   if not t or t.count == 0 or (t.afford or 0) < ns.Training.PASS then return nil end
   return ("%d to train%s"):format(t.count, t.worth == "trip" and ", worth a trip" or "")
+end
+
+-- The trash can's tooltip: { { text, r, g, b }, ... }
+function V.TrashTip()
+  local ids = ns.Abandon.Grey()
+  if #ids == 0 then return { { "Abandon grey quests" }, { "No grey quests in your log", 0.7, 0.7, 0.7 } } end
+  local ds = ns.ActiveDataset()
+  local out = { { ("Abandon %d grey quest%s"):format(#ids, #ids == 1 and "" or "s") } }
+  for _, qid in ipairs(ids) do
+    local q = ds and ds.quests[qid]
+    local entry = ns.char and ns.char.active and ns.char.active[qid]
+    out[#out + 1] = { (q and q.n) or (entry and entry.title) or ("quest " .. qid), 0.6, 0.6, 0.6 }
+  end
+  out[#out + 1] = { "Asks first. Shift-click: at once", 0.7, 0.7, 0.7 }
+  return out
 end
 
 local function bg(f, c)
@@ -287,8 +302,23 @@ local function create()
     GameTooltip:Show()
   end)
   frame.settings:SetScript("OnLeave", function() if GameTooltip then GameTooltip:Hide() end end)
+  -- abandon the grey quests in your log (UI/Abandon.lua): a trash can, dim with none
+  frame.trash = button(frame.bar, "", 20, function() ns.Abandon.Trash() end)
+  frame.trash:SetPoint("RIGHT", frame.settings, "LEFT", -2, 0)
+  frame.trash.icon = frame.trash:CreateTexture(nil, "ARTWORK")
+  frame.trash.icon:SetSize(14, 14)
+  frame.trash.icon:SetPoint("CENTER", frame.trash, "CENTER", 0, 0)
+  frame.trash.icon:SetTexture(ICONS)
+  frame.trash.icon:SetTexCoord(V.IconCoords("trash"))
+  frame.trash:SetScript("OnEnter", function(self)
+    if not GameTooltip then return end
+    GameTooltip:SetOwner(self, "ANCHOR_TOP")
+    for _, l in ipairs(V.TrashTip()) do GameTooltip:AddLine(l[1], l[2], l[3], l[4], true) end
+    GameTooltip:Show()
+  end)
+  frame.trash:SetScript("OnLeave", function() if GameTooltip then GameTooltip:Hide() end end)
   frame.nextBtn = button(frame.bar, ">", 20, function() V.Browse(1) end)
-  frame.nextBtn:SetPoint("RIGHT", frame.settings, "LEFT", -2, 0)
+  frame.nextBtn:SetPoint("RIGHT", frame.trash, "LEFT", -2, 0)
   frame.stepNo = frame.bar:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
   frame.stepNo:SetPoint("RIGHT", frame.nextBtn, "LEFT", -4, 0)
   frame.prevBtn = button(frame.bar, "<", 20, function() V.Browse(-1) end)
@@ -511,6 +541,7 @@ function V.Render()
   local preview = m.next and ("Next: " .. m.next) or ""
   if m.backlog then preview = preview ~= "" and (preview .. "  ·  " .. m.backlog) or m.backlog end
   frame.next:SetText(preview)
+  frame.trash:SetAlpha(#ns.Abandon.Grey() > 0 and 1 or 0.35)
   local xpMax = char.xpMax or 0
   local p = xpMax > 0 and math.min(1, (char.xp or 0) / xpMax) or 0
   frame.xp.fill:SetWidth(math.max(1, (V.WIDTH - 8) * p))

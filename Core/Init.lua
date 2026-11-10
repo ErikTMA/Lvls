@@ -32,6 +32,8 @@ ns.DEFAULT_SETTINGS = {
   itemBar = true,        -- buttons for the quest items to use (UI/ItemBar.lua)
   lockItemBar = false,
   viewerGrowUp = false,  -- the step viewer keeps its bottom edge and grows upwards (UI/Viewer.lua)
+  farGrey = false,       -- offer to abandon grey quests this far away (UI/Abandon.lua)
+  farGreyMinutes = 10,
 }
 
 function ns.InitDB(db)
@@ -993,8 +995,23 @@ commands.debug = function()
   ns.Log("info", "debug " .. (ns.db.settings.debug and "on" or "off"))
 end
 
+-- /lvls abandon: abandon the grey quests in your log (the viewer's trash can);
+-- /lvls abandon far [minutes|off]: offer to abandon the ones further away than that
+commands.abandon = function(arg)
+  local what, n = (arg or ""):lower():match("^(%S*)%s*(%S*)")
+  if what ~= "far" then ns.Abandon.Trash(); return end
+  local s = ns.db.settings
+  if n == "off" then s.farGrey = false
+  elseif tonumber(n) and tonumber(n) >= 1 then s.farGrey, s.farGreyMinutes = true, math.floor(tonumber(n))
+  elseif n == "" or n == "on" then s.farGrey = true end
+  ns.Abandon.Reset()
+  ns.Log("info", s.farGrey and ("grey quests more than %d minutes away: Lvls! offers to abandon them"):format(s.farGreyMinutes)
+    or "far grey quests: not asked about")
+  if s.farGrey then ns.Abandon.Check() end
+end
+
 commands.help = function()
-  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|debug|help]")
+  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|debug|help]")
 end
 
 local function slash(input)

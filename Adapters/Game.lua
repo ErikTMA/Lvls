@@ -73,6 +73,31 @@ function G.QuestLog()
   return out
 end
 
+-- Abandon a quest in the log, as the quest log's Abandon button does (without its
+-- question: the caller asked). C_QuestLog (wow-ui-source branch forever,
+-- QuestMapQuestOptions_AbandonQuest), else the classic calls by log index. True when
+-- the client took it.
+function G.AbandonQuest(id)
+  local Q = C_QuestLog
+  if has(Q, "SetSelectedQuest") and has(Q, "SetAbandonQuest") and has(Q, "AbandonQuest") then
+    if has(Q, "CanAbandonQuest") and not Q.CanAbandonQuest(id) then return false end
+    local old = has(Q, "GetSelectedQuest") and Q.GetSelectedQuest() or nil
+    Q.SetSelectedQuest(id)
+    Q.SetAbandonQuest()
+    Q.AbandonQuest()
+    if old and old ~= id then Q.SetSelectedQuest(old) end
+    return true
+  end
+  if type(SelectQuestLogEntry) ~= "function" or type(SetAbandonQuest) ~= "function"
+    or type(AbandonQuest) ~= "function" or not has(Q, "GetLogIndexForQuestID") then return false end
+  local i = Q.GetLogIndexForQuestID(id)
+  if not i then return false end
+  SelectQuestLogEntry(i)
+  SetAbandonQuest()
+  AbandonQuest()
+  return true
+end
+
 function G.Skills()
   if not GetProfessions or not GetProfessionInfo then return nil end
   local out = {}
