@@ -55,7 +55,7 @@ R.EVENT_SORT = 9 -- quest sort (Wowhead category2) of world events
 
 R.DEFAULTS = {
   steps = 40,          -- route length
-  logSize = 20,        -- quest log slots
+  logSize = 20,        -- quest log slots (Core/Init passes the client's: 40 on forever)
   speed = 7,           -- yards per second on foot
   killSeconds = 15,    -- per kill, including the walk between mobs
   objectSeconds = 15,  -- per object used / looted

@@ -221,6 +221,7 @@ local function plan(ds, forced)
   local char = ns.char
   local opts = {
     speed = ctx and ctx.speed or 7,
+    logSize = ns.Game.LogSize(), -- nil: the route's default
     travel = ctx and function(a, b) return ns.Travel.Time(a, b, ctx) end,
     zoneFirst = ns.db.settings.zoneFirst,
     skip = ns.cdb and ns.cdb.skip,

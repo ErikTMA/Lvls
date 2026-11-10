@@ -1,7 +1,7 @@
 -- WoW client adapter. Every call is feature-detected. Verified against Blizzard's UI
 -- source for the forever client (Gethe/wow-ui-source branch `forever`, 1.60.1):
 --   C_QuestLog.GetAllCompletedQuestIDs / GetNumQuestLogEntries / GetInfo /
---   IsComplete / ReadyForTurnIn / GetQuestObjectives, C_Map.GetBestMapForUnit /
+--   GetMaxNumQuestsCanAccept / IsComplete / ReadyForTurnIn / GetQuestObjectives, C_Map.GetBestMapForUnit /
 --   GetPlayerMapPosition / GetWorldPosFromMapPos / GetMapWorldSize / GetMapInfo,
 --   C_Map.SetUserWaypoint + C_SuperTrack.SetSuperTrackedUserWaypoint,
 --   C_Minimap.GetViewRadius, UnitPosition-free (map positions only).
@@ -27,6 +27,17 @@ function G.Completed()
     for _, id in ipairs(C_QuestLog.GetAllCompletedQuestIDs() or {}) do out[id] = true end
   end
   return out
+end
+
+-- Quest log slots: what the client says (forever has 40, not classic's 20), else nil
+-- (the route's default).
+function G.LogSize()
+  if has(C_QuestLog, "GetMaxNumQuestsCanAccept") then
+    local ok, n = pcall(C_QuestLog.GetMaxNumQuestsCanAccept)
+    if ok and type(n) == "number" and n > 0 then return n end
+  end
+  if type(MAX_QUESTS) == "number" and MAX_QUESTS > 0 then return MAX_QUESTS end
+  return nil
 end
 
 -- { [questId] = { title, level, complete, objectives = { {text, finished, type,
