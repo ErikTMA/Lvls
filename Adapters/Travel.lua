@@ -5,7 +5,8 @@
 -- (every flight point of a map, with isUndiscovered and faction: works anywhere, not
 -- only at a flight master), C_Map.GetMapInfo / GetMapInfoAtPosition (map types:
 -- 2 continent, 3 zone, 4 dungeon, 5 micro = caves, mines, buildings with their own
--- map), GetBindLocation, C_Container.GetItemCooldown, UnitOnTaxi.
+-- map), GetBindLocation, C_Container.GetItemCooldown, C_Spell.GetSpellCooldown
+-- (start and duration; secret while cooldowns are restricted), UnitOnTaxi.
 --
 -- Learned and kept in LvlsDB (account wide; the shipped Data/forever/Travel.lua
 -- holds the ones we recorded ourselves):
@@ -14,6 +15,8 @@
 --                      continent without a flight, and the first spot after
 --   entrances[mapId]   where you walked from the zone into a cave / building map
 --   recordings[name]   paths recorded with /lvls record (to author "follow the path")
+--   ports[spellId]     where a teleport landed you (the first spot on its map after the cast)
+--   cooldowns[spellId] a port's full cooldown, as the client reported it right after a use
 -- and in LvlsCharDB: hearth = { name, spot } where you set your hearthstone.
 local _, ns = ...
 local TR = ns:NewModule("TravelData")
@@ -21,6 +24,7 @@ local G = ns.Geo
 
 local HEARTHSTONE = 6948
 local HEARTH_SPELL = 8690
+local RUNE = 17031 -- Rune of Teleportation
 local FACTION = { Alliance = 2, Horde = 1 } -- Enum.FlightPathFaction; 0 neutral
 local CONTINENT, ZONE, DUNGEON, MICRO = 2, 3, 4, 5
 
@@ -99,15 +103,118 @@ function TR.FlyTime(a, b)
   return f and f[a .. ">" .. b]
 end
 
+-- Ports: ways to port yourself. To your hearth (the bind spot) or to a fixed map.
+-- id is the spell the client casts (UNIT_SPELLCAST_SUCCEEDED). cd: the full cooldown
+-- when the client has not told us (learned after a use; GetSpellBaseCooldown when
+-- the client has it). Where a teleport lands is learned on the first use; until
+-- then the middle of its map stands in (guess = true).
+TR.PORTS = {
+  { id = HEARTH_SPELL, item = HEARTHSTONE, bind = true, title = "Hearth to %s", cd = 3600 },
+  { id = 556, bind = true, title = "Astral Recall to %s", cd = 900 },          -- shaman
+  { id = 18960, map = 1450, title = "Teleport to Moonglade", cd = 0 },          -- druid
+  { id = 3561, map = 1453, title = "Teleport to Stormwind", reagent = RUNE, cd = 0 }, -- mage
+  { id = 3562, map = 1455, title = "Teleport to Ironforge", reagent = RUNE, cd = 0 },
+  { id = 3565, map = 1457, title = "Teleport to Darnassus", reagent = RUNE, cd = 0 },
+  { id = 3567, map = 1454, title = "Teleport to Orgrimmar", reagent = RUNE, cd = 0 },
+  { id = 3563, map = 1458, title = "Teleport to Undercity", reagent = RUNE, cd = 0 },
+  { id = 3566, map = 1456, title = "Teleport to Thunder Bluff", reagent = RUNE, cd = 0 },
+}
+local portById = {}
+for _, p in ipairs(TR.PORTS) do portById[p.id] = p end
+TR.PortById = portById
+
+local plain = function(v) return ns.Util.plain(v) end
+
+local function itemCount(item)
+  if C_Item and C_Item.GetItemCount then return plain(C_Item.GetItemCount(item)) or 0 end
+  return 0
+end
+
+local function knows(spell)
+  if has(C_SpellBook, "IsSpellKnown") then return C_SpellBook.IsSpellKnown(spell) and true or false end
+  if type(IsSpellKnown) == "function" then return IsSpellKnown(spell) and true or false end
+  if type(IsPlayerSpell) == "function" then return IsPlayerSpell(spell) and true or false end
+  return false
+end
+
+-- start, duration of a port's cooldown as the client says (0, 0: none), or nil when
+-- it does not say (secret: the last ones read stand)
+local lastCd = {}
+local function readCooldown(p)
+  local start, dur
+  if p.item and has(C_Container, "GetItemCooldown") then
+    start, dur = C_Container.GetItemCooldown(p.item)
+  elseif p.item and has(C_Item, "GetItemCooldown") then
+    start, dur = C_Item.GetItemCooldown(p.item)
+  elseif has(C_Spell, "GetSpellCooldown") then
+    local info = C_Spell.GetSpellCooldown(p.id)
+    if type(info) == "table" then start, dur = info.startTime, info.duration end
+  elseif type(GetSpellCooldown) == "function" then
+    start, dur = GetSpellCooldown(p.id)
+  end
+  start, dur = plain(start), plain(dur)
+  if type(start) ~= "number" or type(dur) ~= "number" then
+    local l = lastCd[p.id]
+    if l then return l[1], l[2] end
+    return nil
+  end
+  lastCd[p.id] = { start, dur }
+  return start, dur
+end
+
+-- A port's cooldown: seconds until it is ready (0: now) and how long it is in full.
+-- The full length: what the client reported right after a use (kept), else its
+-- base cooldown when the client has GetSpellBaseCooldown, else TR.PORTS' default.
+function TR.Cooldown(p)
+  local start, dur = readCooldown(p)
+  local ready = 0
+  local now = GetTime and GetTime() or 0
+  if start and dur and start > 0 and dur > 2 then -- 2: not the global cooldown
+    ready = math.max(0, start + dur - now)
+    local d = ns.db
+    if d then
+      d.cooldowns = d.cooldowns or {}
+      d.cooldowns[p.id] = math.floor(dur + 0.5)
+    end
+  end
+  local full = ns.db and ns.db.cooldowns and ns.db.cooldowns[p.id]
+  if not full and type(GetSpellBaseCooldown) == "function" then
+    local ms = plain(GetSpellBaseCooldown(p.id))
+    if type(ms) == "number" and ms > 2000 then full = ms / 1000 end
+  end
+  return ready, full or p.cd or 0
+end
+
+-- The bind spot: where you set your hearthstone, or nil.
 function TR.Hearth()
   local h = ns.cdb and ns.cdb.hearth
   if not h or not h.spot then return nil end
-  if C_Item and C_Item.GetItemCount and C_Item.GetItemCount(HEARTHSTONE) == 0 then return nil end
-  if has(C_Container, "GetItemCooldown") then
-    local start, dur = C_Container.GetItemCooldown(HEARTHSTONE)
-    if start and start > 0 and dur and dur > 2 then return nil end
-  end
   return { spot = h.spot, name = (GetBindLocation and GetBindLocation()) or h.name }
+end
+
+-- The ports you have (Engine/Travel ctx.ports), with their cooldowns now.
+function TR.Ports()
+  local out = {}
+  local bind = TR.Hearth()
+  for _, p in ipairs(TR.PORTS) do
+    local have
+    if p.item then have = itemCount(p.item) > 0 else have = knows(p.id) end
+    if have and p.reagent and itemCount(p.reagent) == 0 then have = false end
+    local spot, title, guess
+    if have and p.bind then
+      if bind then spot, title = bind.spot, p.title:format(bind.name or "your inn") end
+    elseif have then
+      local l = ns.db and ns.db.ports and ns.db.ports[p.id]
+      if l then spot = { map = l.map, x = l.x, y = l.y } else spot, guess = { map = p.map, x = 50, y = 50 }, true end
+      title = p.title
+    end
+    if spot then
+      local ready, cd = TR.Cooldown(p)
+      out[#out + 1] = { id = p.id, title = title, spot = spot, guess = guess, secs = 15, ready = ready, cd = cd,
+        reagent = p.reagent and true or nil }
+    end
+  end
+  return out
 end
 
 -- from the client's tables (Data/forever/Transports.lua: boats, zeppelins, the tram;
@@ -163,7 +270,7 @@ function TR.Context(ds, char)
   local known = pos and TR.FlyNodes(ds, pos.map, char.faction) or {}
   return {
     geo = ns.Game.geo, speed = ns.Game.RunSpeed and ns.Game.RunSpeed() or 7,
-    fly = known, flyTime = TR.FlyTime, transit = TR.Transit(char.faction), hearth = TR.Hearth(),
+    fly = known, flyTime = TR.FlyTime, transit = TR.Transit(char.faction), ports = TR.Ports(),
     entrance = TR.Entrance, path = TR.PathTo,
   }
 end
@@ -172,7 +279,8 @@ end
 
 local last = {}   -- last outdoor sample: { spot, cont, t, mapType }
 local flight      -- { from = nodeId, t }
-local hearthCast  -- time of the last hearthstone cast
+local hearthCast  -- time of the last port's cast (hearthstone, teleport)
+local portCast    -- { id, t }: a teleport cast, its landing spot not yet seen
 
 local function now() return GetTime and GetTime() or os.time() end
 
@@ -243,6 +351,18 @@ function TR.Sample()
     and not (UnitIsDeadOrGhost and UnitIsDeadOrGhost("player")) and t - last.t < 600 then
     learnTransit(last.spot, pos, t - last.t)
   end
+  -- where a teleport lands: the first spot on its map after the cast
+  if portCast then
+    local p = portById[portCast.id]
+    if not p or t - portCast.t > 60 then
+      portCast = nil
+    elseif pos.map == p.map and ns.db then
+      ns.db.ports = ns.db.ports or {}
+      ns.db.ports[p.id] = { map = pos.map, x = math.floor(pos.x * 10 + 0.5) / 10, y = math.floor(pos.y * 10 + 0.5) / 10 }
+      portCast = nil
+      ns.Log("debug", "learned where " .. p.title:lower() .. " lands")
+    end
+  end
   -- recorder
   local rec = TR.recording
   if rec then
@@ -255,11 +375,13 @@ function TR.Sample()
 end
 
 function TR.OnEvent(event, unit, _, spell)
+  spell = ns.Util.plain(spell)
   if event == "HEARTHSTONE_BOUND" then
     local pos = ns.Game.Position()
     if pos and ns.cdb then ns.cdb.hearth = { name = GetBindLocation and GetBindLocation(), spot = pos } end
-  elseif event == "UNIT_SPELLCAST_SUCCEEDED" and unit == "player" and spell == HEARTH_SPELL then
-    hearthCast = now()
+  elseif event == "UNIT_SPELLCAST_SUCCEEDED" and unit == "player" and portById[spell] then
+    hearthCast = now() -- no boat link learned from it
+    if portById[spell].map then portCast = { id = spell, t = hearthCast } end
   elseif event == "TAXIMAP_CLOSED" or event == "TAXI_NODE_STATUS_CHANGED" then
     TR.Forget()
   end

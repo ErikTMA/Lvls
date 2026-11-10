@@ -7,14 +7,17 @@
 --   ctx.fly        discovered flight points: { { id, name, spot, npc = {kind,id,name} }, ... }
 --   ctx.flyTime    function(fromId, toId) -> measured seconds or nil
 --   ctx.transit    links: { { a = spot, b = spot, title_ab, title_ba, secs, oneway }, ... }
---   ctx.hearth     { spot, name } when the hearthstone is ready, else nil
+--   ctx.ports      ways to port yourself (hearthstone, Astral Recall, a mage's
+--                  teleports, Teleport: Moonglade): { { id, title, spot, secs = cast
+--                  and loading, cd = the full cooldown, ready = seconds until it can
+--                  be used (0: now), reagent = true when it uses one up }, ... }
 --   ctx.entrance   function(spot) -> { spot = entrance, name } when the spot is inside
 --                  a cave / building whose way in is known, else nil
 --   ctx.path       function(spot) -> { title, points = { spot, ... } } a recorded path
 --                  that ends at the spot (up a hill, through a mine), else nil
 --
--- Method: Dijkstra over start, goal, flight points, transit ends and the hearth
--- spot. Walking connects any two of them on the same continent (straight line);
+-- Method: Dijkstra over start, goal, flight points, transit ends and the ports'
+-- spots. Walking connects any two of them on the same continent (straight line);
 -- flights connect discovered flight points on one continent (all of a faction's
 -- points are linked there); transit links connect their two ends.
 local _, ns = ...
@@ -23,9 +26,27 @@ local G = ns.Geo
 
 T.FLY_SPEED = 25     -- yards per second, straight-line equivalent (routes bend)
 T.FLY_OVERHEAD = 20  -- seconds: talk, take off, land
-T.HEARTH_SECS = 15   -- cast and loading
+T.HEARTH_SECS = 15   -- cast and loading (a port without its own)
+-- A port is not free: what it costs is charged on top of its seconds, so it is used
+-- only when it wins at least that much over the next best way.
+T.COOLDOWN_SHARE = 0.1 -- of the cooldown: a 60-minute hearthstone must win 6 minutes,
+                       --   Astral Recall's 15 minutes 90 s (it is not there for the next trip)
+T.REAGENT_SECS = 60    -- a port that uses up a reagent (a Rune of Teleportation: money, bags)
 T.TRANSIT_SECS = 150 -- waiting and riding when a link has no measured time
 T.MIN_SAVING = 30    -- seconds a trip must save over walking to be suggested
+
+-- What using a port costs, in seconds on top of its own.
+function T.PortCost(p)
+  return (p.cd or 0) * T.COOLDOWN_SHARE + (p.reagent and T.REAGENT_SECS or 0)
+end
+
+-- The ports usable now: `usable` { [id] = true } (the route's simulation says which),
+-- or, without it, the ones ready now.
+local function usablePort(p, usable)
+  if usable then return usable[p.id] == true end
+  return (p.ready or 0) <= 0
+end
+T.UsablePort = usablePort
 
 local function continent(geo, spot)
   if not geo or not geo.world then return spot.map end
@@ -55,9 +76,12 @@ function T.Plan(from, to, ctx)
     edge(a, b, secs, { mode = "transit", title = l.title_ab or "Take the boat" })
     if not l.oneway then edge(b, a, secs, { mode = "transit", title = l.title_ba or "Take the boat" }) end
   end
-  if ctx.hearth then
-    local h = add({ kind = "hearth", spot = ctx.hearth.spot })
-    edge(start, h, T.HEARTH_SECS, { mode = "hearth", title = "Hearth to " .. (ctx.hearth.name or "your inn") })
+  for _, p in ipairs(ctx.ports or {}) do
+    if p.spot and usablePort(p) then
+      local h = add({ kind = "port", spot = p.spot })
+      local cost = T.PortCost(p)
+      edge(start, h, (p.secs or T.HEARTH_SECS) + cost, { mode = "hearth", title = p.title or "Hearth", port = p.id, cost = cost })
+    end
   end
   for i = 1, #flyNodes do
     for j = 1, #flyNodes do
@@ -105,7 +129,7 @@ function T.Plan(from, to, ctx)
     local leg = {}
     for k, val in pairs(prevLeg[v]) do leg[k] = val end
     leg.from, leg.to = nodes[u].spot, nodes[v].spot
-    leg.secs = dist[v] - dist[u]
+    leg.secs = dist[v] - dist[u] - (leg.cost or 0) -- the seconds it takes; secs below is the price
     table.insert(legs, 1, leg)
     v = u
   end
@@ -152,11 +176,16 @@ function T.Plan(from, to, ctx)
   return trip
 end
 
--- Seconds to get there (for the route's costs): T.Plan(from, to, ctx).secs, fast.
+-- trip.secs is what the trip was chosen by: its seconds plus what its ports cost
+-- (T.PortCost); the legs' secs are the seconds they take.
+
+-- Seconds to get there (for the route's costs): T.Plan(from, to, ctx).secs, fast,
+-- and the port the trip starts with, if any. usable: as T.Plan, or the ports the
+-- route's simulation has ready ({ [id] = true }).
 -- The route asks thousands of times per plan, and T.Plan builds and searches the
 -- whole graph each time (seconds per plan: the game froze). What does not depend
 -- on from / to is computed once per ctx: the fastest time between any two network
--- nodes (flight points, transit ends, the hearth spot; Floyd-Warshall). A question
+-- nodes (flight points, transit ends, the ports' spots; Floyd-Warshall). A question
 -- is then walk(from -> node i) + net[i][j] + walk(node j -> to), against walking;
 -- and the first part, per `from`, once (the route asks from one spot many times).
 local nets = setmetatable({}, { __mode = "k" })
@@ -173,7 +202,10 @@ local function network(ctx)
     local a, b = add({ spot = l.a }), add({ spot = l.b })
     links[#links + 1] = { a, b, l.secs or T.TRANSIT_SECS, l.oneway }
   end
-  local hearth = ctx.hearth and add({ kind = "hearth", spot = ctx.hearth.spot })
+  local ports = {}
+  for _, p in ipairs(ctx.ports or {}) do
+    if p.spot then ports[#ports + 1] = { node = add({ kind = "port", spot = p.spot }), port = p } end
+  end
   for i, n in ipairs(nodes) do n.i = i end
   local n, speed, D = #nodes, ctx.speed or 7, {}
   for i = 1, n do
@@ -214,57 +246,63 @@ local function network(ctx)
       end
     end
   end
-  net = { nodes = nodes, D = D, hearth = hearth, speed = speed, from = {} }
+  net = { nodes = nodes, D = D, ports = ports, speed = speed, from = {} }
   nets[ctx] = net
   return net
 end
 
--- seconds from `from` to every node, through the network (best first leg per node)
-local function reach(net, from, geo)
-  local key = from.map .. ":" .. from.x .. ":" .. from.y
+-- seconds from `from` to every node, through the network (best first leg per node),
+-- and the port that best way starts with
+local function reach(net, from, geo, usable)
+  local use, ids = {}, {}
+  for _, pp in ipairs(net.ports) do
+    if usablePort(pp.port, usable) then use[#use + 1] = pp; ids[#ids + 1] = tostring(pp.port.id) end
+  end
+  local key = from.map .. ":" .. from.x .. ":" .. from.y .. ":" .. table.concat(ids, ",")
   local r = net.from[key]
   if r then return r end
   local nodes, D, n = net.nodes, net.D, #net.nodes
-  local first = {}
+  local first, firstVia = {}, {}
   for i = 1, n do
     local w = G.Distance(geo, from, nodes[i].spot)
     first[i] = w < math.huge and w / net.speed or math.huge
   end
-  if net.hearth then
-    local h = net.hearth.i
-    if T.HEARTH_SECS < first[h] then first[h] = T.HEARTH_SECS end
+  for _, pp in ipairs(use) do
+    local h, p = pp.node.i, pp.port
+    local secs = (p.secs or T.HEARTH_SECS) + T.PortCost(p)
+    if secs < first[h] then first[h], firstVia[h] = secs, p.id end
   end
-  r = {}
+  r = { via = {} }
   for j = 1, n do
-    local best = math.huge
+    local best, via = math.huge, nil
     for i = 1, n do
       local v = first[i] + D[i][j]
-      if v < best then best = v end
+      if v < best then best, via = v, firstVia[i] end
     end
-    r[j] = best
+    r[j], r.via[j] = best, via
   end
   net.from[key] = r
   return r
 end
 
-function T.Time(from, to, ctx)
+function T.Time(from, to, ctx, usable)
   local geo = ctx.geo
   local net = network(ctx)
   local walk = G.Distance(geo, from, to) / (ctx.speed or 7)
-  local r = reach(net, from, geo)
-  local best = walk
+  local r = reach(net, from, geo, usable)
+  local best, via = walk, nil
   for j, node in ipairs(net.nodes) do
     if r[j] < best then
       local w = G.Distance(geo, node.spot, to)
       if w < math.huge then
         local v = r[j] + w / net.speed
-        if v < best then best = v end
+        if v < best then best, via = v, r.via[j] end
       end
     end
   end
   -- as T.Plan: a trip that saves too little is not worth the hassle
-  if best < walk and walk - best < T.MIN_SAVING then return walk end
-  return best
+  if best < walk and walk - best < T.MIN_SAVING then return walk, nil end
+  return best, via
 end
 
 -- What the arrow and the viewer show for a trip: the legs that are not plain walks

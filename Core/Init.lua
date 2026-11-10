@@ -210,7 +210,8 @@ local function plan(ds, forced)
   local opts = {
     speed = ctx and ctx.speed or 7,
     logSize = ns.Game.LogSize(), -- nil: the route's default
-    travel = ctx and function(a, b) return ns.Travel.Time(a, b, ctx) end,
+    travel = ctx and function(a, b, usable) return ns.Travel.Time(a, b, ctx, usable) end,
+    ports = ctx and ctx.ports, -- hearthstone, teleports: used once, on cooldown after (Engine/Route)
     zoneFirst = ns.db.settings.zoneFirst,
     skip = ns.cdb and ns.cdb.skip,
     focus = g and (g.focus or g.set),
@@ -862,11 +863,19 @@ commands.record = function(arg) ns.TravelData.Record(arg) end
 
 commands.travel = function()
   local trip = ns.trip
-  if not trip or #trip.legs == 0 then ns.Log("info", "no trip planned"); return end
-  for i, l in ipairs(trip.legs) do
-    ns.Log("info", ("%d. %s %s (%ds)"):format(i, l.mode, l.title or "", math.floor(l.secs or 0)))
+  if not trip or #trip.legs == 0 then
+    ns.Log("info", "no trip planned")
+  else
+    for i, l in ipairs(trip.legs) do
+      ns.Log("info", ("%d. %s %s (%ds)"):format(i, l.mode, l.title or "", math.floor(l.secs or 0)))
+    end
+    ns.Log("info", ("%ds, walking would take %ds"):format(math.floor(trip.secs), math.floor(trip.walk)))
   end
-  ns.Log("info", ("%ds, walking would take %ds"):format(math.floor(trip.secs), math.floor(trip.walk)))
+  for _, p in ipairs(ns.travelCtx and ns.travelCtx.ports or {}) do
+    local ready = (p.ready or 0) > 0 and ("ready in %d min"):format(math.ceil(p.ready / 60)) or "ready"
+    ns.Log("info", ("%s: %s, cooldown %d min, used when it wins %ds%s"):format(p.title, ready, math.floor((p.cd or 0) / 60 + 0.5),
+      math.floor(ns.Travel.PortCost(p) + 0.5), p.guess and " (lands somewhere on the map until used once)" or ""))
+  end
 end
 
 commands.debug = function()

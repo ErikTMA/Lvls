@@ -35,6 +35,12 @@
 -- a known flight path makes a far quest hub cheap, and the boats, zeppelins and the
 -- tram make the other continent a destination like any other (without opts.travel
 -- it cannot be reached).
+-- Ports (opts.ports, Engine/Travel: the hearthstone, teleports) are used by the
+-- simulation as by a player: one that is on cooldown waits until it is ready on the
+-- route's clock (the seconds of travel and work so far), and one the route uses goes
+-- on cooldown for the steps after it. What a port costs (Travel.PortCost: a share of
+-- its cooldown, a reagent) is part of its trip's seconds, so it is taken only when it
+-- wins at least that much.
 -- The route therefore follows chains and stays in an area while it pays, and moves
 -- on when the quests that are left are worth less than the walk.
 local _, ns = ...
@@ -194,11 +200,12 @@ end
 
 -- Travel seconds between two spots: walking, or opts.travel (Engine/Travel: flight
 -- paths, boats, hearthstone) when the walk is long.
+-- Also returns the port the trip starts with (opts.ports), if any.
 local function travelSecs(o, a, b, d)
   local walk = d / o.speed
   if o.travel and walk > o.travelAbove and walk < math.huge then
-    local ok, t = pcall(o.travel, a, b)
-    if ok and t and t < walk then return t end
+    local ok, t, via = pcall(o.travel, a, b, o.usable)
+    if ok and t and t < walk then return t, via end
   end
   return walk
 end
@@ -229,7 +236,7 @@ local function reachSpot(o, geo, from, spots, here)
   if here or not o.travel then return nil, math.huge, math.huge end
   local secs
   for k = 1, math.min(#spots, CROSS_TRIES) do
-    local ok, t = pcall(o.travel, from, spots[k])
+    local ok, t = pcall(o.travel, from, spots[k], o.usable)
     if ok and t and t < math.huge and (not secs or t < secs) then best, secs = spots[k], t end
   end
   return best, math.huge, secs or math.huge
@@ -677,11 +684,24 @@ function R.Plan(ds, char, geo, opts)
     end
   end
 
+  -- the route's clock and its ports: ready at clock >= readyAt (the client's
+  -- cooldown left at first, then the full cooldown from when the route used one)
+  local clock, readyAt, portOf = 0, {}, {}
+  for _, p in ipairs(o.ports or {}) do readyAt[p.id], portOf[p.id] = p.ready or 0, p end
+  local efforts = setmetatable({}, { __mode = "k" }) -- action -> seconds of work there
+  local function portsNow()
+    if not o.ports then return nil end
+    local u = {}
+    for id, at in pairs(readyAt) do if at <= clock then u[id] = true end end
+    return u
+  end
+
   local guard = 0
   local yield = ns.Util.Yield -- a slice at a time when planned as a job (Core/Init)
   while #steps < o.steps and guard < o.steps * 4 do
     guard = guard + 1
     yield()
+    o.usable = portsNow()
     local best
     -- open work: the next target of every accepted quest, so an action that leads
     -- away from it pays for the walk back (greedy steps otherwise wander off)
@@ -822,6 +842,7 @@ function R.Plan(ds, char, geo, opts)
     -- at the npc you stand at: the most experience per second first; elsewhere: the
     -- seconds the action adds (see the method above)
     local function offer(action, secs, effort)
+      efforts[action] = effort
       local value = worth(action.kind, action.quest)
       local xp = gain(action.quest)
       if action.kind ~= "do" and G.Distance(geo, pos, action.spot) <= o.here then
@@ -875,6 +896,7 @@ function R.Plan(ds, char, geo, opts)
       local secs = spot and d < math.huge and travelSecs(o, pos, spot, d) or math.huge
       if secs <= math.max(o.maxSecs, o.classMaxSecs) then
         local action = { kind = "train", spot = spot, npc = spot.id, name = spot.name }
+        efforts[action] = o.trainSecs
         local levelXP = (st.level == char.level and char.xpMax) or R.XP_TO_LEVEL[st.level] or 0
         cands[#cands + 1] = { action = action, score = secs + back(action), secs = secs,
           adds = secs + (#work > 0 and (tour(spot, action) - tourNow) or 0), effort = o.trainSecs,
@@ -914,6 +936,19 @@ function R.Plan(ds, char, geo, opts)
     end
     if here then best = here end
     if not best then break end
+    -- the clock: the way there (a port it starts with goes on cooldown) and the work
+    local dBest = G.Distance(geo, pos, best.spot)
+    local tripSecs, via = travelSecs(o, pos, best.spot, dBest)
+    if dBest == math.huge and o.travel then -- another continent: only by opts.travel
+      local ok, t, v = pcall(o.travel, pos, best.spot, o.usable)
+      if ok and t then tripSecs, via = t, v end
+    end
+    if via and portOf[via] then
+      readyAt[via] = clock + (portOf[via].cd or 0)
+      best.port = via
+    end
+    clock = clock + (tripSecs < math.huge and tripSecs or 0)
+      + (efforts[best] or (best.kills and best.kills * o.killSeconds) or 0)
     local q = ds.quests[best.quest]
     if best.kind == "grind" then
       st.level, st.xp, sim.level = best.level, 0, best.level
