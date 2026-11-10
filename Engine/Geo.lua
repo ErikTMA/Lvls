@@ -61,14 +61,58 @@ function G.Nearest(geo, from, spots)
   return best, bestD
 end
 
+-- Connected areas of spots: two spots on one map within `link` map percent are in
+-- the same area (the game's blue shapes are drawn around spawns this way). Returns,
+-- per spot index, the size of its area: its spots, or the sum of weight(spot).
+function G.AreaSizes(spots, link, weight)
+  link = link or 3
+  local l2 = link * link
+  local parent, cells = {}, {}
+  local function find(i)
+    while parent[i] ~= i do parent[i] = parent[parent[i]]; i = parent[i] end
+    return i
+  end
+  for i, s in ipairs(spots) do
+    parent[i] = i
+    local cx, cy = math.floor(s.x / link), math.floor(s.y / link)
+    for gx = cx - 1, cx + 1 do
+      for gy = cy - 1, cy + 1 do
+        local cell = cells[s.map .. ":" .. gx .. ":" .. gy]
+        for _, j in ipairs(cell or {}) do
+          local o = spots[j]
+          local dx, dy = o.x - s.x, o.y - s.y
+          if dx * dx + dy * dy <= l2 then
+            local a, b = find(i), find(j)
+            if a ~= b then parent[a] = b end
+          end
+        end
+      end
+    end
+    local key = s.map .. ":" .. cx .. ":" .. cy
+    local cell = cells[key]
+    if not cell then cell = {}; cells[key] = cell end
+    cell[#cell + 1] = i
+  end
+  local count, out = {}, {}
+  for i, s in ipairs(spots) do
+    local r = find(i)
+    count[r] = (count[r] or 0) + (weight and weight(s) or 1)
+  end
+  for i in ipairs(spots) do out[i] = count[find(i)] end
+  return out
+end
+
 -- Greedy grouping of spots on one map: every spot joins the first group whose
--- centre is within `radius` map percent. Returns groups { map, x, y, n } biggest
--- first, so an objective area can be named by its densest spot.
-function G.Group(spots, radius)
+-- centre is within `radius` map percent. Returns groups { map, x, y, n, area }
+-- biggest first, so an objective area can be named by its densest spot. area: the
+-- size of the connected area the group lies in (G.AreaSizes with `weight`; a big
+-- area is split into several groups, each knows the whole area is big).
+function G.Group(spots, radius, weight)
   radius = radius or 6
   local r2 = radius * radius
   local clusters = {}
-  for _, s in ipairs(spots) do
+  local sizes = G.AreaSizes(spots, nil, weight)
+  for i, s in ipairs(spots) do
     local hit
     for _, c in ipairs(clusters) do
       if c.map == s.map then
@@ -79,8 +123,9 @@ function G.Group(spots, radius)
     if hit then
       hit.sx, hit.sy, hit.n = hit.sx + s.x, hit.sy + s.y, hit.n + 1
       hit.x, hit.y = hit.sx / hit.n, hit.sy / hit.n
+      if sizes[i] > hit.area then hit.area = sizes[i] end
     else
-      clusters[#clusters + 1] = { map = s.map, x = s.x, y = s.y, sx = s.x, sy = s.y, n = 1 }
+      clusters[#clusters + 1] = { map = s.map, x = s.x, y = s.y, sx = s.x, sy = s.y, n = 1, area = sizes[i] }
     end
   end
   table.sort(clusters, function(a, b)

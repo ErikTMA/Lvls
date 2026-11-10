@@ -90,6 +90,8 @@ R.DEFAULTS = {
   training = nil,      -- { afford = points (Engine/Training), trainers = { spot, ... } }
   trainShare = 0.03,   -- a point of training is worth this share of the level's experience
   trainSecs = 30,      -- seconds at the trainer
+  respawnSecs = 300,   -- seconds a cleared area takes to respawn: a small area that cannot
+                       --   give the whole objective is charged for the waits
 }
 
 -- Experience a quest gives at a character level (classic reduction: 20% less per
@@ -122,6 +124,31 @@ local function workSeconds(o, spots, opts)
   return 60
 end
 
+-- What one spawn of an objective gives towards it: a kill or an object 1, a drop its
+-- chance (30% when unknown), a vendor all of it.
+local function spawnYield(o)
+  if o.t ~= "item" then return function() return 1 end end
+  return function(s)
+    if s.vendor then return 1e6 end
+    if s.pct and s.pct > 0 then return s.pct / 100 end
+    if s.kind == "o" then return 1 end
+    return 0.3
+  end
+end
+
+-- Objective areas (G.Group) with `rounds`: how many times an area must respawn before
+-- it has given the objective (0 when it is big enough). The route weighs an area by
+-- the walk plus those waits, so a patch of a few mobs close by does not win over the
+-- big area the objective is meant for.
+local function objectiveTargets(o, spots)
+  local targets = G.Group(spots, 5, spawnYield(o))
+  local qty = o.qty or 1
+  for _, t in ipairs(targets) do
+    t.rounds = t.area > 0 and math.max(0, qty - t.area) / t.area or 0
+  end
+  return targets
+end
+
 -- Plannable shape of a quest: giver spots, per-objective target clusters, turn-in
 -- spots. nil and why when any part cannot be located.
 -- entry: the quest log's entry when the quest is in the log. Then the log decides:
@@ -152,7 +179,7 @@ local function shape(ds, q, dungeon, bagStart, pos, opens, entry)
     else
       local spots = ns.Quests.ObjectiveSpots(ds, q, i)
       if #spots > 0 then
-        objs[i] = { targets = G.Group(spots, 5), spots = spots }
+        objs[i] = { targets = objectiveTargets(o, spots), spots = spots }
       else
         why = ("no location known for: %s"):format(o.text or ("objective " .. i))
       end
@@ -176,9 +203,18 @@ local function travelSecs(o, a, b, d)
   return walk
 end
 
-local function nearestTarget(geo, from, targets)
-  local best, d = G.Nearest(geo, from, targets)
-  return best, d
+-- The objective area to work: the fewest seconds of walking plus respawn waits
+-- (objectiveTargets). Returns the spot and its yards, as G.Nearest.
+local function bestTarget(o, geo, from, targets)
+  local best, bestD, bestC = nil, math.huge, math.huge
+  for _, t in ipairs(targets) do
+    local d = G.Distance(geo, from, t)
+    if d < math.huge then
+      local c = d / o.speed + (t.rounds or 0) * o.respawnSecs
+      if c < bestC then best, bestD, bestC = t, d, c end
+    end
+  end
+  return best, bestD
 end
 
 -- The spot to go to and the seconds it takes: the nearest on this continent, else
@@ -188,7 +224,7 @@ end
 local CROSS_TRIES = 4 -- spots tried on another continent (targets are biggest first)
 local CROSS_AVAIL = 12 -- quests to pick up on another continent offered per step (the quickest)
 local function reachSpot(o, geo, from, spots, here)
-  local best, d = G.Nearest(geo, from, spots)
+  local best, d = bestTarget(o, geo, from, spots)
   if best then return best, d, travelSecs(o, from, best, d) end
   if here or not o.travel then return nil, math.huge, math.huge end
   local secs
@@ -514,7 +550,7 @@ function R.Plan(ds, char, geo, opts)
         local ob = s.objs[i]
         if ob and ob.targets then
           workSecs[q.id] = workSecs[q.id] + workSeconds(q.obj[i], ob.spots, o)
-          local tgt, d = nearestTarget(geo, here, ob.targets)
+          local tgt, d = bestTarget(o, geo, here, ob.targets)
           if not entry and d == math.huge then shapes[q.id] = false; return false end
           here = tgt or here
         end
@@ -660,7 +696,7 @@ function R.Plan(ds, char, geo, opts)
           for i in ipairs(q.obj or {}) do
             local so = s.objs[i]
             if so and so.targets and not progress[qid][i] then
-              pending[#pending + 1] = { quest = qid, index = i, spot = nearestTarget(geo, pos, so.targets) or so.targets[1] }
+              pending[#pending + 1] = { quest = qid, index = i, spot = bestTarget(o, geo, pos, so.targets) or so.targets[1] }
             end
           end
         end
@@ -821,7 +857,7 @@ function R.Plan(ds, char, geo, opts)
                 local tgt, _, secs = reachSpot(o, geo, pos, so.targets, busy())
                 if secs < math.huge then
                   offer({ kind = "do", quest = qid, index = i, spot = tgt },
-                    secs, workSeconds(ob, so.spots, o))
+                    secs, workSeconds(ob, so.spots, o) + (tgt.rounds or 0) * o.respawnSecs)
                 end
               end
             end
@@ -898,7 +934,7 @@ function R.Plan(ds, char, geo, opts)
           for i in ipairs(oq.obj or {}) do
             local so = s.objs[i]
             if so and so.targets and not progress[qid][i] then
-              local tgt, d = nearestTarget(geo, best.spot, so.targets)
+              local tgt, d = G.Nearest(geo, best.spot, so.targets)
               if d <= o.together then also[#also + 1] = { kind = "do", quest = qid, index = i, spot = tgt } end
             end
           end
