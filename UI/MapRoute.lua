@@ -20,6 +20,7 @@ MR.LINE = 3
 local ACCENT = { 1, 0.48, 0.1 }
 MR.ACCENT = ACCENT
 local AHEAD_COLOR = { 1, 0.86, 0.55 }
+MR.AHEAD_COLOR = AHEAD_COLOR
 
 -- The waypoints of `steps` from step `from` on, placed on a map. Pure.
 --   project(spot) -> x, y (0..1) or nil when the spot is not on the map

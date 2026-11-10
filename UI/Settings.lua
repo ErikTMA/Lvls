@@ -47,6 +47,7 @@ S.ITEMS = {
   { key = "worldMap", name = "Quest pins on the world map" },
   { key = "mapRoute", name = "Route on the world map", tip = "The next steps as numbered waypoints joined by a line, starting where you stand; at a flight master, the flight point to fly to is ringed and its route drawn. /lvls mapline" },
   { key = "minimap", name = "Quest pins on the minimap" },
+  { key = "minimapRoute", name = "Route on the minimap", tip = "The next steps as numbered waypoints on the minimap, joined by a dotted line from where you stand; on foot around walls it follows the way the arrow leads. /lvls miniroute" },
   { key = "objectives", name = "Objective areas" },
   { key = "showLow", name = "Show quests you are too low for" },
   { key = "showTrivial", name = "Show grey quests" },
