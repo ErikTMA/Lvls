@@ -5,8 +5,9 @@ local R = ns:NewModule("Registry")
 local datasets = {}
 
 -- Placeholder quests the client still carries ("<UNUSED>", "[Never used]",
--- "<nyi> <TXT> ...", "zzOLD ..."): never real, never planned (Availability: wrong).
-local PLACEHOLDER = { "unused", "never used", "<nyi>", "<txt>", "^zz", "deprecated", "%[ph%]" }
+-- "<nyi> <TXT> ...", "zzOLD ...", "Hunter test quest", "jktestquest1a"): never real,
+-- never planned (Availability: wrong).
+local PLACEHOLDER = { "unused", "never used", "<nyi>", "<txt>", "^zz", "deprecated", "%[ph%]", "test%s?%a*%s?quest" }
 function R.IsPlaceholder(name)
   local n = (name or ""):lower()
   for _, p in ipairs(PLACEHOLDER) do

@@ -1,7 +1,7 @@
 -- GENERATED quest data for Lvls!. Do not edit.
--- flavor forever, generated 2026-11-08T09:38:25Z
+-- flavor forever, generated 2026-11-10T08:03:28Z
 local _, ns = ...
-local D = { meta = {flavor="forever",generated="2026-11-08T09:38:25Z",schema=1,source="quest data export"}, quests = {}, npcs = {}, objects = {}, zones = {[1]=1426,[3]=1418,[4]=1419,[8]=1435,[10]=1431,[11]=1437,[12]=1429,[14]=1411,[15]=1445,[16]=1447,[17]=1413,[28]=1422,[33]=1434,[36]=1416,[38]=1432,[40]=1436,[41]=1430,[44]=1433,[45]=1417,[46]=1428,[47]=1425,[51]=1427,[85]=1420,[130]=1421,[139]=1423,[141]=1438,[148]=1439,[215]=1412,[267]=1424,[331]=1440,[357]=1444,[361]=1448,[400]=1441,[405]=1443,[406]=1442,[440]=1446,[490]=1449,[493]=1450,[616]=2482,[618]=1452,[1377]=1451,[1497]=1458,[1519]=1453,[1537]=1455,[1637]=1454,[1638]=1456,[1657]=1457,[2597]=1459,[16591]=2548,[16593]=2521,[16651]=2652}, maps = {[947]="Azeroth",[1411]="Durotar",[1412]="Mulgore",[1413]="The Barrens",[1414]="Kalimdor",[1415]="Eastern Kingdoms",[1416]="Alterac Mountains",[1417]="Arathi Highlands",[1418]="Badlands",[1419]="Blasted Lands",[1420]="Tirisfal Glades",[1421]="Silverpine Forest",[1422]="Western Plaguelands",[1423]="Eastern Plaguelands",[1424]="Hillsbrad Foothills",[1425]="The Hinterlands",[1426]="Dun Morogh",[1427]="Searing Gorge",[1428]="Burning Steppes",[1429]="Elwynn Forest",[1430]="Deadwind Pass",[1431]="Duskwood",[1432]="Loch Modan",[1433]="Redridge Mountains",[1434]="Stranglethorn Vale",[1435]="Swamp of Sorrows",[1436]="Westfall",[1437]="Wetlands",[1438]="Teldrassil",[1439]="Darkshore",[1440]="Ashenvale",[1441]="Thousand Needles",[1442]="Stonetalon Mountains",[1443]="Desolace",[1444]="Feralas",[1445]="Dustwallow Marsh",[1446]="Tanaris",[1447]="Azshara",[1448]="Felwood",[1449]="Un'Goro Crater",[1450]="Moonglade",[1451]="Silithus",[1452]="Winterspring",[1453]="Stormwind City",[1454]="Orgrimmar",[1455]="Ironforge",[1456]="Thunder Bluff",[1457]="Darnassus",[1458]="Undercity",[1459]="Alterac Valley",[2482]="Mount Hyjal",[2521]="Zephras Isle",[2548]="Riverglades",[2652]="Shen'dralas"}, travel = {fly={352,523,931,1387,1571,1572,1573,2226,2299,2389,2409,2432,2835,2851,2858,2859,2861,2941,2995,3305,3310,3615,3838,3841,4267,4312,4314,4317,4319,4321,4407,4551,6026,6706,6726,7823,7824,8018,8019,8020,8609,8610,10378,10583,10897,11138,11139,11798,11800,11899,11900,11901,12577,12578,12596,12616,12617,12636,12740,13177,15177,15178,16227,17209,41861,255993,257087},inn={295,1247,1464,2352,2388,3934,5111,5688,5814,6272,6727,6734,6735,6736,6737,6738,6739,6740,6741,6746,6747,6778,6790,6791,6807,6928,6929,6930,7714,7731,7733,7736,7737,7744,8931,9356,9501,11103,11106,11116,11118,12196,14731,15174,16256,16458,28686,28687,32411,32413,241659,243815,254089,255894,255940,256675,257595,258380},ship={9558,9559},zeppelin={3149,3150,9564,9566,12136,12137}}, trainers = {[1]={911,912,913,914,985,1229,1901,2119,2131,3041,3042,3043,3059,3063,3153,3169,3353,3354,3408,3593,3598,4087,4089,4593,4594,4595,5113,5114,5479,5480,7315,8141,251964,252377,254088},[2]={925,926,927,928,1232,5147,5148,5149,5491,8140,244808,246152,246344,246389,260093},[3]={895,987,1231,1404,3038,3039,3040,3061,3065,3154,3171,3352,3406,3407,3596,3601,3963,4138,4146,4205,5115,5116,5117,5501,5515,5516,5517,8308,10930,248415,251376,251507,252389,254084},[4]={915,916,917,918,1234,1411,2122,2130,3155,3170,3327,3328,3401,3594,3599,4163,4214,4215,4582,4583,4584,5165,5166,5167,13283,251389,252379,254087},[5]={375,376,377,837,1226,2123,2129,3044,3045,3046,3595,3600,3706,3707,4090,4091,4092,4606,4607,4608,5141,5142,5143,5484,5489,6014,6018,11397,11401,11406,258785},[7]={986,3030,3031,3032,3062,3066,3157,3173,3344,3403,13417,251374,252382,254082,257446,258098,258113,262558},[8]={198,328,944,1228,2124,2128,3047,3048,3049,4566,4567,4568,5144,5145,5146,5497,5498,5880,5882,5883,5884,5885,7311,7312,246797,251379,252373,254086},[9]={459,460,461,906,988,2126,2127,3156,3172,3324,3325,3326,4563,4564,4565,5171,5172,5173,5495,5496,5612},[11]={3033,3034,3036,3060,3064,3597,3602,4217,4218,4219,5504,5505,5506,8142,9465,12042,251373,252359,254081,262560,270459}} }
+local D = { meta = {flavor="forever",generated="2026-11-10T08:03:28Z",schema=1,source="quest data export"}, quests = {}, npcs = {}, objects = {}, zones = {[1]=1426,[3]=1418,[4]=1419,[8]=1435,[10]=1431,[11]=1437,[12]=1429,[14]=1411,[15]=1445,[16]=1447,[17]=1413,[28]=1422,[33]=1434,[36]=1416,[38]=1432,[40]=1436,[41]=1430,[44]=1433,[45]=1417,[46]=1428,[47]=1425,[51]=1427,[85]=1420,[130]=1421,[139]=1423,[141]=1438,[148]=1439,[215]=1412,[267]=1424,[331]=1440,[357]=1444,[361]=1448,[400]=1441,[405]=1443,[406]=1442,[440]=1446,[490]=1449,[493]=1450,[616]=2482,[618]=1452,[1377]=1451,[1497]=1458,[1519]=1453,[1537]=1455,[1637]=1454,[1638]=1456,[1657]=1457,[2597]=1459,[16591]=2548,[16593]=2521,[16651]=2652}, maps = {[947]="Azeroth",[1411]="Durotar",[1412]="Mulgore",[1413]="The Barrens",[1414]="Kalimdor",[1415]="Eastern Kingdoms",[1416]="Alterac Mountains",[1417]="Arathi Highlands",[1418]="Badlands",[1419]="Blasted Lands",[1420]="Tirisfal Glades",[1421]="Silverpine Forest",[1422]="Western Plaguelands",[1423]="Eastern Plaguelands",[1424]="Hillsbrad Foothills",[1425]="The Hinterlands",[1426]="Dun Morogh",[1427]="Searing Gorge",[1428]="Burning Steppes",[1429]="Elwynn Forest",[1430]="Deadwind Pass",[1431]="Duskwood",[1432]="Loch Modan",[1433]="Redridge Mountains",[1434]="Stranglethorn Vale",[1435]="Swamp of Sorrows",[1436]="Westfall",[1437]="Wetlands",[1438]="Teldrassil",[1439]="Darkshore",[1440]="Ashenvale",[1441]="Thousand Needles",[1442]="Stonetalon Mountains",[1443]="Desolace",[1444]="Feralas",[1445]="Dustwallow Marsh",[1446]="Tanaris",[1447]="Azshara",[1448]="Felwood",[1449]="Un'Goro Crater",[1450]="Moonglade",[1451]="Silithus",[1452]="Winterspring",[1453]="Stormwind City",[1454]="Orgrimmar",[1455]="Ironforge",[1456]="Thunder Bluff",[1457]="Darnassus",[1458]="Undercity",[1459]="Alterac Valley",[2482]="Mount Hyjal",[2521]="Zephras Isle",[2548]="Riverglades",[2652]="Shen'dralas"}, travel = {fly={352,523,931,1387,1571,1572,1573,2226,2299,2389,2409,2432,2835,2851,2858,2859,2861,2941,2995,3305,3310,3615,3838,3841,4267,4312,4314,4317,4319,4321,4407,4551,6026,6706,6726,7823,7824,8018,8019,8020,8609,8610,10378,10583,10897,11138,11139,11798,11800,11899,11900,11901,12577,12578,12596,12616,12617,12636,12740,13177,15177,15178,16227,17209,41861,255993,257087},inn={295,1247,1464,2352,2388,3934,5111,5688,5814,6272,6727,6734,6735,6736,6737,6738,6739,6740,6741,6746,6747,6778,6790,6791,6807,6928,6929,6930,7714,7731,7733,7736,7737,7744,8931,9356,9501,11103,11106,11116,11118,12196,14731,15174,16256,16458,28686,28687,32411,32413,241659,243815,254089,255894,255940,256675,257595,258380},ship={9558,9559,276316},zeppelin={3149,3150,9564,9566,12136,12137}}, trainers = {[1]={911,912,913,914,985,1229,1901,2119,2131,3041,3042,3043,3059,3063,3153,3169,3353,3354,3408,3593,3598,4087,4089,4593,4594,4595,5113,5114,5479,5480,7315,8141,251964,252377,254088},[2]={925,926,927,928,1232,5147,5148,5149,5491,8140,244808,246152,246344,246389,260093},[3]={895,987,1231,1404,3038,3039,3040,3061,3065,3154,3171,3352,3406,3407,3596,3601,3963,4138,4146,4205,5115,5116,5117,5501,5515,5516,5517,8308,10930,248415,251376,251507,252389,254084},[4]={915,916,917,918,1234,1411,2122,2130,3155,3170,3327,3328,3401,3594,3599,4163,4214,4215,4582,4583,4584,5165,5166,5167,13283,251389,252379,254087},[5]={375,376,377,837,1226,2123,2129,3044,3045,3046,3595,3600,3706,3707,4090,4091,4092,4606,4607,4608,5141,5142,5143,5484,5489,6014,6018,11397,11401,11406,258785},[7]={986,3030,3031,3032,3062,3066,3157,3173,3344,3403,13417,251374,252382,254082,257446,258098,258113,262558},[8]={198,328,944,1228,2124,2128,3047,3048,3049,4566,4567,4568,5144,5145,5146,5497,5498,5880,5882,5883,5884,5885,7311,7312,246797,251379,252373,254086},[9]={459,460,461,906,988,2126,2127,3156,3172,3324,3325,3326,4563,4564,4565,5171,5172,5173,5495,5496,5612},[11]={3033,3034,3036,3060,3064,3597,3602,4217,4218,4219,5504,5505,5506,8142,9465,12042,251373,252359,254081,262560,270459}} }
 local Q, N, O = D.quests, D.npcs, D.objects
 ;(function()
 Q[1]={l=4,n="The \"Chow\" Quest (123)aa",r=1,xp=540,zone=15}
@@ -527,6 +527,7 @@ Q[530]={en={2050},l=20,money=1200,n="A Husband's Revenge",obj={{id=3613,qty=1,sr
 Q[531]={en={1156},kind="group",l=20,n="Vyrin's Revenge",obj={{id=2713,qty=1,src={{"n",1225,87}},t="item",text="Ol' Sooty's Head (Provided)"}},prev=271,r=15,side="A",sn={1187},xp=1550,zone=38}
 Q[532]={en={2215},l=26,money=2000,n="Battle of Hillsbrad",next=539,obj={{id=2335,qty=1,src={{"n",2335,0}},t="kill",text="Magistrate Burnside slain"},{id=2387,qty=5,src={{"n",2387,0}},t="kill",text="Hillsbrad Councilman slain"},{id=1761,qty=1,src={{"o",1761,0}},t="object",text="Hillsbrad Proclamation destroyed"},{id=3657,qty=1,src={{"o",1759,100}},t="item",text="Hillsbrad Town Registry"}},prev=529,r=19,side="H",sn={2215},xp=2100,zone=267}
 Q[533]={en={2229},l=34,money=3500,n="Infiltration",next=503,obj={{id=3601,qty=1,src={{"n",2240,3},{"n",2241,3}},t="item",text="Syndicate Missive"}},r=29,side="H",sn={2229},xp=2700,zone=267}
+Q[534]={l=34,n="<UNUSED>",r=29,sort=-2}
 Q[535]={en={2333},l=34,n="Valik",obj={{id=3703,qty=1,src={{"n",2440,97},{"v",2388,0}},t="item",text="Southshore Stout"}},r=29,side="H",sn={2333},xp=270,zone=36}
 Q[536]={en={2228},l=30,money=2100,n="Down the Coast",next=559,obj={{id=2377,qty=10,src={{"n",2377,0}},t="kill",text="Torn Fin Tidehunter slain"},{id=2376,qty=10,src={{"n",2376,0}},t="kill",text="Torn Fin Oracle slain"}},r=25,side="A",sn={2228},xp=1850,zone=267}
 Q[537]={en={2276},l=40,money=5000,n="Dark Council",obj={{id=2318,qty=4,src={{"n",2318,0}},t="kill",text="Argus Shadow Mage slain"},{id=3672,qty=1,src={{"n",2320,81}},t="item",text="Head of Nagaz"}},prev=525,r=30,side="A",sn={2276},xp=3150,zone=36}
@@ -805,9 +806,9 @@ Q[812]={en={3190},l=9,n="Need for a Cure",obj={{from={"q",813},id=4904,qty=1,t="
 Q[813]={en={3189},l=9,n="Finding the Antidote",obj={{id=4886,qty=4,src={{"n",3127,25},{"n",3226,9}},t="item",text="Venomtail Poison Sac"}},r=7,side="H",sn={3189},zone=14}
 Q[814]={l=6,n="<UNUSED>",r=4,xp=540,zone=14}
 Q[815]={en={3191},l=8,money=225,n="Break a Few Eggs",obj={{id=4890,qty=3,src={{"o",3240,100}},t="item",text="Taillasher Egg"}},r=6,side="H",sn={3191},xp=700,zone=14}
-Q[816]={en={3193},l=11,n="Lost But Not Forgotten",obj={{id=4891,qty=1,src={{"n",3231,10},{"n",3110,9}},t="item",text="Kron's Amulet"}},r=8,side="H",sn={3193},xp=880,zone=14}
 end)()
 ;(function()
+Q[816]={en={3193},l=11,n="Lost But Not Forgotten",obj={{id=4891,qty=1,src={{"n",3231,10},{"n",3110,9}},t="item",text="Kron's Amulet"}},r=8,side="H",sn={3193},xp=880,zone=14}
 Q[817]={en={3194},l=8,money=225,n="Practical Prey",obj={{id=4892,qty=4,src={{"n",276198,59},{"n",3121,42}},t="item",text="Durotar Tiger Fur"}},r=5,side="H",sn={3194},xp=700,zone=14}
 Q[818]={en={3304},l=7,money=175,n="A Solvent Spirit",obj={{id=4887,qty=4,src={{"n",3104,62},{"n",3103,62},{"n",3105,48},{"n",3141,41}},t="item",text="Intact Makrura Eye"},{id=4888,qty=8,src={{"n",3106,53},{"n",3107,49},{"n",3108,12}},t="item",text="Crawler Mucus"}},r=5,side="H",sn={3304},xp=630,zone=14}
 Q[819]={en={3292},l=15,n="Chen's Empty Keg",next=821,obj={{id=4926,qty=1,src={{"o",3238,83}},t="item",text="Chen's Empty Keg (Provided)"}},r=11,si={id=4926,n="Chen's Empty Keg",src={{"o",3238,83}}},side="H",xp=1050,zone=17}
@@ -847,6 +848,7 @@ Q[852]={en={3389},l=19,money=800,n="Hezrul Bloodmark",obj={{id=5025,qty=1,src={{
 Q[853]={en={3419},l=15,n="Apothecary Zamah",obj={{from="provided",id=5027,qty=1,t="item",text="Rendered Spores (Provided)"}},r=10,side="H",sn={3390},xp=800,zone=17}
 Q[854]={en={3429},l=12,n="Journey to the Crossroads",r=9,races=32,side="H",sn={3418},xp=225,zone=215}
 Q[855]={en={3389},l=14,n="Centaur Bracers",obj={{id=5030,qty=15,src={{"n",3272,42},{"n",3273,39},{"n",3275,26},{"n",3274,26},{"n",3397,24},{"n",5837,24},{"n",3394,23},{"n",9523,17},{"n",9524,16},{"n",5838,12}},t="item",text="Centaur Bracers"}},r=9,side="H",sn={3389},xp=1250,zone=17}
+Q[856]={l=12,n="<UNUSED>",r=9,sort=-2,xp=910}
 Q[857]={en={3421},l=30,money=2500,n="The Tear of the Moons",obj={{id=5038,qty=1,src={{"o",3646,100}},t="item",text="Tear of the Moons"}},r=22,side="H",sn={3421},xp=2450,zone=17}
 Q[858]={en={3439},l=18,n="Ignition",obj={{id=5050,qty=1,src={{"n",3445,89}},t="item",text="Ignition Key"}},r=13,sn={3439},xp=1350,zone=17}
 Q[859]={l=18,n="<UNUSED>",r=13,zone=17}
@@ -1206,10 +1208,10 @@ Q[1245]={en={482},l=30,n="The Missing Diplomat",next=1246,obj={{id=5947,qty=1,sr
 Q[1246]={en={4961},l=31,n="The Missing Diplomat",next=1447,prev=1245,r=28,side="A",sn={482},xp=250,zone=1519}
 Q[1247]={en={482},l=31,n="The Missing Diplomat",next=1248,prev=1447,r=28,side="A",sn={4961},xp=250,zone=1519}
 Q[1248]={en={4963},l=33,n="The Missing Diplomat",next=1249,prev=1247,r=28,side="A",sn={482},xp=660,zone=1519}
-Q[1249]={en={4963},l=33,n="The Missing Diplomat",obj={{qty=1,t="event",text="Defeat Tapoke Jahn"}},prev=1248,r=28,side="A",sn={4963},xp=1300,zone=1519}
-Q[1250]={en={4963},l=33,n="The Missing Diplomat",next=1264,r=28,side="A",sn={4962},xp=265,zone=1519}
 end)()
 ;(function()
+Q[1249]={en={4963},l=33,n="The Missing Diplomat",obj={{qty=1,t="event",text="Defeat Tapoke Jahn"}},prev=1248,r=28,side="A",sn={4963},xp=1300,zone=1519}
+Q[1250]={en={4963},l=33,n="The Missing Diplomat",next=1264,r=28,side="A",sn={4962},xp=265,zone=1519}
 Q[1251]={en={4926},l=35,n="The Black Shield ",next=1321,obj={{from="provided",id=5919,qty=1,t="item",text="Blackened Iron Shield (Provided)"}},r=30,side="H",so={20992},xp=690,zone=15}
 Q[1252]={en={4944},l=40,n="Lieutenant Paval Reethe",next=1259,obj={{from="provided",id=5950,qty=1,t="item",text="Reethe's Badge (Provided)"}},r=30,side="A",so={21042},xp=780,zone=15}
 Q[1253]={en={4944},l=35,n="The Black Shield",next=1319,obj={{from="provided",id=5919,qty=1,t="item",text="Blackened Iron Shield (Provided)"}},r=30,side="A",so={20992},xp=690,zone=15}
@@ -1591,7 +1593,6 @@ Q[1963]={classes=8,en={6446},l=13,n="The Shattered Hand",next=1858,obj={{id=7209
 Q[1978]={classes=8,en={2425},l=13,n="The Deathstalkers",obj={{id=7294,qty=1,src={{"o",103600,100}},t="item",text="Andron's Ledger (Provided)"}},prev=1899,r=10,races=16,side="H",sn={6467},sort=4,xp=910}
 Q[1998]={classes=8,en={6467},l=16,n="Fenwick Thatros",next=1999,obj={{id=7306,qty=1,src={{"n",6570,39}},t="item",text="Fenwick's Head"}},r=16,races=16,side="H",sn={6467},sort=4,xp=880}
 Q[1999]={classes=8,en={6467},l=20,n="Tools of the Trade",obj={{id=7309,qty=1,src={{"o",103815,100}},t="item",text="Dalaran Status Report"}},prev=1998,r=16,races=16,side="H",sn={6467},sort=4,xp=1550}
-Q[2000]={classes=8,l=16,n="Rokar Bladeshadow",r=16,races=2,side="H",sort=4,xp=290}
 Q[2038]={en={6577},l=15,money=700,n="Bingles' Missing Supplies",obj={{id=7343,qty=1,src={{"o",104564,100}},t="item",text="Bingles' Wrench"},{id=7345,qty=1,src={{"o",104569,100}},t="item",text="Bingles' Screwdriver"},{id=7346,qty=1,src={{"o",104574,100}},t="item",text="Bingles' Hammer"},{id=7376,qty=1,src={{"o",104575,100}},t="item",text="Bingles' Blastencapper"}},prev=2039,r=12,side="A",sn={6577},xp=1050,zone=38}
 Q[2039]={en={6577},l=15,n="Find Bingles",next=2038,r=12,side="A",sn={6569},xp=270,zone=1537}
 Q[2040]={en={6579},inst=true,kind="dungeon",l=20,n="Underground Assault",obj={{id=7365,qty=1,t="item",text="Gnoam Sprecklesprocket"}},prev=2041,r=15,side="A",sn={6579},xp=1550,zone=1581}
@@ -1609,9 +1610,9 @@ Q[2178]={en={3702},l=12,n="Easy Strider Living",obj={{id=5469,qty=5,src={{"n",25
 Q[2198]={en={6826},inst=true,kind="dungeon",l=41,n="The Shattered Necklace",next=2199,obj={{id=7666,qty=1,src={{"n",4856,10},{"n",4845,8},{"n",4846,7},{"n",4844,7}},t="item",text="Shattered Necklace (Provided)"}},r=37,si={id=7666,n="Shattered Necklace",src={{"n",4856,10},{"n",4845,8},{"n",4846,7},{"n",4844,7}}},side="A",xp=3300,zone=1337}
 Q[2199]={en={6826},inst=true,kind="dungeon",l=41,n="Lore for a Price",next=2200,obj={{id=2842,qty=5,src={{"o",106318,33},{"o",3714,11},{"o",404352,10}},t="item",text="Silver Bar"}},prev=2198,r=37,side="A",sn={6826},xp=2450,zone=1337}
 Q[2200]={en={6912},inst=true,kind="dungeon",l=42,n="Back to Uldaman",next=2201,prev=2199,provided={7667},r=37,side="A",sn={6826},xp=2550,zone=1337}
-Q[2201]={eo={112877},inst=true,kind="dungeon",l=43,n="Find the Gems",next=2204,obj={{id=7669,qty=1,t="item",text="Shattered Necklace Ruby"},{id=7670,qty=1,t="item",text="Shattered Necklace Sapphire"},{id=7671,qty=1,t="item",text="Shattered Necklace Topaz"}},prev=2200,provided={7668},r=37,side="A",sn={6912},xp=3600,zone=1337}
 end)()
 ;(function()
+Q[2201]={eo={112877},inst=true,kind="dungeon",l=43,n="Find the Gems",next=2204,obj={{id=7669,qty=1,t="item",text="Shattered Necklace Ruby"},{id=7670,qty=1,t="item",text="Shattered Necklace Sapphire"},{id=7671,qty=1,t="item",text="Shattered Necklace Topaz"}},prev=2200,provided={7668},r=37,side="A",sn={6912},xp=3600,zone=1337}
 Q[2202]={en={6868},inst=true,kind="dungeon",l=42,money=5500,n="Uldaman Reagent Run",obj={{id=8047,qty=12,t="item",text="Magenta Fungus Cap"}},prev=2258,r=36,side="H",sn={6868},xp=3450,zone=1337}
 Q[2203]={en={6868},kind="group",l=44,n="Badlands Reagent Run II",obj={{from="crafted",id=7867,qty=3,t="item",text="Vessel of Dragon's Blood"}},provided={7870},r=40,side="H",sn={6868},xp=3750,zone=3}
 Q[2204]={en={6826},inst=true,kind="dungeon",l=44,n="Restoring the Necklace",obj={{id=7672,qty=1,t="item",text="Shattered Necklace Power Source"}},prev=2201,r=37,side="A",so={112877},xp=930,zone=1337}
@@ -2011,9 +2012,9 @@ Q[3528]={en={8579},inst=true,kind="dungeon",l=53,money=24000,n="The God Hakkar",
 Q[3529]={l=52,n="<UNUSED>",r=45,zone=16}
 Q[3541]={en={8659},l=52,money=4000,n="Delivery to Jes'rimon",next=3563,obj={{id=10539,qty=1,src={{"o",148513,100}},t="item",text="Tablet of Jin'yael (Provided)"}},r=45,side="H",sn={8587},xp=2550,zone=16}
 Q[3542]={en={6522},l=52,money=6000,n="Delivery to Andron Gant",next=3564,obj={{id=10540,qty=1,src={{"o",148514,100}},t="item",text="Tablet of Markri (Provided)"}},r=45,side="H",sn={8587},xp=2550,zone=16}
-Q[3561]={en={8379},l=52,money=4000,n="Delivery to Archmage Xylem",next=3565,obj={{id=10541,qty=1,src={{"o",148515,100}},t="item",text="Tablet of Sael'hai (Provided)"}},r=45,side="H",sn={8587},xp=2550,zone=16}
 end)()
 ;(function()
+Q[3561]={en={8379},l=52,money=4000,n="Delivery to Archmage Xylem",next=3565,obj={{id=10541,qty=1,src={{"o",148515,100}},t="item",text="Tablet of Sael'hai (Provided)"}},r=45,side="H",sn={8587},xp=2550,zone=16}
 Q[3562]={en={8587},l=52,money=6000,n="Magatha's Payment to Jediga",obj={{from="provided",id=10678,qty=1,t="item",text="Magatha's Note (Provided)"}},prev=3518,r=45,side="H",sn={4046},xp=3800,zone=16}
 Q[3563]={en={8587},l=52,money=6000,n="Jes'rimon's Payment to Jediga",obj={{from="provided",id=10680,qty=1,t="item",text="Jes'rimon's Note (Provided)"}},prev=3541,r=45,side="H",sn={8659},xp=3800,zone=16}
 Q[3564]={en={8587},l=52,money=7500,n="Andron's Payment to Jediga",obj={{from="provided",id=10679,qty=1,t="item",text="Andron's Note (Provided)"}},prev=3542,r=45,side="H",sn={6522},xp=3800,zone=16}
@@ -2413,9 +2414,9 @@ Q[5021]={eo={175894},l=52,n="Better Late Than Never",r=50,sn={10778},xp=2550,zon
 Q[5022]={en={10782},l=52,n="Better Late Than Never",next=5048,obj={{from="provided",id=12724,qty=1,t="item",text="Janice's Parcel (Provided)"}},prev=5023,r=50,side="A",so={175894},xp=2550,zone=28}
 Q[5023]={en={10781},l=52,n="Better Late Than Never",next=5048,obj={{from="provided",id=12724,qty=1,t="item",text="Janice's Parcel (Provided)"}},prev=5022,r=50,side="H",so={175894},xp=2550,zone=28}
 Q[5041]={en={3429},l=14,money=600,n="Supplies for the Crossroads",obj={{id=12708,qty=1,src={{"o",175708,100}},t="item",text="Crossroads' Supply Crates"}},r=9,side="H",sn={3429},xp=980,zone=17}
-Q[5042]={en={3430},l=20,n="Agamaggan's Strength",r=14,side="H",sn={3430},zone=17}
 end)()
 ;(function()
+Q[5042]={en={3430},l=20,n="Agamaggan's Strength",r=14,side="H",sn={3430},zone=17}
 Q[5043]={en={3430},l=20,n="Agamaggan's Agility",r=14,side="H",sn={3430},zone=17}
 Q[5044]={en={3430},l=20,n="Wisdom of Agamaggan",r=14,side="H",sn={3430},zone=17}
 Q[5045]={en={3430},l=20,n="Rising Spirit",r=14,side="H",sn={3430},zone=17}
@@ -2687,6 +2688,9 @@ Q[5664]={classes=16,l=15,n="<UNUSED>",prev=5667,r=15,races=8,side="A",sort=4}
 Q[5665]={classes=16,l=15,n="<UNUSED>",next=5664,prev=5667,r=15,races=8,side="A",sort=4,xp=270}
 Q[5666]={classes=16,l=15,n="<UNUSED>",next=5664,prev=5667,r=15,races=8,side="A",sort=4,xp=270}
 Q[5667]={classes=16,l=15,n="<UNUSED>",next=5664,prev=5666,r=15,races=8,side="A",sort=4,xp=270}
+Q[5669]={classes=16,l=15,n="<NYI> A Blessing of Light",r=15,races=5,side="A",sort=4,xp=270}
+Q[5670]={classes=16,l=15,n="<NYI> A Blessing of Light",r=15,races=5,side="A",sort=4,xp=270}
+Q[5671]={classes=16,l=15,n="<NYI> A Blessing of Light",r=15,races=5,side="A",sort=4,xp=270}
 Q[5672]={classes=16,en={11401},l=20,n="Elune's Grace",r=20,races=8,side="A",sn={11401},sort=4}
 Q[5673]={classes=16,en={11401},l=20,n="Elune's Grace",r=20,races=8,side="A",sn={376},sort=4,xp=390}
 Q[5674]={classes=16,en={11401},l=20,n="Elune's Grace",r=20,races=8,side="A",sort=4,xp=390}
@@ -2696,6 +2700,14 @@ Q[5677]={classes=16,en={376},l=20,n="Arcane Feedback",r=20,races=1,side="A",sn={
 Q[5678]={classes=16,en={376},l=20,n="Arcane Feedback",r=20,races=1,side="A",sn={11401},sort=4,xp=390}
 Q[5679]={classes=16,en={4606},l=20,n="Devouring Plague",r=20,races=16,side="H",sn={4606},sort=4}
 Q[5680]={classes=16,en={6018},l=20,n="Shadowguard",r=20,races=128,side="H",sn={6018},sort=4}
+Q[5686]={classes=16,l=25,n="<NYI> The Light Protects You",r=25,races=5,side="A",sort=4,xp=510}
+Q[5687]={classes=16,l=25,n="<NYI> The Light Protects You",r=25,races=5,side="A",sort=4,xp=510}
+Q[5691]={classes=16,l=15,n="<NYI> <TXT> In the Dark it was Created",prev=5693,r=15,races=16,side="H",sort=4}
+Q[5692]={classes=16,l=15,n="<NYI> In the Dark It was Created",next=5691,prev=5693,r=15,races=16,side="H",sort=4,xp=270}
+Q[5693]={classes=16,l=15,n="<NYI> In the Dark It was Created",next=5691,prev=5692,r=15,races=16,side="H",sort=4,xp=270}
+Q[5704]={classes=16,l=25,n="<NYI> <TXT> Undead Priest Robe",prev=5706,r=25,races=16,side="H",sort=4}
+Q[5705]={classes=16,l=25,n="<NYI> No Longer a Shadow",next=5704,prev=5706,r=25,races=16,side="H",sort=4,xp=510}
+Q[5706]={classes=16,l=25,n="<NYI> No Longer a Shadow",next=5704,prev=5705,r=25,races=16,side="H",sort=4,xp=510}
 Q[5713]={en={11806},l=15,money=1400,n="One Shot. One Kill.",obj={{qty=1,t="event",text="Protect Aynasha"}},r=10,side="A",sn={11711},xp=1050,zone=148}
 Q[5721]={en={10926},kind="raid",l=60,n="The Battle of Darrowshire",next=5942,obj={{id=10936,qty=1,src={{"n",10936,0}},t="kill",text="Accept Redpath's Forgiveness"}},prev=5941,provided={15209},r=55,sn={10667},xp=8300,zone=139}
 Q[5722]={en={11834},inst=true,kind="dungeon",l=16,n="Searching for the Lost Satchel",next=5724,r=9,side="H",sn={11833},xp=880,zone=2437}
@@ -2804,6 +2816,8 @@ Q[6083]={classes=4,en={3171},l=10,n="Taming the Beast",next=6082,obj={{from="pro
 Q[6084]={classes=4,en={1231},l=10,n="Taming the Beast",next=6085,obj={{from="provided",id=15913,qty=1,t="item",text="Taming Rod (Provided)"},{qty=1,t="event",text="Tame a Snow Leopard"}},prev=6064,r=10,races=4,side="A",sn={1231},sort=4,xp=840}
 Q[6085]={classes=4,en={1231},l=10,n="Taming the Beast",next=6086,obj={{from="provided",id=15908,qty=1,t="item",text="Taming Rod (Provided)"},{qty=1,t="event",text="Tame an Ice Claw Bear"}},prev=6084,r=10,races=4,side="A",sn={1231},sort=4,xp=840}
 Q[6086]={classes=4,en={10090},l=10,n="Training the Beast",prev=6085,r=10,races=4,side="A",sn={1231},sort=4,xp=420}
+end)()
+;(function()
 Q[6087]={classes=4,en={3065},l=10,n="Taming the Beast",next=6088,obj={{from="provided",id=15915,qty=1,t="item",text="Taming Rod (Provided)"},{qty=1,t="event",text="Tame a Prairie Stalker"}},prev=6061,r=10,races=34,side="H",sn={3065},sort=4,xp=840}
 Q[6088]={classes=4,en={3065},l=10,n="Taming the Beast",next=6089,obj={{from="provided",id=15916,qty=1,t="item",text="Taming Rod (Provided)"},{qty=1,t="event",text="Tame a Swoop"}},prev=6087,r=10,races=32,side="H",sn={3065},sort=4,xp=840}
 Q[6089]={classes=4,en={3039},l=10,n="Training the Beast",prev=6088,r=10,races=32,side="H",sn={3065},sort=4,xp=420}
@@ -2816,8 +2830,6 @@ Q[6123]={classes=1024,en={3702},l=14,n="Gathering the Cure",next=6124,obj={{id=2
 Q[6124]={classes=1024,en={11802},l=14,n="Curing the Sick",next=6125,obj={{id=12299,qty=10,t="kill",text="Sickly Deer cured"}},prev=6123,provided={15826},r=14,races=8,side="A",sn={3702},sort=4,xp=740}
 Q[6125]={classes=1024,en={4217},l=14,n="Power over Poison",prev=6124,r=14,races=8,side="A",sn={11802},sort=4,xp=980}
 Q[6126]={classes=1024,en={11802},l=14,n="Lessons Anew",next=6127,r=14,races=32,side="H",sn={3033},sort=4,xp=100}
-end)()
-;(function()
 Q[6127]={classes=1024,en={3448},l=14,n="The Principal Source",next=6128,obj={{from="crafted",id=15843,qty=1,t="item",text="Filled Dreadmist Peak Sampler"}},prev=6126,provided={15842},r=14,races=32,side="H",sn={11802},sort=4,xp=740}
 Q[6128]={classes=1024,en={3448},l=14,n="Gathering the Cure",next=6129,obj={{id=2449,qty=5,src={{"o",3726,98},{"o",1619,98},{"n",10641,50},{"n",276099,50},{"n",2027,20},{"v",844,0},{"v",1302,0},{"v",1313,0},{"v",3490,0},{"v",3548,0},{"v",4083,0},{"v",4878,0},{"v",8305,0},{"v",14846,0}},t="item",text="Earthroot"},{id=15852,qty=5,src={{"n",3234,29}},t="item",text="Kodo Horn"}},prev=6127,r=14,races=32,side="H",sn={3448},sort=4,xp=740}
 Q[6129]={classes=1024,en={11802},l=14,n="Curing the Sick",next=6130,obj={{id=12297,qty=10,t="kill",text="Sickly Gazelle cured"}},prev=6128,provided={15826},r=14,races=32,side="H",sn={3448},sort=4,xp=740}
@@ -2849,7 +2861,6 @@ Q[6185]={en={12425},kind="group",l=60,n="The Eastern Plagues",next=6186,obj={{id
 Q[6186]={en={1748},kind="group",l=60,n="The Blightcaller Cometh",next=6187,prev=6185,r=56,side="A",sn={12425},xp=6600,zone=1519}
 Q[6187]={en={1748},kind="raid",l=60,n="Order Must Be Restored",obj={{id=11878,qty=1,src={{"n",11878,0}},t="kill",text="Nathanos Blightcaller slain"}},prev=6186,r=56,side="A",sn={1748},xp=9950,zone=139}
 Q[6201]={inst=true,kind="class",l=65,n="<UNUSED> The Legacy of the Ashbringer",obj={{id=159,qty=1,src={{"o",3189,100},{"o",3658,100},{"n",271080,50},{"n",251145,35},{"o",106318,33},{"n",251448,32},{"o",2843,32},{"n",252666,29},{"n",1949,29},{"n",256996,25},{"n",276194,25},{"n",257521,25},{"v",151,0},{"v",152,0},{"v",227,0},{"v",258,0}},t="item",text="Refreshing Spring Water"},{id=2070,qty=1,src={{"n",94,100},{"n",103,100},{"n",473,100},{"n",1507,100},{"n",1667,100},{"n",2990,100},{"n",6866,100},{"n",6927,100},{"o",153473,100},{"n",1211,67},{"n",38,50},{"n",880,50},{"v",295,0},{"v",465,0},{"v",483,0},{"v",1237,0}},t="item",text="Darnassian Bleu"}},r=60,zone=2017}
-Q[6221]={l=55,n="Deadwood of the North",obj={{id=7156,qty=5,src={{"n",7156,0}},t="kill",text="Deadwood Den Watcher slain"},{id=7157,qty=5,src={{"n",7157,0}},t="kill",text="Deadwood Avenger slain"},{id=7158,qty=5,src={{"n",7158,0}},t="kill",text="Deadwood Shaman slain"}},r=45,zone=1216}
 Q[6261]={en={352},l=10,n="Dungar Longdrink",next=6285,obj={{from="provided",id=16115,qty=1,t="item",text="Osric's Crate (Provided)"}},prev=6281,r=10,races=1,side="A",sn={1323},xp=210,zone=40}
 Q[6281]={en={1323},l=10,money=175,n="Continue to Stormwind",next=6261,obj={{from="provided",id=15998,qty=1,t="item",text="Lewis' Note (Provided)"}},prev=6181,r=10,races=1,side="A",sn={523},xp=420,zone=40}
 Q[6282]={en={11860},l=26,money=2000,n="Harpies Threaten",next=6283,obj={{id=4022,qty=7,src={{"n",4022,0}},t="kill",text="Bloodfury Harpy slain"},{id=4025,qty=7,src={{"n",4025,0}},t="kill",text="Bloodfury Ambusher slain"},{id=4024,qty=7,src={{"n",4024,0}},t="kill",text="Bloodfury Slayer slain"},{id=4023,qty=7,src={{"n",4023,0}},t="kill",text="Bloodfury Roguefeather slain"}},r=18,side="H",sn={11860},xp=2100,zone=406}
@@ -3207,19 +3218,18 @@ Q[7787]={en={14347},l=60,n="Rise, Thunderfury!",obj={{id=19018,qty=1,src={{"n",1
 Q[7788]={kind="pvp",l=25,money=5500,n="Vanquish the Invaders!",obj={{from={"q",8567},id=20558,qty=1,t="item",text="Warsong Gulch Mark of Honor"}},r=20,sort=6,xp=2000}
 Q[7789]={kind="pvp",l=25,money=5500,n="Quell the Silverwing Usurpers",obj={{from={"q",8567},id=20558,qty=1,t="item",text="Warsong Gulch Mark of Honor"}},r=20,sort=6,xp=2000}
 Q[7790]={n="REUSE",obj={{id=14732,qty=1,t="kill",text="Defeat Warsong Mill"}},sort=-2}
+end)()
+;(function()
 Q[7791]={en={14722},l=60,n="A Donation of Wool",r=12,side="A",sn={14722},xp=660,zone=1519}
 Q[7792]={en={14725},l=60,n="A Donation of Wool",r=12,side="A",sn={14725},xp=660,zone=1657}
 Q[7793]={en={14722},l=60,n="A Donation of Silk",r=26,side="A",sn={14722},xp=1650,zone=1519}
 Q[7794]={en={14722},l=60,n="A Donation of Mageweave",r=40,side="A",sn={14722},xp=3300,zone=1519}
 Q[7795]={en={14722},l=60,n="A Donation of Runecloth",r=50,side="A",sn={14722},xp=6600,zone=1519}
 Q[7796]={en={14722},l=60,n="Additional Runecloth",r=50,side="A",sn={14722},zone=1519}
-Q[7797]={l=1,n="Dimensional Ripper - Everlook",r=60,sort=-2}
 Q[7798]={en={14725},l=60,n="A Donation of Silk",r=26,side="A",sn={14725},xp=1650,zone=1657}
 Q[7799]={en={14725},l=60,n="A Donation of Mageweave",r=40,side="A",sn={14725},xp=3300,zone=1657}
 Q[7800]={en={14725},l=60,n="A Donation of Runecloth",r=50,side="A",sn={14725},xp=6600,zone=1657}
 Q[7801]={en={14725},l=60,n="Additional Runecloth",r=50,side="A",sn={14725},zone=1657}
-end)()
-;(function()
 Q[7802]={en={14723},l=60,n="A Donation of Wool",r=12,side="A",sn={14723},xp=660,zone=1537}
 Q[7803]={en={14723},l=60,n="A Donation of Silk",r=26,side="A",sn={14723},xp=1650,zone=1537}
 Q[7804]={en={14723},l=60,n="A Donation of Mageweave",r=40,side="A",sn={14723},xp=3300,zone=1537}
@@ -3415,6 +3425,7 @@ Q[8148]={en={14905},inst=true,kind="raid",l=60,n="Maelstrom's Wrath",r=58,sn={14
 Q[8149]={en={15011},l=60,n="Honoring a Hero",provided={19850},r=30,side="A",sn={15011},sort=9,xp=6600}
 Q[8150]={en={15012},l=60,n="Honoring a Hero",provided={19851},r=30,side="H",sn={15012},sort=9,xp=6600}
 Q[8151]={classes=4,en={8405},l=52,n="The Hunter's Charm",next=8153,r=50,sn={3039,3352,4205,5116,5516},sort=4,xp=510}
+Q[8152]={l=57,n="Rapid Escape",next=97986,obj={{id=280504,qty=1,t="item",text="Mudsoaked Scrap (Provided)"}},r=53,xp=3000,zone=139}
 Q[8153]={classes=4,en={8405},l=52,n="Courser Antlers",next=8231,obj={{id=20017,qty=2,src={{"n",8761,4}},t="item",text="Perfect Courser Antler"}},prev=8151,r=50,sn={8405},sort=4,xp=5100}
 Q[8154]={kind="pvp",l=45,money=19500,n="Arathi Basin Resources!",obj={{from={"q",8565},id=20559,qty=1,t="item",text="Arathi Basin Mark of Honor"}},r=40,sort=6,xp=3900}
 Q[8155]={kind="pvp",l=25,money=5500,n="Arathi Basin Resources!",obj={{from={"q",8565},id=20559,qty=1,t="item",text="Arathi Basin Mark of Honor"}},r=20,sort=6,xp=2000}
@@ -3609,6 +3620,8 @@ Q[8410]={classes=64,en={6176},l=52,n="Elemental Mastery",next=8412,obj={{id=7069
 Q[8411]={classes=64,en={6176},l=52,n="Mastering the Elements",next=8412,obj={{id=7069,qty=1,src={{"n",14454,64}},t="item",text="Elemental Air"},{id=7067,qty=1,src={{"n",14464,66},{"n",228722,33},{"n",228725,27}},t="item",text="Elemental Earth"},{id=7068,qty=1,src={{"n",14461,73},{"n",228722,67},{"n",228720,19},{"n",228725,18}},t="item",text="Elemental Fire"},{id=7070,qty=1,src={{"n",14457,66},{"n",226982,50},{"n",14269,37},{"n",2794,14}},t="item",text="Elemental Water"}},prev=8410,r=50,side="H",sn={6176},sort=4,xp=3800}
 Q[8412]={classes=64,en={6176},l=52,n="Spirit Totem",obj={{id=20610,qty=8,src={{"n",1809,9},{"n",1822,7}},t="item",text="Bloodshot Spider Eye"},{id=20611,qty=8,src={{"n",1809,9},{"n",1815,8}},t="item",text="Thick Black Claw"}},prev=8411,r=50,races=162,side="H",sn={6176},sort=4,xp=5100}
 Q[8413]={classes=64,en={6176},kind="dungeon",l=52,money=15500,n="Da Voodoo",obj={{id=20606,qty=2,t="item",text="Amber Voodoo Feather"},{id=20607,qty=2,t="item",text="Blue Voodoo Feather"},{id=20608,qty=2,t="item",text="Green Voodoo Feather"}},r=50,side="H",sn={6176},sort=4,xp=6350}
+end)()
+;(function()
 Q[8414]={classes=2,en={1854},l=52,n="Dispelling Evil",obj={{id=12840,qty=20,src={{"n",8551,45},{"n",1785,44},{"n",1784,43},{"n",8540,43},{"n",8547,42},{"n",1783,42},{"n",8524,42},{"n",8523,42},{"n",1804,41},{"n",8548,40},{"n",1802,40},{"n",1794,40}},t="item",text="Minion's Scourgestone"}},prev=8415,r=50,races=5,side="A",sn={10838},sort=4,xp=5100}
 Q[8415]={classes=2,en={10838},l=52,n="Chillwind Point",next=8414,r=50,races=5,side="A",sn={928,5149},sort=4,xp=510}
 Q[8416]={classes=2,en={10838},l=52,n="Inert Scourgestones",next=8418,obj={{from="provided",id=20612,qty=1,t="item",text="Inert Scourgestone (Provided)"}},r=50,races=5,side="A",sn={1854},sort=4,xp=2550}
@@ -3620,8 +3633,6 @@ Q[8421]={classes=256,en={14470},l=52,n="The Wrong Stuff",next=8422,obj={{id=2061
 Q[8422]={classes=256,en={14470},kind="dungeon",l=52,money=15500,n="Trolls of a Feather",obj={{id=20606,qty=2,t="item",text="Amber Voodoo Feather"},{id=20607,qty=2,t="item",text="Blue Voodoo Feather"},{id=20608,qty=2,t="item",text="Green Voodoo Feather"}},prev=8421,r=50,sn={14470},sort=4,xp=6350}
 Q[8423]={classes=1,en={7572},l=52,n="Warrior Kinship",next=8424,obj={{id=5993,qty=7,src={{"n",5993,0}},t="kill",text="Helboar slain"}},prev=8417,r=50,sn={7572},sort=4,xp=5100}
 Q[8424]={classes=1,en={7572},l=52,n="War on the Shadowsworn",next=8425,obj={{id=6006,qty=20,src={{"n",6006,0}},t="kill",text="Shadowsworn Adept slain"},{id=6004,qty=10,src={{"n",6004,0}},t="kill",text="Shadowsworn Cultist slain"},{id=6005,qty=20,src={{"n",6005,0}},t="kill",text="Shadowsworn Thug slain"}},prev=8423,r=50,sn={7572},sort=4,xp=5100}
-end)()
-;(function()
 Q[8425]={classes=1,en={7572},kind="dungeon",l=52,n="Voodoo Feathers",obj={{id=20606,qty=2,t="item",text="Amber Voodoo Feather"},{id=20607,qty=2,t="item",text="Blue Voodoo Feather"},{id=20608,qty=2,t="item",text="Green Voodoo Feather"}},prev=8424,r=50,sn={7572},sort=4,xp=6350}
 Q[8426]={en={15350},kind="pvp",l=29,money=2500,n="Battle of Warsong Gulch",obj={{from={"q",8567},id=20558,qty=3,t="item",text="Warsong Gulch Mark of Honor"}},r=20,side="H",sn={15350},sort=6,xp=1200}
 Q[8427]={en={15350},kind="pvp",l=39,money=4500,n="Battle of Warsong Gulch",obj={{from={"q",8567},id=20558,qty=3,t="item",text="Warsong Gulch Mark of Honor"}},r=30,side="H",sn={15350},sort=6,xp=1500}
@@ -4011,6 +4022,8 @@ Q[8845]={en={15761},l=60,n="Ten Commendation Signets",r=1,side="H",sn={15761},so
 Q[8846]={en={15701},l=19,n="Five Signets for War Supplies",r=10,side="A",sn={15701},sort=7}
 Q[8847]={en={15701},l=29,n="Ten Signets for War Supplies",r=20,side="A",sn={15701},sort=7}
 Q[8848]={en={15701},l=39,n="Fifteen Signets for War Supplies",r=30,side="A",sn={15701},sort=7}
+end)()
+;(function()
 Q[8849]={en={15701},l=49,n="Twenty Signets for War Supplies",r=40,side="A",sn={15701},sort=7}
 Q[8850]={en={15701},l=60,n="Thirty Signets for War Supplies",r=50,side="A",sn={15701},sort=7}
 Q[8851]={en={15700},l=19,n="Five Signets for War Supplies",r=10,side="H",sn={15700},sort=7}
@@ -4022,8 +4035,6 @@ Q[8856]={n="Desert Survival Kits",obj={{id=7079,qty=4,src={{"n",14457,67}},t="it
 Q[8857]={en={7406},l=60,money=27000,n="Secrets of the Colossus - Ashi",obj={{from="provided",id=21534,qty=1,t="item",text="Colossus of Ashi's Husk (Provided)"}},r=51,sn={15798},xp=9950,zone=1377}
 Q[8858]={en={14625},l=60,money=27000,n="Secrets of the Colossus - Regal",obj={{from="provided",id=21535,qty=1,t="item",text="Colossus of Regal's Husk (Provided)"}},r=51,sn={15799},xp=9950,zone=1377}
 Q[8859]={en={11034},l=60,money=27000,n="Secrets of the Colossus - Zora",obj={{from="provided",id=21533,qty=1,t="item",text="Colossus of Zora's Husk (Provided)"}},r=51,sn={15797},xp=9950,zone=1377}
-end)()
-;(function()
 Q[8860]={en={6740},l=60,money=900,n="New Year Celebrations!",obj={{from="provided",id=21545,qty=1,t="item",text="Smokywood Supplies (Provided)"}},r=1,side="A",sn={15732},sort=9}
 Q[8861]={en={6746},l=60,money=900,n="New Year Celebrations!",obj={{from="provided",id=21545,qty=1,t="item",text="Smokywood Supplies (Provided)"}},r=1,side="H",sn={15732},sort=9}
 Q[8862]={en={15864},l=60,n="Elune's Candle",r=10,sn={15864},sort=9}
@@ -4413,6 +4424,8 @@ Q[9477]={l=60,n="<UNUSED>Potion of Nature's Armor",obj={{id=23567,qty=1,t="item"
 Q[9478]={l=60,n="<UNUSED>Portable Healing Font",obj={{id=23567,qty=1,t="item",text="[PH] Silithus PvP Dust [DEP]"}},r=1,sort=-2}
 Q[9479]={l=60,n="<UNUSED>Glorious Standard of the Alliance",obj={{id=23567,qty=1,t="item",text="[PH] Silithus PvP Dust [DEP]"}},r=1,sort=-2}
 Q[9480]={l=60,n="<UNUSED>Debuff Banner",obj={{id=23567,qty=1,t="item",text="[PH] Silithus PvP Dust [DEP]"}},r=1,sort=-2}
+end)()
+;(function()
 Q[9481]={l=60,n="<UNUSED>Light Consumable",obj={{id=23567,qty=1,t="item",text="[PH] Silithus PvP Dust [DEP]"}},r=1,sort=-2}
 Q[9482]={l=60,n="<UNUSED>Nature Resist Potion",obj={{id=23567,qty=1,t="item",text="[PH] Silithus PvP Dust [DEP]"}},r=1,sort=-2}
 Q[9556]={l=60,n="To The Victor...",obj={{id=13180,qty=1,src={{"o",176224,100}},t="item",text="Stratholme Holy Water"}},r=55,sort=-2,xp=4950}
@@ -4424,8 +4437,6 @@ Q[60865]={l=1,n="[Never used]",r=1,sort=-2}
 Q[60866]={l=1,n="[Never used]",r=1,sort=-2}
 Q[60868]={l=1,n="[Never used]",r=1,sort=-2}
 Q[63769]={n="[DNT] Holiday Quests Tracker",sort=-2}
-end)()
-;(function()
 Q[65593]={classes=256,en={5675},n="Hearts of the Lovers",next=65597,obj={{id=190179,qty=1,src={{"n",185333,67}},t="item",text="Avelina's Heart"},{id=190180,qty=1,src={{"n",185334,57}},t="item",text="Isaac's Heart"}},r=20,races=18,side="H",sn={5693},sort=4,xp=1550}
 Q[65597]={classes=256,en={5675},n="The Binding",obj={{id=185335,qty=1,src={{"n",185335,0}},t="kill",text="Summoned Incubus slain"},{from="provided",id=190181,qty=1,t="item",text="Lovers' Hearts (Provided)"}},prev=65593,r=20,side="H",sn={5675},sort=4,xp=1550}
 Q[65601]={classes=256,en={3363},n="Love Hurts",next=65610,r=20,races=18,side="H",sn={5909},sort=4,xp=390}
@@ -4433,59 +4444,15 @@ Q[65602]={classes=256,en={6122},n="What Is Love?",next=65603,obj={{from="crafted
 Q[65603]={classes=256,en={6122},n="The Binding",obj={{id=185335,qty=1,src={{"n",185335,0}},t="kill",text="Summoned Incubus slain"},{from="provided",id=190186,qty=1,t="item",text="Wooden Figurine (Provided)"}},prev=65602,r=20,races=65,side="A",sn={6122},sort=4,xp=1150}
 Q[65604]={classes=256,en={5875},n="The Binding",obj={{id=185335,qty=1,src={{"n",185335,0}},t="kill",text="Summoned Incubus slain"},{from="provided",id=190187,qty=1,t="item",text="Withered Scarf (Provided)"}},prev=65610,r=20,side="H",sn={5875},sort=4,xp=1150}
 Q[65610]={classes=256,en={5875},n="Wish You Were Here",next=65604,obj={{id=190232,qty=1,src={{"n",3782,2},{"n",3784,2}},t="item",text="Withered Scarf"}},prev=65601,r=20,races=18,side="H",sn={3363},sort=4,xp=1550}
-Q[66294]={inst=true,l=60,n="Book of Deathstones",r=60,zone=3456}
 Q[76156]={classes=65,en={205729},l=6,n="Stalk With The Earthmother",obj={{from="crafted",id=206157,qty=5,t="item",text="Seaforium Mining Charge"},{from="provided",id=206159,qty=1,t="item",text="Venture Co Disguise (Provided)"}},r=4,races=162,side="H",sn={205729},xp=405,zone=215}
 Q[76160]={classes=64,en={205729},l=6,n="Stalk With The Earthmother",obj={{from="crafted",id=206175,qty=1,t="item",text="Pine Salve"}},provided={206176},r=4,side="H",sn={205729},xp=405,zone=215}
 Q[76240]={classes=64,en={205729},l=6,n="Stalk With The Earthmother",obj={{from="crafted",id=206345,qty=1,t="item",text="Fish Chunks"}},provided={206344},r=4,side="H",sn={205729},xp=540,zone=215}
-Q[77568]={classes=4,en={3596},l=2,n="A Hunter's Strength",obj={{id=410121,qty=1,t="spell",text="Learn: Engrave Gloves - Chimera Shot"}},r=2,races=8,side="A",sn={3596},sort=4,xp=85}
-Q[77571]={classes=1024,en={3597},l=2,n="Relics of the Kaldorei",obj={{id=410061,qty=1,t="spell",text="Learn: Engrave Chest - Fury of Stormrage"}},r=2,races=8,side="A",sn={3597},sort=4,xp=85}
-Q[77573]={classes=8,en={3594},l=2,n="Second-Story Work",obj={{id=400105,qty=1,t="spell",text="Learn: Engrave Gloves - Shadowstrike"}},r=2,races=13,side="A",sn={3594},sort=4,xp=85}
-Q[77574]={classes=16,en={3595},l=2,n="Meditation on Elune",obj={{id=402862,qty=1,t="spell",text="Learn: Engrave Gloves - Penance"}},provided={205951},r=2,races=8,side="A",sn={3595},sort=4,xp=85}
-Q[77575]={classes=1,en={3593},l=2,n="Amidst the Shadowed Webs",obj={{id=403470,qty=1,t="spell",text="Learn: Engrave Gloves - Victory Rush"}},r=2,races=8,side="A",sn={3593},sort=4,xp=85}
-Q[77582]={classes=1,en={3153},l=2,n="A Trial of Fitness",obj={{id=403470,qty=1,t="spell",text="Learn: Engrave Gloves - Victory Rush"}},r=2,races=2,side="H",sn={3153},sort=4,xp=85}
-Q[77583]={classes=8,en={3155},l=2,n="Atop the Cliffs",obj={{id=400105,qty=1,t="spell",text="Learn: Engrave Gloves - Shadowstrike"}},r=2,races=2,side="H",sn={3155},sort=4,xp=85}
-Q[77584]={classes=4,en={3154},l=2,n="Hunt for the Rune",obj={{id=410121,qty=1,t="spell",text="Learn: Engrave Gloves - Chimera Shot"}},r=2,races=2,side="H",sn={3154},sort=4,xp=85}
-Q[77585]={classes=64,en={3157},l=2,n="Icons of Power",obj={{id=410094,qty=1,t="spell",text="Learn: Engrave Chest - Overload"}},r=2,races=2,side="H",sn={3157},sort=4,xp=85}
-Q[77586]={classes=256,en={3156},l=2,n="Stolen Power",obj={{id=403919,qty=1,t="spell",text="Learn: Engrave Gloves - Haunt"}},r=2,races=2,side="H",sn={3156},sort=4,xp=85}
-Q[77587]={classes=64,en={3157},l=2,n="Icons of Power",obj={{id=410094,qty=1,t="spell",text="Learn: Engrave Chest - Overload"}},r=2,races=128,side="H",sn={3157},sort=4,xp=85}
-Q[77588]={classes=1,en={3153},l=2,n="A Trial of Fitness",obj={{id=403470,qty=1,t="spell",text="Learn: Engrave Gloves - Victory Rush"}},r=2,races=128,side="H",sn={3153},sort=4,xp=85}
-Q[77590]={classes=4,en={3154},l=2,n="Rugged Terrain",obj={{id=410121,qty=1,t="spell",text="Learn: Engrave Gloves - Chimera Shot"}},r=2,races=128,side="H",sn={3154},sort=4,xp=85}
-Q[77592]={classes=8,en={3155},l=2,n="Atop the Cliffs",obj={{id=400105,qty=1,t="spell",text="Learn: Engrave Gloves - Shadowstrike"}},r=2,races=128,side="H",sn={3155},sort=4,xp=85}
-Q[77616]={classes=1,en={911},l=2,n="The Lost Rune",obj={{id=403470,qty=1,t="spell",text="Learn: Engrave Gloves - Victory Rush"}},r=2,races=1,side="A",sn={911},sort=4,xp=85}
-Q[77617]={classes=2,en={925},l=2,n="Relics of the Light",obj={{id=410002,qty=1,t="spell",text="Learn: Engrave Gloves - Crusader Strike"}},r=2,races=1,side="A",sn={925},sort=4,xp=85}
-Q[77618]={classes=8,en={915},l=2,n="Thrice Stolen",obj={{id=400105,qty=1,t="spell",text="Learn: Engrave Gloves - Shadowstrike"}},r=2,races=1,side="A",sn={915},sort=4,xp=85}
-Q[77619]={classes=16,en={375},l=2,n="Meditation on the Light",obj={{id=402862,qty=1,t="spell",text="Learn: Engrave Gloves - Penance"}},r=2,races=9,side="A",sn={375},sort=4,xp=85}
-Q[77620]={classes=128,en={198},l=2,n="Spell Research",obj={{id=401760,qty=1,t="spell",text="Learn: Engrave Gloves - Ice Lance"},{from="provided",id=211809,qty=1,t="item",text="Comprehension Primer (Provided)"}},r=2,races=1,side="A",sn={198},sort=4,xp=85}
-Q[77621]={classes=256,en={459},l=2,n="Stolen Power",r=2,races=1,side="A",sn={459},sort=4,xp=85}
-Q[77642]={classes=16,en={3707},l=2,n="Wisdom of the Loa",obj={{id=402862,qty=1,t="spell",text="Learn: Engrave Gloves - Penance"}},provided={205951},r=2,races=128,side="H",sn={3707},sort=4,xp=85}
-Q[77643]={classes=128,en={5884},l=2,n="Spell Research",obj={{id=401760,qty=1,t="spell",text="Learn: Engrave Gloves - Ice Lance"},{from="provided",id=211809,qty=1,t="item",text="Comprehension Primer (Provided)"}},r=2,races=128,side="H",sn={5884},sort=4,xp=85}
-Q[77648]={classes=1024,en={3060},l=2,n="Relics of the Tauren",obj={{id=410061,qty=1,t="spell",text="Learn: Engrave Chest - Fury of Stormrage"}},r=2,races=32,side="H",sn={3060},sort=4,xp=85}
-Q[77649]={classes=4,en={3061},l=2,n="A Hunter's Strength",obj={{id=410121,qty=1,t="spell",text="Learn: Engrave Gloves - Chimera Shot"}},r=2,races=34,side="H",sn={3061},sort=4,xp=85}
-Q[77651]={classes=1,en={3059},l=2,n="Into the Brambles",obj={{id=403470,qty=1,t="spell",text="Learn: Engrave Gloves - Victory Rush"}},r=2,races=32,side="H",sn={3059},sort=4,xp=85}
-Q[77652]={classes=64,en={3062},l=2,n="Icons of Power",obj={{id=410094,qty=1,t="spell",text="Learn: Engrave Chest - Overload"}},r=2,races=34,side="H",sn={3062},sort=4,xp=85}
-Q[77655]={classes=1,en={912},l=2,n="The Lost Rune",obj={{id=403470,qty=1,t="spell",text="Learn: Engrave Gloves - Victory Rush"}},r=2,races=5,side="A",sn={912},sort=4,xp=85}
-Q[77656]={classes=1,en={912},l=2,n="The Lost Rune",obj={{id=403470,qty=1,t="spell",text="Learn: Engrave Gloves - Victory Rush"}},r=2,races=65,side="A",sn={912},sort=4,xp=85}
-Q[77657]={classes=2,en={926},l=2,n="Relics of the Light",obj={{id=410002,qty=1,t="spell",text="Learn: Engrave Gloves - Crusader Strike"}},r=2,races=4,side="A",sn={926},sort=4,xp=85}
-Q[77658]={classes=8,en={916},l=2,n="Thrice Stolen",obj={{id=400105,qty=1,t="spell",text="Learn: Engrave Gloves - Shadowstrike"}},r=2,races=4,side="A",sn={916},sort=4,xp=85}
-Q[77659]={classes=8,en={916},l=2,n="Thrice Stolen",obj={{id=400105,qty=1,t="spell",text="Learn: Engrave Gloves - Shadowstrike"}},r=2,races=64,side="A",sn={916},sort=4,xp=85}
-Q[77660]={classes=4,en={895},l=2,n="Trek Through the Caves",obj={{id=410121,qty=1,t="spell",text="Learn: Engrave Gloves - Chimera Shot"}},r=2,races=4,side="A",sn={895},sort=4,xp=85}
-Q[77661]={classes=16,en={837},l=2,n="Meditation on the Light",obj={{id=402862,qty=1,t="spell",text="Learn: Engrave Gloves - Penance"}},r=2,races=4,side="A",sn={837},sort=4,xp=85}
-Q[77666]={classes=256,en={460},l=2,n="Stolen Power",r=2,races=64,side="A",sn={460},sort=4,xp=85}
-Q[77667]={classes=128,en={944},l=2,n="Spell Research",obj={{id=401760,qty=1,t="spell",text="Learn: Engrave Gloves - Ice Lance"},{from="provided",id=211809,qty=1,t="item",text="Comprehension Primer (Provided)"}},r=2,races=64,side="A",sn={944},sort=4,xp=85}
-Q[77668]={classes=1,en={2119},l=2,n="The Lost Rune",obj={{id=403470,qty=1,t="spell",text="Learn: Engrave Gloves - Victory Rush"}},r=2,races=18,side="H",sn={2119},sort=4,xp=85}
-Q[77669]={classes=8,en={2122},l=2,n="The Scarlet Rune",obj={{id=400105,qty=1,t="spell",text="Learn: Engrave Gloves - Shadowstrike"}},r=2,races=16,side="H",sn={2122},sort=4,xp=85}
-Q[77670]={classes=16,en={2123},l=2,n="Meditation on Undeath",obj={{id=402862,qty=1,t="spell",text="Learn: Engrave Gloves - Penance"}},provided={205951},r=2,races=16,side="H",sn={2123},sort=4,xp=85}
-Q[77671]={classes=128,en={2124},l=2,n="Spell Research",obj={{id=401760,qty=1,t="spell",text="Learn: Engrave Gloves - Ice Lance"},{from="provided",id=211809,qty=1,t="item",text="Comprehension Primer (Provided)"}},r=2,races=16,side="H",sn={2124},sort=4,xp=85}
-Q[77672]={classes=256,en={2126},l=2,n="The Lost Rune",obj={{id=403919,qty=1,t="spell",text="Learn: Engrave Gloves - Haunt"}},r=2,races=16,side="H",sn={2126},sort=4,xp=85}
-Q[77690]={l=60,n="A Small Upgrade",obj={{id=13965,qty=1,t="item",text="Item #13965"},{id=11815,qty=1,t="item",text="Item #11815"}},r=60,zone=1537}
 Q[78088]={classes=2,en={3663},l=25,n="A Strange Artifact",r=1,side="A",sort=4}
 Q[78089]={classes=2,en={5492},l=25,n="Advice From Stormwind",obj={{from="provided",id=209748,qty=1,t="item",text="Althalaxx Orb (Provided)"}},r=1,races=5,side="A",sn={3663},sort=4}
 Q[78090]={classes=2,en={5495},l=25,n="A Second Opinion",obj={{from="provided",id=209748,qty=1,t="item",text="Althalaxx Orb (Provided)"}},r=1,races=5,side="A",sn={5492},sort=4}
 Q[78091]={classes=2,en={5495},l=25,n="Earning Your Salt",obj={{id=209778,qty=14,src={{"n",214519,17}},t="item",text="Summoner's Salt"}},r=1,races=5,side="A",sn={5495},sort=4}
 Q[78092]={classes=2,eo={409311},l=25,n="It Must Be Destroyed",obj={{id=209779,qty=12,t="item",text="Mote of Mannoroth"},{from="provided",id=209748,qty=1,t="item",text="Althalaxx Orb (Provided)"}},r=1,races=5,side="A",sn={5495},sort=4}
 Q[78093]={classes=2,en={3663},l=25,n="Return to Delgren",obj={{from="provided",id=209800,qty=1,t="item",text="Orb Fragments (Provided)"}},r=1,races=5,side="A",so={409315},sort=4}
-Q[78114]={classes=4,en={210845},l=25,money=1800,n="Wild Wyvern Wrangling",obj={{id=209838,qty=1,t="item",text="Hypnotic Crystal"},{from="crafted",id=209840,qty=1,t="item",text="Gnarled Wand of Wild Magic"}},r=1,sn={210845},sort=4,xp=2000}
-Q[78121]={classes=4,en={210845},l=25,n="Wrangling a Wild Wyvern",r=1,sn={210845},sort=4}
 Q[78124]={classes=128,en={211022,211033},l=20,n="Nar'thalas Almanac",r=1,sn={211033},sort=4}
 Q[78127]={classes=128,en={211022,211033},l=20,n="The Dalaran Digest",r=1,sn={211033},sort=4}
 Q[78132]={en={210995},l=25,n="Dragonslayer's Helm",r=1,sn={210995},sort=-2,xp=1000}
@@ -4493,67 +4460,23 @@ Q[78133]={en={210995},l=25,n="Dragonslayer's Shield",r=1,sn={210995},sort=-2,xp=
 Q[78134]={en={210995},l=25,n="Dragonslayer's Lance",r=1,sn={210995},sort=-2,xp=1000}
 Q[78142]={classes=128,en={211022,211033},l=20,n="Bewitchments and Glamours",r=1,sn={211033},sort=4}
 Q[78143]={classes=128,en={211022,211033},l=20,n="Secrets of the Dreamers",r=1,sn={211033},sort=4}
-Q[78144]={classes=1,en={210995},l=25,money=1800,n="Alonso the Dragonslayer",r=1,sn={210995},sort=4,xp=2000}
 Q[78145]={classes=128,en={211022,211033},l=20,n="Arcanic Systems Manual",r=1,sn={211033},sort=4}
 Q[78146]={classes=128,en={211022,211033},l=20,n="Goaz Scrolls",r=1,sn={211033},sort=4}
 Q[78147]={classes=128,en={211022,211033},l=20,n="Crimes Against Anatomy",r=1,sn={211033},sort=4}
 Q[78148]={classes=128,en={211022,211033},l=20,n="Runes of the Sorceror-Kings",r=1,sn={211033},sort=4}
 Q[78149]={classes=128,en={211022,211033},l=20,n="Fury of the Land",r=1,sn={211033},sort=4}
 Q[78150]={classes=128,en={211022,211033},l=20,n="Friend of the Library",r=1,sn={211033},sort=4}
-Q[78192]={classes=16,en={211188},l=20,n="Secrets of the Light",obj={{id=3733,qty=7,src={{"n",3733,0}},t="kill",text="Forsaken Herbalist slain"},{id=3732,qty=9,src={{"n",3732,0}},t="kill",text="Forsaken Seeker slain"}},r=17,races=8,side="A",sn={211188},sort=4}
-Q[78193]={classes=16,en={376},l=20,n="Secrets of the Light",r=17,races=8,side="A",sn={211188},sort=4}
-Q[78194]={classes=16,en={11397},l=20,n="Secrets of Elune",obj={{id=210053,qty=10,t="item",text="Dire Wolf Paw"}},r=17,races=5,side="A",sn={11397},sort=4}
-Q[78195]={classes=16,en={211298},l=20,n="Secrets of Elune",r=17,races=5,side="A",sn={11397},sort=4}
-Q[78196]={classes=16,en={211229},l=22,n="Secrets of Undeath",obj={{id=210045,qty=12,t="item",text="Shadeleaf"}},r=18,races=128,side="H",sn={211229},sort=4}
-Q[78197]={classes=16,en={6491},l=22,n="Secrets of Undeath",obj={{from="provided",id=210056,qty=1,t="item",text="Tincture of Waking Death (Provided)"}},r=18,races=128,side="H",sn={211229},sort=4}
-Q[78198]={classes=16,en={211225},l=23,n="Secrets of the Loa",obj={{id=210055,qty=14,t="item",text="Hillsbrad Human Bones"}},r=18,races=16,side="H",sn={211225},sort=4}
-Q[78199]={classes=16,eo={410168},l=23,n="Secrets of the Loa",obj={{from="provided",id=210080,qty=1,t="item",text="Voodoo Offering (Provided)"}},r=18,races=16,side="H",sn={211225},sort=4}
-Q[78229]={classes=1024,en={12042},l=25,money=1800,n="Trial of The Owls",obj={{id=210044,qty=1,t="item",text="Symbol of the First Owl"},{id=210043,qty=1,src={{"n",211200,95}},t="item",text="Symbol of the Second Owl"},{from="crafted",id=210026,qty=1,t="item",text="Symbol of the Third Owl"}},r=1,sn={12042},sort=4,xp=2000}
 Q[78261]={classes=8,eo={410369},l=23,n="The Horn of Xelthos",obj={{id=210183,qty=1,t="item",text="Horn of Xelthos"}},r=1,so={410369},sort=4,xp=1850}
-Q[78265]={en={211653},l=25,n="Fish Oil",r=20,zone=392}
-Q[78266]={en={211653},l=25,n="Dark Iron Ordinance",r=20,zone=392}
-Q[78267]={en={211653},l=25,n="Shredder Turbochargers",r=20,zone=392}
 Q[78270]={classes=8,en={4086},l=23,n="Goblin Lockpicks",obj={{id=210187,qty=1,src={{"n",3988,100},{"n",4202,100},{"n",4070,20}},t="item",text="Venture Co. Work Order"}},r=1,sort=4}
-Q[78277]={classes=128,en={1498},l=25,n="A Token of Gratitude",r=12,side="H",sort=4,xp=1000}
-Q[78287]={en={8383},l=25,n="Let Me Make You An Offer",obj={{from="provided",id=211447,qty=1,t="item",text="Arms Shipment (Provided)"}},r=20,side="A",sn={211653},zone=392}
-Q[78288]={en={3408},l=25,n="Let Me Make You An Offer",obj={{from="provided",id=211447,qty=1,t="item",text="Arms Shipment (Provided)"}},r=20,side="H",sn={211653},zone=392}
-Q[78297]={en={211653},l=25,n="You've Got Yourself A Deal",obj={{from="provided",id=211448,qty=1,t="item",text="Signed Procurement Contract (Provided)"}},r=20,side="A",sn={8383},zone=392}
-Q[78304]={en={211653},l=25,n="You've Got Yourself A Deal",obj={{from="provided",id=211448,qty=1,t="item",text="Signed Procurement Contract (Provided)"}},r=20,side="H",sn={3408},zone=392}
 Q[78307]={classes=8,eo={410369},l=23,money=1500,n="The Horn of Xelthos",r=1,sort=4}
-Q[78506]={classes=64,en={12736},l=25,money=1800,n="Elemental Distress",obj={{id=210668,qty=1,src={{"n",4034,7},{"n",4035,6}},t="item",text="Mote of Seismic Rage"},{id=210667,qty=1,src={{"n",4037,6},{"n",4038,2},{"n",4036,2}},t="item",text="Mote of Infernal Rage"},{id=210665,qty=1,src={{"n",3917,1}},t="item",text="Mote of Torrential Rage"}},r=1,races=162,side="H",sn={12736},sort=4,xp=2000}
-Q[78537]={classes=64,en={12736},l=25,money=1800,n="Elixir of Insight",obj={{from={"q",2078},id=5996,qty=1,t="item",text="Draught of Water Breathing"},{from="crafted",id=3383,qty=1,t="item",text="Elixir of Wisdom"}},r=1,side="H",sn={12736},sort=4,xp=2000}
-Q[78561]={classes=64,en={12736},l=25,n="Elixir of Insight",provided={210712},r=1,side="H",sn={12736},sort=4,xp=510}
-Q[78575]={classes=64,en={12736},l=25,money=1800,n="Hirzek",obj={{id=210724,qty=1,src={{"n",212694,65}},t="item",text="Hirzek's Staff"},{id=212694,qty=1,src={{"n",212694,0}},t="kill",text="Hirzek slain"}},r=1,side="H",sn={12736},sort=4,xp=2000}
-Q[78611]={en={213077,214070,214096,214098,214099,214101},l=8,money=100,n="A Waylaid Shipment",r=1,sort=-2,xp=70}
-Q[78612]={en={213077,214070,214096,214098,214099,214101},l=9,money=600,n="A Full Shipment",r=1,sort=-2,xp=80}
 Q[78676]={classes=8,eo={410369},l=35,n="The Eye of Bhossca",obj={{id=210953,qty=1,t="item",text="Eye of Bhossca"}},r=30,so={410369},sort=4,xp=2750}
-Q[78680]={classes=256,en={6247},kind="group",l=25,n="Rumors Abound",obj={{id=210765,qty=1,src={{"o",411710,100}},t="item",text="Orb of Des"},{id=210763,qty=1,src={{"o",411715,100}},t="item",text="Bough of Altek"}},r=20,sn={6247},zone=17}
-Q[78681]={classes=256,eo={412224},kind="group",l=28,n="The Conjuring",obj={{id=210966,qty=10,t="item",text="Blood of the Legion"}},r=20,sn={6247},zone=17}
-Q[78684]={en={6247},l=28,n="Mysterious Traveler",r=20,sn={213444},zone=17}
 Q[78699]={classes=8,eo={410369},l=23,money=1500,n="The Eye of Bhossca",r=1,sort=4}
-Q[78702]={en={6247},l=28,n="Raszel Ander",r=20,zone=17}
 Q[78823]={classes=4,en={715},l=40,n="Terror of the Desert Skies",r=26,sort=4,xp=1550}
 Q[78830]={classes=4,en={715},l=40,money=5000,n="Terror of the Desert Skies",obj={{id=211293,qty=1,t="item",text="Item #211293"}},provided={211272},r=26,sn={715},sort=4,xp=3150}
-Q[78872]={en={213077,214070,214096,214098,214099,214101},l=12,money=1500,n="A Full Shipment",r=1,sort=-2,xp=90}
-Q[78909]={en={214208},kind="raid",l=25,n="Shifting Scale Talisman",obj={{qty=1,t="event",text="Required money: 5"},{id=10940,qty=40,src={{"v",1318,0},{"v",3012,0},{"v",3346,0},{"v",4228,0},{"v",4617,0},{"v",5158,0},{"v",5757,0},{"v",5758,0},{"v",15419,0},{"v",257004,0},{"v",257020,0}},t="item",text="Strange Dust"},{id=10939,qty=5,src={{"n",234,0},{"n",352,0},{"n",523,0},{"n",1284,0},{"n",1573,0},{"n",2215,0},{"n",2302,0},{"n",2425,0},{"n",2432,0},{"n",3310,0},{"n",3338,0},{"n",3691,0}},t="item",text="Greater Magic Essence"},{id=10978,qty=2,src={{"n",234,0},{"n",352,0},{"n",469,0},{"n",523,0},{"n",2215,0},{"n",2425,0},{"n",3338,0},{"n",3890,0},{"n",4407,0},{"n",4968,0},{"n",7937,0},{"n",7999,0}},t="item",text="Small Glimmering Shard"},{id=211419,qty=1,t="item",text="Handful of Shifting Scales"}},r=25,sn={214208},zone=392}
-Q[78914]={classes=256,en={215850},l=40,money=5000,n="Soul Vessel",obj={{from="crafted",id=211427,qty=1,t="item",text="Soul Vessel"}},r=30,sn={213445},sort=4}
 Q[78916]={en={4783},inst=true,l=25,n="The Heart of the Void",obj={{id=209693,qty=1,t="item",text="Item #209693 (Provided)"}},r=25,side="A",zone=719}
 Q[78917]={en={9087},inst=true,l=25,n="The Heart of the Void",obj={{id=211452,qty=1,t="item",text="Item #211452 (Provided)"}},r=25,side="H",zone=719}
-Q[78920]={en={12736},kind="raid",l=27,n="Baron Aquanis",obj={{id=211454,qty=1,t="item",text="Item #211454 (Provided)"}},r=25,side="H",xp=2750,zone=331}
-Q[78921]={en={4783},inst=true,kind="raid",l=27,money=6500,n="Blackfathom Villainy",obj={{id=5881,qty=1,t="item",text="Head of Kelris"}},r=25,side="A",sn={4787},xp=3300,zone=719}
-Q[78922]={en={9087},inst=true,kind="raid",l=27,money=6500,n="Blackfathom Villainy",obj={{id=5881,qty=1,t="item",text="Head of Kelris"}},r=25,side="H",sn={4787},xp=3300,zone=719}
-Q[78923]={en={2786},inst=true,kind="raid",l=27,n="Knowledge in the Deeps",obj={{id=5359,qty=1,t="item",text="Lorgalis Manuscript"}},r=25,side="A",sn={2786},xp=3300,zone=719}
-Q[78924]={inst=true,kind="raid",l=27,n="In Search of Thaelrid",next=1200,prev=1198,r=25,xp=2750,zone=719}
-Q[78925]={en={4784},inst=true,kind="raid",l=27,n="Twilight Falls",obj={{id=5879,qty=10,t="item",text="Twilight Pendant"}},r=25,side="A",sn={4784},xp=2750,zone=719}
-Q[78926]={en={8997},inst=true,kind="raid",l=27,money=4500,n="Researching the Corruption",obj={{id=5952,qty=8,src={{"n",4789,14},{"n",4788,14},{"n",4803,12},{"n",4802,11}},t="item",text="Corrupted Brain Stem"}},r=25,side="A",sn={8997},xp=2750,zone=719}
-Q[78927]={en={12736},inst=true,kind="raid",l=27,money=4500,n="Allegiance to the Old Gods",obj={{id=207356,qty=1,t="kill",text="Lorgus Jett slain"}},r=25,side="H",sn={12736},xp=2750,zone=719}
-Q[78994]={classes=256,en={213445},kind="group",l=40,money=5000,n="A Solid Foundation",obj={{id=211426,qty=1,t="item",text="Item #211426"},{from="provided",id=217693,qty=1,t="item",text="Invisibility Potion (Provided)"}},r=30,sn={213445},sort=4}
 Q[79007]={eo={415107,424010},l=40,n="...and that note you found",next=79192,prev=79008,r=14,side="H",so={415106},xp=3150,zone=390}
 Q[79008]={eo={415106,417072},l=40,n="...and that note you found",next=79192,prev=79007,r=14,side="A",so={415107},xp=3150,zone=40}
-Q[79077]={classes=16,en={1212},l=5,money=50,n="Sharing the Faith",obj={{id=215068,qty=1,t="kill",text="Pray over the Supplicant"}},r=5,races=5,side="A",sn={1212},sort=4,xp=225}
-Q[79078]={classes=16,en={4092},l=5,money=50,n="Sharing the Faith",obj={{id=215068,qty=1,t="kill",text="Pray over the Supplicant"}},r=5,races=8,side="A",sn={4092},sort=4,xp=225}
-Q[79079]={classes=16,en={6018},l=5,money=50,n="Sharing the Faith",obj={{id=215068,qty=1,t="kill",text="Pray over the Supplicant"}},r=5,races=128,side="H",sn={6018},sort=4,xp=225}
-Q[79080]={classes=16,en={4607},l=5,money=50,n="Sharing the Faith",obj={{id=215068,qty=1,t="kill",text="Pray over the Supplicant"}},r=5,races=16,side="H",sn={4607},sort=4,xp=225}
 Q[79090]={en={212970,217707},l=60,n="Repelling Invaders",obj={{id=211814,qty=1,src={{"n",212730,100},{"n",212802,100},{"n",212801,81},{"n",212727,80},{"n",212729,67},{"n",212728,40}},t="item",text="Warsong Outrider Mark (Provided)"}},r=18,rep="daily",si={id=211814,n="Warsong Outrider Mark",src={{"n",212730,100},{"n",212802,100},{"n",212801,81},{"n",212727,80},{"n",212729,67},{"n",212728,40}}},side="A",zone=331}
 Q[79091]={classes=128,en={211033},l=20,n="Archmage Antonidas: The Unabridged Autobiography",r=1,side="A",sn={211033},sort=4}
 Q[79092]={classes=128,en={211022,211033},l=20,n="Archmage Theocritus's Research Journal",r=1,sn={211033},sort=4}
@@ -4563,18 +4486,11 @@ Q[79095]={classes=128,en={211022},l=20,n="The Apothecary's Metaphysical Primer",
 Q[79096]={classes=128,en={211022,211033},l=20,n="Ataeric: On Arcane Curiosities",r=1,sort=4}
 Q[79097]={classes=128,en={211022,211033},l=20,n="Baxtan: On Destructive Magics",r=1,sn={211033},sort=4}
 Q[79098]={en={212969,217706},l=60,n="Clear the Forest!",obj={{id=211813,qty=1,src={{"n",212699,100},{"n",212803,100},{"n",212804,67},{"n",212703,50},{"n",212707,50},{"n",212706,40}},t="item",text="Silverwing Sentinel Charm (Provided)"}},r=18,rep="daily",si={id=211813,n="Silverwing Sentinel Charm",src={{"n",212699,100},{"n",212803,100},{"n",212804,67},{"n",212703,50},{"n",212707,50},{"n",212706,40}}},side="H",zone=331}
-Q[79099]={en={214876},kind="raid",l=27,n="Baron Aquanis",obj={{id=211818,qty=1,t="item",text="Item #211818"}},r=25,side="A",sn={214876},xp=2750,zone=442}
-Q[79100]={en={213077,214070,214096,214098,214099,214101},l=15,money=500,n="A Waylaid Shipment",r=1,sort=-2,xp=105}
-Q[79101]={en={213077,214070,214096,214098,214099,214101},l=18,money=1500,n="A Full Shipment",r=1,sort=-2,xp=135}
-Q[79102]={en={213077,214070,214096,214098,214099,214101},l=22,money=2000,n="A Full Shipment",r=1,sort=-2,xp=175}
-Q[79103]={en={213077,214070,214096,214098,214099,214101},l=25,money=3000,n="A Full Shipment",r=1,sort=-2,xp=200}
 Q[79192]={eo={424005},l=40,n="Stepping Stones",next=79980,prev=79008,r=14,so={415106,415107,417072,424010},xp=3150,zone=17}
 Q[79229]={en={11438},l=40,n="Highway Robbery",r=30,so={417353},xp=1550,zone=405}
 Q[79235]={en={215643},l=40,n="On the Lam",r=30,sn={11438},xp=1550,zone=405}
 Q[79236]={en={215643},l=40,n="Cherry for Your Thoughts?",obj={{id=4600,qty=1,src={{"v",2832,0},{"v",4782,0},{"v",5570,0}},t="item",text="Cherry Grog"}},r=30,sn={215643},xp=1550,zone=405}
 Q[79242]={eo={418855},l=40,money=5000,n="No Honor Among Thieves",obj={{id=215655,qty=1,src={{"n",215655,0}},t="kill",text="Found Illari Duskfeather"},{id=212347,qty=1,t="item",text="Item #212347"}},r=30,sn={215643},xp=3150,zone=405}
-Q[79298]={classes=256,en={215849},l=40,n="Tempting Fate",obj={{id=215974,qty=1,src={{"n",215974,0}},t="kill",text="Des'Altek slain"}},r=30,sn={215850},sort=4}
-Q[79348]={classes=1024,en={216289},l=40,n="The Lost Ancient",r=26,sort=4,xp=1550}
 Q[79358]={en={4722},l=35,n="Tattered Note",r=30,side="H",zone=400}
 Q[79360]={classes=64,en={6176},l=35,n="Elemental Aid",r=30,side="H",sn={4722},zone=400}
 Q[79361]={classes=64,en={6176},l=35,n="Power of da Wind",obj={{id=212724,qty=5,t="item",text="Whirling Essence"}},r=30,races=162,side="H",sn={6176},zone=36}
@@ -4583,37 +4499,18 @@ Q[79363]={classes=64,en={6176},l=36,n="Power of da Water",obj={{id=212726,qty=5,
 Q[79364]={classes=64,en={6176},l=40,n="A Simple Container",obj={{id=8925,qty=1,src={{"v",844,0},{"v",958,0},{"v",960,0},{"v",983,0},{"v",989,0},{"v",1148,0},{"v",1257,0},{"v",1286,0},{"v",1313,0},{"v",1325,0},{"v",1326,0},{"v",1453,0},{"v",1456,0},{"v",1457,0},{"v",2380,0},{"v",2381,0}},t="item",text="Crystal Vial"}},r=30,side="H",sn={6176},zone=36}
 Q[79365]={classes=64,en={4722},l=40,n="With Wind Beneath Your Wings",provided={212982},r=30,races=162,side="H",sn={6176},zone=400}
 Q[79366]={classes=64,en={4722},kind="group",l=40,n="Calm Before the Storm",obj={{id=212792,qty=1,src={{"n",216474,0}},t="item",text="Eye of the Tempest"},{id=212982,qty=1,t="item",text="Item #212982 (Provided)"}},r=30,side="H",sn={4722},zone=400}
-Q[79377]={classes=1024,en={216289},l=40,money=5000,n="The Lost Saplings",obj={{qty=1,t="event",text="Find Summer Sapling"},{qty=1,t="event",text="Find Spring Sapling"},{qty=1,t="event",text="Find Fall Sapling"},{qty=1,t="event",text="Find Winter Sapling"}},provided={213036},r=26,sn={216289},sort=4,xp=3150}
 Q[79442]={classes=64,en={6176},l=40,n="Catching Up",obj={{id=212792,qty=1,src={{"n",216474,0}},t="item",text="Eye of the Tempest (Provided)"}},r=30,races=162,side="H",sn={4722},zone=36}
 Q[79482]={en={216915},kind="raid",l=60,n="Stolen Winter Veil Treats",next=79484,r=25,side="A",sn={216902},sort=-2,xp=1650}
 Q[79483]={en={216915},kind="raid",l=60,n="Stolen Winter Veil Treats",next=79485,r=25,side="H",sn={216924},sort=-2,xp=1650}
-Q[79484]={en={216902},kind="raid",l=60,n="You're a Mean One...",next=79486,obj={{id=17662,qty=1,src={{"n",13602,92}},t="item",text="Stolen Treats"}},prev=79482,r=25,side="A",sn={216915},sort=-2,xp=3300}
-Q[79485]={en={216924},kind="raid",l=60,n="You're a Mean One...",next=79487,obj={{id=17662,qty=1,src={{"n",13602,92}},t="item",text="Stolen Treats"}},prev=79483,r=25,side="H",sn={216915},sort=-2,xp=3300}
-Q[79486]={en={13444},l=60,n="A Smokywood Pastures' Thank You!",prev=79484,r=25,side="A",sn={216902},sort=-2,xp=4950}
-Q[79487]={en={13445},l=60,n="A Smokywood Pastures' Thank You!",prev=79485,r=25,side="H",sn={216924},sort=-2,xp=4950}
 Q[79492]={en={216902},kind="raid",l=60,n="Metzen the Reindeer",obj={{id=15664,qty=1,src={{"n",15664,0}},t="kill",text="Find Metzen the Reindeer and rescue him"},{id=21211,qty=1,t="item",text="Pouch of Reindeer Dust"}},provided={21315},r=25,side="A",sn={216902},sort=-2,xp=4950}
 Q[79495]={en={216924},kind="raid",l=60,n="Metzen the Reindeer",obj={{id=15664,qty=1,src={{"n",15664,0}},t="kill",text="Find Metzen the Reindeer and rescue him"},{id=21211,qty=1,t="item",text="Pouch of Reindeer Dust"}},provided={21315},r=25,side="H",sn={216924},sort=-2,xp=4950}
-Q[79501]={eo={180715},l=60,n="The Hero of the Day",obj={{id=8150,qty=1,src={{"o",153556,100},{"n",221373,53},{"n",5470,40},{"n",5469,40},{"n",2723,37},{"n",5853,29},{"n",2763,29},{"n",5854,28},{"n",4872,28},{"n",2551,27},{"n",7039,25},{"n",6147,23}},t="item",text="Deeprock Salt"},{qty=1,t="event",text="Required money: 5"}},r=40,side="A",sn={216902},sort=-2}
-Q[79502]={eo={180715},l=60,n="The Hero of the Day",obj={{id=8150,qty=1,src={{"o",153556,100},{"n",221373,53},{"n",5470,40},{"n",5469,40},{"n",2723,37},{"n",5853,29},{"n",2763,29},{"n",5854,28},{"n",4872,28},{"n",2551,27},{"n",7039,25},{"n",6147,23}},t="item",text="Deeprock Salt"},{qty=1,t="event",text="Required money: 5"}},r=40,side="H",sn={216924},sort=-2}
 Q[79535]={classes=128,en={211022,211033},l=35,n="Basilisks: Should Petrification be Feared?",r=1,sn={211033},sort=4}
 Q[79536]={classes=128,en={211022,211033},l=35,n="Greater Friend of the Library",r=1,sn={211033},sort=4}
-Q[79588]={en={14829},l=60,n="Small Furry Paws",r=1,sort=9}
-Q[79589]={en={14829},l=60,n="Torn Bear Pelts",r=10,sort=9}
-Q[79590]={en={14832},l=60,n="Heavy Grinding Stone",r=10,sort=9}
-Q[79591]={en={14841},l=60,n="Whirring Bronze Gizmo",r=10,sort=9}
-Q[79592]={en={14833},l=60,n="Carnival Jerkins",r=10,sort=9}
-Q[79593]={en={14832},l=60,n="Coarse Weightstone",r=1,sort=9}
-Q[79594]={en={14841},l=60,n="Copper Modulator",r=1,sort=9}
-Q[79595]={en={14833},l=60,n="Carnival Boots",r=1,sort=9}
 Q[79624]={classes=1,en={217300},l=40,n="Anyone Can Cook",r=26,sort=4,xp=1550}
-Q[79626]={eo={422483},inst=true,kind="raid",l=40,n="The Salvagematic 9000!",obj={{id=213427,qty=1,t="item",text="Grime-Encrusted Salvage"},{qty=1,t="event",text="Required money: 30"}},r=40,so={422483},zone=721}
 Q[79637]={l=40,n="A Ticking Present",r=20,sort=-2}
 Q[79677]={classes=1,en={217300},l=40,n="A Quick Grocery Run",obj={{id=213526,qty=1,t="item",text="Hybrid Haunch"},{id=213527,qty=1,src={{"o",422911,100}},t="item",text="Smuggler's Spice Blend"},{id=213528,qty=1,src={{"o",422919,100}},t="item",text="Balmy Brew"},{id=213529,qty=1,t="item",text="Viscous Venom"}},r=26,sn={217300},sort=4,xp=1550}
 Q[79678]={classes=1,en={217300},l=40,money=5000,n="Taste Testing",r=26,sn={217300},sort=4,xp=3150}
-Q[79704]={eo={422483},inst=true,kind="raid",l=40,n="The Salvagematic 9000!",obj={{id=213427,qty=1,t="item",text="Grime-Encrusted Salvage"},{qty=1,t="event",text="Required money: 30"}},r=40,zone=721}
-Q[79705]={en={217689},inst=true,kind="raid",l=40,n="Salvaging the Salvagematic",obj={{id=3860,qty=10,src={{"n",223544,13},{"n",230146,10}},t="item",text="Mithril Bar"},{id=11135,qty=5,src={{"n",469,0},{"n",1284,0},{"n",2215,0},{"n",2425,0},{"n",2859,0},{"n",3890,0},{"n",4968,0},{"n",8479,0},{"n",11865,0},{"n",11870,0},{"n",15126,0},{"n",15184,0}},t="item",text="Greater Mystic Essence"},{id=216634,qty=3,t="item",text="GG12-082 Cartridge Fuse"},{id=213735,qty=1,t="item",text="Pristine G-7 C.O.R.E. Processor"}},r=40,sn={217689},zone=721}
 Q[79731]={classes=16,en={715},l=35,n="The Troll Scroll",obj={{id=425314,qty=1,t="spell",text="Learn: Solve the riddle"}},r=1,sort=4,xp=2750}
-Q[79905]={classes=128,en={211033},l=35,n="A Taste of Knowledge",r=25,side="A",sort=4}
 Q[79939]={en={5492},l=40,n="The Broken Hammer",obj={{id=215441,qty=1,src={{"o",423703,100}},t="item",text="Broken Hammer (Provided)"},{id=216956,qty=1,t="item",text="Torn Letter"},{id=5492,qty=1,src={{"n",5492,0}},t="kill",text="Find someone who can tell you about the hammer"}},r=25,side="A",xp=2350,zone=405}
 Q[79940]={classes=2,en={5492},l=40,n="A Lost Brother",obj={{id=11080,qty=1,t="kill",text="Speak with Katherine and Learn More"}},r=26,races=5,side="A",sn={5492},xp=2350,zone=405}
 Q[79945]={en={5492},l=35,n="Orders from the Grand Crusader",obj={{id=5492,qty=1,src={{"n",5492,0}},t="kill",text="Report back to Katherine the Pure"},{from="provided",id=216610,qty=1,t="item",text="Orders from the Grand Crusader (Provided)"}},r=26,side="A",xp=2050,zone=1519}
@@ -4624,78 +4521,15 @@ Q[79949]={classes=128,en={211022,211033},l=35,n="A Web of Lies: Debunking Myths 
 Q[79950]={classes=128,en={211022,211033},l=35,n="Demons and You",r=1,sn={211033},sort=4}
 Q[79951]={classes=128,en={211022,211033},l=35,n="Mummies: A Guide to the Unsavory Undead",r=1,sn={211033},sort=4}
 Q[79952]={classes=128,en={211022,211033},l=35,n="RwlRwlRwlRwl!",r=1,sn={211033},sort=4}
-Q[79953]={classes=128,en={211022,211033},l=35,n="A Ludite's Guide to Caring for Your Demonic Pet",r=1,sort=4}
-Q[79963]={classes=2,en={217996},inst=true,kind="dungeon",l=40,n="By The Light's Grace",next=79970,obj={{id=218007,qty=1,t="kill",text="Heal Aeonas"}},prev=79946,r=26,races=5,side="A",sn={217996},xp=2350,zone=796}
 Q[79970]={classes=2,en={218160},l=40,n="Aeonas the Vindicated",obj={{id=218160,qty=1,src={{"n",218160,0}},t="kill",text="Meet Aeonas at the Cathedral of Light in Stormwind"}},prev=79963,r=26,races=5,side="A",sn={217996},sort=4,xp=2350}
 Q[79974]={eo={424007},l=40,n="Wet Job",next=79975,prev=79980,r=14,so={424012},xp=3150,zone=406}
 Q[79975]={eo={406918},l=40,n="Eagle's Fist",next=79976,prev=79974,r=14,so={424007},xp=3150,zone=146}
 Q[79976]={eo={424006},l=40,n="This Must Be The Place",prev=79975,r=14,so={406918},xp=2350,zone=293}
 Q[79980]={eo={424012},l=40,n="Scramble",next=79974,prev=79192,r=14,so={424005},xp=315,zone=406}
-Q[79981]={en={218237},inst=true,kind="raid",l=40,n="The Corroded Core",obj={{from="provided",id=213736,qty=1,t="item",text="Corroded G-7 C.O.R.E. Processor (Provided)"}},r=40,si={id=213736,n="Corroded G-7 C.O.R.E. Processor"},zone=721}
-Q[79982]={en={218237},inst=true,kind="raid",l=40,n="Warranty Claim",obj={{from="crafted",id=216636,qty=1,t="item",text="Charged Voidcore"}},r=40,sn={218237},zone=721}
-Q[79984]={en={7853},inst=true,l=40,n="Quadrangulation",obj={{id=424074,qty=1,t="object",text="Quadrangulation Beacon 001"},{id=424075,qty=1,t="object",text="Quadrangulation Beacon 002"},{id=424076,qty=1,t="object",text="Quadrangulation Beacon 003"},{id=424077,qty=1,t="object",text="Quadrangulation Beacon 004"}},r=40,sn={7853},zone=721}
-Q[79985]={en={7853},inst=true,kind="raid",l=40,n="A Fine Mess",obj={{qty=1,t="event",text="Kernobee Rescue"}},r=40,sn={7850},xp=3150,zone=721}
-Q[79986]={eo={142487},inst=true,kind="raid",l=40,n="Grime-Encrusted Ring",obj={{id=216661,qty=1,t="item",text="Item #216661 (Provided)"},{qty=1,t="event",text="Required money: 3"}},r=40,xp=3150,zone=721}
-Q[79987]={en={6826},inst=true,kind="raid",l=40,n="Return of the Ring",next=80131,obj={{id=216662,qty=1,t="item",text="Item #216662 (Provided)"}},prev=2947,r=40,side="A",so={142487},xp=3150,zone=721}
-Q[79990]={en={14984},kind="pvp",l=60,n="Stranglethorn Lumber",obj={{id=216491,qty=1,src={{"v",218115,0},{"v",222413,0}},t="item",text="Shipment of Stranglethorn Lumber"}},r=26,side="A",sn={14984},zone=45}
-Q[79991]={en={15022},kind="pvp",l=60,n="Stranglethorn Lumber",obj={{id=216491,qty=1,src={{"v",218115,0},{"v",222413,0}},t="item",text="Shipment of Stranglethorn Lumber"}},r=26,side="H",sn={15022},zone=45}
 Q[80001]={eo={424082},l=40,n="Rekindle",r=1,so={424082},zone=406}
-Q[80098]={en={218920},l=40,money=2500,n="Curious Dalaran Relic",r=1,xp=1550,zone=41}
-Q[80120]={en={218920},l=40,money=10000,n="A Service to Dalaran",r=1,xp=3900,zone=41}
-Q[80131]={en={6826},kind="raid",l=40,n="Gnome Improvement",obj={{id=216662,qty=1,t="item",text="Item #216662 (Provided)"},{id=2842,qty=1,src={{"o",106318,33},{"o",3714,11},{"o",404352,10}},t="item",text="Silver Bar"},{id=1206,qty=1,src={{"n",2369,100},{"n",203139,100},{"n",3763,50},{"n",1010,43},{"n",2360,40},{"n",1158,33},{"n",5863,33},{"n",4281,29},{"n",1035,25},{"n",1051,25},{"n",3759,25},{"n",3925,25}},t="item",text="Moss Agate"},{qty=1,t="event",text="Required money: 30"}},prev=79987,r=40,side="A",sn={6826},xp=3150,zone=1537}
-Q[80132]={en={3412},inst=true,kind="raid",l=40,n="Rig Wars",obj={{id=9153,qty=1,t="item",text="Rig Blueprints"},{id=9299,qty=1,t="item",text="Thermaplugg's Safe Combination"}},r=40,side="H",sn={3412},xp=3150,zone=721}
-Q[80133]={en={7853},inst=true,kind="raid",l=40,n="Chief Engineer Scooty",next=80134,r=40,side="H",xp=315,zone=721}
-Q[80134]={en={7853},inst=true,kind="raid",l=40,n="Gnomer-gooooone!",obj={{qty=1,t="event",text="Goblin Transponder"}},prev=80133,r=40,side="H",sn={7853},zone=721}
-Q[80135]={en={6169},inst=true,kind="raid",l=40,n="Klockmort's Essentials",next=80136,r=40,side="A",sn={6142},xp=315,zone=721}
-Q[80136]={en={6169},inst=true,kind="raid",l=40,money=10000,n="Essential Artificials",obj={{id=9278,qty=12,t="item",text="Essential Artificial"}},prev=80135,r=40,side="A",sn={6169},xp=3900,zone=721}
-Q[80137]={en={7944},inst=true,kind="raid",l=40,money=5000,n="Save Techbot's Brain!",obj={{id=9277,qty=1,src={{"n",6231,79}},t="item",text="Techbot's Memory Core"}},prev=80138,r=40,side="A",sn={7944},xp=3900,zone=721}
-Q[80138]={en={7944},inst=true,kind="raid",l=40,n="Tinkmaster Overspark",next=80137,r=40,side="A",sn={7917},xp=315,zone=721}
-Q[80139]={en={1268},inst=true,kind="raid",l=40,money=5000,n="Gnogaine",obj={{from="crafted",id=9284,qty=1,t="item",text="Full Leaden Collection Phial"}},provided={9283},r=40,side="A",sn={1268},xp=3150,zone=721}
-Q[80140]={en={3412},inst=true,kind="raid",l=40,n="Return of the Ring",next=80141,obj={{id=216662,qty=1,t="item",text="Item #216662 (Provided)"}},r=40,side="H",so={142487},xp=3150,zone=721}
-Q[80141]={en={3412},kind="raid",l=40,n="Nogg's Ring Redo",obj={{id=216662,qty=1,t="item",text="Item #216662 (Provided)"},{id=2842,qty=1,src={{"o",106318,33},{"o",3714,11},{"o",404352,10}},t="item",text="Silver Bar"},{id=1206,qty=1,src={{"n",2369,100},{"n",203139,100},{"n",3763,50},{"n",1010,43},{"n",2360,40},{"n",1158,33},{"n",5863,33},{"n",4281,29},{"n",1035,25},{"n",1051,25},{"n",3759,25},{"n",3925,25}},t="item",text="Moss Agate"},{qty=1,t="event",text="Required money: 30"}},prev=80140,r=40,side="H",sn={3412},xp=3150,zone=1637}
-Q[80142]={inst=true,kind="raid",l=40,n="Castpipe's Task",next=80143,r=40,xp=315,zone=721}
-Q[80143]={en={7950},inst=true,kind="raid",l=40,money=5000,n="Data Rescue",obj={{from="crafted",id=9316,qty=1,t="item",text="Prismatic Punch Card"}},prev=80142,r=40,side="A",sn={7950},xp=4700,zone=721}
-Q[80147]={en={218920},l=40,money=2500,n="Curious Dalaran Relic",r=1,xp=1550,zone=41}
-Q[80148]={en={218920},l=40,money=2500,n="Curious Dalaran Relic",r=1,xp=1550,zone=41}
-Q[80149]={en={218920},l=40,money=2500,n="Curious Dalaran Relic",r=1,xp=1550,zone=41}
-Q[80150]={en={218920},l=40,money=2500,n="Curious Dalaran Relic",r=1,xp=1550,zone=41}
-Q[80151]={en={218920},l=40,money=2500,n="Curious Dalaran Relic",r=1,xp=1550,zone=41}
-Q[80152]={en={218920},l=40,money=2500,n="Curious Dalaran Relic",r=1,xp=1550,zone=41}
-Q[80153]={eo={175084},inst=true,kind="raid",l=40,n="The Sparklematic 5200!",obj={{id=9308,qty=1,src={{"n",6210,41},{"n",6208,38},{"n",6213,35}},t="item",text="Grime-Encrusted Object"},{qty=1,t="event",text="Required money: 3"}},r=40,so={175084},zone=721}
-Q[80155]={eo={142487},inst=true,kind="raid",l=40,n="More Sparklematic Action",r=40,zone=721}
-Q[80156]={inst=true,kind="raid",l=40,n="The Sparklematic 5200!",obj={{id=9308,qty=1,src={{"n",6210,41},{"n",6208,38},{"n",6213,35}},t="item",text="Grime-Encrusted Object"},{qty=1,t="event",text="Required money: 3"}},r=40,zone=721}
-Q[80157]={eo={142487},inst=true,kind="raid",l=40,n="The Sparklematic 5200!",r=40,xp=3150,zone=721}
-Q[80158]={eo={142487},inst=true,kind="raid",l=40,n="The Sparklematic 5200!",obj={{id=9308,qty=1,src={{"n",6210,41},{"n",6208,38},{"n",6213,35}},t="item",text="Grime-Encrusted Object"},{qty=1,t="event",text="Required money: 3"}},r=40,so={142487},zone=721}
-Q[80160]={eo={175084},inst=true,kind="raid",l=40,n="More Sparklematic Action",r=40,zone=721}
-Q[80161]={eo={175084},inst=true,kind="raid",l=40,n="The Sparklematic 5200!",r=40,xp=3150,zone=721}
-Q[80164]={en={15909},l=60,n="Large Cluster Rockets",r=1,side="A",sort=9}
-Q[80165]={en={15909},l=60,n="Cluster Rockets",r=1,side="A",sort=9}
-Q[80166]={en={15909},l=60,n="Small Rockets",r=1,side="A",sort=9}
-Q[80167]={en={15909},l=60,n="Large Rockets",r=1,sort=9}
-Q[80168]={en={15909},l=60,n="Firework Launcher",r=1,sort=9}
-Q[80169]={en={15909},l=60,n="Cluster Launcher",r=1,sort=9}
-Q[80170]={en={15909},l=60,n="Festive Recipes",r=1,sort=9}
-Q[80180]={en={7937},inst=true,kind="raid",l=40,money=5000,n="The Grand Betrayal",obj={{id=218537,qty=1,t="kill",text="Mekgineer Thermaplugg slain"}},r=40,side="A",sn={7937},xp=3150,zone=721}
-Q[80181]={en={6579},inst=true,kind="raid",l=40,n="Gyrodrillmatic Excavationators",obj={{id=9309,qty=24,src={{"n",6213,20},{"n",6208,15},{"n",6231,10}},t="item",text="Robo-mechanical Guts"}},r=40,side="A",sn={6579},xp=3150,zone=721}
-Q[80182]={en={1268},inst=true,kind="raid",l=40,money=5000,n="The Only Cure is More Green Glow",obj={{from="crafted",id=9365,qty=1,t="item",text="High Potency Radioactive Fallout"},{from="provided",id=9364,qty=1,t="item",text="Heavy Leaden Collection Phial (Provided)"}},r=40,side="A",sn={1268},xp=3150,zone=721}
-Q[80241]={en={7798},l=40,n="The Origins of Smithing",next=2757,obj={{from="crafted",id=6040,qty=6,t="item",text="Golden Scale Bracers"}},prev=2758,prof={164},r=40,side="A",sn={7798},sort=5,xp=3150}
-Q[80307]={en={213077,214070,214096,214098,214099,214101},l=28,money=20000,n="A Full Shipment",r=1,sort=-2}
-Q[80308]={en={213077,214070,214096,214098,214099,214101},l=35,money=55000,n="A Full Shipment",r=1,sort=-2}
-Q[80309]={en={213077,214070,214096,214098,214099,214101},l=40,money=120000,n="A Full Shipment",r=1,sort=-2}
-Q[80324]={en={7937},inst=true,kind="raid",l=40,n="The Mad King",obj={{id=217350,qty=1,t="item",text="Item #217350 (Provided)"}},r=40,side="A",zone=721}
-Q[80325]={en={3412},inst=true,kind="raid",l=40,n="The Mad King",obj={{id=217351,qty=1,t="item",text="Item #217351 (Provided)"}},r=40,side="H",zone=721}
 Q[80411]={classes=8,en={6707},l=50,money=7500,n="The Talisman of Kazdor",next=80453,obj={{from="provided",id=217609,qty=1,t="item",text="Talisman of Kazdor"}},prev=80526,r=45,sn={6707},sort=4,xp=4700}
-Q[80417]={en={14829},l=60,n="Soft Bushy Tails",r=20,sort=9}
-Q[80421]={en={14832},l=60,n="Green Iron Bracers",r=20,sort=9}
-Q[80422]={en={14841},l=60,n="Green Fireworks",r=20,sort=9}
-Q[80423]={en={14833},l=60,n="The World's Largest Gnome!",r=20,sort=9}
-Q[80453]={classes=8,en={6777},l=50,n="Best Laid Plans",next=80454,obj={{from="provided",id=217609,qty=1,t="item",text="Talisman of Kazdor (Provided)"}},prev=80411,r=45,sn={6707},sort=4,xp=470}
-Q[80454]={classes=8,eo={410369},l=50,n="One Last Drop",next=80455,obj={{from="provided",id=217737,qty=1,t="item",text="Modified Talisman (Provided)"}},prev=80453,r=45,sn={6777},sort=4,xp=4700}
-Q[80455]={classes=8,en={6707},l=50,money=7500,n="Biding Our Time",prev=80454,r=45,so={410369},sort=4,xp=4700}
 Q[80526]={classes=8,en={6707},l=50,n="Fool Me Twice",next=80411,r=45,sn={6707},sort=4,xp=470}
 Q[81570]={en={4792},l=35,money=3500,n="Jarl Needs a Blade",obj={{id=217281,qty=1,t="item",text="Item #217281"}},r=30,sn={4792},xp=3450,zone=15}
-Q[81682]={classes=1,en={221400},l=50,n="The Old Champ",next=81697,r=45,sn={220984},sort=4,xp=2350}
-Q[81697]={classes=1,en={221400},l=50,money=7500,n="Defanged",next=81801,obj={{id=219935,qty=1,src={{"n",221651,0}},t="item",text="Kajind's Blade"}},prev=81682,r=45,sn={221400},sort=4,xp=4700}
 Q[81730]={en={221471},kind="group",l=27,money=1700,n="Duskwood Mission I: Defeat Worgen",obj={{id=221171,qty=10,src={{"n",221171,0}},t="kill",text="Nightmare Runner slain"},{id=221172,qty=10,src={{"n",221172,0}},t="kill",text="Nightmare Weaver slain"}},r=23,rep="daily",sn={221471},xp=2200,zone=10}
 Q[81731]={en={221471},kind="group",l=27,money=1700,n="Duskwood Mission II: Defeat Ogres",obj={{id=221174,qty=3,src={{"n",221174,0}},t="kill",text="Deranged Ogre slain"},{id=221175,qty=3,src={{"n",221175,0}},t="kill",text="Demented Fire Weaver slain"}},r=23,rep="daily",sn={221471},xp=2200,zone=10}
 Q[81732]={en={221471},kind="group",l=27,money=1700,n="Duskwood Mission III: Defeat Dragonkin",obj={{id=221200,qty=3,src={{"n",221200,0}},t="kill",text="Wyrmkin Terrorwalker slain"},{id=221176,qty=10,src={{"n",221176,0}},t="kill",text="Nightterror Whelp slain"}},r=23,rep="daily",sn={221471},xp=2200,zone=10}
@@ -4718,305 +4552,30 @@ Q[81762]={classes=2,en={5492},l=46,n="Some Good News",obj={{id=5492,qty=1,src={{
 Q[81764]={classes=2,en={221575},l=46,n="The Mysterious Merchant",next=81765,obj={{id=221575,qty=1,src={{"n",221575,0}},t="kill",text="Travel to Theramore and find the mysterious merchant."}},r=44,races=5,side="A",sn={5492},sort=4,xp=4050}
 Q[81765]={classes=2,en={6272},l=46,n="Elrick, Paladin of the Silver Hand",obj={{id=221575,qty=1,src={{"n",221575,0}},t="kill",text="Speak with Elrick and learn more"}},prev=81764,r=44,races=5,side="A",sn={221575},sort=4,xp=5050}
 Q[81766]={classes=2,en={5492},l=46,n="The Bloody Missive",obj={{from="provided",id=219929,qty=1,t="item",text="Bloody Missive (Provided)"}},r=44,side="A",sort=4,xp=4050}
-Q[81768]={en={221477},kind="group",l=42,money=4400,n="Ashenvale Mission I: Defeat Satyrs",obj={{id=221262,qty=10,src={{"n",221262,0}},t="kill",text="Dreamfire Hellcaller slain"},{id=221261,qty=10,src={{"n",221261,0}},t="kill",text="Dreamfire Betrayer slain"}},r=37,rep="daily",sn={221477},xp=3450,zone=331}
-Q[81769]={en={221477},kind="group",l=42,money=4400,n="Ashenvale Mission II: Defeat Treants",obj={{id=221263,qty=7,src={{"n",221263,0}},t="kill",text="Vengeful Ancient slain"}},r=37,rep="daily",sn={221477},xp=3450,zone=331}
-Q[81770]={en={221477},kind="group",l=42,money=4400,n="Ashenvale Mission III: Defeat Dragonkin",obj={{id=221259,qty=3,src={{"n",221259,0}},t="kill",text="Wyrmkin Nightstalker slain"},{id=221260,qty=10,src={{"n",221260,0}},t="kill",text="Terror Whelp slain"}},r=37,rep="daily",sn={221477},xp=3450,zone=331}
-Q[81771]={en={221477},kind="group",l=42,money=4400,n="Ashenvale Mission IV: Dragon Intelligence",obj={{from="crafted",id=219924,qty=1,t="item",text="Intelligence Report: Forest Song"}},r=37,rep="daily",sn={221477},xp=2550,zone=331}
-Q[81772]={en={221477},kind="group",l=42,money=4400,n="Ashenvale Mission V: Satyr Intelligence",obj={{from="crafted",id=219925,qty=1,t="item",text="Intelligence Report: Satyrnaar"}},r=37,rep="daily",sn={221477},xp=2550,zone=331}
-Q[81773]={en={221477},kind="group",l=42,money=4400,n="Ashenvale Mission VI: Treant Intelligence",obj={{from="crafted",id=219926,qty=1,t="item",text="Intelligence Report: Warsong Lumber Camp"}},r=37,rep="daily",sn={221477},xp=2550,zone=331}
-Q[81774]={en={221477},kind="group",l=42,money=4400,n="Ashenvale Mission VII: Recover Dreamengine",obj={{id=219448,qty=1,src={{"o",441128,100}},t="item",text="Dreamengine"}},r=37,rep="daily",sn={221477},xp=2550,zone=331}
-Q[81775]={en={221477},kind="group",l=42,money=4400,n="Ashenvale Mission VIII: Recover Azsharan Prophecy",obj={{id=219449,qty=1,src={{"o",441129,100}},t="item",text="Azsharan Prophecy"}},r=37,rep="daily",sn={221477},xp=2550,zone=331}
-Q[81776]={en={221477},kind="group",l=42,money=4400,n="Ashenvale Mission IX: Recover Dream-Touched Dragonegg",obj={{id=219447,qty=1,src={{"o",441124,100}},t="item",text="Dream-Touched Dragon Egg"}},r=37,rep="daily",sn={221477},xp=2550,zone=331}
-Q[81777]={en={221477},kind="group",l=42,money=4400,n="Ashenvale Mission X: Dreamroot",obj={{id=219444,qty=10,src={{"o",439627,100}},t="item",text="Dreamroot"}},r=37,rep="daily",sn={221477},xp=3450,zone=331}
-Q[81778]={en={221477},kind="group",l=42,money=4400,n="Ashenvale Mission XI: Fool's Gold Dust",obj={{id=219445,qty=10,src={{"o",439628,100}},t="item",text="Fool's Gold Dust"}},r=37,rep="daily",sn={221477},xp=3450,zone=331}
-Q[81779]={en={221477},kind="group",l=42,money=4400,n="Ashenvale Mission XII: Dream-Infused Dragonscale",obj={{id=219446,qty=10,src={{"n",221265,52},{"n",221259,51},{"n",221260,50}},t="item",text="Dream-Infused Dragonscale"}},r=37,rep="daily",sn={221477},xp=3450,zone=331}
-Q[81780]={en={221477},kind="group",l=42,money=6600,n="Ashenvale Mission XIII: Defeat Larsera",obj={{id=221265,qty=1,src={{"n",221265,0}},t="kill",text="Larsera slain"}},r=37,rep="daily",sn={221477},xp=3450,zone=331}
-Q[81781]={en={221477},kind="group",l=42,money=4400,n="Ashenvale Mission XIV: Defeat Zalius",obj={{id=221266,qty=1,src={{"n",221266,0}},t="kill",text="Zalius slain"}},r=37,rep="daily",sn={221477},xp=3450,zone=331}
-Q[81782]={en={221477},kind="group",l=42,money=4400,n="Ashenvale Mission XV: Defeat Shredder 9000",obj={{id=221267,qty=1,src={{"n",221267,0}},t="kill",text="Shredder 9000 slain"}},r=37,rep="daily",sn={221477},xp=3450,zone=331}
-Q[81783]={en={221477},kind="group",l=42,n="Ashenvale Mission XVI: Rescue Alyssian Windcaller",obj={{id=221270,qty=1,src={{"n",221270,0}},t="kill",text="Rescue Alyssian Windcaller"}},r=37,rep="daily",sn={221477},xp=2550,zone=331}
-Q[81784]={en={221477},kind="group",l=42,money=4400,n="Ashenvale Mission XVII: Rescue Doran Dreambough",obj={{id=221268,qty=1,src={{"n",221268,0}},t="kill",text="Rescue Doran Dreambough"}},r=37,rep="daily",sn={221477},xp=2550,zone=331}
-Q[81785]={en={221477},kind="group",l=42,money=4400,n="Ashenvale Mission XVIII: Rescue Maseara Autumnmoon",obj={{id=221269,qty=1,src={{"n",221269,0}},t="kill",text="Rescue Maseara Autumnmoon"}},r=37,rep="daily",sn={221477},xp=2550,zone=331}
-Q[81786]={en={221479},kind="group",l=52,money=39300,n="Hinterlands Mission I: Defeat Moonkin",obj={{id=221330,qty=20,src={{"n",221330,0}},t="kill",text="Fallen Moonkin slain"}},r=47,rep="daily",sn={221479},xp=5100,zone=47}
-Q[81787]={en={221479},kind="group",l=52,money=39300,n="Hinterlands Mission II: Defeat Giant Turtles",obj={{id=221328,qty=20,src={{"n",221328,0}},t="kill",text="Dreamwater Vicejaw slain"}},r=47,rep="daily",sn={221479},xp=5100,zone=47}
-Q[81788]={en={221479},kind="group",l=52,money=39300,n="Hinterlands Mission III: Defeat Dragonkin",obj={{id=221326,qty=10,src={{"n",221326,0}},t="kill",text="Wrath Whelp slain"},{id=221325,qty=3,src={{"n",221325,0}},t="kill",text="Wyrmkin Starhunter slain"}},r=47,rep="daily",sn={221479},xp=5100,zone=47}
-Q[81789]={en={221479},kind="group",l=52,money=6000,n="Hinterlands Mission IV: Dragon Intelligence",obj={{from="crafted",id=219928,qty=1,t="item",text="Intelligence Report: Agol'watha"}},r=47,rep="daily",sn={221479},xp=3800,zone=47}
-Q[81790]={classes=2,en={221636},l=50,n="Materials of Significance",obj={{id=220166,qty=3,src={{"n",9879,3},{"n",9878,3}},t="item",text="Fiery Infernal Core"},{id=220167,qty=1,t="item",text="Shimmering Grave Dust"},{id=220168,qty=1,t="item",text="Triple-Brewed Molten Lager"},{id=220169,qty=1,t="item",text="Symbol of Faith"}},provided={220170},r=44,races=5,side="A",sn={221636},sort=4,xp=5900}
-Q[81801]={classes=1,en={220984},l=50,n="Return to the Arena",next=81877,prev=81697,r=45,sn={221400},sort=4,xp=2350}
-Q[81817]={en={221479},kind="group",l=52,money=6000,n="Hinterlands Mission V: Turtle Intelligence",obj={{from="crafted",id=219937,qty=1,t="item",text="Intelligence Report: Shaol'watha"}},r=47,rep="daily",sn={221479},xp=3800,zone=47}
-Q[81820]={en={221479},kind="group",l=52,money=6000,n="Hinterlands Mission VI: Moonkin Intelligence",obj={{from="crafted",id=219938,qty=1,t="item",text="Intelligence Report: Skulk Rock"}},r=47,rep="daily",sn={221479},xp=3800,zone=47}
-Q[81826]={en={221479},kind="group",l=52,money=6000,n="Hinterlands Mission VII: Recover Star-Touched Dragonegg",obj={{id=219488,qty=1,src={{"o",441133,100}},t="item",text="Star-Touched Dragonegg"}},r=47,rep="daily",sn={221479},xp=3800,zone=47}
-Q[81830]={en={221479},kind="group",l=52,money=6000,n="Hinterlands Mission VIII: Recover Elunar Relic",obj={{id=219490,qty=1,src={{"o",441140,100}},t="item",text="Elunar Relic"}},r=47,rep="daily",sn={221479},xp=3800,zone=47}
-Q[81832]={en={221479},kind="group",l=52,money=6000,n="Hinterlands Mission IX: Recover Dreampearl",obj={{id=219491,qty=1,src={{"o",441141,100}},t="item",text="Dreampearl"}},r=47,rep="daily",sn={221479},xp=3800,zone=47}
-Q[81833]={en={221479},kind="group",l=52,money=1900,n="Hinterlands Mission X: Star Lotus",obj={{id=219454,qty=10,src={{"o",439762,100}},t="item",text="Star Lotus"}},r=47,rep="daily",sn={221479},xp=5100,zone=47}
-Q[81834]={en={221479},kind="group",l=52,money=1900,n="Hinterlands Mission XI: Starsilver Ore",obj={{id=219486,qty=10,src={{"o",439778,100}},t="item",text="Starsilver Ore"}},r=47,rep="daily",sn={221479},xp=5100,zone=47}
-Q[81835]={en={221479},kind="group",l=52,money=1900,n="Hinterlands Mission XII: Starshells",obj={{id=219487,qty=10,src={{"n",221334,63},{"n",221328,52}},t="item",text="Starshell"}},r=47,rep="daily",sn={221479},xp=5100,zone=47}
-Q[81837]={en={221479},kind="group",l=52,money=3800,n="Hinterlands Mission XIII: Defeat Florius",obj={{id=221331,qty=1,src={{"n",221331,0}},t="kill",text="Florius slain"}},r=47,rep="daily",sn={221479},xp=5100,zone=47}
-Q[81838]={en={221479},kind="group",l=52,money=1900,n="Hinterlands Mission XIV: Defeat Doomkin",obj={{id=221333,qty=1,src={{"n",221333,0}},t="kill",text="Doomkin slain"}},r=47,rep="daily",sn={221479},xp=5100,zone=47}
-Q[81839]={en={221479},kind="group",l=52,money=1900,n="Hinterlands Mission XV: Defeat Ghamoo-Raja",obj={{id=221334,qty=1,src={{"n",221334,0}},t="kill",text="Ghamoo-Raja slain"}},r=47,rep="daily",sn={221479},xp=5100,zone=47}
-Q[81850]={en={221479},kind="group",l=52,money=1900,n="Hinterlands Mission XVI: Rescue Elianar Shadowdrinker",obj={{id=221335,qty=1,src={{"n",221335,0}},t="kill",text="Rescue Elianar Shadowdrinker"}},r=47,rep="daily",sn={221479},xp=3800,zone=47}
-Q[81851]={en={221479},kind="group",l=52,money=1900,n="Hinterlands Mission XVII: Rescue Serlina Starbright",obj={{id=221336,qty=1,src={{"n",221336,0}},t="kill",text="Rescue Serlina Starbright"}},r=47,rep="daily",sn={221479},xp=3800,zone=47}
-Q[81852]={en={221479},kind="group",l=52,money=1900,n="Hinterlands Mission XVIII: Rescue Veanna Cloudsleeper",obj={{id=221337,qty=1,src={{"n",221337,0}},t="kill",text="Rescue Veanna Cloudsleeper"}},r=47,rep="daily",sn={221479},xp=3800,zone=47}
-Q[81855]={en={221480},kind="group",l=52,money=39300,n="Feralas Mission I: Defeat Children of Cenarius",obj={{id=221375,qty=10,src={{"n",221375,0}},t="kill",text="Lost Daughter slain"},{id=221377,qty=10,src={{"n",221377,0}},t="kill",text="Vengeful Son slain"}},r=47,rep="daily",sn={221480},xp=5100,zone=357}
-Q[81856]={en={221480},kind="group",l=52,money=39300,n="Feralas Mission II: Defeat Harpies",obj={{id=221370,qty=10,src={{"n",221370,0}},t="kill",text="Dreamspring Roguefeather slain"},{id=221371,qty=10,src={{"n",221371,0}},t="kill",text="Dreamspring Stormcaller slain"}},r=47,rep="daily",sn={221480},xp=5100,zone=357}
-Q[81857]={en={221480},kind="group",l=52,money=39300,n="Feralas Mission III: Defeat Dragonkin",obj={{id=221369,qty=10,src={{"n",221369,0}},t="kill",text="Frenzied Whelp slain"},{id=221367,qty=3,src={{"n",221367,0}},t="kill",text="Wyrmkin Berserker slain"}},r=47,rep="daily",sn={221480},xp=5100,zone=357}
-Q[81858]={en={221480},kind="group",l=52,money=6000,n="Feralas Mission IV: Dragon Intelligence",obj={{from="crafted",id=219957,qty=1,t="item",text="Intelligence Report: Oneiros"}},r=47,rep="daily",sn={221480},xp=3800,zone=357}
-Q[81859]={en={221480},kind="group",l=52,money=6000,n="Feralas Mission V: Cenarion Intelligence",obj={{from="crafted",id=219958,qty=1,t="item",text="Intelligence Report: Twin Colossals"}},r=47,rep="daily",sn={221480},xp=3800,zone=357}
-Q[81860]={en={221480},kind="group",l=52,money=6000,n="Feralas Mission VI: Harpy Intelligence",obj={{from="crafted",id=219959,qty=1,t="item",text="Intelligence Report: Ruins of Ravenwind"}},r=47,rep="daily",sn={221480},xp=3800,zone=357}
-Q[81861]={en={221480},kind="group",l=52,money=6000,n="Feralas Mission VII: Recover Moonglow Dragonegg",obj={{id=219520,qty=1,src={{"o",441310,100}},t="item",text="Moonglow Dragonegg"}},r=47,rep="daily",sn={221480},xp=3800,zone=357}
-Q[81863]={en={221480},kind="group",l=52,money=6000,n="Feralas Mission VIII: Recover Keeper's Notes",obj={{id=219519,qty=1,src={{"o",441312,100}},t="item",text="Mad Keeper's Notes"}},r=47,rep="daily",sn={221480},xp=3800,zone=357}
-Q[81864]={en={221480},kind="group",l=52,money=6000,n="Feralas Mission IX: Recover Harpy Screed",obj={{id=219518,qty=1,src={{"o",441314,100}},t="item",text="Harpy Screed"}},r=47,rep="daily",sn={221480},xp=3800,zone=357}
-Q[81865]={en={221480},kind="group",l=52,money=1900,n="Feralas Mission X: Moonroot",obj={{id=219514,qty=10,src={{"o",439810,100}},t="item",text="Moonroot"}},r=47,rep="daily",sn={221480},xp=5100,zone=357}
-Q[81866]={en={221480},kind="group",l=52,money=1900,n="Feralas Mission XI: Greater Moonstone",obj={{id=219515,qty=10,src={{"o",439815,100},{"n",222789,87}},t="item",text="Greater Moonstone"}},r=47,rep="daily",sn={221480},xp=5100,zone=357}
-Q[81867]={en={221480},kind="group",l=52,money=1900,n="Feralas Mission XII: Greater Moondragon Scales",obj={{id=219517,qty=10,src={{"n",221369,50},{"n",221367,49},{"n",221393,43}},t="item",text="Moondragon Scale"}},r=47,rep="daily",sn={221480},xp=5100,zone=357}
-Q[81868]={en={221480},kind="group",l=52,money=3800,n="Feralas Mission XIII: Defeat Tyrannikus",obj={{id=221393,qty=1,src={{"n",221393,0}},t="kill",text="Tyrannikus slain"}},r=47,rep="daily",sn={221480},xp=5100,zone=357}
-Q[81870]={en={221480},kind="group",l=52,money=1900,n="Feralas Mission XIV: Defeat Alondrius",obj={{id=221389,qty=1,src={{"n",221389,0}},t="kill",text="Alondrius slain"}},r=47,rep="daily",sn={221480},xp=5100,zone=357}
-Q[81871]={en={221480},kind="group",l=52,money=1900,n="Feralas Mission XV: Defeat Slirena",obj={{id=221391,qty=1,src={{"n",221391,0}},t="kill",text="Slirena slain"}},r=47,rep="daily",sn={221480},xp=5100,zone=357}
-Q[81872]={en={221480},kind="group",l=52,money=1900,n="Feralas Mission XVI: Rescue Mellias Earthtender",obj={{id=221395,qty=1,src={{"n",221395,0}},t="kill",text="Rescue Mellias Earthtender"}},r=47,rep="daily",sn={221480},xp=3800,zone=357}
-Q[81873]={en={221480},kind="group",l=52,money=1900,n="Feralas Mission XVII: Rescue Nerene Brooksinger",obj={{id=221398,qty=1,src={{"n",221398,0}},t="kill",text="Rescue Nerene Brooksinger"}},r=47,rep="daily",sn={221480},xp=3800,zone=357}
-Q[81874]={en={221480},kind="group",l=52,money=1900,n="Feralas Mission XVIII: Rescue Jamniss Treemender",obj={{id=221399,qty=1,src={{"n",221399,0}},t="kill",text="Rescue Jamniss Treemender"}},r=47,rep="daily",sn={221480},xp=3800,zone=357}
-Q[81877]={classes=1,en={220984},l=50,money=7500,n="Fight Night",obj={{qty=1,t="event",text="Arena Victory"}},prev=81801,r=45,sn={220984},sort=4,xp=4700}
-Q[81885]={classes=2,en={221587},l=50,n="The Ritual",next=82135,obj={{id=221838,qty=1,t="kill",text="Complete the Ritual"}},r=44,races=5,side="A",sn={221587},sort=4,xp=5900}
 Q[81900]={classes=4,en={7506},l=50,n="The Burning Beast",next=81917,r=45,so={441061},sort=4,xp=2350}
 Q[81917]={classes=4,en={7506},l=50,n="Chains That Bind",next=81919,obj={{id=220214,qty=5,t="item",text="Infernal Chain Link"}},prev=81900,r=45,sn={7506},sort=4,xp=4700}
 Q[81919]={classes=4,en={7506},l=50,money=7500,n="Brought to Heel",obj={{id=220213,qty=1,src={{"n",221740,0}},t="item",text="Fel Lifeblood"},{from="provided",id=220216,qty=1,t="item",text="Infernal Lasso (Provided)"}},prev=81917,r=45,sn={7506},sort=4,xp=4700}
 Q[81924]={classes=1024,en={221985},l=50,money=7500,n="Wisdom of the Guardians",obj={{id=221935,qty=1,src={{"n",221935,0}},t="kill",text="Guardian of Feralas"},{id=221933,qty=1,src={{"n",221933,0}},t="kill",text="Guardian of the Hinterlands"},{id=221928,qty=1,src={{"n",221928,0}},t="kill",text="Guardian of Azshara"}},r=45,sn={221985},sort=4,xp=4700}
-Q[81944]={classes=2,en={214529},l=50,n="A Newly Discovered Purpose...",r=44,side="A",sort=4,xp=5900}
 Q[81947]={classes=128,en={211022,211033},l=45,n="Sanguine Sorcery",r=1,sn={211033},sort=4}
 Q[81949]={classes=128,en={211022,211033},l=45,n="Legends of the Tidesages",r=1,sn={211033},sort=4}
-Q[81951]={classes=128,en={211022,211033},l=45,n="The Liminal and the Arcane",r=1,sort=4}
 Q[81952]={classes=128,en={211022,211033},l=45,n="Everyday Etiquette",r=1,sn={211033},sort=4}
 Q[81953]={classes=128,en={211022,211033},l=45,n="Stonewrought Design",r=1,sn={211033},sort=4}
 Q[81954]={classes=128,en={211022,211033},l=45,n="Venomous Journeys",r=1,sn={211033},sort=4}
 Q[81955]={classes=128,en={211022,211033},l=45,n="A Mind of Metal",r=1,sn={211033},sort=4}
 Q[81956]={classes=128,en={211022,211033},l=45,n="Conjurer's Codex",r=1,sn={211033},sort=4}
-Q[81960]={classes=64,en={222289},l=50,money=7500,n="Clarifying Air",next=81968,obj={{id=222232,qty=1,src={{"n",222232,0}},t="kill",text="Corrupt Moderate Manifestation of Air slain"},{id=220379,qty=1,t="item",text="Item #220379"}},provided={220351},r=45,side="H",sort=4,xp=4700}
-Q[81967]={classes=256,en={222052},l=10,n="Otherworldly Treasure",r=1,sort=4}
-Q[81968]={classes=64,en={222289},l=50,money=7500,n="Answering Air's Call",obj={{id=220510,qty=3,t="item",text="Elemental Essence"},{from="crafted",id=220525,qty=1,t="item",text="Glowing Fragment of Air"}},prev=81960,provided={220375},r=45,races=162,side="H",sn={222289},sort=4,xp=4700}
-Q[81974]={en={217689},inst=true,kind="raid",l=40,money=2500,n="More Junk for Ziri",obj={{id=220526,qty=1,t="item",text="Item #220526 (Provided)"},{id=217689,qty=1,t="kill",text="Speak with Ziri \"The Wrench\" Littlesprocket"}},r=40,zone=721}
-Q[81975]={en={217689},inst=true,kind="raid",l=40,money=2500,n="A Troubling Exchange",r=40,sn={217689},zone=721}
-Q[81977]={inst=true,kind="raid",l=50,money=3500,n="DNT",provided={220531},r=50,zone=1477}
-Q[81979]={kind="raid",l=50,money=7500,n="DNT",r=50,sort=-2}
-Q[81980]={kind="raid",l=50,money=7500,n="DNT",r=50,sort=-2}
-Q[81982]={inst=true,kind="raid",l=50,money=7500,n="DNT",r=50,xp=4700,zone=721}
-Q[81983]={inst=true,kind="raid",l=50,money=7500,n="DNT",r=50,xp=4700,zone=721}
-Q[81986]={en={222188},kind="raid",l=50,n="Waking the Nightmare",obj={{id=222198,qty=1,src={{"n",222198,0}},t="kill",text="Destroy the Nightmare Amalgamation"},{id=220570,qty=1,t="item",text="Item #220570"}},r=50,sn={222188},sort=-2,xp=7100}
-Q[81987]={en={222261},l=55,money=40000,n="Goblin Solutions",obj={{from="crafted",id=4395,qty=5,t="item",text="Goblin Land Mine"}},r=50,sn={222261},xp=1400,zone=439}
-Q[82001]={en={222261},kind="group",l=55,money=40000,n="Require Gnomish Problems",obj={{id=220916,qty=1,t="item",text="Thunderstomp Stegodon Horn"}},r=50,sn={222261},xp=1400,zone=490}
-Q[82002]={en={222261},l=55,money=40000,n="Whats Red and Smells like Paint?",obj={{id=220917,qty=1,src={{"o",442742,100}},t="item",text="Box of Scarlet Dye"}},r=50,sn={222261},xp=1400,zone=28}
-Q[82003]={en={222316},l=55,money=40000,n="Victory Lap For the Goblins!",r=50,sn={222261},xp=1400,zone=439}
-Q[82004]={en={222316},l=55,n="Hush Money",r=50,rep="weekly",sn={222316},zone=439}
-Q[82008]={en={222316},l=55,money=40000,n="Gnomish Solutions",obj={{from="crafted",id=10721,qty=2,t="item",text="Gnomish Harm Prevention Belt"}},r=50,sn={222316},xp=1400,zone=439}
-Q[82009]={en={222316},kind="group",l=55,money=40000,n="Require Goblin Problems",obj={{id=220916,qty=1,t="item",text="Thunderstomp Stegodon Horn"}},r=50,sn={222316},xp=1400,zone=490}
-Q[82010]={en={222316},l=55,money=40000,n="Watering Down the Competition",obj={{id=220917,qty=1,src={{"o",442742,100}},t="item",text="Box of Scarlet Dye"}},r=50,sn={222316},xp=1400,zone=28}
-Q[82011]={en={222261},l=55,money=40000,n="Victory Lap for the Gnomes!",r=50,sn={222316},xp=1400,zone=439}
-Q[82013]={en={222261},l=55,n="Hush Money",r=50,rep="weekly",sn={222261},zone=439}
-Q[82016]={en={222413},l=60,n="Atal'ai Potent Potables",r=50,zone=3357}
-Q[82017]={en={12042},l=50,money=7500,n="An Amalagamation of Nightmares",obj={{id=12042,qty=1,src={{"n",12042,0}},t="kill",text="Seek out Loganaar in Moonglade"}},r=40,sn={221477},xp=4700,zone=331}
-Q[82018]={en={5353},l=50,money=7500,n="Itharius",obj={{id=5353,qty=1,src={{"n",5353,0}},t="kill",text="Seek out Itharius in the Swamp of Sorrows"}},r=40,sn={12042},xp=4700,zone=8}
-Q[82019]={en={5353},inst=true,kind="raid",l=50,money=14500,n="Going Under",obj={{id=223568,qty=1,t="kill",text="Explore the Sunken Temple"}},r=40,sn={5353},xp=5900,zone=1477}
-Q[82020]={en={12042},l=50,money=3500,n="Return to Moonglade",obj={{id=12042,qty=1,src={{"n",12042,0}},t="kill",text="Speak with Loganaar in Moonglade"}},r=50,sn={5353},xp=2350,zone=493}
-Q[82021]={en={222188},l=50,money=3500,n="A Fortuitous Turn of Events",obj={{id=222225,qty=1,t="kill",text="Listen to what the Shadowy Figure has to say"}},r=50,sn={222188},xp=2350,zone=493}
-Q[82022]={en={222188},l=50,n="The Bad News...",obj={{id=220964,qty=1,t="item",text="Item #220964"}},r=50,sn={222188},xp=4700,zone=493}
-Q[82023]={en={222451},l=50,n="The Lost Vambraces",obj={{id=441848,qty=1,t="object",text="Find the monster's lair"}},r=50,sn={222444},xp=4700,zone=493}
-Q[82043]={en={222522},l=45,n="The Wild Gods",r=40,sn={222408},xp=3900,zone=361}
-Q[82044]={en={222408},l=45,money=13000,n="The Wild Gods",obj={{id=221262,qty=3,t="item",text="Wild Offering"}},r=40,sn={222522},xp=4850,zone=361}
-Q[82055]={en={14847},l=45,n="Darkmoon Dunes Deck",obj={{from="provided",id=221289,qty=1,t="item",text="Dunes Deck (Provided)"}},r=1,si={id=221289,n="Dunes Deck"},sort=9,xp=390}
-Q[82056]={en={14847},l=45,n="Darkmoon Nightmares Deck",obj={{from="provided",id=221299,qty=1,t="item",text="Nightmares Deck (Provided)"}},r=1,si={id=221299,n="Nightmares Deck"},sort=9,xp=390}
-Q[82057]={en={14847},l=45,n="Darkmoon Plagues Deck",obj={{from="provided",id=221280,qty=1,t="item",text="Plagues Deck (Provided)"}},r=1,si={id=221280,n="Plagues Deck"},sort=9,xp=390}
-Q[82058]={en={14847},l=45,n="Darkmoon Wilds Deck",obj={{from="provided",id=221272,qty=1,t="item",text="Wilds Deck (Provided)"}},r=1,si={id=221272,n="Wilds Deck"},sort=9,xp=390}
-Q[82062]={en={222530},inst=true,l=56,money=8500,n="Ever After",r=48,xp=7300,zone=1584}
-Q[82068]={en={221479,221480},kind="group",l=52,money=15500,n="Fight the Nightmare Incursions",obj={{id=221479,qty=1,src={{"n",221479,0}},t="kill",text="Complete a Nightmare Incursion Mission in Hinterlands or Feralas"}},r=47,rep="daily",sn={221479,221480},sort=-2,xp=6350}
-end)()
-;(function()
-Q[82071]={classes=64,en={222617},l=50,money=7500,n="Purifying Fire",next=82074,obj={{id=222620,qty=1,src={{"n",222620,0}},t="kill",text="Corrupt Moderate Manifestation of Fire slain"},{id=221350,qty=1,t="item",text="Item #221350"}},provided={221347},r=45,side="H",sort=4,xp=4700}
-Q[82072]={classes=64,en={222623},l=50,money=7500,n="Purging Earth",next=82075,obj={{id=222625,qty=1,src={{"n",222625,0}},t="kill",text="Corrupt Moderate Manifestation of Earth slain"},{id=221352,qty=1,t="item",text="Item #221352"}},provided={221349},r=45,side="H",sort=4,xp=4700}
-Q[82073]={classes=64,en={222005},l=50,money=7500,n="Cleansing Water",next=82076,obj={{id=222004,qty=1,src={{"n",222004,0}},t="kill",text="Corrupt Moderate Manifestation of Water slain"},{id=221351,qty=1,t="item",text="Item #221351"}},provided={221348},r=45,side="H",sort=4,xp=4700}
-Q[82074]={classes=64,en={222617},l=50,money=7500,n="Answering Fire's Call",obj={{id=220510,qty=3,t="item",text="Elemental Essence"},{from="crafted",id=221356,qty=1,t="item",text="Glowing Fragment of Fire"}},prev=82071,provided={221353},r=45,races=162,side="H",sn={222617},sort=4,xp=4700}
-Q[82075]={classes=64,en={222623},l=50,money=7500,n="Answering Earth's Call",obj={{id=220510,qty=3,t="item",text="Elemental Essence"},{from="crafted",id=221358,qty=1,t="item",text="Glowing Fragment of Earth"}},prev=82072,provided={221355},r=45,races=162,side="H",sn={222623},sort=4,xp=4700}
-Q[82076]={classes=64,en={222005},l=50,money=7500,n="Answering Water's Call",obj={{id=220510,qty=3,t="item",text="Elemental Essence"},{from="crafted",id=221357,qty=1,t="item",text="Glowing Fragment of Water"}},prev=82073,provided={221354},r=45,races=162,side="H",sn={222005},sort=4,xp=4700}
-Q[82081]={en={14875},inst=true,l=50,n="A Broken Ritual",obj={{id=221346,qty=1,t="item",text="Item #221346 (Provided)"}},r=50,side="A",zone=1477}
-Q[82083]={en={14875},inst=true,l=50,n="A Broken Ritual",obj={{id=221363,qty=1,t="item",text="Item #221363 (Provided)"}},r=50,side="H",zone=1477}
 Q[82084]={classes=128,en={211022,211033},l=45,n="A Lesson in Literacy",r=42,sort=4,xp=3900}
-Q[82086]={classes=128,l=45,n="A Lesson in Literacy",obj={{id=221359,qty=1,t="item",text="Pristine Owlbeast Quill"},{id=221361,qty=5,t="item",text="Zukk'ash Resin"},{id=221360,qty=8,t="item",text="Farraki Papyrus"}},r=42,sort=4}
-Q[82089]={en={222772},l=50,n="Master of Transmutation",obj={{from="crafted",id=12360,qty=3,t="item",text="Arcanite Bar"}},prof={171},r=35,sn={222772},sort=5}
-Q[82090]={en={222763},l=50,n="Mixology For Fun and Profit",obj={{id=9224,qty=10,src={{"n",15184,0}},t="item",text="Potion of Demonslaying"},{from="crafted",id=9172,qty=10,t="item",text="Invisibility Potion"},{id=13447,qty=5,src={{"n",16115,0}},t="item",text="Elixir of the Sages"}},prof={171},r=45,sn={222763},sort=5}
-Q[82093]={en={222413},l=60,n="Jungle Durian",r=50,zone=3357}
-Q[82094]={en={222413},l=60,n="Signets of the Lost Temple",r=50,zone=3357}
-Q[82095]={en={8579},inst=true,kind="raid",l=50,money=22000,n="The God Hakkar",obj={{from="crafted",id=10662,qty=1,t="item",text="Filled Egg of Hakkar"},{id=10663,qty=1,t="item",text="Essence of Hakkar"}},provided={10465},r=50,sn={8579},xp=7100,zone=1477}
-Q[82096]={eo={148836},inst=true,kind="raid",l=50,n="Into the Depths",obj={{from="provided",id=10466,qty=1,t="item",text="Atal'ai Stone Circle (Provided)"}},r=50,sn={7771},xp=4700,zone=1477}
-Q[82097]={eo={448042},inst=true,kind="raid",l=50,n="Secret of the Circle",r=50,sn={7771},xp=5900,zone=1477}
-Q[82098]={en={5384},inst=true,kind="raid",l=50,n="Into The Temple of Atal'Hakkar",obj={{id=6288,qty=10,t="item",text="Atal'ai Tablet"}},r=50,side="A",sn={5384},xp=7100,zone=1477}
-Q[82099]={en={9119},kind="raid",l=50,money=7500,n="Haze of Evil",obj={{id=11318,qty=5,t="item",text="Atal'ai Haze"}},r=50,side="A",sn={7775},xp=4700,zone=490}
-Q[82100]={en={1443},inst=true,kind="raid",l=50,n="The Temple of Atal'Hakkar",obj={{id=6181,qty=20,src={{"n",5261,20},{"n",5243,20},{"n",5269,18},{"n",5263,17}},t="item",text="Fetish of Hakkar"}},r=50,side="H",sn={1443},xp=5900,zone=1477}
-Q[82101]={en={9118},kind="raid",l=50,n="Zapper Fuel",obj={{from="provided",id=11319,qty=1,t="item",text="Unloaded Zapper (Provided)"},{id=11318,qty=5,t="item",text="Atal'ai Haze"}},r=50,side="H",sn={8496},xp=4700,zone=490}
-Q[82102]={eo={148512},inst=true,kind="raid",l=50,n="The Essence of Eranikus",obj={{id=221475,qty=1,t="item",text="Item #221475 (Provided)"}},r=50,xp=2350,zone=1477}
-Q[82104]={en={5598},inst=true,kind="raid",l=50,n="Jammal'an the Prophet",obj={{id=6212,qty=1,t="item",text="Head of Jammal'an"}},r=50,sn={5598},xp=5900,zone=1477}
-Q[82106]={classes=2,en={10838},kind="raid",l=50,money=14500,n="Forging the Mightstone",obj={{id=20606,qty=2,t="item",text="Amber Voodoo Feather"},{id=20607,qty=2,t="item",text="Blue Voodoo Feather"},{id=20608,qty=2,t="item",text="Green Voodoo Feather"}},r=50,races=5,side="A",sn={10838},sort=4,xp=5900}
-Q[82107]={classes=1,en={7572},kind="raid",l=50,n="Voodoo Feathers",obj={{id=20606,qty=2,t="item",text="Amber Voodoo Feather"},{id=20607,qty=2,t="item",text="Blue Voodoo Feather"},{id=20608,qty=2,t="item",text="Green Voodoo Feather"}},r=50,sn={7572},sort=4,xp=5900}
-Q[82108]={classes=4,en={8405},kind="raid",l=50,n="The Green Drake",obj={{id=20019,qty=1,t="item",text="Tooth of Morphaz"}},r=50,sn={8405},sort=4,xp=5900}
-Q[82110]={classes=8,en={6768},kind="raid",l=50,money=7500,n="The Azure Key",obj={{id=20022,qty=1,t="item",text="Azure Key"}},r=50,sn={8379},sort=4,xp=5900}
-Q[82111]={classes=16,en={10922},kind="raid",l=50,money=14500,n="Blood of Morphaz",obj={{id=20025,qty=1,t="item",text="Blood of Morphaz"}},r=50,sn={8405},sort=4,xp=5900}
-Q[82112]={classes=1024,en={9619},kind="raid",l=50,n="A Better Ingredient",obj={{id=22444,qty=1,t="item",text="Putrid Vine"}},r=50,sn={9619},sort=4,xp=5900}
-Q[82113]={classes=64,en={6176},kind="raid",l=50,money=14500,n="Da Voodoo",obj={{id=20606,qty=2,t="item",text="Amber Voodoo Feather"},{id=20607,qty=2,t="item",text="Blue Voodoo Feather"},{id=20608,qty=2,t="item",text="Green Voodoo Feather"}},r=50,side="H",sn={6176},sort=4,xp=5900}
-Q[82114]={classes=128,en={8379},kind="raid",l=50,money=14500,n="Destroy Morphaz",obj={{id=20085,qty=1,t="item",text="Arcane Shard"}},r=50,sn={8379},sort=4,xp=5900}
-Q[82115]={classes=256,en={14470},kind="raid",l=50,money=14500,n="Trolls of a Feather",obj={{id=20606,qty=2,t="item",text="Amber Voodoo Feather"},{id=20607,qty=2,t="item",text="Blue Voodoo Feather"},{id=20608,qty=2,t="item",text="Green Voodoo Feather"}},r=50,sn={14470},sort=4,xp=5900}
-Q[82135]={classes=2,en={5492},l=50,n="The Price of Hope",obj={{from="provided",id=221519,qty=1,t="item",text="Mannoroc Orb (Provided)"}},prev=81885,r=44,races=5,side="A",sn={221587},sort=4,xp=4700}
 Q[82208]={classes=128,en={211022,211033},l=45,n="Greater Friend of the Library",r=1,sort=4}
-Q[82209]={en={7408},l=44,n="Water Pouch Bounty",r=40,zone=440}
-Q[82210]={en={7884},l=45,n="Troll Necklace Bounty",r=40,side="A",zone=47}
-Q[82271]={en={14829},l=60,n="More Glowing Scorpid Blood",r=40,sort=9}
-Q[82272]={en={14829},l=60,n="Glowing Scorpid Blood",r=40,sort=9}
-Q[82273]={en={14829},l=60,n="More Bat Eyes",r=40,sort=9}
-Q[82274]={en={14829},l=60,n="Evil Bat Eyes",r=40,sort=9}
-Q[82275]={en={14832},l=60,n="Big Black Mace",r=30,sort=9}
-Q[82276]={en={14832},l=60,n="Rituals of Strength",r=40,sort=9}
-Q[82277]={en={14832},l=60,n="More Dense Grinding Stones",r=40,sort=9}
-Q[82278]={en={14841},l=60,n="More Thorium Widgets",r=40,sort=9}
-Q[82279]={en={14841},l=60,n="Thorium Widget",r=40,sort=9}
-Q[82280]={en={14841},l=60,n="Mechanical Repair Kits",r=30,sort=9}
-Q[82281]={en={14833},l=60,n="More Armor Kits",r=40,sort=9}
-Q[82282]={en={14833},l=60,n="Armor Kits",r=40,sort=9}
-Q[82283]={en={14833},l=60,n="Crocolisk Boy and the Bearded Murloc",r=30,sort=9}
-Q[82301]={classes=256,en={222052},l=25,n="Otherworldly Treasure",r=1,sort=4}
-Q[82302]={classes=256,en={222052},l=35,n="Otherworldly Treasure",r=1,sort=4}
-Q[82303]={classes=256,en={222052},l=10,n="Otherworldly Treasure",r=1,sort=4}
-Q[82307]={en={213077,214070,214096,214098,214099,214101},l=42,money=38500,n="A Full Shipment",r=1,sort=-2}
-Q[82308]={en={213077,214070,214096,214098,214099,214101},l=45,money=84500,n="A Full Shipment",r=1,sort=-2}
-Q[82309]={en={213077,214070,214096,214099,214101},l=50,money=154000,n="A Full Shipment",r=1,sort=-2}
-Q[82316]={classes=16,en={223590},l=50,n="Seven Eyes I Seek...",r=1,sort=4}
-Q[82323]={en={14829},l=60,n="Vibrant Plumes",r=30,sort=9}
-Q[82656]={en={7854},l=45,n="Wild Leather Vest",obj={{id=217268,qty=2,t="item",text="Item #217268"},{from="crafted",id=217270,qty=2,t="item",text="Turtle Scale Gloves"},{id=8153,qty=1,src={{"n",8216,76},{"n",8219,72}},t="item",text="Wildvine"}},prof={165},r=30,side="H",sn={7854},sort=5,xp=2900}
-Q[82657]={classes=1036,en={7852},l=45,n="Wild Leather Vest",obj={{id=217268,qty=2,t="item",text="Item #217268"},{from="crafted",id=217270,qty=2,t="item",text="Turtle Scale Gloves"},{id=8153,qty=1,src={{"n",8216,76},{"n",8219,72}},t="item",text="Wildvine"}},prof={165},r=30,side="A",sn={7852},sort=5,xp=2900}
-Q[82662]={en={11146},l=40,n="The Way of the Weaponsmith",obj={{id=217281,qty=4,t="item",text="Item #217281"},{from="crafted",id=3855,qty=4,t="item",text="Massive Iron Axe"},{from="crafted",id=7941,qty=2,t="item",text="Heavy Mithril Axe"},{from="crafted",id=7945,qty=2,t="item",text="Big Black Mace"}},prof={164},r=40,races=13,side="A",sn={11146},sort=5,xp=3150}
-Q[82665]={en={11178},l=40,n="The Way of the Weaponsmith",obj={{id=217281,qty=4,t="item",text="Item #217281"},{from="crafted",id=3855,qty=4,t="item",text="Massive Iron Axe"},{from="crafted",id=7941,qty=2,t="item",text="Heavy Mithril Axe"},{from="crafted",id=7945,qty=2,t="item",text="Big Black Mace"}},prof={164},r=40,side="H",sn={11178},sort=5,xp=3150}
-Q[82850]={en={211653},l=25,money=16500,n="Fish Oil",r=20,xp=2550,zone=392}
-Q[82851]={en={211653},l=25,money=27500,n="Dark Iron Ordinance",r=20,xp=2550,zone=392}
-Q[82853]={en={211653},l=25,money=31500,n="Shredder Turbochargers",r=20,xp=2550,zone=392}
-Q[83188]={classes=256,en={222052},l=60,n="Otherworldly Treasure",r=1,sort=4}
-Q[83189]={classes=256,en={222052},l=60,n="Otherworldly Treasure",r=1,sort=4}
-Q[83190]={classes=256,en={222052},l=60,n="Otherworldly Treasure",r=1,sort=4}
-Q[83191]={classes=256,en={222052},l=60,n="Otherworldly Treasure",r=1,sort=4}
-Q[83192]={classes=256,en={222052},l=60,n="Otherworldly Treasure",r=1,sort=4}
-Q[83808]={classes=2,en={227672},l=55,n="In a Bind",next=83935,obj={{id=226201,qty=1,src={{"o",455812,100}},t="item",text="Squire Cuthbert's Blade"}},r=50,races=5,side="A",sn={227672},sort=4,xp=5650}
-Q[83822]={classes=2,en={227672},l=55,n="The Fallen Knight",next=83936,obj={{id=227705,qty=1,t="kill",text="Fallen Knight Burned"}},prev=83935,r=50,races=5,side="A",sn={227672},sort=4,xp=5650}
-Q[83823]={classes=2,en={227673},l=55,n="A Lesson in Violence",obj={{id=226122,qty=1,t="item",text="Item #226122"}},r=50,side="A",sort=4,xp=5650}
 Q[83934]={en={227853},l=60,n="Show Me The Money!",obj={{id=226404,qty=1,src={{"n",6109,100}},t="item",text="Tarnished Undermine Real"}},r=55,sn={227853},xp=8300,zone=405}
-Q[83935]={classes=2,en={227672},l=55,n="Clearing the Path",next=83822,obj={{id=4475,qty=5,src={{"n",4475,0}},t="kill",text="Blighted Zombie slain"},{id=1785,qty=10,src={{"n",1785,0}},t="kill",text="Skeletal Terror slain"},{id=4474,qty=10,src={{"n",4474,0}},t="kill",text="Rotting Cadaver slain"}},prev=83808,r=50,races=5,side="A",sn={227672},sort=4,xp=5650}
-Q[83936]={classes=2,en={227672},l=55,n="Dalton's Quest",obj={{id=227856,qty=1,t="kill",text="Speak with Squire Cuthbert"}},prev=83822,r=50,races=5,side="A",sn={227672},sort=4,xp=5650}
-Q[84008]={classes=2,en={227464},l=55,n="A Lesson in Grace",obj={{id=226523,qty=1,t="item",text="Item #226523"}},r=50,side="A",sort=4,xp=5650}
-Q[84011]={en={221479},kind="group",l=53,n="More Star Lotus",obj={{id=219454,qty=10,src={{"o",439762,100}},t="item",text="Star Lotus"}},r=53,sn={221479},zone=47}
-Q[84012]={en={221479},kind="group",l=53,n="More Starsilver Ore",obj={{id=219486,qty=10,src={{"o",439778,100}},t="item",text="Starsilver Ore"}},r=53,sn={221479},zone=47}
-Q[84013]={en={221479},kind="group",l=53,n="More Starshells",obj={{id=219487,qty=10,src={{"n",221334,63},{"n",221328,52}},t="item",text="Starshell"}},r=53,sn={221479},zone=47}
-Q[84014]={en={221480},kind="group",l=53,n="More Moonroot",obj={{id=219514,qty=10,src={{"o",439810,100}},t="item",text="Moonroot"}},r=53,sn={221480},zone=357}
-Q[84015]={en={221480},kind="group",l=53,n="More Greater Moonstones",obj={{id=219515,qty=10,src={{"o",439815,100},{"n",222789,87}},t="item",text="Greater Moonstone"}},r=53,sn={221480},zone=357}
-Q[84016]={en={221480},kind="group",l=53,n="More Moondragon Scales",obj={{id=219517,qty=10,src={{"n",221369,50},{"n",221367,49},{"n",221393,43}},t="item",text="Moondragon Scale"}},r=53,sn={221480},zone=357}
-Q[84017]={classes=2,en={227674},l=60,n="A Time to Kill",r=50,races=5,side="A",sn={227674},sort=4,xp=6600}
-Q[84124]={classes=1,eo={410158},l=60,money=9000,n="Legacy of Valor",obj={{qty=1,t="event",text="Altar Honored"}},r=55,sort=4,xp=6600}
-Q[84125]={classes=2,en={227674},l=60,n="Close Enough To Touch",next=84126,obj={{id=227041,qty=1,t="item",text="Scourge Shadow Scalpel"}},r=50,races=5,side="A",sn={227674},sort=4,xp=6600}
-Q[84126]={classes=2,en={227674},l=60,n="Finish the Fight",obj={{id=227985,qty=1,src={{"n",227985,0}},t="kill",text="Arkonos the Cursed slain"},{from="provided",id=227685,qty=1,t="item",text="Modified Shadow Scalpel (Provided)"}},prev=84125,r=50,races=5,side="A",sn={227674},sort=4,xp=6600}
-Q[84135]={classes=1,eo={456685},l=60,n="Beach Bot",r=55,so={456682},sort=4,xp=6600}
-Q[84136]={classes=4,en={228176},l=60,n="The Beast Master of Moonglade",r=60,sn={227755},sort=4,xp=660}
-Q[84137]={classes=1,en={228956},l=60,n="Mechanical Romance",provided={226856},r=55,so={456685},sort=4,xp=6600}
-Q[84138]={classes=1,en={228216},l=60,n="Frosty Favors",r=55,sn={228956},sort=4,xp=4950}
-Q[84146]={classes=1,en={218236},l=60,n="Red Bag Blues",obj={{id=228535,qty=1,t="kill",text="Numi's Red Bag"}},r=55,sn={228216},sort=4,xp=6600}
-Q[84147]={classes=1024,en={230319},kind="dungeon",l=60,n="An Earnest Proposition",obj={{id=21928,qty=15,src={{"n",7431,6},{"n",7430,6},{"n",7432,4},{"n",7433,4},{"n",7434,4},{"n",7443,3},{"n",7445,2},{"n",7446,1}},t="item",text="Winterspring Blood Sample"},{id=226714,qty=1,t="item",text="Item #226714"},{qty=1,t="event",text="Required money: 20"}},r=58,races=8,side="A",sn={230319},xp=6600,zone=1537}
 Q[84148]={en={230319},kind="dungeon",l=60,n="An Earnest Proposition",obj={{id=21928,qty=15,src={{"n",7431,6},{"n",7430,6},{"n",7432,4},{"n",7433,4},{"n",7434,4},{"n",7443,3},{"n",7445,2},{"n",7446,1}},t="item",text="Winterspring Blood Sample"},{id=226717,qty=1,t="item",text="Item #226717"},{qty=1,t="event",text="Required money: 20"}},r=58,side="A",sn={230319},xp=6600,zone=1537}
 Q[84149]={en={230319},kind="dungeon",l=60,n="An Earnest Proposition",obj={{id=21928,qty=15,src={{"n",7431,6},{"n",7430,6},{"n",7432,4},{"n",7433,4},{"n",7434,4},{"n",7443,3},{"n",7445,2},{"n",7446,1}},t="item",text="Winterspring Blood Sample"},{id=226725,qty=1,t="item",text="Item #226725"},{qty=1,t="event",text="Required money: 20"}},r=58,side="A",sn={230319},xp=6600,zone=1537}
-Q[84150]={classes=2,en={230319},kind="dungeon",l=60,n="An Earnest Proposition",obj={{id=21928,qty=15,src={{"n",7431,6},{"n",7430,6},{"n",7432,4},{"n",7433,4},{"n",7434,4},{"n",7443,3},{"n",7445,2},{"n",7446,1}},t="item",text="Winterspring Blood Sample"},{id=226739,qty=1,t="item",text="Item #226739"},{qty=1,t="event",text="Required money: 20"}},r=58,side="A",sn={230319},xp=6600,zone=1537}
-Q[84151]={en={230319},kind="dungeon",l=60,n="An Earnest Proposition",obj={{id=21928,qty=15,src={{"n",7431,6},{"n",7430,6},{"n",7432,4},{"n",7433,4},{"n",7434,4},{"n",7443,3},{"n",7445,2},{"n",7446,1}},t="item",text="Winterspring Blood Sample"},{id=226742,qty=1,t="item",text="Item #226742"},{qty=1,t="event",text="Required money: 20"}},r=58,side="A",sn={230319},xp=6600,zone=1537}
-Q[84152]={en={230319},kind="dungeon",l=60,n="An Earnest Proposition",obj={{id=21928,qty=15,src={{"n",7431,6},{"n",7430,6},{"n",7432,4},{"n",7433,4},{"n",7434,4},{"n",7443,3},{"n",7445,2},{"n",7446,1}},t="item",text="Winterspring Blood Sample"},{id=226704,qty=1,t="item",text="Item #226704"},{qty=1,t="event",text="Required money: 20"}},r=58,side="A",sn={230319},xp=6600,zone=1537}
-Q[84153]={en={230319},kind="dungeon",l=60,n="An Earnest Proposition",obj={{id=21928,qty=15,src={{"n",7431,6},{"n",7430,6},{"n",7432,4},{"n",7433,4},{"n",7434,4},{"n",7443,3},{"n",7445,2},{"n",7446,1}},t="item",text="Winterspring Blood Sample"},{id=226759,qty=1,t="item",text="Item #226759"},{qty=1,t="event",text="Required money: 20"}},r=58,side="A",sn={230319},xp=6600,zone=1537}
-Q[84154]={en={230319},kind="dungeon",l=60,n="An Earnest Proposition",obj={{id=21928,qty=15,src={{"n",7431,6},{"n",7430,6},{"n",7432,4},{"n",7433,4},{"n",7434,4},{"n",7443,3},{"n",7445,2},{"n",7446,1}},t="item",text="Winterspring Blood Sample"},{id=226766,qty=1,t="item",text="Item #226766"},{qty=1,t="event",text="Required money: 20"}},r=58,side="A",sn={230319},xp=6600,zone=1537}
 Q[84155]={en={230317},kind="dungeon",l=60,n="An Earnest Proposition",obj={{id=22381,qty=15,src={{"n",11738,4},{"n",11736,3},{"n",11735,2},{"n",11739,1},{"n",11737,1}},t="item",text="Silithus Venom Sample"},{id=226714,qty=1,t="item",text="Item #226714"},{qty=1,t="event",text="Required money: 20"}},r=58,side="H",sn={230317},xp=6600,zone=1637}
 Q[84156]={en={230317},kind="dungeon",l=60,n="An Earnest Proposition",obj={{id=22381,qty=15,src={{"n",11738,4},{"n",11736,3},{"n",11735,2},{"n",11739,1},{"n",11737,1}},t="item",text="Silithus Venom Sample"},{id=226717,qty=1,t="item",text="Item #226717"},{qty=1,t="event",text="Required money: 20"}},r=58,side="H",sn={230317},xp=6600,zone=1637}
 Q[84157]={en={230317},kind="dungeon",l=60,n="An Earnest Proposition",obj={{id=22381,qty=15,src={{"n",11738,4},{"n",11736,3},{"n",11735,2},{"n",11739,1},{"n",11737,1}},t="item",text="Silithus Venom Sample"},{id=226725,qty=1,t="item",text="Item #226725"},{qty=1,t="event",text="Required money: 20"}},r=58,side="H",sn={230317},xp=6600,zone=1637}
 Q[84158]={en={230317},kind="dungeon",l=60,n="An Earnest Proposition",obj={{id=22381,qty=15,src={{"n",11738,4},{"n",11736,3},{"n",11735,2},{"n",11739,1},{"n",11737,1}},t="item",text="Silithus Venom Sample"},{id=226742,qty=1,t="item",text="Item #226742"},{qty=1,t="event",text="Required money: 20"}},r=58,side="H",sn={230317},xp=6600,zone=1637}
 Q[84159]={en={230317},kind="dungeon",l=60,n="An Earnest Proposition",obj={{id=22381,qty=15,src={{"n",11738,4},{"n",11736,3},{"n",11735,2},{"n",11739,1},{"n",11737,1}},t="item",text="Silithus Venom Sample"},{id=226704,qty=1,t="item",text="Item #226704"},{qty=1,t="event",text="Required money: 20"}},r=58,side="H",sn={230317},xp=6600,zone=1637}
 Q[84160]={en={230317},kind="dungeon",l=60,n="An Earnest Proposition",obj={{id=22381,qty=15,src={{"n",11738,4},{"n",11736,3},{"n",11735,2},{"n",11739,1},{"n",11737,1}},t="item",text="Silithus Venom Sample"},{id=226751,qty=1,t="item",text="Item #226751"},{qty=1,t="event",text="Required money: 20"}},r=58,side="H",sn={230317},xp=6600,zone=1637}
-Q[84161]={en={230317},kind="dungeon",l=60,n="An Earnest Proposition",obj={{id=22381,qty=15,src={{"n",11738,4},{"n",11736,3},{"n",11735,2},{"n",11739,1},{"n",11737,1}},t="item",text="Silithus Venom Sample"},{id=226759,qty=1,t="item",text="Item #226759"},{qty=1,t="event",text="Required money: 20"}},r=58,side="H",sn={230317},xp=6600,zone=1637}
 Q[84162]={en={230317},kind="dungeon",l=60,n="An Earnest Proposition",obj={{id=22381,qty=15,src={{"n",11738,4},{"n",11736,3},{"n",11735,2},{"n",11739,1},{"n",11737,1}},t="item",text="Silithus Venom Sample"},{id=226766,qty=1,t="item",text="Item #226766"},{qty=1,t="event",text="Required money: 20"}},r=58,side="H",sn={230317},xp=6600,zone=1637}
-Q[84163]={en={230319},kind="dungeon",l=60,n="Just Compensation",next=8929,obj={{id=226712,qty=1,t="item",text="Item #226712"},{id=226711,qty=1,t="item",text="Item #226711"}},prev=84178,r=58,side="A",sn={230319},xp=9950,zone=1537}
-Q[84164]={en={230319},kind="dungeon",l=60,n="Just Compensation",next=8929,obj={{id=226718,qty=1,t="item",text="Item #226718"},{id=226721,qty=1,t="item",text="Item #226721"}},prev=84178,r=58,side="A",sn={230319},xp=9950,zone=1537}
-Q[84165]={en={230319},kind="dungeon",l=60,n="Just Compensation",next=8929,obj={{id=226724,qty=1,t="item",text="Item #226724"},{id=226731,qty=1,t="item",text="Item #226731"}},prev=84178,r=58,side="A",sn={230319},xp=9950,zone=1537}
-Q[84166]={en={230319},kind="dungeon",l=60,n="Just Compensation",next=8929,obj={{id=226732,qty=1,t="item",text="Item #226732"},{id=226737,qty=1,t="item",text="Item #226737"}},prev=84178,r=58,side="A",sn={230319},xp=9950,zone=1537}
-Q[84167]={en={230319},kind="dungeon",l=60,n="Just Compensation",next=8929,obj={{id=226744,qty=1,t="item",text="Item #226744"},{id=226740,qty=1,t="item",text="Item #226740"}},prev=84178,r=58,side="A",sn={230319},xp=9950,zone=1537}
-Q[84168]={en={230319},kind="dungeon",l=60,n="Just Compensation",next=8929,obj={{id=226701,qty=1,t="item",text="Item #226701"},{id=226702,qty=1,t="item",text="Item #226702"}},prev=84178,r=58,side="A",sn={230319},xp=9950,zone=1537}
-Q[84169]={en={230319},kind="dungeon",l=60,n="Just Compensation",next=8929,obj={{id=226761,qty=1,t="item",text="Item #226761"},{id=226758,qty=1,t="item",text="Item #226758"}},prev=84178,r=58,side="A",sn={230319},xp=9950,zone=1537}
-Q[84170]={en={230319},kind="dungeon",l=60,n="Just Compensation",next=8929,obj={{id=226765,qty=1,t="item",text="Item #226765"},{id=226771,qty=1,t="item",text="Item #226771"}},prev=84178,r=58,side="A",sn={230319},xp=9950,zone=1537}
-Q[84171]={en={230317},kind="dungeon",l=60,n="Just Compensation",next=8929,obj={{id=226712,qty=1,t="item",text="Item #226712"},{id=226711,qty=1,t="item",text="Item #226711"}},prev=84178,r=58,side="H",sn={230317},xp=9950,zone=1637}
-Q[84172]={en={230317},kind="dungeon",l=60,n="Just Compensation",next=8929,obj={{id=226718,qty=1,t="item",text="Item #226718"},{id=226721,qty=1,t="item",text="Item #226721"}},prev=84178,r=58,side="H",sn={230317},xp=9950,zone=1637}
-Q[84173]={en={230317},kind="dungeon",l=60,n="Just Compensation",next=8929,obj={{id=226724,qty=1,t="item",text="Item #226724"},{id=226731,qty=1,t="item",text="Item #226731"}},prev=84178,r=58,side="H",sn={230317},xp=9950,zone=1637}
-Q[84174]={en={230317},kind="dungeon",l=60,n="Just Compensation",next=8929,obj={{id=226744,qty=1,t="item",text="Item #226744"},{id=226740,qty=1,t="item",text="Item #226740"}},prev=84178,r=58,side="H",sn={230317},xp=9950,zone=1637}
-Q[84175]={en={230317},kind="dungeon",l=60,n="Just Compensation",next=8929,obj={{id=226701,qty=1,t="item",text="Item #226701"},{id=226702,qty=1,t="item",text="Item #226702"}},prev=84178,r=58,side="H",sn={230317},xp=9950,zone=1637}
-Q[84176]={en={230317},kind="dungeon",l=60,n="Just Compensation",next=8929,obj={{id=226754,qty=1,t="item",text="Item #226754"},{id=226748,qty=1,t="item",text="Item #226748"}},prev=84178,r=58,side="H",sn={230317},xp=9950,zone=1637}
-Q[84177]={en={230317},kind="dungeon",l=60,n="Just Compensation",next=8929,obj={{id=226761,qty=1,t="item",text="Item #226761"},{id=226758,qty=1,t="item",text="Item #226758"}},prev=84178,r=58,side="H",sn={230317},xp=9950,zone=1637}
-Q[84178]={en={230317},kind="dungeon",l=60,n="Just Compensation",next=8929,obj={{id=226765,qty=1,t="item",text="Item #226765"},{id=226771,qty=1,t="item",text="Item #226771"}},prev=84177,r=58,side="H",sn={230317},xp=9950,zone=1637}
-Q[84179]={en={230319},kind="dungeon",l=60,n="Anthion's Parting Words",next=8960,obj={{id=226713,qty=1,t="item",text="Item #226713"},{id=226709,qty=1,t="item",text="Item #226709"},{id=226710,qty=1,t="item",text="Item #226710"}},prev=84194,provided={22047},r=58,side="A",sn={16016},xp=9950,zone=1537}
-Q[84180]={en={230319},kind="dungeon",l=60,n="Anthion's Parting Words",next=8960,obj={{id=226722,qty=1,t="item",text="Item #226722"},{id=226719,qty=1,t="item",text="Item #226719"},{id=226716,qty=1,t="item",text="Item #226716"}},prev=84194,provided={22047},r=58,side="A",sn={16016},xp=9950,zone=1537}
-Q[84181]={en={230319},kind="dungeon",l=60,n="Anthion's Parting Words",next=8960,obj={{id=226730,qty=1,t="item",text="Item #226730"},{id=226727,qty=1,t="item",text="Item #226727"},{id=226726,qty=1,t="item",text="Item #226726"}},prev=84194,provided={22047},r=58,side="A",sn={16016},xp=9950,zone=1537}
-Q[84182]={en={230319},kind="dungeon",l=60,n="Anthion's Parting Words",next=8960,obj={{id=226738,qty=1,t="item",text="Item #226738"},{id=226736,qty=1,t="item",text="Item #226736"},{id=226735,qty=1,t="item",text="Item #226735"}},prev=84194,provided={22047},r=58,side="A",sn={16016},xp=9950,zone=1537}
-Q[84183]={en={230319},kind="dungeon",l=60,n="Anthion's Parting Words",next=8960,obj={{id=226743,qty=1,t="item",text="Item #226743"},{id=226747,qty=1,t="item",text="Item #226747"},{id=226741,qty=1,t="item",text="Item #226741"}},prev=84194,provided={22047},r=58,side="A",sn={16016},xp=9950,zone=1537}
-Q[84184]={en={230319},kind="dungeon",l=60,n="Anthion's Parting Words",next=8960,obj={{id=226703,qty=1,t="item",text="Item #226703"},{id=226705,qty=1,t="item",text="Item #226705"},{id=226706,qty=1,t="item",text="Item #226706"}},prev=84194,provided={22047},r=58,side="A",sn={16016},xp=9950,zone=1537}
-Q[84185]={en={230319},kind="dungeon",l=60,n="Anthion's Parting Words",next=8960,obj={{id=226763,qty=1,t="item",text="Item #226763"},{id=226760,qty=1,t="item",text="Item #226760"},{id=226756,qty=1,t="item",text="Item #226756"}},prev=84194,provided={22047},r=58,side="A",sn={16016},xp=9950,zone=1537}
-Q[84186]={en={230319},kind="dungeon",l=60,n="Anthion's Parting Words",next=8960,obj={{id=226764,qty=1,t="item",text="Item #226764"},{id=226767,qty=1,t="item",text="Item #226767"},{id=226768,qty=1,t="item",text="Item #226768"}},prev=84194,provided={22047},r=58,side="A",sn={16016},xp=9950,zone=1537}
-Q[84187]={en={230317},kind="dungeon",l=60,n="Anthion's Parting Words",next=8960,obj={{id=226713,qty=1,t="item",text="Item #226713"},{id=226709,qty=1,t="item",text="Item #226709"},{id=226710,qty=1,t="item",text="Item #226710"}},prev=84194,provided={22047},r=58,side="H",sn={16016},xp=9950,zone=1637}
-Q[84188]={en={230317},kind="dungeon",l=60,n="Anthion's Parting Words",next=8960,obj={{id=226722,qty=1,t="item",text="Item #226722"},{id=226719,qty=1,t="item",text="Item #226719"},{id=226716,qty=1,t="item",text="Item #226716"}},prev=84194,provided={22047},r=58,side="H",sn={16016},xp=9950,zone=1637}
-Q[84189]={en={230317},kind="dungeon",l=60,n="Anthion's Parting Words",next=8960,obj={{id=226730,qty=1,t="item",text="Item #226730"},{id=226727,qty=1,t="item",text="Item #226727"},{id=226726,qty=1,t="item",text="Item #226726"}},prev=84194,provided={21986},r=58,side="H",sn={16016},xp=9950,zone=1637}
-Q[84190]={en={230317},kind="dungeon",l=60,n="Anthion's Parting Words",next=8960,obj={{id=226743,qty=1,t="item",text="Item #226743"},{id=226747,qty=1,t="item",text="Item #226747"},{id=226741,qty=1,t="item",text="Item #226741"}},prev=84194,provided={22047},r=58,side="H",sn={16016},xp=9950,zone=1637}
-Q[84191]={en={230317},kind="dungeon",l=60,n="Anthion's Parting Words",next=8960,obj={{id=226703,qty=1,t="item",text="Item #226703"},{id=226705,qty=1,t="item",text="Item #226705"},{id=226706,qty=1,t="item",text="Item #226706"}},prev=84194,provided={22047},r=58,side="H",sn={16016},xp=9950,zone=1637}
-Q[84192]={en={230317},kind="dungeon",l=60,n="Anthion's Parting Words",next=8960,obj={{id=226752,qty=1,t="item",text="Item #226752"},{id=226750,qty=1,t="item",text="Item #226750"},{id=226753,qty=1,t="item",text="Item #226753"}},prev=84194,provided={22047},r=58,side="H",sn={16016},xp=9950,zone=1637}
-Q[84193]={en={230317},kind="dungeon",l=60,n="Anthion's Parting Words",next=8960,obj={{id=226763,qty=1,t="item",text="Item #226763"},{id=226760,qty=1,t="item",text="Item #226760"},{id=226756,qty=1,t="item",text="Item #226756"}},prev=84194,provided={22047},r=58,side="H",sn={16016},xp=9950,zone=1637}
-Q[84194]={en={230317},kind="dungeon",l=60,n="Anthion's Parting Words",next=8960,obj={{id=226764,qty=1,t="item",text="Item #226764"},{id=226767,qty=1,t="item",text="Item #226767"},{id=226768,qty=1,t="item",text="Item #226768"}},prev=84193,provided={22047},r=58,side="H",sn={16016},xp=9950,zone=1637}
-Q[84195]={en={230319},kind="dungeon",l=60,n="Saving the Best for Last",obj={{id=226708,qty=1,t="item",text="Item #226708"},{id=226715,qty=1,t="item",text="Item #226715"}},r=58,side="A",sn={230319},xp=1650,zone=1537}
-Q[84196]={en={230319},kind="dungeon",l=60,n="Saving the Best for Last",obj={{id=226720,qty=1,t="item",text="Item #226720"},{id=226723,qty=1,t="item",text="Item #226723"}},r=58,side="A",sn={230319},xp=1650,zone=1537}
-Q[84197]={en={230319},kind="dungeon",l=60,n="Saving the Best for Last",obj={{id=226728,qty=1,t="item",text="Item #226728"},{id=226729,qty=1,t="item",text="Item #226729"}},r=58,side="A",sn={230319},xp=1650,zone=1537}
-Q[84198]={en={230319},kind="dungeon",l=60,n="Saving the Best for Last",obj={{id=226733,qty=1,t="item",text="Item #226733"},{id=226734,qty=1,t="item",text="Item #226734"}},r=58,side="A",sn={230319},xp=1650,zone=1537}
-Q[84199]={en={230319},kind="dungeon",l=60,n="Saving the Best for Last",obj={{id=226746,qty=1,t="item",text="Item #226746"},{id=226745,qty=1,t="item",text="Item #226745"}},r=58,side="A",sn={230319},xp=1650,zone=1537}
-Q[84200]={en={230319},kind="dungeon",l=60,n="Saving the Best for Last",obj={{id=226707,qty=1,t="item",text="Item #226707"},{id=226700,qty=1,t="item",text="Item #226700"}},r=58,side="A",sn={230319},xp=1650,zone=1537}
-Q[84201]={en={230319},kind="dungeon",l=60,n="Saving the Best for Last",obj={{id=226762,qty=1,t="item",text="Item #226762"},{id=226757,qty=1,t="item",text="Item #226757"}},r=58,side="A",sn={230319},xp=1650,zone=1537}
-Q[84202]={en={230319},kind="dungeon",l=60,n="Saving the Best for Last",obj={{id=226769,qty=1,t="item",text="Item #226769"},{id=226770,qty=1,t="item",text="Item #226770"}},r=58,side="A",sn={230319},xp=1650,zone=1537}
-Q[84203]={en={230317},kind="dungeon",l=60,n="Saving the Best for Last",obj={{id=226708,qty=1,t="item",text="Item #226708"},{id=226715,qty=1,t="item",text="Item #226715"}},r=58,side="H",sn={230317},xp=1650,zone=1637}
-Q[84204]={en={230317},kind="dungeon",l=60,n="Saving the Best for Last",obj={{id=226720,qty=1,t="item",text="Item #226720"},{id=226723,qty=1,t="item",text="Item #226723"}},r=58,side="H",sn={230317},xp=1650,zone=1637}
-Q[84205]={en={230317},kind="dungeon",l=60,n="Saving the Best for Last",obj={{id=226728,qty=1,t="item",text="Item #226728"},{id=226729,qty=1,t="item",text="Item #226729"}},r=58,side="H",sn={230317},xp=1650,zone=1637}
-Q[84206]={en={230317},kind="dungeon",l=60,n="Saving the Best for Last",obj={{id=226746,qty=1,t="item",text="Item #226746"},{id=226745,qty=1,t="item",text="Item #226745"}},r=58,side="H",sn={230317},xp=1650,zone=1637}
-Q[84207]={en={230317},kind="dungeon",l=60,n="Saving the Best for Last",obj={{id=226707,qty=1,t="item",text="Item #226707"},{id=226700,qty=1,t="item",text="Item #226700"}},r=58,side="H",sn={230317},xp=1650,zone=1637}
-Q[84208]={en={230317},kind="dungeon",l=60,n="Saving the Best for Last",obj={{id=226755,qty=1,t="item",text="Item #226755"},{id=226749,qty=1,t="item",text="Item #226749"}},r=58,side="H",sn={230317},xp=1650,zone=1637}
-Q[84209]={en={230317},kind="dungeon",l=60,n="Saving the Best for Last",obj={{id=226762,qty=1,t="item",text="Item #226762"},{id=226757,qty=1,t="item",text="Item #226757"}},r=58,side="H",sn={230317},xp=1650,zone=1637}
-Q[84210]={en={230317},kind="dungeon",l=60,n="Saving the Best for Last",obj={{id=226769,qty=1,t="item",text="Item #226769"},{id=226770,qty=1,t="item",text="Item #226770"}},r=58,side="H",sn={230317},xp=1650,zone=1637}
-Q[84211]={classes=1,en={228216},l=60,n="Poacher's Den",obj={{id=226698,qty=5,src={{"o",456814,100}},t="item",text="Vertically Composited Patch Hampler (Provided)"},{id=226699,qty=5,src={{"o",456815,100}},t="item",text="Brass-fitted Flam-Tamp Flange"}},r=55,sn={218236},sort=4,xp=6600}
-Q[84212]={classes=1,en={228956},l=60,n="Bookin' it Back",obj={{from="provided",id=227285,qty=1,t="item",text="Fantastic Inventions (Provided)"}},r=55,sn={228216},sort=4,xp=6600}
-Q[84213]={classes=1,eo={459259},kind="group",l=65,n="Rift Away",obj={{id=212252,qty=1,src={{"n",212252,0}},t="kill",text="Demo the technology"}},r=55,sn={228956},sort=4,xp=11550}
-Q[84235]={classes=4,en={228176},l=60,n="Dive! Dive!",obj={{id=229156,qty=1,src={{"n",229156,0}},t="kill",text="Retrieve the Air Elemental Fragment"}},r=60,sn={228176},sort=4,xp=660}
-Q[84317]={classes=1,en={224965},l=60,money=9000,n="Infinite Midnight",r=55,sort=4,xp=6600}
 Q[84318]={classes=2,en={228619},l=55,n="Oi!",obj={{id=227686,qty=1,src={{"o",461639,100}},t="item",text="Ornate Warhammer"}},provided={227687},r=50,races=5,side="A",sn={228619},sort=4,xp=5650}
-Q[84319]={classes=2,en={228619},l=55,n="Oh No Ye Don't!",obj={{id=227689,qty=1,t="item",text="Partially-Digested Plate Armor"}},r=50,races=5,side="A",sn={228619},sort=4,xp=5650}
-Q[84320]={classes=16,en={376},l=50,n="Lost Heirloom",obj={{id=227745,qty=1,src={{"o",457387,100}},t="item",text="Family Heirloom"},{id=227747,qty=1,src={{"o",457389,100}},t="item",text="Family Records"},{id=227748,qty=1,src={{"o",457390,100}},t="item",text="Survivor Journal"}},r=48,side="A",sn={376},sort=4}
-Q[84321]={classes=16,eo={457443},l=50,n="Relic of Light",r=48,side="A",sn={376},sort=4}
-Q[84322]={classes=16,eo={459388},l=50,n="Scarlet Research",r=48,so={457443},sort=4}
-Q[84323]={classes=16,en={376},l=50,n="The Prize Within",obj={{id=227938,qty=1,t="item",text="Shard of Light"},{id=228912,qty=1,src={{"n",15162,2}},t="item",text="Artifact Storage Key"}},provided={227937},r=48,side="A",so={459388},sort=4}
-Q[84324]={classes=16,en={376},l=60,n="Diplomatic Overtures",obj={{from="crafted",id=14530,qty=6,t="item",text="Heavy Runecloth Bandage"},{id=13446,qty=4,src={{"n",7070,100},{"n",1844,33},{"n",7665,20},{"n",9601,20}},t="item",text="Major Healing Potion"},{id=12207,qty=8,src={{"n",7808,57},{"n",2929,54},{"n",7450,51},{"n",2928,50},{"n",222699,50},{"n",7451,50},{"n",2927,48},{"n",7452,48},{"n",7453,47},{"n",7454,46},{"n",1809,41},{"n",7456,41}},t="item",text="Giant Egg"},{id=13180,qty=4,src={{"o",176224,100}},t="item",text="Stratholme Holy Water"}},r=60,side="A",sn={376},sort=4}
-Q[84325]={classes=16,en={376},l=60,n="Shrine of Cooperation",obj={{from="provided",id=227939,qty=1,t="item",text="Shard of Light (Provided)"},{id=228144,qty=1,t="item",text="Strange Note"}},r=60,side="A",sn={228818},sort=4}
-Q[84326]={classes=16,en={376},l=60,n="Diplomat Ring",obj={{from="crafted",id=12360,qty=2,t="item",text="Arcanite Bar"},{id=11382,qty=3,src={{"n",228725,8}},t="item",text="Blood of the Mountain"},{id=12361,qty=3,t="item",text="Blue Sapphire"}},r=60,side="A",sn={376},sort=4}
-Q[84327]={classes=16,en={211229},l=60,n="A Diplomatic Mission",r=60,side="A",sn={376},sort=4}
-Q[84328]={classes=16,en={211229},l=60,n="Repairing the Shard",obj={{id=227912,qty=1,t="item",text="Applied Divinity"}},r=60,side="A",sn={211229},sort=4}
-Q[84329]={classes=16,en={228928},l=60,n="The Convocation Assembles",obj={{id=228928,qty=1,src={{"n",228928,0}},t="kill",text="Maethra Slagheart slain"}},r=60,sn={376,211229},sort=4}
-Q[84330]={classes=2,en={229018},l=55,n="A Wee Bit O' Necromancy",next=84414,obj={{id=227690,qty=1,t="item",text="Necrotic Runestone"},{id=227687,qty=1,src={{"v",214954,0}},t="item",text="Orthas' Favorite Gold Tooth"}},r=50,side="A",sn={228619},sort=4,xp=5650}
-Q[84331]={classes=16,en={228928},l=60,n="The Miracle",obj={{id=462201,qty=1,t="object",text="Shards of Light"}},r=60,sn={228928},sort=4}
-Q[84332]={classes=2,eo={462236},l=55,n="A Thane's Gratitude",r=50,side="A",so={462236},sort=4,xp=5650}
-Q[84338]={en={12944},inst=true,kind="dungeon",l=60,n="A Binding Contract",obj={{from="provided",id=227730,qty=1,t="item",text="Thorium Brotherhood Contract (Provided)"},{id=17203,qty=1,t="item",text="Sulfuron Ingot"}},r=60,si={id=227730,n="Thorium Brotherhood Contract"},xp=6600,zone=1584}
-Q[84348]={en={14627},kind="group",l=60,money=18000,n="Priority Target: Duke Tectonis",obj={{id=228729,qty=1,src={{"n",228729,0}},t="kill",text="Duke Tectonis slain"}},r=53,rep="daily",sn={14627},sort=-2,xp=8300}
-Q[84349]={en={14634},kind="group",l=60,money=18000,n="Priority Target: Duke Searbrand",obj={{id=228720,qty=1,src={{"n",228720,0}},t="kill",text="Duke Searbrand slain"}},r=53,rep="daily",sn={14634},sort=-2,xp=8300}
-Q[84350]={en={14628},l=58,money=9000,n="Grinding Them Down",obj={{id=228723,qty=10,src={{"n",228723,0}},t="kill",text="Obsidian Reaver slain"}},r=53,rep="daily",sn={14628},sort=-2,xp=6200}
-Q[84351]={en={14626},l=58,money=9000,n="Work Smarter, Not Harder",obj={{id=227743,qty=6,src={{"n",228724,0}},t="item",text="Obsidian Power Core"}},r=53,rep="daily",sn={14626},sort=-2,xp=6200}
-Q[84355]={en={14626},kind="group",l=58,money=17500,n="More Like Lame-bringers!",obj={{id=228727,qty=4,src={{"n",228727,0}},t="kill",text="Flamebringer Defender slain"},{id=228726,qty=4,src={{"n",228726,0}},t="kill",text="Flamebringer Elementalist slain"}},r=53,rep="daily",sn={14626},sort=-2,xp=7750}
-Q[84356]={en={14624},l=56,money=6500,n="Oh, Shiny!",obj={{id=227767,qty=8,t="item",text="Flamestone Cluster"}},r=53,rep="daily",sn={14624},sort=-2,xp=4350}
-Q[84359]={en={14628},l=58,money=9000,n="Sleepless Nights",obj={{id=228747,qty=5,src={{"n",228747,0}},t="kill",text="Flamebringer Stalker slain"},{from="provided",id=227768,qty=1,t="item",text="Dreamjuice (Provided)"}},r=53,rep="daily",sn={14628},sort=-2,xp=6200}
-Q[84360]={en={14625},l=58,money=9000,n="Firefighting",obj={{id=228718,qty=10,src={{"n",228718,0}},t="kill",text="Firelands Invader slain"}},r=53,rep="daily",sn={14625},sort=-2,xp=6200}
-Q[84369]={classes=128,en={228902},l=60,money=9000,n="Healing the Healer",obj={{id=227924,qty=1,src={{"n",7139,5}},t="item",text="Unusual Flask"},{id=228902,qty=1,src={{"n",228902,0}},t="kill",text="Collect Frostfire Hot Springs water"}},r=52,sn={228822},sort=4,xp=6600}
-Q[84372]={en={14627},l=58,money=9000,n="Lava Diving",obj={{id=228191,qty=1,src={{"o",462233,99}},t="item",text="Shimmering Molten Mineral"}},r=53,rep="daily",sn={14627},sort=-2,xp=6200}
-Q[84377]={en={332,466},l=60,n="End of the Dark Horde",obj={{from="provided",id=227911,qty=1,t="item",text="Head of Rend Blackhand (Provided)"}},r=60,si={id=227911,n="Head of Rend Blackhand"},side="A",zone=1519}
-Q[84384]={en={222408},l=60,n="Demonic Deceptions",obj={{id=227914,qty=6,t="item",text="Item #227914"}},r=55,sn={222408},zone=618}
-Q[84394]={classes=128,en={5497,7825},l=60,n="Greater Friend of the Library",r=1,sort=4}
 Q[84395]={classes=128,en={5497,7825},l=60,n="Undead Potatoes",r=1,sn={5497},sort=4}
 Q[84396]={classes=128,en={5497,7825},l=60,n="Magma or Lava?",r=1,sn={5497},sort=4}
 Q[84397]={classes=128,en={5497,7825},l=60,n="Northern Kalimdor - A Comprehensive Guide",r=1,sn={5497},sort=4}
@@ -5025,366 +4584,54 @@ Q[84399]={classes=128,en={5497,7825},l=60,n="Ka-Boom!",r=1,sn={5497},sort=4}
 Q[84400]={classes=128,en={5497,7825},l=60,n="The Knight and the Lady",r=1,sn={5497},sort=4}
 Q[84401]={classes=128,en={5497,7825},l=60,n="Scourge: Undead Menace or Misunderstood?",r=1,sn={5497},sort=4}
 Q[84402]={classes=128,en={5497,7825},l=60,n="Necromancy 101",r=1,sn={5497},sort=4}
-Q[84405]={classes=16,en={211229},l=50,n="Lost Heirloom",obj={{id=227745,qty=1,src={{"o",457387,100}},t="item",text="Family Heirloom"},{id=227747,qty=1,src={{"o",457389,100}},t="item",text="Family Records"},{id=227748,qty=1,src={{"o",457390,100}},t="item",text="Survivor Journal"}},r=48,side="H",sn={211229},sort=4}
-Q[84406]={classes=16,eo={457443},l=50,n="Relic of Light",r=48,side="H",sn={211229},sort=4}
-Q[84407]={classes=16,en={211229},l=50,n="The Prize Within",obj={{id=227938,qty=1,t="item",text="Shard of Light"},{id=228912,qty=1,src={{"n",15162,2}},t="item",text="Artifact Storage Key"}},provided={227937},r=48,side="H",so={459388},sort=4}
-Q[84408]={classes=16,en={211229},l=60,n="Diplomatic Overtures",obj={{from="crafted",id=14530,qty=6,t="item",text="Heavy Runecloth Bandage"},{id=13446,qty=4,src={{"n",7070,100},{"n",1844,33},{"n",7665,20},{"n",9601,20}},t="item",text="Major Healing Potion"},{id=12207,qty=8,src={{"n",7808,57},{"n",2929,54},{"n",7450,51},{"n",2928,50},{"n",222699,50},{"n",7451,50},{"n",2927,48},{"n",7452,48},{"n",7453,47},{"n",7454,46},{"n",1809,41},{"n",7456,41}},t="item",text="Giant Egg"},{id=13180,qty=4,src={{"o",176224,100}},t="item",text="Stratholme Holy Water"}},r=60,side="H",sn={211229},sort=4}
-Q[84410]={classes=16,en={211229},l=60,n="Shrine of Cooperation",obj={{from="provided",id=227939,qty=1,t="item",text="Shard of Light (Provided)"},{id=228144,qty=1,t="item",text="Strange Note"}},r=60,side="H",sn={228818},sort=4}
-Q[84411]={classes=16,en={211229},l=60,n="Diplomat Ring",obj={{from="crafted",id=12360,qty=2,t="item",text="Arcanite Bar"},{id=11382,qty=3,src={{"n",228725,8}},t="item",text="Blood of the Mountain"},{id=12361,qty=3,t="item",text="Blue Sapphire"}},r=60,side="H",sn={211229},sort=4}
-Q[84412]={classes=16,en={376},l=60,n="A Diplomatic Mission",r=60,side="H",sn={211229},sort=4}
-Q[84413]={classes=16,en={376},l=60,n="Repairing the Shard",obj={{id=227912,qty=1,t="item",text="Applied Divinity"}},r=60,side="H",sn={376},sort=4}
-Q[84414]={classes=2,eo={462236},l=55,n="Send Me On Me Way!",obj={{id=229037,qty=1,t="kill",text="Send Orthas' Spirit On His Way"},{id=227687,qty=1,src={{"v",214954,0}},t="item",text="Orthas' Favorite Gold Tooth"}},prev=84330,r=50,races=5,side="A",sn={229018},sort=4,xp=5650}
-Q[84418]={classes=2,en={5492},l=55,n="The Missing Knight",r=48,side="A",sort=4}
-Q[84495]={en={10637},kind="group",l=60,n="Fiery Plate Gauntlets",obj={{id=12812,qty=1,t="item",text="Unfired Plate Gauntlets"},{from="crafted",id=12655,qty=6,t="item",text="Enchanted Thorium Bar"},{id=7078,qty=2,src={{"n",15203,84},{"n",14461,83}},t="item",text="Essence of Fire"},{id=7910,qty=4,src={{"n",1795,100},{"n",2691,100},{"n",4468,100},{"n",5269,100},{"n",7093,100},{"n",7110,100},{"n",7369,100},{"n",8563,100},{"n",11443,100},{"n",14475,100},{"n",2693,67},{"n",2645,50}},t="item",text="Star Ruby"}},r=55,sn={10637},xp=8300,zone=618}
-Q[84496]={en={11191},kind="dungeon",l=60,n="Sweet Serenity",obj={{id=13351,qty=1,t="item",text="Crimson Hammersmith's Apron"}},prof={164},r=50,sn={11191},sort=5,xp=8300}
-Q[84525]={classes=256,en={222052},l=10,n="Otherworldly Treasure",r=1,sort=4}
-Q[84545]={eo={179551},l=60,n="A Hero's Reward",r=55,sn={13278},xp=9950,zone=16}
-Q[84546]={classes=4,en={14524},kind="group",l=60,n="Stave of the Ancients",obj={{id=18952,qty=1,src={{"n",14527,90}},t="item",text="Simone's Head"},{id=18953,qty=1,src={{"n",14529,89}},t="item",text="Klinfran's Head"},{id=18954,qty=1,src={{"n",14536,85}},t="item",text="Solenor's Head"},{id=18955,qty=1,src={{"n",14531,91}},t="item",text="Artorius's Head"}},provided={18708},r=60,sn={14524},sort=4,xp=9950}
-Q[84548]={en={14383},inst=true,kind="dungeon",l=60,n="Garona: A Study on Stealth and Treachery",obj={{id=228691,qty=1,t="item",text="Item #228691 (Provided)"}},r=54,xp=6600,zone=2557}
-Q[84549]={en={14383},inst=true,kind="dungeon",l=60,n="The Arcanist's Cookbook",obj={{id=228693,qty=1,t="item",text="Item #228693 (Provided)"}},r=54,xp=6600,zone=2557}
-Q[84550]={en={14383},inst=true,kind="dungeon",l=60,n="Codex of Defense",obj={{id=228692,qty=1,t="item",text="Item #228692 (Provided)"}},r=54,xp=6600,zone=2557}
-Q[84551]={en={14382},inst=true,kind="dungeon",l=60,n="The Light and How To Swing It",obj={{id=228690,qty=1,t="item",text="Item #228690 (Provided)"}},r=54,side="A",xp=6600,zone=2557}
-Q[84555]={en={14368},inst=true,kind="dungeon",l=60,n="Nostro's Compendium",obj={{id=228680,qty=1,t="item",text="Item #228680 (Provided)"}},r=60,side="A",xp=9950,zone=2557}
-Q[84556]={en={14368},inst=true,kind="dungeon",l=60,n="The Forging of Quel'Serrar",next=84557,obj={{from="provided",id=228695,qty=1,t="item",text="A Dull and Flat Elven Blade (Provided)"}},r=60,si={id=228695,n="A Dull and Flat Elven Blade"},zone=2557}
-Q[84557]={en={14368},inst=true,kind="raid",l=60,n="The Forging of Quel'Serrar",obj={{from="crafted",id=18492,qty=1,t="item",text="Treated Ancient Blade"},{id=18488,qty=1,t="item",text="Heated Ancient Blade"}},prev=84556,provided={18489},r=60,sn={14368},xp=9950,zone=2159}
-Q[84560]={en={14394},l=60,n="Celebrating Good Times",r=60,side="A",sn={1748},xp=9950,zone=1519}
-Q[84561]={en={14392},l=60,n="For All To See",r=60,side="H",sn={4949},xp=9950,zone=1637}
-Q[84590]={classes=16,en={14494},l=60,n="The Balance of Light and Shadow",obj={{qty=1,t="event",text="The Balance of Light and Shadow"}},r=60,sn={14494},sort=4,xp=9950}
-Q[84636]={classes=4,en={228176},l=60,n="Prowler",obj={{id=230481,qty=1,src={{"n",230481,0}},t="kill",text="Retrieve the Earth Elemental Fragment"}},r=60,sn={228176},sort=4,xp=660}
-Q[84777]={en={15395},l=55,n="Feathers for Nafien",r=45,zone=361}
-Q[84853]={classes=4,eo={467315},l=60,n="Tracks in the Snow",r=60,sn={228176},sort=4,xp=660}
-Q[84870]={classes=8,en={231050},l=60,money=7000,n="The Dark Hoard",next=84880,obj={{id=229352,qty=1,t="item",text="Item #229352"}},r=55,sort=4,xp=6600}
-Q[84880]={classes=8,en={6707},l=60,money=7000,n="The Enemy of my Enemy",prev=84870,r=55,sn={231050},sort=4,xp=6600}
-Q[84881]={classes=8,en={6707},l=60,n="Into the Hold of Shadows",obj={{id=231430,qty=1,t="kill",text="Find Caius Blackwood"},{id=229911,qty=1,t="item",text="Item #229911"}},r=55,sn={6707},sort=4,xp=9950}
-Q[84950]={classes=4,eo={469796},l=60,n="Out in the Cold",obj={{id=9659,qty=1,t="kill",text="Set Up a Campsite Foundation"}},provided={229415},r=60,so={467315},sort=4,xp=660}
-Q[85034]={classes=2,en={1854},l=60,n="The Ruins of Andorhal",obj={{id=232923,qty=1,t="kill",text="Explore Andorhal and see if the blood reacts"}},prev=85455,r=60,side="A",sn={1854},sort=4}
-Q[85061]={classes=4,en={15181},l=60,n="Bug Hunt",obj={{id=15181,qty=1,src={{"n",15181,0}},t="kill",text="Report to Commander Mar'alith in Cenarion Hold"}},r=60,sn={227755},sort=4,xp=660}
-Q[85063]={classes=2,en={232929},kind="group",l=60,n="Culmination",next=85064,obj={{id=232633,qty=1,t="kill",text="Defend Gregory during the ritual"}},prev=85458,r=60,races=5,side="A",sn={232929},sort=4}
-Q[85064]={classes=2,en={232932},l=60,n="Worst Case Scenario",next=85065,obj={{from="provided",id=232358,qty=1,t="item",text="Empty Reliquary (Provided)"}},prev=85063,r=60,side="A",sn={232929},sort=4}
-Q[85065]={classes=2,en={10667},l=60,n="A Most Curious Gnome",prev=85064,r=60,side="A",sn={232932},sort=4}
-Q[85066]={classes=2,en={232932},l=60,n="Making Ready",next=85067,r=60,side="A",sn={10667},sort=4}
-Q[85067]={classes=2,en={232932},l=60,n="A Paladin of the Silver Hand",obj={{id=232946,qty=1,t="kill",text="Speak with Aeonas"}},prev=85066,r=60,side="A",sn={232932},sort=4}
-Q[85068]={classes=2,en={232960},l=60,n="Who Says You Can Never Go Back?",next=85074,r=60,side="A",sn={10667},sort=4}
-Q[85074]={classes=2,en={232998},l=60,n="The Burning of Andorhal",next=85087,obj={{id=231903,qty=1,t="item",text="Scrap of Torn Cloth"}},prev=85068,r=60,side="A",sn={232960},sort=4}
-Q[85087]={classes=2,en={233138},l=60,n="A Desperate Escape",next=85090,obj={{id=233033,qty=1,t="kill",text="Escape"},{from="provided",id=231904,qty=1,t="item",text="Tarnished Horn (Provided)"}},prev=85074,r=60,races=5,side="A",sn={232998},sort=4}
-Q[85090]={classes=2,en={232932},l=60,n="Back to the Future",obj={{from="provided",id=231901,qty=1,t="item",text="Truthbearer (Provided)"}},prev=85087,r=60,side="A",sn={233138},sort=4}
-Q[85091]={classes=2,en={233776},l=60,n="The Cost of Victory",obj={{id=233158,qty=1,t="kill",text="Consecrate your weapon and slay Azgaloth"},{from="provided",id=232312,qty=1,t="item",text="Blood of the Lightbringer (Provided)"}},r=60,side="A",sn={232932},sort=4}
-Q[85092]={classes=2,en={233776},l=60,n="Truthbearer",r=60,side="A",sn={233776},sort=4}
-Q[85093]={classes=2,l=60,n="UNUSED",r=60,sort=4}
-Q[85112]={classes=256,en={6247},l=60,n="The Depleted Scythe",r=60,sn={6247},sort=4}
-Q[85150]={classes=4,en={15181},l=60,n="The Only Good Bug is a Dead Bug",obj={{id=231984,qty=4,src={{"n",231984,0}},t="kill",text="Kill Silithid Darters"}},r=60,sn={15181},sort=4,xp=6600}
-Q[85248]={classes=4,en={15181},l=60,n="Everyone Knows That Bugs Can't Fly",obj={{id=477757,qty=1,t="object",text="Capture a Silithid Darter and Deliver It to Cenarion Hold"}},r=60,sn={15181},sort=4,xp=6600}
-Q[85250]={classes=4,en={233084},l=60,n="Meeting the Menagerie",r=60,sn={15181},sort=4,xp=660}
-Q[85251]={classes=4,en={233084},l=60,n="Showdown at Un'Goro Crater",obj={{id=232755,qty=1,src={{"n",232755,0}},t="kill",text="Defeat Van Amburgh and His Menagerie"}},r=60,sn={233084},sort=4,xp=8300}
-Q[85304]={classes=128,en={5497,7825},l=60,money=7000,n="Essence of Fire",next=85385,obj={{qty=1,t="event",text="Translate the scroll"},{id=232429,qty=1,src={{"n",232429,0}},t="kill",text="Find source of Fire Essence"},{id=232398,qty=1,src={{"n",232398,0}},t="kill",text="Solve fire puzzle"}},r=55,sort=4,xp=6600}
-Q[85385]={classes=128,en={232381},l=60,money=7000,n="The Librarian's Apprentice",next=85386,prev=85304,r=55,sn={5497,7825},sort=4,xp=6600}
-Q[85386]={classes=128,en={232381},l=60,money=7000,n="Essence of Frost",obj={{qty=1,t="event",text="Collect Spell Notes"},{qty=1,t="event",text="Translate the scroll"},{id=232466,qty=1,src={{"n",232466,0}},t="kill",text="Find source of Frost Essence"},{id=232399,qty=1,src={{"n",232399,0}},t="kill",text="Solve frost puzzle"}},prev=85385,r=55,sn={232381},sort=4,xp=6600}
-Q[85388]={classes=128,en={10929},l=60,money=7000,n="A Foul Interference",obj={{id=232532,qty=5,src={{"n",232532,0}},t="kill",text="Investigate Mazthoril"},{from="crafted",id=231298,qty=1,t="item",text="Scroll of Lesser Spatial Mending"}},r=55,sort=4,xp=6600}
-Q[85401]={classes=1024,en={216289},l=60,n="The Frigid Barrow",obj={{id=231842,qty=1,t="item",text="Item #231842"}},prev=85501,r=55,sn={216289},sort=4,xp=9950}
-Q[85413]={classes=128,en={5497},l=60,n="Essence of Fire",obj={{id=230909,qty=1,src={{"n",232398,96}},t="item",text="Depleted Essence of Fire"}},r=55,side="A",sort=4}
-Q[85423]={classes=128,l=60,n="Essence of Frost",obj={{id=230949,qty=1,src={{"n",232399,86}},t="item",text="Depleted Essence of Frost"}},r=55,sort=4}
-Q[85435]={classes=128,l=60,money=7000,n="A Foul Interference",obj={{id=232532,qty=5,src={{"n",232532,0}},t="kill",text="Investigate Mazthoril"},{from="crafted",id=231298,qty=1,t="item",text="Scroll of Lesser Spatial Mending"}},r=55,sort=4,xp=6600}
-Q[85441]={en={232309},l=60,n="Thunderaan the Windseeker",obj={{from="crafted",id=17771,qty=10,t="item",text="Elementium Bar"},{id=19017,qty=1,t="item",text="Essence of the Firelord"},{id=18564,qty=1,t="item",text="Bindings of the Windseeker"},{id=18563,qty=1,t="item",text="Bindings of the Windseeker"}},prev=85442,r=60,sn={232309},sort=7,xp=9950}
-Q[85442]={en={232309},l=60,n="Examine the Vessel",next=85441,obj={{from="provided",id=19016,qty=1,t="item",text="Vessel of Rebirth (Provided)"}},r=60,sort=7}
-Q[85443]={en={232309},l=60,n="Rise, Thunderfury!",obj={{id=232018,qty=1,t="item",text="Item #232018 (Provided)"}},r=60,sort=7,xp=9950}
-Q[85445]={classes=1,en={2888},l=60,n="The Golden Disk",obj={{id=231378,qty=1,t="item",text="Item #231378"},{id=2888,qty=1,src={{"n",2888,0}},t="kill",text="Find someone with knowledge of the Shimmering Golden Disk"}},r=60,sort=4}
-Q[85446]={classes=1,en={232596},l=60,n="Scale of the Dragon Lord",next=85453,obj={{from="crafted",id=231386,qty=1,t="item",text="Flawless Black Dragonscale"},{qty=1,t="event",text="Bathe the Dragonscale in Shadowflame"},{from="crafted",id=232414,qty=1,t="item",text="Dragontooth Blade"}},r=60,sn={232596},sort=4}
-Q[85447]={classes=1,en={232596},l=60,n="Grim Batol",obj={{id=231385,qty=1,t="item",text="Item #231385 (Provided)"}},r=60,sn={2888},sort=4}
-Q[85453]={classes=1,en={232624},l=60,n="No Good Deed Goes Unpunished",next=85454,obj={{id=232625,qty=1,src={{"n",232625,0}},t="kill",text="Defend Yourself Against Riosustrasz"},{id=233383,qty=1,t="kill",text="Defend Yourself Against Riosustrasz"}},prev=85446,r=60,sn={232596},sort=4}
-Q[85454]={classes=1,en={232624},l=60,n="A Just Reward",obj={{id=232626,qty=1,t="kill",text="Simulacrum of the Dragon Soul Destroyed"}},prev=85453,r=60,sn={232624},sort=4}
-Q[85455]={classes=2,en={1854},l=60,n="The Blood of the Lightbringer",next=85034,obj={{id=231452,qty=1,t="item",text="Item #231452 (Provided)"}},r=60,side="A",sort=4}
-Q[85457]={classes=2,en={231500},l=60,n="Just What Was Needed",next=85458,obj={{from="provided",id=231841,qty=1,t="item",text="Blood of the Lightbringer (Provided)"}},r=60,side="A",sn={231498},sort=4}
-Q[85458]={classes=2,en={232929},l=60,n="Darkwhisper Gorge",next=85063,obj={{from="provided",id=231841,qty=1,t="item",text="Blood of the Lightbringer (Provided)"}},prev=85457,r=60,side="A",sn={231500},sort=4}
-Q[85468]={classes=256,en={232802},l=60,n="Soul of Mischief",obj={{qty=1,t="event",text="Talk to Xirath"},{id=232731,qty=5,src={{"n",232731,0}},t="kill",text="Suspicious Supplies placed"},{qty=1,t="event",text="Report to Xirath"},{qty=1,t="event",text="Obtain Soul of Mischief"},{qty=1,t="event",text="Use Soul of Mischief"},{from="crafted",id=231732,qty=5,t="item",text="Suspicious Supplies"}},r=60,sn={6247},sort=4}
-Q[85480]={classes=16,en={231485},l=60,n="Procrastimond's Gratitude",r=1,sort=4}
-Q[85485]={classes=256,en={232802},l=60,n="Soul of the Void",obj={{qty=1,t="event",text="Find Ritual Site"},{qty=1,t="event",text="Summon Voidwalker"},{qty=1,t="event",text="Obtain Soul of the Void"}},r=60,sn={232802},sort=4}
-Q[85486]={classes=256,en={232802},l=60,n="Soul of Enthralling",obj={{qty=1,t="event",text="Use Glowing Scroll of Spatial Mending on Fel Portal"},{qty=1,t="event",text="Obtain Soul of Enthralling"},{qty=1,t="event",text="Use Soul of Enthralling"},{id=231836,qty=1,src={{"n",232900,0}},t="item",text="Glowing Scroll of Spatial Mending"}},r=60,sn={232802},sort=4}
-Q[85501]={classes=1024,en={216289},l=60,money=18000,n="The Heart of Chromaggus",next=85401,obj={{id=231814,qty=1,t="item",text="Item #231814"}},r=55,sort=4,xp=8300}
-Q[85505]={classes=256,en={232802},l=60,n="Soul of Devouring",obj={{qty=1,t="event",text="Find Felhunter Area"},{qty=1,t="event",text="Summon Felhound"},{qty=1,t="event",text="Obtain Soul of Devouring"},{id=231837,qty=1,src={{"n",232903,0}},t="item",text="Shadow Carving"}},r=60,sn={232802},sort=4}
-Q[85506]={classes=256,en={232924},l=60,n="The Final Test",obj={{id=232924,qty=1,src={{"n",232924,0}},t="kill",text="Speak to Doan Karhan"},{qty=1,t="event",text="Enter Demon Fall Canyon Alone"},{id=232886,qty=1,t="kill",text="Summon Des'Altek"}},r=60,sn={232802,232924},sort=4}
-Q[85507]={classes=2,en={231498},l=60,n="Our Wayward Friend",next=85508,obj={{id=231498,qty=1,src={{"n",231498,0}},t="kill",text="Find Aeonas"}},r=60,races=5,side="A",sn={5492},sort=4}
-Q[85508]={classes=2,en={5492},l=60,n="Our Wayward Friend",next=85509,obj={{id=232892,qty=1,t="kill",text="Speak to Aeonas"}},prev=85507,r=60,races=5,side="A",sn={231498},sort=4}
-Q[85509]={classes=2,en={5492},l=60,n="Grand Theft Echoing Orb",next=85510,obj={{id=231852,qty=1,t="kill",text="Find out more about the break-in"}},prev=85508,r=60,races=5,side="A",sn={5492},sort=4}
-Q[85510]={classes=2,en={231499},l=60,n="A Solid Lead",next=85511,prev=85509,r=60,races=5,side="A",sn={5492},sort=4}
-Q[85511]={classes=2,en={231500},l=60,n="Plaguelands Rendezvous",obj={{id=231979,qty=1,t="kill",text="Find Ada Darkhardt's Camp"}},prev=85510,r=60,races=5,side="A",sn={231499},sort=4}
-Q[85521]={classes=4,en={227755},l=60,n="Tracking the Trapper",obj={{id=478075,qty=1,t="object",text="Find and Investigate the Camp in Western Burning Steppes"},{id=227755,qty=1,src={{"n",227755,0}},t="kill",text="Talk to the Night Elf"},{id=231882,qty=1,t="item",text="Item #231882"}},r=60,sort=4,xp=660}
-Q[85525]={classes=4,eo={469796},l=60,n="One Night in Winterspring",obj={{id=469600,qty=6,t="object",text="Collect Dry Wood"},{id=12622,qty=4,src={{"n",7445,22},{"n",7443,9}},t="item",text="Shardtooth Meat"},{id=229416,qty=12,t="item",text="Warm Fur"}},provided={229415},r=60,so={469796},sort=4,xp=660}
-Q[85555]={classes=64,en={2836},l=60,n="Heavy Metal",obj={{id=231995,qty=1,t="item",text="Item #231995 (Provided)"}},r=60,side="H",sort=4}
-Q[85556]={classes=64,en={14401},l=60,n="A Particular Set of Skills",obj={{id=231995,qty=1,t="item",text="Item #231995 (Provided)"}},r=60,side="H",sn={2836},sort=4}
-Q[85557]={classes=64,en={14401},l=60,n="Efficiency Is Priority One",obj={{id=228105,qty=1,src={{"n",232855,100}},t="item",text="Everburning Flame Core"}},r=60,sn={14401},sort=4}
-Q[85558]={classes=64,en={14401},l=60,n="Commit to Quality",r=60,sn={14401},sort=4}
-Q[85559]={classes=4,eo={489943},l=60,n="Night Falls",obj={{id=233249,qty=1,src={{"n",233249,0}},t="kill",text="Walk with Estelenn"}},r=60,sn={233084},sort=4,xp=660}
-Q[85595]={en={15042},inst=true,kind="raid",l=60,n="Presence of Might",r=58,zone=1977}
-Q[85596]={en={15042},inst=true,kind="raid",l=60,n="Death's Embrace",r=58,zone=1977}
-Q[85597]={en={15042},inst=true,kind="raid",l=60,n="Falcon's Call",r=58,zone=1977}
-Q[85598]={en={15042},inst=true,kind="raid",l=60,n="Prophetic Aura",r=58,zone=1977}
-Q[85599]={en={15042},inst=true,kind="raid",l=60,n="Hoodoo Hex",r=58,zone=1977}
-Q[85600]={en={15042},inst=true,kind="raid",l=60,n="Presence of Sight",r=58,zone=1977}
-Q[85601]={en={15042},inst=true,kind="raid",l=60,n="Syncretist's Sigil",r=58,side="A",zone=1977}
-Q[85602]={en={15042},inst=true,kind="raid",l=60,n="Animist's Caress",r=58,zone=1977}
-Q[85603]={en={15042},inst=true,kind="raid",l=60,n="Vodouisant's Vigilant Embrace",r=58,side="H",zone=1977}
-Q[85604]={en={14904},inst=true,kind="raid",l=60,n="The Unmarred Vision of Voodress",r=58,side="H",xp=6600,zone=1977}
-Q[85605]={en={14904},inst=true,kind="raid",l=60,n="Paragons of Power: The Augur's Bracers",obj={{id=19717,qty=1,t="item",text="Primal Hakkari Armsplint"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Friendly)"}},r=58,side="H",sn={14904},xp=6600,zone=1977}
-Q[85606]={en={14904},inst=true,kind="raid",l=60,n="Paragons of Power: The Augur's Belt",obj={{id=19719,qty=1,t="item",text="Primal Hakkari Girdle"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Honored)"}},r=58,side="H",sn={14904},xp=6600,zone=1977}
-Q[85607]={en={14904},inst=true,kind="raid",l=60,n="Paragons of Power: The Augur's Hauberk",obj={{id=19722,qty=1,t="item",text="Primal Hakkari Tabard"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Revered)"}},r=58,side="H",sn={14904},xp=6600,zone=1977}
-Q[85608]={en={14904},inst=true,kind="raid",l=60,n="Pristine Enchanted South Seas Kelp",r=58,xp=6600,zone=1977}
-Q[85609]={classes=1024,en={14904},inst=true,kind="raid",l=60,n="Paragons of Power: The Haruspex's Bracers",obj={{id=19718,qty=1,t="item",text="Primal Hakkari Stanchion"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Friendly)"}},r=58,sn={14904},xp=6600,zone=1977}
-Q[85610]={classes=1024,en={14904},inst=true,kind="raid",l=60,n="Paragons of Power: The Haruspex's Belt",obj={{id=19720,qty=1,t="item",text="Primal Hakkari Sash"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Honored)"}},r=58,sn={14904},xp=6600,zone=1977}
-Q[85611]={classes=1024,en={14904},inst=true,kind="raid",l=60,n="Paragons of Power: The Haruspex's Tunic",obj={{id=19722,qty=1,t="item",text="Primal Hakkari Tabard"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Revered)"}},r=58,sn={14904},xp=6600,zone=1977}
-Q[85612]={en={14902},inst=true,kind="raid",l=60,n="The Rage of Mugamba",r=58,xp=6600,zone=1977}
-Q[85613]={en={14902},inst=true,kind="raid",l=60,n="Paragons of Power: The Vindicator's Armguards",obj={{id=19717,qty=1,t="item",text="Primal Hakkari Armsplint"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Friendly)"}},r=58,sn={14902},xp=6600,zone=1977}
-Q[85614]={en={14902},inst=true,kind="raid",l=60,n="Paragons of Power: The Vindicator's Belt",obj={{id=19719,qty=1,t="item",text="Primal Hakkari Girdle"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Honored)"}},r=58,sn={14902},xp=6600,zone=1977}
-Q[85615]={en={14902},inst=true,kind="raid",l=60,n="Paragons of Power: The Vindicator's Breastplate",obj={{id=19723,qty=1,t="item",text="Primal Hakkari Kossack"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Revered)"}},r=58,sn={14902},xp=6600,zone=1977}
-Q[85616]={en={14903},inst=true,kind="raid",l=60,n="The All-Seeing Eye of Zuldazar",r=58,xp=6600,zone=1977}
-Q[85617]={en={14902},inst=true,kind="raid",l=60,n="The Hero's Brand",r=58,side="A",xp=6600,zone=1977}
-Q[85618]={en={14902},inst=true,kind="raid",l=60,n="Paragons of Power: The Freethinker's Armguards",obj={{id=19716,qty=1,t="item",text="Primal Hakkari Bindings"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Friendly)"}},r=58,side="A",sn={14902},xp=6600,zone=1977}
-Q[85619]={en={14902},inst=true,kind="raid",l=60,n="Paragons of Power: The Freethinker's Belt",obj={{id=19721,qty=1,t="item",text="Primal Hakkari Shawl"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Honored)"}},r=58,side="A",sn={14902},xp=6600,zone=1977}
-Q[85620]={en={14902},inst=true,kind="raid",l=60,n="Paragons of Power: The Freethinker's Breastplate",obj={{id=19722,qty=1,t="item",text="Primal Hakkari Tabard"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Revered)"}},r=58,side="A",sn={14902},xp=6600,zone=1977}
-Q[85622]={en={14903},inst=true,kind="raid",l=60,n="Paragons of Power: The Confessor's Wraps",obj={{id=19718,qty=1,t="item",text="Primal Hakkari Stanchion"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Friendly)"}},r=58,sn={14903},xp=6600,zone=1977}
-Q[85623]={en={14903},inst=true,kind="raid",l=60,n="Paragons of Power: The Confessor's Bindings",obj={{id=19720,qty=1,t="item",text="Primal Hakkari Sash"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Honored)"}},r=58,sn={14903},xp=6600,zone=1977}
-Q[85624]={en={14903},inst=true,kind="raid",l=60,n="Paragons of Power: The Confessor's Mantle",obj={{id=19724,qty=1,t="item",text="Primal Hakkari Aegis"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Revered)"}},r=58,sn={14903},xp=6600,zone=1977}
-Q[85625]={en={14903},inst=true,kind="raid",l=60,n="Kezan's Unstoppable Taint",r=58,xp=6600,zone=1977}
-Q[85626]={en={14903},inst=true,kind="raid",l=60,n="Paragons of Power: The Demoniac's Wraps",obj={{id=19718,qty=1,t="item",text="Primal Hakkari Stanchion"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Friendly)"}},r=58,sn={14903},xp=6600,zone=1977}
-Q[85627]={en={14903},inst=true,kind="raid",l=60,n="Paragons of Power: The Demoniac's Mantle",obj={{id=19720,qty=1,t="item",text="Primal Hakkari Sash"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Honored)"}},r=58,sn={14903},xp=6600,zone=1977}
-Q[85628]={en={14903},inst=true,kind="raid",l=60,n="Paragons of Power: The Demoniac's Robes",obj={{id=19723,qty=1,t="item",text="Primal Hakkari Kossack"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Revered)"}},r=58,sn={14903},xp=6600,zone=1977}
-Q[85629]={en={14903},inst=true,kind="raid",l=60,n="The Jewel of Kajaro",r=58,xp=6600,zone=1977}
-Q[85630]={classes=128,en={14903},inst=true,kind="raid",l=60,n="Paragons of Power: The Illusionist's Wraps",obj={{id=19716,qty=1,t="item",text="Primal Hakkari Bindings"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Friendly)"}},r=58,sn={14903},xp=6600,zone=1977}
-Q[85631]={classes=128,en={14903},inst=true,kind="raid",l=60,n="Paragons of Power: The Illusionist's Mantle",obj={{id=19721,qty=1,t="item",text="Primal Hakkari Shawl"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Honored)"}},r=58,sn={14903},xp=6600,zone=1977}
-Q[85632]={classes=128,en={14903},inst=true,kind="raid",l=60,n="Paragons of Power: The Illusionist's Robes",obj={{id=19723,qty=1,t="item",text="Primal Hakkari Kossack"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Revered)"}},r=58,sn={14903},xp=6600,zone=1977}
-Q[85633]={en={14905},inst=true,kind="raid",l=60,n="Zandalarian Shadow Mastery Talisman",r=58,xp=6600,zone=1977}
-Q[85634]={en={14905},inst=true,kind="raid",l=60,n="Paragons of Power: The Madcap's Bracers",obj={{id=19717,qty=1,t="item",text="Primal Hakkari Armsplint"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Friendly)"}},r=58,sn={14905},xp=6600,zone=1977}
-Q[85635]={en={14905},inst=true,kind="raid",l=60,n="Paragons of Power: The Madcap's Mantle",obj={{id=19719,qty=1,t="item",text="Primal Hakkari Girdle"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Honored)"}},r=58,sn={14905},xp=6600,zone=1977}
-Q[85636]={en={14905},inst=true,kind="raid",l=60,n="Paragons of Power: The Madcap's Tunic",obj={{id=19724,qty=1,t="item",text="Primal Hakkari Aegis"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Revered)"}},r=58,sn={14905},xp=6600,zone=1977}
-Q[85637]={en={14905},inst=true,kind="raid",l=60,n="Maelstrom's Wrath",r=58,xp=6600,zone=1977}
-Q[85638]={en={14905},inst=true,kind="raid",l=60,n="Paragons of Power: The Predator's Bracers",obj={{id=19716,qty=1,t="item",text="Primal Hakkari Bindings"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Friendly)"}},r=58,sn={14905},xp=6600,zone=1977}
-Q[85639]={en={14905},inst=true,kind="raid",l=60,n="Paragons of Power: The Predator's Belt",obj={{id=19721,qty=1,t="item",text="Primal Hakkari Shawl"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Honored)"}},r=58,sn={14905},xp=6600,zone=1977}
-Q[85640]={en={14905},inst=true,kind="raid",l=60,n="Paragons of Power: The Predator's Mantle",obj={{id=19724,qty=1,t="item",text="Primal Hakkari Aegis"},{id=270,qty=1,t="faction",text="Zandalar Tribe (Revered)"}},r=58,sn={14905},xp=6600,zone=1977}
-Q[85643]={en={14721},l=60,n="The Lord of Blackrock",r=60,side="A",sn={1748},xp=9950,zone=1519}
-Q[85644]={en={14720},l=60,n="The Lord of Blackrock",r=60,side="H",sn={4949},xp=9950,zone=1637}
-Q[85658]={en={14392},l=60,n="For All To See",r=60,side="H",sn={4949},xp=9950,zone=1637}
-Q[85659]={en={14394},l=60,n="Celebrating Good Times",r=60,side="A",sn={1748},xp=9950,zone=1519}
-Q[85660]={en={14875},inst=true,l=60,n="The Heart of Hakkar",r=58,xp=9950,zone=1977}
-Q[85699]={en={11192},kind="dungeon",l=60,n="Snakestone of the Shadow Huntress",obj={{id=13352,qty=1,t="item",text="Vosh'gajin's Snakestone"}},prof={164},r=50,sn={11192},sort=5,xp=8300}
-Q[85700]={en={11193},kind="dungeon",l=60,n="Corruption",obj={{id=13350,qty=1,t="item",text="Insignia of the Black Guard"}},prof={164},r=50,sn={11193},sort=5,xp=8300}
-Q[85701]={en={7866},l=55,n="Dragonscale Leatherworking",obj={{from="crafted",id=8203,qty=2,t="item",text="Tough Scorpid Breastplate"},{from="crafted",id=8204,qty=2,t="item",text="Tough Scorpid Gloves"},{id=8165,qty=10,src={{"n",7846,100},{"n",10321,50},{"n",5314,40},{"n",10196,40},{"n",10662,40},{"n",5718,33},{"n",7045,33},{"n",8197,33},{"n",12475,31},{"n",6129,30},{"n",1046,22},{"n",10660,21}},t="item",text="Worn Dragonscale"}},prof={165},r=40,side="A",sn={7866},sort=5,xp=4200}
-Q[85702]={en={7867},l=55,n="Dragonscale Leatherworking",obj={{from="crafted",id=8203,qty=2,t="item",text="Tough Scorpid Breastplate"},{from="crafted",id=8204,qty=2,t="item",text="Tough Scorpid Gloves"},{id=8165,qty=10,src={{"n",7846,100},{"n",10321,50},{"n",5314,40},{"n",10196,40},{"n",10662,40},{"n",5718,33},{"n",7045,33},{"n",8197,33},{"n",12475,31},{"n",6129,30},{"n",1046,22},{"n",10660,21}},t="item",text="Worn Dragonscale"}},prof={165},r=40,side="H",sn={7867},sort=5,xp=4200}
-Q[85703]={en={7868},l=55,n="Elemental Leatherworking",obj={{id=7077,qty=2,src={{"n",14461,74},{"n",228722,50}},t="item",text="Heart of Fire"},{id=7079,qty=2,src={{"n",14457,67}},t="item",text="Globe of Water"},{id=7075,qty=2,src={{"n",14464,65}},t="item",text="Core of Earth"},{id=7081,qty=2,src={{"n",14454,62},{"n",8667,34},{"n",9397,24},{"n",6239,18}},t="item",text="Breath of Wind"}},prof={165},r=40,side="A",sn={7868},sort=5,xp=4200}
-Q[85704]={en={7869},l=55,n="Elemental Leatherworking",obj={{id=7077,qty=2,src={{"n",14461,74},{"n",228722,50}},t="item",text="Heart of Fire"},{id=7079,qty=2,src={{"n",14457,67}},t="item",text="Globe of Water"},{id=7075,qty=2,src={{"n",14464,65}},t="item",text="Core of Earth"},{id=7081,qty=2,src={{"n",14454,62},{"n",8667,34},{"n",9397,24},{"n",6239,18}},t="item",text="Breath of Wind"}},prof={165},r=40,side="H",sn={7869},sort=5,xp=4200}
-Q[85705]={en={7870},l=55,n="Tribal Leatherworking",obj={{from="crafted",id=8211,qty=1,t="item",text="Wild Leather Vest"},{from="crafted",id=8214,qty=1,t="item",text="Wild Leather Helmet"}},prof={165},r=40,side="A",sn={7870},sort=5,xp=4200}
-Q[85706]={en={7871},l=55,n="Tribal Leatherworking",obj={{from="crafted",id=8211,qty=1,t="item",text="Wild Leather Vest"},{from="crafted",id=8214,qty=1,t="item",text="Wild Leather Helmet"}},prof={165},r=40,side="H",sn={7871},sort=5,xp=4200}
-Q[85712]={en={11177},l=40,n="The Art of the Armorsmith",obj={{from="crafted",id=7937,qty=4,t="item",text="Ornate Mithril Helm"},{from="crafted",id=7936,qty=2,t="item",text="Ornate Mithril Boots"},{from="crafted",id=7935,qty=1,t="item",text="Ornate Mithril Breastplate"}},prof={164},r=40,side="H",sn={11177},sort=5,xp=3150}
-Q[85713]={en={5164},l=40,n="The Art of the Armorsmith",obj={{from="crafted",id=7937,qty=4,t="item",text="Ornate Mithril Helm"},{from="crafted",id=7936,qty=2,t="item",text="Ornate Mithril Boots"},{from="crafted",id=7935,qty=1,t="item",text="Ornate Mithril Breastplate"}},prof={164},r=40,side="A",sn={5164},sort=5,xp=3150}
-Q[85772]={classes=64,en={12736},l=25,n="Elemental Distress",r=1,side="H",sort=4}
-Q[85798]={en={15443},l=60,n="Arms for the Field",obj={{id=217281,qty=2,t="item",text="Item #217281"},{id=21260,qty=1,src={{"n",15182,0},{"n",15184,0},{"n",15440,0},{"n",15449,0},{"n",15500,0},{"n",15540,0}},t="item",text="Logistics Task Briefing VI (Provided)"}},r=60,side="A",xp=660,zone=1377}
-Q[85882]={en={332},l=60,n="End of the Dark Horde",r=60,side="A",zone=1519}
-Q[85883]={en={4949},inst=true,kind="raid",l=60,money=27000,n="For The Horde!",r=55,side="H",xp=9950,zone=1583}
-Q[85963]={en={11039},l=60,n="One Commendation Signet",r=1,side="A",sort=7}
-Q[85964]={en={11039},l=60,n="Ten Commendation Signets",r=1,side="A",sort=7}
-Q[85965]={en={11039},l=60,n="One Commendation Signet",r=1,side="H",sort=7}
-Q[85966]={en={11039},l=60,n="Ten Commendation Signets",r=1,side="H",sort=7}
-Q[85967]={en={15282},l=60,n="Ten Commendation Signets",r=1,side="H",sort=7}
-Q[85968]={en={15282},l=60,n="One Commendation Signet",r=1,side="H",sort=7}
-Q[85969]={en={15282},l=60,n="Ten Commendation Signets",r=1,side="A",sort=7}
-Q[85970]={en={15282},l=60,n="One Commendation Signet",r=1,side="A",sort=7}
-Q[85971]={en={13278},l=60,n="One Commendation Signet",r=1,side="A",sort=7}
-Q[85972]={en={13278},l=60,n="One Commendation Signet",r=1,side="H",sort=7}
-Q[85973]={en={13278},l=60,n="Ten Commendation Signets",r=1,side="A",sort=7}
-Q[85974]={en={13278},l=60,n="Ten Commendation Signets",r=1,side="H",sort=7}
-Q[85975]={en={14625},l=60,n="One Commendation Signet",r=1,side="A",sort=7}
-Q[85976]={en={14625},l=60,n="Ten Commendation Signets",r=1,side="A",sort=7}
-Q[85977]={l=60,n="One Commendation Signet",obj={{from={"q",8532},id=21438,qty=1,t="item",text="Horde Commendation Signet"}},r=1,side="H",sort=7}
-Q[85978]={en={14625},l=60,n="Ten Commendation Signets",r=1,side="H",sort=7}
-Q[85979]={en={2496},l=60,n="One Commendation Signet",r=1,side="A",sort=7}
-Q[85980]={en={2496},l=60,n="One Commendation Signet",r=1,side="H",sort=7}
-Q[85981]={en={2496},l=60,n="Ten Commendation Signets",r=1,side="H",sort=7}
-Q[85982]={en={2496},l=60,n="Ten Commendation Signets",r=1,side="A",sort=7}
-Q[85983]={en={14910},l=60,n="One Commendation Signet",r=1,side="A",sort=7}
-Q[85984]={en={14910},l=60,n="One Commendation Signet",r=1,side="H",sort=7}
-Q[85985]={en={14910},l=60,n="Ten Commendation Signets",r=1,side="A",sort=7}
-Q[85986]={en={14910},l=60,n="Ten Commendation Signets",r=1,side="H",sort=7}
-Q[85987]={en={15395},l=60,n="One Commendation Signet",r=1,side="A",sort=7}
-Q[85988]={en={15395},l=60,n="One Commendation Signet",r=1,side="H",sort=7}
-Q[86160]={en={15395},l=60,n="Ten Commendation Signets",r=1,side="A",sort=7}
-Q[86161]={en={15395},l=60,n="Ten Commendation Signets",r=1,side="H",sort=7}
-Q[86326]={en={234539},inst=true,kind="raid",l=60,n="Desert Power",obj={{id=234539,qty=1,t="kill",text="Speak to Selestrasza"}},r=55,sn={234539},xp=6600,zone=3428}
-Q[86442]={en={15192},inst=true,kind="raid",l=60,n="Nefarius's Corruption",obj={{id=21138,qty=1,t="item",text="Red Scepter Shard"},{id=21142,qty=1,t="item",text="From the Desk of Lord Victor Nefarius"}},r=60,side="H",sn={13020},xp=9950,zone=2677}
-Q[86443]={en={11832},kind="raid",l=60,n="The Nightmare Manifests",next=8741,obj={{qty=1,t="event",text="The Redemption of Eranikus"}},prev=8736,r=60,sn={11832},xp=9950,zone=493}
-Q[86444]={en={11811},kind="raid",l=60,n="The Only Prescription",obj={{from="crafted",id=21111,qty=1,t="item",text="Draconic For Dummies: Volume II"}},provided={21112},r=60,sn={11811},xp=6600,zone=440}
-Q[86445]={en={15192},kind="raid",l=60,n="The Wrath of Neptulon",obj={{id=21137,qty=1,src={{"n",15571,96}},t="item",text="Blue Scepter Shard"}},provided={21136},r=60,side="H",sn={11811},xp=9950,zone=16}
-Q[86449]={en={15693},l=60,n="Treasure of the Timeless One",r=60,xp=6600,zone=1377}
 Q[86574]={l=24,money=1700,n="Stonetalon Supply Run",obj={{id=277917,qty=6,t="item",text="Stonetalon Supply Bundle"},{from="provided",id=277915,qty=1,t="item",text="Stonetalon Supply Satchel (Provided)"}},r=20,side="A",xp=1950,zone=406}
 Q[86576]={l=26,money=2000,n="Bloodfury Trinkets",obj={{id=277936,qty=15,t="item",text="Glittering Sunstone"}},r=18,side="H",sn={11860},xp=2100,zone=406}
+Q[86577]={l=55,money=8500,n="A Sampling of Putrescence",obj={{id=277958,qty=8,t="item",text="Putrescent Bear Organs"},{id=277959,qty=10,t="item",text="Putrescent Wolf Organs"}},r=48,xp=5650,zone=361}
 Q[86585]={en={1092},l=17,money=900,n="Banner of the Fallen",obj={{from="provided",id=253247,qty=1,t="item",text="Banner of Ironforge (Provided)"},{id=269185,qty=1,src={{"n",269185,0}},t="kill",text="Headsplitter slain"}},r=10,side="A",sn={269153},xp=1250,zone=38}
+Q[86611]={l=55,money=4000,n="Stag Lord's Bauble",obj={{id=277973,qty=1,t="item",text="Stag Lord's Bauble (Provided)"}},r=48,side="A",xp=2800,zone=361}
+Q[86612]={l=55,money=4000,n="Stag Lord's Bauble",obj={{id=277973,qty=1,t="item",text="Stag Lord's Bauble (Provided)"}},r=48,side="H",xp=2800,zone=361}
 Q[86613]={en={1344},l=18,money=1000,n="Excavation Tools",obj={{from="provided",id=278398,qty=6,t="item",text="Excavation Tools (Provided)"}},r=13,side="A",xp=1350,zone=38}
 Q[86614]={en={1684},l=20,money=1200,n="Silver of the Waves",obj={{from="provided",id=278051,qty=1,t="item",text="Monogrammed Silver Hair Clip (Provided)"}},r=13,side="A",xp=1550,zone=38}
+Q[86615]={l=51,money=800,n="Treaty Obligations",obj={{id=279171,qty=1,t="item",text="Diplomatic Satchel"}},r=40,side="A",xp=490,zone=348}
+Q[86616]={l=48,money=7000,n="Repurposed Totems",obj={{id=279225,qty=12,t="item",text="Vilebranch Totem"}},r=45,side="A",xp=4400,zone=47}
+Q[86620]={l=51,money=7500,n="Fledgling Rescue",obj={{id=279229,qty=6,t="item",text="Lost Gryphon Egg"}},r=40,xp=4900,zone=348}
 Q[86667]={en={258043},l=20,money=1200,n="Snowbound",obj={{from="crafted",id=279379,qty=1,t="item",text="Jar of Snow"}},provided={279380},r=10,side="A",sn={49808},xp=1550,zone=38}
-Q[86670]={en={15192},inst=true,l=60,n="The Savior of Kalimdor",obj={{from="provided",id=21221,qty=1,t="item",text="Eye of C'Thun (Provided)"}},r=60,side="H",sn={15379},xp=9950,zone=3428}
-Q[86671]={en={15378},inst=true,kind="raid",l=60,n="Imperial Qiraji Regalia",obj={{id=235045,qty=1,t="item",text="Item #235045"},{id=18562,qty=3,t="item",text="Elementium Ore"}},r=60,sn={15378},xp=6600,zone=3428}
-Q[86672]={en={15380},inst=true,kind="raid",l=60,n="Imperial Qiraji Armaments",obj={{id=235046,qty=1,t="item",text="Item #235046"},{id=18562,qty=3,t="item",text="Elementium Ore"}},r=60,sn={15380},xp=6600,zone=3428}
-Q[86673]={en={15181},inst=true,kind="raid",l=60,n="The Fall of Ossirian",obj={{id=235048,qty=1,t="item",text="Item #235048 (Provided)"}},r=60,xp=9950,zone=3429}
-Q[86674]={en={16091},kind="raid",l=60,n="The Perfect Poison",obj={{id=22216,qty=1,t="item",text="Venoxis's Venom Sac"},{id=22217,qty=1,t="item",text="Kurinnaxx's Venom Sac"}},r=60,sn={16091},xp=6600,zone=1377}
-Q[86675]={en={15176},l=60,n="Volunteer's Battlegear",obj={{from={"q",8501},id=20802,qty=5,t="item",text="Cenarion Combat Badge"},{from={"q",8496},id=20800,qty=3,t="item",text="Cenarion Logistics Badge"},{from={"q",8498},id=20801,qty=7,t="item",text="Cenarion Tactical Badge"},{id=609,qty=1,t="faction",text="Cenarion Circle (Friendly)"}},r=60,sn={15176},xp=3300,zone=1377}
-Q[86676]={en={15176},l=60,n="Veteran's Battlegear",obj={{from={"q",8501},id=20802,qty=7,t="item",text="Cenarion Combat Badge"},{from={"q",8496},id=20800,qty=4,t="item",text="Cenarion Logistics Badge"},{from={"q",8498},id=20801,qty=4,t="item",text="Cenarion Tactical Badge"},{id=609,qty=1,t="faction",text="Cenarion Circle (Honored)"}},r=60,sn={15176},xp=3300,zone=1377}
-Q[86677]={en={15176},l=60,n="Stalwart's Battlegear",obj={{from={"q",8501},id=20802,qty=15,t="item",text="Cenarion Combat Badge"},{from={"q",8496},id=20800,qty=20,t="item",text="Cenarion Logistics Badge"},{from={"q",8498},id=20801,qty=17,t="item",text="Cenarion Tactical Badge"},{from={"q",8829},id=21515,qty=1,t="item",text="Mark of Remulos"},{id=609,qty=1,t="faction",text="Cenarion Circle (Revered)"}},r=60,sn={15176},xp=3300,zone=1377}
-Q[86678]={en={15176},l=60,n="Champion's Battlegear",obj={{from={"q",8501},id=20802,qty=15,t="item",text="Cenarion Combat Badge"},{from={"q",8496},id=20800,qty=20,t="item",text="Cenarion Logistics Badge"},{from={"q",8498},id=20801,qty=20,t="item",text="Cenarion Tactical Badge"},{from={"q",8538},id=21508,qty=1,t="item",text="Mark of Cenarius"},{id=609,qty=1,t="faction",text="Cenarion Circle (Exalted)"}},r=60,sn={15176},xp=3300,zone=1377}
-Q[86679]={en={11832},l=60,n="Shrouded in Nightmare",next=86680,obj={{id=235049,qty=1,t="item",text="Item #235049 (Provided)"}},r=60,sort=7,xp=9950}
-end)()
-;(function()
-Q[86680]={en={11832},l=60,n="Waking Legends",obj={{qty=1,t="event",text="Waking Legends."}},prev=86679,r=60,sn={11832},sort=7}
-Q[86724]={en={17070},kind="pvp",l=60,n="Dust to Dust",obj={{id=18199,qty=5,t="kill",text="Deliver Silithyst"}},r=55,side="H",sn={17070},zone=1377}
-Q[86725]={en={17068},kind="pvp",l=60,n="Dust to Dust",obj={{id=17090,qty=5,t="kill",text="Deliver Silithyst"}},r=55,side="A",sn={17068},zone=1377}
+Q[86746]={l=53,money=8000,n="The Legashi Threat",obj={{id=6200,qty=5,src={{"n",6200,0}},t="kill",text="Legashi Satyr slain"},{id=6201,qty=5,src={{"n",6201,0}},t="kill",text="Legashi Rogue slain"},{id=6202,qty=5,src={{"n",6202,0}},t="kill",text="Legashi Hellcaller slain"}},r=47,xp=5250,zone=16}
+Q[86747]={l=53,n="Legashi Horns",obj={{id=235256,qty=5,t="item",text="Severed Legashi Horn"}},r=47,xp=530,zone=16}
+Q[86757]={en={3955},l=30,money=2500,n="Slowing the Orc Advance",obj={{id=279505,qty=6,t="item",text="Jagged Orcish Sword"},{id=279507,qty=4,t="item",text="Curved Orcish Dagger"}},r=25,side="A",sn={3955},xp=2450,zone=331}
 Q[86758]={en={1154},l=16,money=800,n="Twisting the Knife",obj={{id=279591,qty=1,src={{"n",270693,69}},t="item",text="Marek's Croc-Hunting Knife"}},r=12,side="A",sn={1154},xp=1150,zone=38}
-Q[86760]={en={14847},l=55,n="Darkmoon Beast Deck",obj={{from="provided",id=235278,qty=1,t="item",text="Beasts Deck (Provided)"}},r=1,si={id=235278,n="Beasts Deck"},sort=9,xp=560}
-Q[86761]={en={14847},l=55,n="Darkmoon Warlords Deck",obj={{from="provided",id=235277,qty=1,t="item",text="Warlords Deck (Provided)"}},r=1,si={id=235277,n="Warlords Deck"},sort=9,xp=560}
-Q[86762]={en={14847},l=55,n="Darkmoon Elementals Deck",obj={{from="provided",id=235276,qty=1,t="item",text="Elementals Deck (Provided)"}},r=1,si={id=235276,n="Elementals Deck"},side="A",sort=9,xp=560}
-Q[86763]={en={14847},l=55,n="Darkmoon Portals Deck",obj={{from="provided",id=235275,qty=1,t="item",text="Portals Deck (Provided)"}},r=1,si={id=235275,n="Portals Deck"},sort=9,xp=560}
 Q[86776]={en={167},l=30,money=2500,n="Ingredients for the Forge",obj={{id=2841,qty=10,src={{"n",223340,50},{"n",223543,11}},t="item",text="Bronze Bar"}},r=15,side="A",sn={167},xp=2450,zone=38}
 Q[86784]={en={265812},l=7,money=175,n="Sticks and Bones",obj={{id=279991,qty=6,t="item",text="Dry Branch"}},provided={279937},r=4,side="H",sn={1742},xp=630,zone=85}
-Q[86964]={en={237820},inst=true,l=60,n="For Gold and Glory!",next=86965,r=60,zone=16114}
-Q[86965]={en={218920},inst=true,l=60,n="No Ordinary Shadows",next=86966,prev=86964,r=60,sn={237820},zone=16114}
-Q[86966]={en={237819},inst=true,l=60,n="Seeking Survivors",next=86967,prev=86965,r=60,sn={218920},zone=16114}
-Q[86967]={en={237818},inst=true,l=60,n="To the Rescue",next=86968,obj={{id=237821,qty=1,t="kill",text="Free the Injured Adventurer"},{id=235785,qty=1,t="item",text="Deadwind Cage \"Key\""}},prev=86966,r=60,sn={237819},zone=16114}
-Q[86968]={en={218920},inst=true,l=60,n="Are You Afraid of the Dark?",next=86969,obj={{id=237823,qty=1,t="kill",text="Listen to Harrison's Story"}},prev=86967,r=60,sn={237818},zone=16114}
-Q[86969]={en={218920},inst=true,kind="dungeon",l=60,n="The Hypothesis",next=86970,obj={{id=235789,qty=1,t="item",text="Flame of Life"},{id=235787,qty=1,t="item",text="Ancient Ironwood Branch"},{from="crafted",id=235788,qty=1,t="item",text="Enthusiastic Wisp"}},prev=86968,provided={236002},r=60,sn={218920},zone=16114}
-Q[86970]={en={218920},inst=true,l=60,n="Testing Our Hypothesis",obj={{id=238512,qty=1,t="kill",text="Test the Magical Torch"},{from="provided",id=235790,qty=1,t="item",text="Enchanted Firebrand (Provided)"}},prev=86969,r=60,sn={218920},zone=16114}
-Q[86971]={en={237818},inst=true,l=60,n="Curious Karazhan Curios!",obj={{id=235786,qty=1,t="item",text="Karazhan Curio"}},r=60,sn={237818},zone=16074}
-Q[86972]={en={237818},inst=true,l=60,n="Curious Karazhan Curios!",obj={{id=235786,qty=1,t="item",text="Karazhan Curio"}},r=60,zone=16074}
-Q[87283]={en={16381},inst=true,kind="raid",l=60,n="The Violet Satchel",obj={{from="provided",id=235852,qty=1,t="item",text="Violet Satchel (Provided)"}},r=60,si={id=235852,n="Violet Satchel"},zone=16114}
 Q[87288]={en={3608},l=7,n="Soft Saber Pelts",obj={{id=280087,qty=6,t="item",text="Soft Nightsaber Pelt"}},r=4,side="A",sn={3608},xp=630,zone=141}
-Q[87360]={en={16113},inst=true,l=60,n="The Fall of Kel'Thuzad",obj={{id=236350,qty=1,t="item",text="Item #236350 (Provided)"}},r=60,xp=9950,zone=3456}
-Q[87361]={en={238376},l=60,n="Laid to Rest",obj={{id=236750,qty=1,t="item",text="Item #236750 (Provided)"}},r=60,zone=139}
-Q[87362]={en={238382},l=60,n="Hope Begins in the Dark",r=60,sn={238382},sort=-2}
-Q[87364]={en={238382},kind="raid",l=60,n="Seal the Deal",obj={{id=236397,qty=150,t="item",text="Item #236397"}},r=60,sort=-2}
-Q[87365]={en={238382},kind="raid",l=60,n="Valor Grows by Daring",obj={{id=236397,qty=300,t="item",text="Item #236397"}},r=60,sort=-2}
-Q[87366]={en={238382},l=60,n="Knight Time",obj={{id=236397,qty=450,t="item",text="Item #236397"}},r=60,sort=-2}
-Q[87367]={en={238382},kind="raid",l=60,n="A New Light",obj={{id=236397,qty=600,t="item",text="Item #236397"}},r=60,sort=-2}
-Q[87368]={en={238382},l=60,n="A Product of Faith",obj={{id=236397,qty=750,t="item",text="Item #236397"}},r=60,sort=-2}
-Q[87369]={en={238382},l=60,n="Cultivating Faith",obj={{id=236397,qty=900,t="item",text="Item #236397"}},r=60,sort=-2}
-Q[87377]={en={238376},l=60,n="Never at Rest",obj={{id=236786,qty=1,t="item",text="Item #236786"}},r=60,sn={238376},zone=139}
-Q[87433]={en={16787},l=60,n="Argent Dawn Plate Gloves",r=50,side="H",sort=-2}
-Q[87434]={en={16786},l=60,n="Argent Dawn Plate Gloves",r=50,side="A",sort=-2}
-Q[87435]={en={16787},l=60,n="Argent Dawn Mail Gloves",r=50,side="H",sort=-2}
-Q[87436]={en={16786},l=60,n="Argent Dawn Mail Gloves",r=50,side="A",sort=-2}
-Q[87437]={en={16787},l=60,n="Argent Dawn Leather Gloves",r=50,side="H",sort=-2}
-Q[87438]={en={16786},l=60,n="Argent Dawn Leather Gloves",r=50,side="A",sort=-2}
-Q[87439]={en={16787},l=60,n="Argent Dawn Cloth Gloves",r=50,side="H",sort=-2}
-Q[87440]={en={16786},l=60,n="Argent Dawn Cloth Gloves",r=50,side="A",sort=-2}
-Q[87441]={en={15192},kind="dungeon",l=60,n="Atiesh, Greatstaff of the Guardian",obj={{id=16387,qty=1,t="kill",text="Atiesh Cleansed"},{from="provided",id=22737,qty=1,t="item",text="Atiesh, Greatstaff of the Guardian (Provided)"}},r=60,sn={15192},sort=7,xp=9950}
-Q[87442]={en={15192},kind="dungeon",l=60,n="Atiesh, Greatstaff of the Guardian",obj={{id=16387,qty=1,t="kill",text="Atiesh Cleansed"},{from="provided",id=22737,qty=1,t="item",text="Atiesh, Greatstaff of the Guardian (Provided)"}},r=60,side="H",sn={15192},sort=7,xp=9950}
-Q[87443]={en={15192},kind="dungeon",l=60,n="Atiesh, Greatstaff of the Guardian",obj={{id=16387,qty=1,t="kill",text="Atiesh Cleansed"},{from="provided",id=22737,qty=1,t="item",text="Atiesh, Greatstaff of the Guardian (Provided)"}},r=60,side="H",sn={15192},sort=7,xp=9950}
-Q[87444]={en={15192},kind="dungeon",l=60,n="Atiesh, Greatstaff of the Guardian",obj={{id=16387,qty=1,t="kill",text="Atiesh Cleansed"},{from="provided",id=22737,qty=1,t="item",text="Atiesh, Greatstaff of the Guardian (Provided)"}},r=60,side="H",sn={15192},sort=7,xp=9950}
-Q[87459]={en={11036},l=60,money=18000,n="Scarlet Activities",obj={{id=237143,qty=1,t="item",text="Item #237143"}},r=60,sn={11036},xp=6600,zone=139}
-Q[87493]={en={239032},inst=true,l=60,money=2300,n="Unrest at Tyr's Hand",next=87497,r=60,sn={11036},xp=1650,zone=16236}
-Q[87497]={en={11036},inst=true,l=60,money=4500,n="The Schism",next=87498,obj={{id=239042,qty=1,t="kill",text="Speak with Beatrix"}},prev=87493,r=60,sn={239032},xp=3300,zone=16236}
-Q[87498]={en={239032},inst=true,l=60,money=4500,n="The Scarlet Reclamation",prev=87497,r=60,sn={11036},xp=3300,zone=16236}
-Q[87502]={en={239031},inst=true,l=60,money=9000,n="Gathering Intelligence",next=87506,obj={{id=239154,qty=1,t="kill",text="Scout the Cathedral in Tyr's Hand"},{id=239152,qty=1,t="kill",text="Scout the Mage Tower in New Avalon"},{id=239153,qty=1,t="kill",text="Scout the Keep in New Avalon"}},r=60,sn={239031},xp=6600,zone=16236}
-Q[87506]={en={239032},inst=true,l=60,money=18000,n="Weakening The Defenses",obj={{id=239047,qty=3,src={{"n",239047,0}},t="kill",text="Scarlet Siege Commander slain"}},prev=87502,r=60,sn={239031},xp=8300,zone=16236}
-Q[87508]={en={11034},inst=true,l=60,money=4500,n="Report to Lord Tyrosus",next=87509,r=60,sn={239054},xp=6600,zone=16236}
-Q[87509]={en={239032},inst=true,l=60,money=4500,n="The Wrath of the Dawn",next=87516,obj={{id=239032,qty=1,src={{"n",239032,0}},t="kill",text="Report back to Beatrix"}},prev=87508,r=60,sn={11034},xp=3300,zone=16236}
-Q[87516]={en={239337},inst=true,kind="raid",l=60,money=27000,n="Decapitation Strike",next=87517,prev=87509,r=60,sn={239032},xp=9950,zone=16236}
-Q[87517]={en={239337},inst=true,kind="raid",l=60,money=27000,n="Red = Dead",next=87518,obj={{id=238954,qty=1,t="kill",text="Destroy the dragon-like beast"},{id=240812,qty=1,t="kill",text="Slay High Commander Beatrix"}},prev=87516,r=60,sn={239337},xp=9950,zone=16236}
-Q[87518]={en={239337},inst=true,kind="raid",l=60,money=27000,n="Fall of the Grand Crusader",obj={{id=241006,qty=1,t="kill",text="Grand Crusader Caldoran slain"}},prev=87517,r=60,sn={239337},xp=9950,zone=16236}
-Q[87520]={l=60,money=18000,n="Antithesis of the Light",obj={{id=237143,qty=1,t="item",text="Item #237143"}},r=60,xp=6600,zone=139}
+Q[87295]={l=52,n="Deflective Surface",obj={{id=280181,qty=10,t="item",text="Redstone Basilisk Scale"}},r=46,xp=5100,zone=4}
+Q[87318]={en={271322},kind="group",l=33,n="Hearts of the Lost",next=88757,r=28,side="A",sn={5683},xp=2650,zone=11}
+Q[87451]={l=55,n="Memories of Rockard",obj={{id=280390,qty=1,t="item",text="Carved Stone Trinket (Provided)"}},r=45,side="H",xp=5650,zone=4}
+Q[87491]={en={1072},kind="group",l=30,money=2500,n="Spark of Freedom",obj={{qty=1,t="event",text="Escort the fire elemental out of Dun Modr"}},r=25,side="A",sn={271481},xp=2450,zone=11}
+Q[87492]={l=55,money=8500,n="Uncanny Crystal",obj={{id=280417,qty=1,t="item",text="Damaged Blue Crystal"}},r=50,xp=5650,zone=490}
+Q[87494]={l=55,money=8500,n="Microcrystal Contamination",obj={{id=280459,qty=1,t="item",text="Crystal Infused Scale"}},r=45,xp=5650,zone=490}
 Q[87760]={en={10219},l=20,money=1200,n="Holy Diver",obj={{id=280686,qty=1,src={{"n",271903,100}},t="item",text="Rod of Deep Dominion"}},r=15,zone=148}
-Q[88654]={en={213077,214070,214099},l=60,money=189000,n="A Full Shipment",r=1,sort=-2}
-Q[88713]={en={238376},l=60,n="Never at Rest",obj={{id=236786,qty=1,t="item",text="Item #236786"}},r=60,sn={238376},zone=139}
-Q[88714]={en={238376},l=60,n="Never at Rest",obj={{id=236786,qty=1,t="item",text="Item #236786"}},r=60,sn={238376},zone=139}
-Q[88715]={en={238376},l=60,n="Never at Rest",obj={{id=236786,qty=1,t="item",text="Item #236786"}},r=60,sn={238376},zone=139}
-Q[88716]={en={238376},l=60,n="Never at Rest",obj={{id=236786,qty=1,t="item",text="Item #236786"}},r=60,sn={238376},zone=139}
-Q[88717]={en={238376},l=60,n="Never at Rest",obj={{id=236786,qty=1,t="item",text="Item #236786"}},r=60,rep="weekly",sn={238376},zone=139}
-Q[88718]={en={238376},l=60,n="Never at Rest",obj={{id=236786,qty=1,t="item",text="Item #236786"}},r=60,rep="weekly",side="H",sn={238376},zone=139}
-Q[88721]={en={11536},l=60,n="Superior Armaments of Battle - Friend of the Dawn",obj={{from={"q",9128},id=22523,qty=30,t="item",text="Insignia of the Dawn"},{from={"q",9124},id=22524,qty=30,t="item",text="Insignia of the Crusade"}},r=55,sn={11536},zone=139}
-Q[88722]={en={11536},l=60,n="Superior Armaments of Battle - Honored Amongst the Dawn",obj={{from={"q",9128},id=22523,qty=20,t="item",text="Insignia of the Dawn"},{from={"q",9124},id=22524,qty=20,t="item",text="Insignia of the Crusade"}},r=55,sn={11536},zone=139}
-Q[88723]={en={11536},l=60,n="Superior Armaments of Battle - Revered Amongst the Dawn",obj={{from={"q",9128},id=22523,qty=7,t="item",text="Insignia of the Dawn"},{from={"q",9124},id=22524,qty=7,t="item",text="Insignia of the Crusade"}},r=55,sn={11536},zone=139}
-Q[88724]={en={11536},l=60,n="Superior Armaments of Battle - Exalted Amongst the Dawn",obj={{from={"q",9128},id=22523,qty=6,t="item",text="Insignia of the Dawn"},{from={"q",9124},id=22524,qty=6,t="item",text="Insignia of the Crusade"}},r=55,sn={11536},zone=139}
-Q[88725]={l=60,n="Epic Armaments of Battle - Friend of the Dawn",obj={{from={"q",9128},id=22523,qty=110,t="item",text="Insignia of the Dawn"},{from={"q",9124},id=22524,qty=110,t="item",text="Insignia of the Crusade"}},r=55,sn={11536},zone=139}
-Q[88726]={l=60,n="Epic Armaments of Battle - Honored Amongst the Dawn",obj={{from={"q",9128},id=22523,qty=75,t="item",text="Insignia of the Dawn"},{from={"q",9124},id=22524,qty=75,t="item",text="Insignia of the Crusade"}},r=55,sn={11536},zone=139}
-Q[88727]={en={11536},l=60,n="Epic Armaments of Battle - Revered Amongst the Dawn",obj={{from={"q",9128},id=22523,qty=45,t="item",text="Insignia of the Dawn"},{from={"q",9124},id=22524,qty=45,t="item",text="Insignia of the Crusade"}},r=55,sn={11536},zone=139}
-Q[88728]={en={11536},l=60,n="Epic Armaments of Battle - Exalted Amongst the Dawn",obj={{from={"q",9128},id=22523,qty=27,t="item",text="Insignia of the Dawn"},{from={"q",9124},id=22524,qty=27,t="item",text="Insignia of the Crusade"}},r=55,sn={11536},zone=139}
-Q[88729]={en={16112},inst=true,kind="raid",l=60,n="Ramaladni's Icy Grasp",obj={{id=236656,qty=1,t="item",text="Item #236656"},{id=12361,qty=1,t="item",text="Blue Sapphire"},{from="crafted",id=12360,qty=1,t="item",text="Arcanite Bar"}},r=60,sn={16112},xp=6600,zone=3456}
-Q[88730]={en={16376},inst=true,kind="raid",l=60,n="The Only Song I Know...",obj={{id=236656,qty=2,t="item",text="Item #236656"},{id=7080,qty=2,src={{"n",15305,81},{"n",14457,79},{"n",226982,25}},t="item",text="Essence of Water"},{id=12361,qty=2,t="item",text="Blue Sapphire"},{qty=1,t="event",text="Required money: 30"}},r=60,sn={16376},xp=6600,zone=3456}
-Q[88744]={en={16361},l=60,n="Under the Shadow",obj={{id=22484,qty=10,src={{"n",14697,93},{"n",16379,92},{"n",16143,90},{"n",16380,89},{"n",16383,81},{"n",16141,67},{"n",16299,67},{"n",16298,66}},t="item",text="Necrotic Rune"}},r=50,sn={16361},sort=7}
-Q[88745]={en={16361},l=60,n="Shadows of Doom",obj={{id=16143,qty=1,src={{"n",16143,0}},t="kill",text="Shadow of Doom slain"}},r=50,sn={16361},sort=7}
-Q[88746]={en={16786},l=60,n="Consecrated Sharpening Stones",r=50,side="A",sort=-2}
-Q[88747]={en={16787},l=60,n="Consecrated Sharpening Stones",r=50,side="H",sort=-2}
-Q[88748]={en={16478},l=60,n="Cracked Necrotic Crystal",obj={{from="provided",id=22949,qty=1,t="item",text="Cracked Necrotic Crystal (Provided)"}},r=1,side="A",sn={16531},sort=7}
-Q[88749]={en={16494},l=60,n="Faint Necrotic Crystal",obj={{from="provided",id=22950,qty=1,t="item",text="Faint Necrotic Crystal (Provided)"}},r=1,side="H",sn={16531},sort=7}
-Q[88882]={en={16787},l=60,n="Blessed Wizard Oil",r=50,side="H",sort=-2}
-Q[88883]={en={16786},l=60,n="Blessed Wizard Oil",r=50,side="A",sort=-2}
-Q[88968]={en={14720},l=60,n="The Lord of Blackrock",r=60,side="H",sn={4949},xp=9950,zone=1637}
-Q[88969]={en={14721},l=60,n="The Lord of Blackrock",r=60,side="A",sn={1748},xp=9950,zone=1519}
-Q[89224]={en={240604},kind="group",l=60,n="Food Shortage",obj={{id=238794,qty=15,t="item",text="Unappetizing Leftovers"}},r=60,sn={240604},zone=16335}
-Q[89229]={en={11036},l=60,money=18000,n="The Right Path",prev=89328,r=60,sn={243386},xp=8300,zone=139}
-Q[89232]={en={241334},kind="raid",l=60,n="The First Step",next=89303,obj={{id=241335,qty=1,t="kill",text="Speak with the Will of the Ashbringer"}},prev=89300,r=60,sn={241334},sort=7}
-Q[89234]={en={243393},l=60,n="A Personal Matter",next=89235,prev=89574,r=60,sn={242019},zone=139}
-Q[89235]={en={243393},l=60,money=18000,n="The Culling",next=89310,obj={{id=243385,qty=1,t="kill",text="DNT slain"}},prev=89234,r=60,sn={243393},xp=6600,zone=139}
-Q[89236]={en={240604},kind="group",l=60,n="Wrangling Apples",obj={{id=238811,qty=10,src={{"n",240998,0},{"v",241019,0}},t="item",text="Juicy Apple"},{id=238831,qty=1,t="item",text="Apple Rope"},{id=238830,qty=1,t="item",text="Apple Scope"}},r=60,sn={240604},zone=16335}
-Q[89237]={en={242125},kind="raid",l=60,n="This Could Get Expensive...",next=89304,obj={{from="crafted",id=12360,qty=20,t="item",text="Arcanite Bar"},{id=234003,qty=20,t="item",text="Item #234003"},{id=6037,qty=120,src={{"o",4149,50},{"o",2857,33},{"o",105578,17},{"o",105579,12},{"o",2855,12}},t="item",text="Truesilver Bar"},{id=12364,qty=10,src={{"o",150082,1},{"o",123848,1},{"o",181068,1}},t="item",text="Huge Emerald"},{id=12811,qty=20,src={{"n",12339,13},{"n",241877,13},{"n",241120,12},{"n",12128,5},{"n",240998,5},{"n",242367,4},{"n",242757,3}},t="item",text="Righteous Orb"}},prev=89449,r=60,sn={242125},sort=7}
-Q[89245]={en={240604},kind="group",l=60,n="Fish in a Barrel",obj={{id=238899,qty=15,t="item",text="Assorted Fish"}},r=60,sn={240604},zone=16335}
-Q[89253]={en={240604},kind="group",l=60,n="Main Course",obj={{id=238935,qty=5,src={{"n",10699,20}},t="item",text="Gently Plagued Meat"}},r=60,sn={240604},zone=16335}
-Q[89255]={en={240248},l=60,n="Prove Your Worth: Headgear",obj={{id=241154,qty=1,t="kill",text="Worth Proven"},{id=238985,qty=1,t="item",text="Heavy Crate"}},provided={238960},r=60,rep="weekly",sn={240248},zone=16335}
-Q[89256]={en={240248},l=60,n="Prove Your Worth: Shoulderpads",obj={{id=241154,qty=1,t="kill",text="Worth Proven"},{id=238985,qty=1,t="item",text="Heavy Crate"}},provided={238960},r=60,rep="weekly",sn={240248},zone=16335}
-Q[89257]={en={240248},l=60,n="Prove Your Worth: Chestpiece",obj={{id=241154,qty=1,t="kill",text="Worth Proven"},{id=238985,qty=1,t="item",text="Heavy Crate"}},provided={238960},r=60,rep="weekly",sn={240248},zone=16335}
-Q[89258]={en={240248},l=60,n="Prove Your Worth: Wristguards",obj={{id=241154,qty=1,t="kill",text="Worth Proven"},{id=238985,qty=1,t="item",text="Heavy Crate"}},provided={238960},r=60,rep="weekly",sn={240248},zone=16335}
-Q[89259]={en={240248},l=60,n="Prove Your Worth: Gloves",obj={{id=241154,qty=1,t="kill",text="Worth Proven"},{id=238985,qty=1,t="item",text="Heavy Crate"}},provided={238960},r=60,rep="weekly",sn={240248},zone=16335}
-Q[89260]={en={240248},l=60,n="Prove Your Worth: Belt",obj={{id=241154,qty=1,t="kill",text="Worth Proven"},{id=238985,qty=1,t="item",text="Heavy Crate"}},provided={238960},r=60,rep="weekly",sn={240248},zone=16335}
-Q[89261]={en={240248},l=60,n="Prove Your Worth: Legguards",obj={{id=241154,qty=1,t="kill",text="Worth Proven"},{id=238985,qty=1,t="item",text="Heavy Crate"}},provided={238960},r=60,rep="weekly",sn={240248},zone=16335}
-Q[89262]={en={240248},l=60,n="Prove Your Worth: Boots",obj={{id=241154,qty=1,t="kill",text="Worth Proven"},{id=238985,qty=1,t="item",text="Heavy Crate"}},provided={238960},r=60,rep="weekly",sn={240248},zone=16335}
-Q[89300]={en={241334},kind="raid",l=60,n="The Ashbringer",next=89232,provided={239010},r=60,sort=7}
-Q[89301]={en={241334},l=60,n="A Difficult Path",obj={{id=242170,qty=1,t="kill",text="Learn about Mount Hyjal"}},prev=89443,provided={240936},r=60,sn={241334},sort=7}
-Q[89303]={en={241334},kind="raid",l=60,n="On Fate's Path",next=89442,obj={{id=239197,qty=1,t="item",text="Item #239197"}},prev=89232,r=60,sn={241334},sort=7}
-Q[89304]={en={242125},kind="raid",l=60,n="The Perfect Metal",prev=89237,r=60,sn={242125},sort=7}
-Q[89310]={en={243386},l=60,n="Terrordale",next=89329,prev=89235,r=60,sn={243393},zone=139}
-Q[89328]={en={243386},l=60,money=4500,n="Loss",next=89229,obj={{id=243387,qty=1,t="kill",text="DNT slain"}},prev=89329,r=60,sn={243386},xp=3300,zone=139}
-Q[89329]={en={243386},l=60,money=9000,n="Stomping Out The Infestation",next=89328,obj={{id=8555,qty=8,src={{"n",8555,0}},t="kill",text="Crypt Fiend slain"},{id=8556,qty=5,src={{"n",8556,0}},t="kill",text="Crypt Walker slain"}},prev=89310,r=60,sn={243386},xp=6600,zone=139}
-Q[89340]={en={240604},kind="group",l=60,n="Preposterously Prosed Postage",obj={{id=239092,qty=1,src={{"n",241437,98}},t="item",text="Preposterously Prosed Postage"}},r=60,si={id=239092,n="Preposterously Prosed Postage",src={{"n",241437,98}}},zone=16335}
-Q[89341]={en={240604},kind="group",l=60,n="The Great Feast",obj={{id=6362,qty=4,src={{"n",877,100},{"n",879,100},{"n",2377,100},{"n",2596,100},{"n",4358,100},{"n",4461,100},{"n",4712,100},{"n",4713,100},{"n",4714,100},{"n",4718,100},{"n",4719,100},{"n",12369,100},{"v",1678,0},{"v",1684,0},{"v",3497,0},{"v",3540,0}},t="item",text="Raw Rockscale Cod"},{id=4603,qty=4,src={{"n",4405,100},{"n",5331,100},{"n",5334,100},{"n",6190,100},{"n",6193,100},{"n",6194,100},{"n",6196,100},{"n",5335,80},{"n",5332,67},{"n",1907,60},{"n",2937,60},{"n",5333,56},{"v",1678,0},{"v",1684,0},{"v",3497,0},{"v",3540,0}},t="item",text="Raw Spotted Yellowtail"},{id=13888,qty=4,t="item",text="Darkclaw Lobster"},{id=3404,qty=2,src={{"n",222243,53},{"n",8207,50},{"n",5430,40},{"n",1809,40},{"n",7376,40},{"n",5982,39},{"n",5429,38},{"n",5428,38},{"n",2931,36},{"n",8299,36},{"n",2831,35},{"n",4694,34}},t="item",text="Buzzard Wing"},{id=12184,qty=2,src={{"n",6508,42},{"n",6507,42},{"n",6506,42},{"n",4357,42},{"n",687,42},{"n",6505,41},{"n",4355,41},{"n",4352,40},{"n",4356,39},{"n",4351,38},{"n",9683,37},{"n",854,36}},t="item",text="Raptor Flesh"},{id=3712,qty=2,src={{"n",6369,43},{"n",6352,42},{"n",2505,41},{"n",5431,41},{"n",4399,41},{"n",14123,39},{"n",8213,38},{"n",4398,37},{"n",4400,37},{"n",13896,35},{"n",4396,34},{"n",4397,34}},t="item",text="Turtle Meat"}},r=60,sn={240604},zone=16335}
-Q[89342]={en={240607},kind="group",l=60,n="VIP Haute Club Membership",obj={{id=241462,qty=1,t="kill",text="Cook a Sunrise Omelette"},{from="crafted",id=238639,qty=1,t="item",text="Sunrise Omelette"},{id=241461,qty=1,t="kill",text="Cook a Prowler Steak"},{from="crafted",id=238637,qty=1,t="item",text="Prowler Steak"}},r=60,sn={240607},zone=16335}
-Q[89381]={en={241613},kind="group",l=60,n="Pin Cushion",obj={{id=239119,qty=25,src={{"n",241121,0}},t="item",text="Holy Arrow"}},r=60,sn={241613},zone=16335}
-Q[89421]={en={241613},kind="group",l=60,n="Bullet Heaven",obj={{id=15997,qty=1000,src={{"v",240654,0}},t="item",text="Thorium Shells"}},r=60,sn={241613},zone=16335}
-Q[89442]={en={11034},kind="raid",l=60,n="Emblem of Darkness",next=89443,prev=89303,provided={239197},r=60,sn={241334},sort=7}
-Q[89443]={en={241334},kind="raid",l=60,n="Falling Into Place",next=89301,obj={{id=240936,qty=1,t="item",text="Item #240936"}},prev=89442,provided={239219},r=60,sn={11034},sort=7}
-Q[89444]={en={11034},inst=true,l=60,n="The Corrupted Emblem",obj={{id=239215,qty=1,t="item",text="Item #239215 (Provided)"}},r=60,xp=9950,zone=16236}
-Q[89445]={en={16376},l=60,n="Blades of Light",next=89446,obj={{id=239196,qty=1,t="item",text="Item #239196 (Provided)"}},r=60,sort=7,xp=9950}
-Q[89446]={en={16365},kind="raid",l=60,n="The Lost Craftsman",next=89447,obj={{id=243230,qty=1,t="item",text="Item #243230 (Provided)"}},prev=89445,r=60,sn={16376},sort=7,xp=9950}
-Q[89447]={en={16365},kind="raid",l=60,n="Extravagant Tastes",next=89448,obj={{from={"q",8586},id=21023,qty=10,t="item",text="Dirge's Kickin' Chimaerok Chops"}},prev=89446,r=60,sn={16365},sort=7,xp=9950}
-Q[89448]={en={16365},kind="raid",l=60,n="Gathering Light",next=89449,obj={{id=239216,qty=12,t="item",text="Item #239216"}},prev=89447,r=60,sn={16365},sort=7,xp=9950}
-Q[89449]={en={242125},kind="raid",l=60,n="The Radiant Forge",next=89237,prev=89448,r=60,sn={16365},sort=7,xp=9950}
-Q[89451]={en={241834},l=60,n="Journey To Moonglade",next=89462,obj={{id=241834,qty=1,src={{"n",241834,0}},t="kill",text="Find help in Moonglade"}},r=60,sn={241334},sort=7}
-Q[89462]={en={242174},l=60,n="The Druid of the Talon",prev=89451,r=60,sn={241834},sort=7}
-Q[89463]={en={240654},l=60,n="Nondisclosure Arguement",obj={{id=239225,qty=1,src={{"n",241877,0}},t="item",text="Classy Quill"},{id=239223,qty=1,t="item",text="House Prop"}},r=60,sn={240654},zone=16335}
-Q[89471]={en={240654},l=60,n="Goblin Tinkering",obj={{from="crafted",id=16000,qty=2,t="item",text="Thorium Tube"},{from="crafted",id=18631,qty=1,t="item",text="Truesilver Transformer"},{id=9061,qty=4,src={{"n",14224,2}},t="item",text="Goblin Rocket Fuel"},{id=4389,qty=2,src={{"v",1448,0},{"v",1694,0},{"v",2682,0},{"v",2684,0},{"v",2685,0},{"v",2687,0},{"v",2688,0},{"v",3133,0},{"v",3413,0},{"v",3495,0},{"v",4587,0},{"v",5175,0},{"v",5519,0},{"v",6730,0},{"v",6777,0},{"v",8678,0}},t="item",text="Gyrochronatom"}},provided={239246},r=60,sn={240654},zone=16335}
-Q[89473]={en={242863},l=60,n="The Well of Eternity",next=90559,obj={{id=240848,qty=12,t="item",text="Item #240848"},{id=240936,qty=1,t="item",text="Item #240936"}},r=60,sn={241334},sort=7}
-Q[89474]={en={242499},l=60,n="Forgiveness",next=89475,prev=90559,r=60,sn={241334},sort=7}
-Q[89475]={en={11034},l=60,n="The Lonely Path of the Damned",prev=89474,r=60,sn={242499},sort=7}
-Q[89485]={en={240654},l=60,n="Whimsical Horrors",obj={{id=242599,qty=6,t="kill",text="Teleport Unexpecting Citizens"},{id=242600,qty=1,t="kill",text="Personally Try the Portiporter"},{id=242601,qty=1,t="kill",text="Confront the Creature"}},provided={241128},r=60,sn={240654},zone=16335}
-Q[89486]={en={240654},l=60,n="A Pinch of Gunpowder",obj={{id=243200,qty=1,t="kill",text="Behind the Tavern"},{id=243201,qty=1,t="kill",text="Behind the Town Hall"},{id=243202,qty=1,t="kill",text="In front of the Prison"},{id=243203,qty=1,t="kill",text="Behind the Mage Tower"},{id=243204,qty=1,t="kill",text="Behind the Barracks"}},provided={241169},r=60,sn={240654},zone=16335}
-Q[89487]={en={240654},kind="group",l=60,n="Much Ado About Magnets",obj={{id=240846,qty=20,t="item",text="Magnetic Scrap"}},provided={240845},r=60,sn={240654},zone=16335}
-Q[89488]={en={242501},l=60,n="A Kind of Peace",obj={{id=241940,qty=1,t="kill",text="Confront the spirit of Alexandros Mograine"},{id=241081,qty=1,t="item",text="Item #241081"}},r=60,sn={242501},sort=7}
-Q[89489]={en={240654},l=60,n="Increased Drop Rate",obj={{id=239302,qty=8,src={{"n",241119,0},{"n",241120,0},{"n",241121,0},{"n",241122,0},{"n",241123,0},{"n",242757,0}},t="item",text="Scarlet Uniform Belt"}},r=60,sn={240654},zone=16335}
-Q[89491]={en={240654},l=60,n="A Complicated Escape Plan",obj={{id=241962,qty=1,t="kill",text="Triangulated New Avalon Gates"},{id=241963,qty=1,t="kill",text="Triangulated New Avalon Archery Range"},{id=241964,qty=1,t="kill",text="Triangulated New Avalon Tavern"},{id=241965,qty=1,t="kill",text="Teleporter Calibrated"}},provided={239316},r=60,sn={240654},zone=16335}
-Q[89562]={en={11036},l=60,money=4500,n="My Old Enemy",obj={{id=243024,qty=1,t="kill",text="Speak with Leonid"}},r=60,sn={11036},xp=3300,zone=139}
-Q[89563]={en={11034},l=60,money=2300,n="Leonid's Burden",r=60,sn={11034},xp=1650,zone=139}
-Q[89567]={en={242019},l=60,money=4500,n="The Wrecked Caravan",next=89568,obj={{id=242257,qty=1,t="item",text="Item #242257"},{id=242258,qty=1,t="item",text="Item #242258"}},r=60,sn={11036},xp=6600,zone=139}
-Q[89568]={en={242019},l=60,money=18000,n="Something New",next=89574,obj={{id=242319,qty=1,t="item",text="Item #242319 (Provided)"},{id=243629,qty=8,t="kill",text="Plague Tested"}},prev=89567,r=60,sn={242019},xp=6600,zone=139}
-Q[89574]={en={242019},l=60,money=18000,n="Servants of Death",next=89234,obj={{id=242320,qty=1,t="item",text="Item #242320 (Provided)"},{id=243630,qty=1,t="kill",text="Plague Tested"}},prev=89568,r=60,sn={242019},xp=6600,zone=139}
-Q[90107]={en={242125},kind="raid",l=60,n="The Blade Reformed",obj={{id=241829,qty=1,t="kill",text="Watch Master Craftsman Omarion Work"}},r=60,sn={242125},sort=7}
-Q[90116]={en={240631},l=60,n="Holy Threads",obj={{id=239698,qty=200,t="item",text="Dawnwoven Fabric"}},r=60,sn={240631},zone=16335}
-Q[90120]={en={240631},l=60,n="Red is Not Dead",obj={{id=2604,qty=1,src={{"v",66,0},{"v",843,0},{"v",989,0},{"v",1148,0},{"v",1250,0},{"v",1286,0},{"v",1347,0},{"v",1454,0},{"v",1465,0},{"v",1474,0},{"v",1672,0},{"v",1692,0},{"v",2118,0},{"v",2394,0},{"v",2668,0},{"v",2669,0}},t="item",text="Red Dye"},{id=3419,qty=1,src={{"n",1488,100},{"n",1489,100},{"n",1491,100},{"n",1784,100},{"n",1785,100},{"n",1787,100},{"n",1788,100},{"n",1789,100},{"n",1791,100},{"n",1795,100},{"n",1796,100},{"n",1805,100},{"v",1302,0},{"v",1303,0},{"v",3014,0},{"v",242183,0}},t="item",text="Red Rose"},{id=4625,qty=1,src={{"o",2866,99},{"o",153463,33},{"n",7104,20}},t="item",text="Firebloom"},{id=12938,qty=1,src={{"o",176213,100}},t="item",text="Blood of Heroes"},{id=239764,qty=1,t="item",text="Crimson Bladeleaf"}},r=60,sn={240631},zone=16335}
-Q[90506]={en={242174},l=60,n="Take Their Breath Away",obj={{id=240832,qty=10,t="item",text="Item #240832"}},r=60,sn={242174},sort=7}
-Q[90507]={en={242174},l=60,n="Logistics Challenges",obj={{id=240835,qty=15,t="item",text="Item #240835"}},r=60,sn={242174},sort=7}
-Q[90508]={en={242439},l=60,n="As The Crow Flies",r=60,sn={242174},sort=7}
-Q[90510]={en={243023},kind="group",l=60,n="New Avalon",obj={{id=242450,qty=1,t="kill",text="Use the Scarlet Insignia"}},provided={237020},r=60,sn={243023},zone=16335}
-Q[90518]={en={240604},kind="group",l=60,n="An Apple a Day Keeps the Undead at Bay",obj={{id=238811,qty=10,src={{"n",240998,0},{"v",241019,0}},t="item",text="Juicy Apple"},{id=238831,qty=1,t="item",text="Apple Rope"},{id=238830,qty=1,t="item",text="Apple Scope"}},r=60,rep="daily",sn={240604},zone=16335}
-Q[90519]={en={240604},kind="group",l=60,n="Fish On Demand",obj={{id=238899,qty=15,t="item",text="Assorted Fish"}},r=60,rep="daily",sn={240604},zone=16335}
-Q[90520]={en={240604},kind="group",l=60,n="Food Safety",obj={{id=238935,qty=5,src={{"n",10699,20}},t="item",text="Gently Plagued Meat"}},r=60,rep="daily",sn={240604},zone=16335}
-Q[90559]={en={241334},l=60,n="The Tempering",next=89474,obj={{id=241657,qty=1,t="item",text="Item #241657"}},prev=89473,provided={241654},r=60,sn={242863},sort=7}
-Q[90560]={en={2055},l=60,n="Familiar Foulness",obj={{from="provided",id=241655,qty=1,t="item",text="Mishandled Healing Potion (Provided)"},{id=241652,qty=6,src={{"n",1824,7},{"n",11897,7},{"n",8596,6},{"n",8603,5},{"n",1815,5},{"n",1822,5},{"n",8598,5},{"n",8601,5},{"n",8600,5},{"n",8597,5},{"n",1817,5},{"n",8602,5}},t="item",text="Discolored Beast Heart"}},r=60,si={id=241655,n="Mishandled Healing Potion"},side="H",zone=16335}
-Q[90566]={en={1937},l=60,n="Oh, My Bleeding Hearts!",obj={{from="provided",id=242224,qty=1,t="item",text="Basket of Hearts (Provided)"},{id=242018,qty=6,t="item",text="Plaguelands Bleeding Heart"}},r=60,side="H",sn={2055},zone=16335}
-Q[90567]={en={4160},l=60,n="Unfamiliar Foulness",obj={{from="provided",id=241656,qty=1,t="item",text="Mishandled Healing Potion (Provided)"},{id=241652,qty=6,src={{"n",1824,7},{"n",11897,7},{"n",8596,6},{"n",8603,5},{"n",1815,5},{"n",1822,5},{"n",8598,5},{"n",8601,5},{"n",8600,5},{"n",8597,5},{"n",1817,5},{"n",8602,5}},t="item",text="Discolored Beast Heart"},{id=242018,qty=6,t="item",text="Plaguelands Bleeding Heart"}},r=60,si={id=241656,n="Mishandled Healing Potion"},side="A",zone=16335}
-Q[90625]={en={238415},l=60,n="On Dreaded Wings",next=90626,obj={{id=242365,qty=1,t="item",text="Item #242365 (Provided)"}},r=60,xp=9950,zone=139}
-Q[90626]={en={238415},inst=true,l=60,n="Sinew of Light",next=90627,obj={{id=242364,qty=1,t="item",text="Item #242364"}},prev=90625,provided={242365},r=60,sn={238415},xp=9950,zone=16236}
-Q[90627]={en={14353},inst=true,l=60,n="Crafty the Crafter",obj={{id=242364,qty=1,t="item",text="Item #242364 (Provided)"},{id=242365,qty=1,t="item",text="Item #242365"}},prev=90626,r=60,sn={238415},xp=9950,zone=2557}
+Q[88756]={en={1073},kind="group",l=31,money=3000,n="Bring Back a Bang",obj={{id=280806,qty=3,t="item",text="Stolen Explosives"}},r=25,races=4294967372,side="A",sn={1073},xp=2500,zone=11}
+Q[88757]={en={271322},kind="group",l=33,n="Accessories of the Lost",next=88758,obj={{id=284705,qty=1,t="item",text="Essene's Necklace"},{id=284150,qty=1,t="item",text="Essene's Spellbook"},{id=284146,qty=1,t="item",text="Essene's Waterskin"}},prev=87318,r=28,side="A",sn={271322},xp=2650,zone=11}
+Q[88758]={en={5683},kind="group",l=33,n="Sentiments of the Lost",obj={{id=284151,qty=1,t="item",text="Essene's Note (Provided)"}},prev=88757,r=28,side="A",sn={271322},xp=2650,zone=11}
+Q[88807]={l=48,money=7000,n="Slay the Spitelash",obj={{id=6190,qty=8,src={{"n",6190,0}},t="kill",text="Spitelash Warrior slain"},{id=6193,qty=8,src={{"n",6193,0}},t="kill",text="Spitelash Screamer slain"}},r=45,side="A",xp=4400,zone=16}
+Q[88809]={l=52,money=7500,n="Preserving Eldarath",obj={{id=280608,qty=12,t="item",text="Eldarath Relic"},{id=280610,qty=1,t="item",text="Lord Sarthiss' Head"}},r=45,side="A",xp=5100,zone=16}
+Q[88812]={l=55,money=8500,n="Reclaiming Ravencrest",obj={{id=7885,qty=5,src={{"n",7885,0}},t="kill",text="Spitelash Battlemaster slain"},{id=7886,qty=5,src={{"n",7886,0}},t="kill",text="Spitelash Enchantress slain"},{qty=1,t="event",text="First Power Stone"},{qty=1,t="event",text="Second Power Stone"},{qty=1,t="event",text="Third Power Stone"}},provided={238449},r=47,side="A",xp=5650,zone=16}
+Q[88813]={l=55,n="The Head of the Serpent",obj={{id=238057,qty=1,t="item",text="Krellian's Head"}},r=47,side="A",xp=5650,zone=16}
+Q[88821]={l=51,n="Making Contact",r=47,side="A",xp=490,zone=16}
+Q[88857]={l=47,money=5000,n="Saving a Sentinel",obj={{qty=1,t="event",text="Help Keldara Sunblade escape the Haldarr Encampment"}},r=45,side="A",xp=4200,zone=16}
+Q[88884]={l=52,n="Highborne Tablets",obj={{id=238244,qty=1,t="item",text="Tablet of Creation"},{id=238245,qty=1,t="item",text="Tablet of Manipulation"},{id=238246,qty=1,t="item",text="Tablet of Power"}},r=47,side="A",xp=5100,zone=16}
+Q[88917]={l=52,n="Slithering Looters",obj={{id=238347,qty=1,t="item",text="Staff of Archmage Selwyn"},{id=238345,qty=1,t="item",text="Lady Sesspira's Key"}},r=47,side="A",xp=5100,zone=16}
+Q[89001]={l=48,n="Home on the Range",obj={{id=238463,qty=5,t="item",text="Mosshoof Hide"}},r=45,side="A",xp=4400,zone=16}
+Q[89013]={l=48,n="Gettin' Buzzed",obj={{id=238503,qty=5,t="item",text="Wild Honey"}},provided={238501},r=45,side="A",xp=4400,zone=16}
+Q[89037]={l=52,n="Murloc Thieves",obj={{id=238385,qty=1,t="item",text="Memory Crystal"}},r=47,side="A",xp=5100,zone=16}
+Q[89038]={l=55,money=4000,n="A Monumental Task",obj={{id=238517,qty=1,t="item",text="Mark of the Queen"}},r=47,side="A",xp=5650,zone=16}
+Q[89053]={l=55,n="Your Final Reward",obj={{id=239831,qty=1,src={{"n",239831,0}},t="kill",text="See what Saria has to show you"}},r=47,side="A",xp=5650,zone=16}
+Q[89228]={l=48,money=7000,n="Winter Frontier Fishery",obj={{id=13755,qty=10,t="item",text="Raw Winter Squid"}},r=45,side="A",xp=4400,zone=16}
+Q[89470]={l=55,money=8500,n="Ill Tidings",obj={{id=239609,qty=1,t="item",text="Saria's Knapsack (Provided)"}},r=47,side="A",xp=2800,zone=16}
+Q[90487]={l=56,n="Ancient Allies",r=54,xp=580,zone=616}
+Q[90647]={l=57,money=4500,n="The Staff of the Mountain",obj={{id=267079,qty=1,t="item",text="Staff of the Mountain (Provided)"}},r=54,xp=6000,zone=616}
+Q[90813]={l=53,n="Pay Dirt!",obj={{id=243203,qty=1,t="item",text="Humongous Crystal"}},r=50,side="A",xp=6550,zone=16}
+Q[90865]={l=58,n="Eyes of the Watchers",obj={{id=273322,qty=8,src={{"n",249237,0}},t="item",text="Watcher's Eye"}},r=54,xp=6200,zone=616}
 Q[90902]={classes=2,en={244808},l=2,n="Rediscovering the Light",obj={{id=259377,qty=5,src={{"n",259377,0}},t="kill",text="Injured Deathguard healed"}},prev=91282,r=2,races=16,side="H",sn={244808},sort=4,xp=85}
 Q[91208]={classes=2,en={244808},l=4,n="Coming to Terms",next=91209,obj={{id=246143,qty=1,src={{"n",246143,0}},t="kill",text="Offer aid to the Frightened Paladin"}},r=4,races=16,side="H",sn={244808},sort=4,xp=180}
 Q[91209]={classes=2,en={246152},l=4,n="Continue Your Training",obj={{id=246152,qty=1,src={{"n",246152,0}},t="kill",text="Report to Shari Stilwell in Brill"}},prev=91208,r=4,races=16,side="H",sn={244808},sort=4,xp=90}
@@ -5393,12 +4640,31 @@ Q[91285]={classes=2,en={246349},l=11,money=400,n="Murlocs at the Gates",next=912
 Q[91294]={classes=2,en={246378},l=11,money=200,n="Touring the Grounds",obj={{id=246389,qty=1,src={{"n",246389,0}},t="kill",text="Speak with Hilda the Breaker"},{id=246393,qty=1,src={{"n",246393,0}},t="kill",text="Speak with Jorin Croge"},{id=246394,qty=1,src={{"n",246394,0}},t="kill",text="Speak with Ander Solliden"},{id=246378,qty=1,src={{"n",246378,0}},t="kill",text="Speak with Danitha Morr"}},prev=91285,r=8,races=16,side="H",sn={246349},sort=4,xp=440}
 Q[91316]={classes=2,en={246393},l=11,money=400,n="Making Repairs",obj={{id=246213,qty=12,t="item",text="Sturdy Lumber"}},r=8,races=16,side="H",sn={246393},sort=4,xp=880}
 Q[91317]={classes=2,en={246378},l=12,money=500,n="The Tarnished",obj={{id=270435,qty=1,src={{"n",259431,100}},t="item",text="Rudolph Gelhardt's Head"},{id=259434,qty=8,src={{"n",259434,0}},t="kill",text="Tarnished Drudge slain"},{id=259433,qty=6,src={{"n",259433,0}},t="kill",text="Tarnished Zealot slain"}},r=9,races=16,side="H",sn={246378},sort=4,xp=910}
+Q[91488]={l=48,n="Home on the Range",obj={{id=238463,qty=5,t="item",text="Mosshoof Hide"}},r=45,side="H",xp=4400,zone=16}
+Q[91497]={l=53,n="Seals of the Sin'dorei",obj={{id=246725,qty=1,t="item",text="Seal of the Warden"},{id=246721,qty=1,t="item",text="Seal of the Warrior"},{id=246722,qty=1,t="item",text="Seal of the Ranger"}},r=44,side="H",xp=5250,zone=16}
+Q[91500]={l=55,n="An Explosive Gambit",obj={{id=10597,qty=1,src={{"n",8578,97}},t="item",text="Head of Magus Rimtori"}},provided={249390},r=44,side="H",xp=4200,zone=16}
+Q[91531]={l=55,money=4000,n="Revenge Exacted",obj={{id=10597,qty=1,src={{"n",8578,97}},t="item",text="Head of Magus Rimtori (Provided)"}},r=44,side="H",xp=5650,zone=1637}
+Q[91538]={l=55,n="Sin'dorei Tome of Summoning",obj={{id=246770,qty=1,t="item",text="Sin'dorei Tome of Summoning (Provided)"}},r=44,side="H",xp=560,zone=16}
+Q[91547]={l=55,n="Sin'dorei Tome of Summoning",obj={{id=246770,qty=1,t="item",text="Sin'dorei Tome of Summoning (Provided)"}},prev=91538,r=44,side="H",xp=560,zone=16}
+Q[91548]={kind="group",l=55,money=16500,n="Vek'zol",obj={{id=246780,qty=1,t="item",text="Heart of Vek'zol"}},provided={246778},r=44,side="H",xp=7050,zone=4}
+Q[91568]={l=51,money=1900,n="Long Walks on the Beach",obj={{id=246684,qty=10,t="item",text="Highborne Treasure Fragment"}},provided={246683},r=45,side="H",xp=4900,zone=16}
+Q[91569]={l=53,n="Blue Gold",obj={{id=246680,qty=1,src={{"n",250448,0},{"n",259620,0}},t="item",text="Mana-Siphoning Wand"}},r=45,side="H",xp=3950,zone=16}
+Q[91607]={l=53,n="Pay Dirt!",obj={{id=246888,qty=1,t="item",text="Humongous Crystal"}},r=50,side="H",xp=6550,zone=16}
+Q[91608]={l=48,n="Gettin' Buzzed",obj={{id=238503,qty=5,t="item",text="Wild Honey"}},provided={238501},r=45,side="H",xp=4400,zone=16}
+Q[91610]={l=48,n="Winter Frontier Fishery",obj={{id=13755,qty=10,t="item",text="Raw Winter Squid"}},r=45,side="H",xp=4400,zone=16}
+Q[91611]={kind="group",l=56,n="Deadliest Catch",obj={{id=238507,qty=1,src={{"n",12125,9}},t="item",text="Mammoth Shark Steak"}},r=50,side="H",xp=5800,zone=16}
+Q[91685]={kind="group",l=54,money=16500,n="Ley of the Land",obj={{id=246938,qty=1,t="item",text="Tear of Mennar"}},prev=91569,provided={247238},r=45,side="H",xp=6800,zone=16}
+Q[91688]={l=59,money=900,n="To the Summit of Eternity",r=54,side="A",xp=640,zone=616}
+Q[91697]={l=57,n="Meet the Elders",obj={{id=256650,qty=1,t="kill",text="Elder Pinespeaker met"},{id=256627,qty=1,src={{"n",256627,0}},t="kill",text="Elder Mistpaw met"}},r=54,xp=600,zone=616}
 Q[91723]={en={248242},l=10,money=250,n="Delicate Instruments",obj={{id=476,qty=8,src={{"n",476,0}},t="kill",text="Kobold Geomancer slain"}},r=7,sn={248242},xp=630,zone=12}
 Q[91724]={en={248242},l=10,money=350,n="Delicate Instruments",obj={{id=474,qty=6,src={{"n",474,0}},t="kill",text="Defias Rogue Wizard slain"}},r=7,sn={248242},xp=840,zone=12}
 Q[91725]={en={248248},l=10,money=250,n="Stolen Enchanting Supplies",obj={{id=247805,qty=5,t="item",text="Stolen Enchanting Supplies"}},r=7,sn={248248},xp=630,zone=12}
 Q[91732]={en={248266},l=10,money=250,n="Good Steel",obj={{id=247816,qty=4,t="item",text="Mining Tools"}},r=7,sn={248266},xp=630,zone=12}
 Q[91733]={en={248265},l=10,money=250,n="Downstream",obj={{id=247817,qty=1,t="item",text="Waterlogged Axe"},{id=247813,qty=1,t="item",text="Waterlogged Saw"},{id=247818,qty=1,t="item",text="Waterlogged Toolbox"}},r=7,sn={248265},xp=630,zone=12}
+Q[91734]={l=52,n="Remote Contact",next=3517,prev=91737,r=44,side="H",xp=510,zone=16}
+Q[91735]={l=52,n="Remote Contact",next=3517,prev=91737,r=44,side="H",xp=510,zone=16}
 Q[91736]={n="Applejack Still",obj={{id=4536,qty=4,src={{"n",103,100},{"n",1660,100},{"n",3192,100},{"n",7318,67},{"n",1211,50},{"n",3128,50},{"n",6123,50},{"n",1934,43},{"n",1540,35},{"n",99,33},{"n",1538,33},{"n",3129,33},{"v",66,0},{"v",734,0},{"v",894,0},{"v",1250,0}},t="item",text="Shiny Red Apple"}},zone=12}
+Q[91737]={l=52,n="Remote Contact",next=3517,prev=91735,r=44,side="H",xp=510,zone=16}
 Q[91738]={en={955},l=10,money=250,n="An Apple Treat",obj={{from={"q",91736},id=247824,qty=1,t="item",text="Thunder Applejack"}},r=7,sn={955},xp=630,zone=12}
 Q[91740]={en={248277},l=10,money=350,n="Croaky's Head",obj={{id=247826,qty=1,src={{"n",248278,85}},t="item",text="Croaky's Head (Provided)"}},r=7,si={id=247826,n="Croaky's Head",src={{"n",248278,85}}},side="A",xp=840,zone=12}
 Q[91741]={en={951},l=2,money=17,n="Nibbled-On Book",next=91743,obj={{from="provided",id=247857,qty=1,t="item",text="Nibbled-On Book (Provided)"}},r=1,xp=85,zone=12}
@@ -5408,32 +4674,72 @@ Q[91746]={en={6306},l=10,money=350,n="Elmpaw's Head",obj={{id=247862,qty=1,src={
 Q[91751]={en={6306},l=7,money=125,n="Rough Wolf Pelts",obj={{id=247877,qty=7,t="item",text="Rough Wolf Pelt"}},r=5,sn={6306},xp=475,zone=12}
 Q[91752]={en={197},kind="group",l=3,money=100,n="The Big Picture",next=91758,obj={{id=247886,qty=1,src={{"n",248362,67}},t="item",text="Sack of \"Picture\" Books"}},prev=91745,r=1,sn={247226},xp=315,zone=12}
 Q[91753]={en={11072},l=7,money=125,n="An Enchanting Lesson",obj={{id=247884,qty=3,t="item",text="Luminous Residue"}},r=5,sn={11072},xp=475,zone=12}
+Q[91754]={l=56,n="Rub Some Dirt In It",obj={{id=247889,qty=6,t="item",text="Untainted Soil"}},r=54,xp=2900,zone=616}
+Q[91755]={l=56,money=4000,n="Leaves to Ligatures",obj={{id=247892,qty=12,t="item",text="Verdant Leaves"}},r=54,xp=5800,zone=616}
 Q[91758]={en={248415},l=4,money=35,n="Follow That Kobold!",next=91772,prev=91752,r=1,sn={197},xp=180,zone=12}
-Q[91772]={en={240},l=4,money=55,n="Shhh! We're Hunting Kobolds",next=91775,obj={{id=563442,qty=6,t="object",text="Followed Kobold Tracks"},{from="provided",id=247970,qty=1,t="item",text="Kobold Tracking Kit (Provided)"}},prev=91758,r=1,sn={248415},xp=270,zone=12}
+Q[91770]={l=56,n="Bark Bite",obj={{id=248366,qty=1,src={{"n",248366,0}},t="kill",text="Fraxinus soothed"}},provided={247963},r=54,xp=580,zone=616}
+Q[91772]={en={240},l=4,money=55,n="Shhh! We're Hunting Kobolds",next=91775,obj={{id=563442,qty=6,src={{"o",563442,0}},t="object",text="Followed Kobold Tracks"},{from="provided",id=247970,qty=1,t="item",text="Kobold Tracking Kit (Provided)"}},prev=91758,r=1,sn={248415},xp=270,zone=12}
 Q[91775]={en={240},kind="group",l=6,money=250,n="Book Return",next=91777,obj={{id=248002,qty=1,src={{"n",248464,51}},t="item",text="Picture Book: Fun with Elementals"},{id=248001,qty=6,t="item",text="Lost Book"}},prev=91772,provided={279935},r=1,sn={240},xp=680,zone=12}
 Q[91777]={en={951},kind="group",l=7,money=350,n="Rare Books",obj={{id=248003,qty=1,src={{"n",248474,53}},t="item",text="Geomancy for Curious Young Wizards"},{id=248004,qty=1,src={{"n",471,6}},t="item",text="Arcane Explainer: Magical Stuff in Simple Words"}},prev=91775,r=1,sn={240},xp=790,zone=12}
+Q[91794]={kind="group",l=59,n="Flags of Our Forebears",obj={{id=253249,qty=1,t="item",text="Horde Flag"},{id=274949,qty=3,src={{"n",249229,0},{"n",255183,0}},t="item",text="Scrap of Horde Heraldry"}},r=54,side="H",xp=8050,zone=616}
 Q[91858]={classes=2,en={248840},l=22,money=350,n="Diplomatic Incident",r=18,races=16,side="H",sn={246378},sort=4,xp=435}
 Q[91859]={classes=2,en={259611},l=22,money=350,n="A Curious Pair",r=18,races=16,side="H",sn={248840},sort=4,xp=435}
 Q[91860]={classes=2,l=22,money=350,n="A Grim Fate",r=18,races=16,side="H",sn={259611},sort=4,xp=435}
 Q[91861]={classes=2,en={248755},l=22,n="Into Fenris Keep",r=18,races=16,side="H",sort=4,xp=435}
 Q[91862]={classes=2,en={248755},l=22,money=1400,n="Lumina Windsinger",obj={{id=267412,qty=1,t="item",text="Fenris Isle Key"}},r=18,races=16,side="H",sn={248755},sort=4,xp=1750}
-Q[91888]={l=60,n="A Special Delivery",r=1,sort=-2}
-Q[91889]={l=60,n="Your Reward has Arrived!",r=1,sort=-2}
+Q[91881]={l=57,n="The Western Post",r=54,side="A",xp=600,zone=616}
+Q[91882]={l=55,n="The Grand Alliance",r=55,xp=560,zone=4}
+Q[91883]={l=59,n="Spear of the Skylord",obj={{id=268998,qty=1,t="item",text="Omnuron's Spear"}},r=55,xp=4800,zone=616}
 Q[91899]={en={256386,256390},l=60,n="A Sealed Crate",obj={{id=248765,qty=1,t="item",text="Sealed Apprentice Crate"}},r=1,sn={256390},sort=-2}
 Q[91900]={en={256386,256390},l=60,n="A Sealed Crate",obj={{id=248766,qty=1,t="item",text="Sealed Journeyman Crate"}},r=1,sn={256390},sort=-2}
 Q[91901]={l=60,n="A Sealed Crate",obj={{id=248767,qty=1,t="item",text="Sealed Expert Crate"}},r=1,sort=-2}
+Q[91902]={l=60,n="A Sealed Crate",obj={{id=248768,qty=1,t="item",text="Sealed Artisan Crate"}},sort=-2}
 Q[91904]={en={256386,256390},l=60,n="A Sealed Crate",obj={{id=248770,qty=1,t="item",text="Sealed Apprentice Crate"}},sn={256390},sort=-2}
 Q[91905]={en={256386,256390},l=60,n="A Sealed Crate",obj={{id=248771,qty=1,t="item",text="Sealed Journeyman Crate"}},sn={256390},sort=-2}
+Q[91906]={en={256386,256390},l=60,n="A Sealed Crate",sn={256390},sort=-2}
 Q[91920]={en={1937},l=11,money=200,n="Wild Eyes",next=91921,obj={{id=730,qty=3,src={{"n",1908,51},{"n",1418,51},{"n",10323,50},{"n",127,50},{"n",2206,50},{"n",517,50},{"n",1958,50},{"n",2207,49},{"n",1909,49},{"n",2203,49},{"n",2204,49},{"n",2208,48}},t="item",text="Murloc Eye"}},prev=430,r=10,sn={1951},xp=440,zone=130}
 Q[91921]={en={1951},l=11,n="Return to Quinn (Again)",obj={{from="provided",id=248930,qty=1,t="item",text="Quinn's Potion (Provided)"}},prev=91920,r=10,sn={1937},xp=660,zone=130}
+Q[91923]={kind="group",l=57,n="Celastrus the Bitter",obj={{id=282028,qty=1,t="item",text="Broken Frond of Celastrus"}},r=54,xp=7550,zone=616}
+Q[91952]={l=55,n="The Source of the Corruption",r=55,xp=560,zone=361}
+Q[92008]={l=56,n="Premiere Parts",prev=96796,r=54,xp=2900,zone=616}
+Q[92009]={l=56,n="Crate Expectations",obj={{id=250725,qty=1,t="item",text="Crate of Exotic Parts (Provided)"}},prev=92008,r=54,xp=5800,zone=616}
+Q[92011]={l=58,n="Rubble Rummage",obj={{id=250775,qty=5,t="item",text="Frayed Wire"},{id=269244,qty=5,t="item",text="Calcified Excrement"},{id=269246,qty=5,t="item",text="Warped Metal Scrap"}},prev=92009,r=54,xp=6200,zone=616}
+Q[92016]={l=60,n="Rootwork",r=56,xp=3300,zone=616}
+Q[92017]={l=59,money=4500,n="Cleansing Winds",obj={{id=274287,qty=5,t="item",text="Grand Hippogryph Feather"},{id=274288,qty=3,src={{"n",249490,0}},t="item",text="Oily Chimaera Hair"}},r=56,xp=4800,zone=616}
+Q[92020]={l=55,n="Hol'anyee's Big Book of Big Lizards",obj={{id=275903,qty=1,t="item",text="Hol'anyee's Big Book of Big Lizards (Provided)"}},r=55,xp=560,zone=490}
+Q[92064]={l=56,n="Tree Free",obj={{id=254501,qty=1,t="kill",text="Tree Branch destroyed"}},r=54,side="A",xp=580,zone=616}
+Q[92066]={inst=true,kind="dungeon",l=55,n="The Twin Bears",obj={{id=249694,qty=1,t="item",text="Totem of Ursoc"},{id=249693,qty=1,t="item",text="Totem of Ursol"}},r=47,xp=5650,zone=16554}
+Q[92069]={inst=true,kind="dungeon",l=58,n="Claws That Rend, Tusks that Gore",obj={{id=249697,qty=1,t="item",text="Claws of the Great Bear"},{id=249696,qty=1,t="item",text="Tusks of the Unbroken"}},r=45,xp=6200,zone=16554}
+Q[92100]={l=58,n="Anywhere But Here",r=54,xp=4650,zone=616}
+Q[92101]={l=58,n="Lifted by Legacy",obj={{from="crafted",id=274795,qty=1,t="item",text="Embroidered Scabbard (Provided)"}},r=54,xp=6200,zone=616}
 Q[92109]={en={249713},l=10,money=175,n="My First Alchemy Set",next=92110,obj={{id=3371,qty=5,src={{"v",66,0},{"v",777,0},{"v",843,0},{"v",844,0},{"v",958,0},{"v",960,0},{"v",983,0},{"v",989,0},{"v",1148,0},{"v",1250,0},{"v",1257,0},{"v",1286,0},{"v",1313,0},{"v",1325,0},{"v",1326,0},{"v",1453,0}},t="item",text="Empty Vial"},{id=2447,qty=5,src={{"o",3724,98},{"o",1618,98},{"n",9601,20},{"o",404352,20},{"v",1313,0},{"v",3490,0},{"v",3548,0}},t="item",text="Peacebloom"},{id=765,qty=5,src={{"o",3725,98},{"o",1617,98},{"n",2027,20},{"v",1313,0},{"v",3490,0},{"v",3548,0}},t="item",text="Silverleaf"}},r=10,side="A",sn={249713},xp=420,zone=40}
 Q[92110]={l=10,money=175,n="My First Real Potion",obj={{id=730,qty=3,src={{"n",1908,51},{"n",1418,51},{"n",10323,50},{"n",127,50},{"n",2206,50},{"n",517,50},{"n",1958,50},{"n",2207,49},{"n",1909,49},{"n",2203,49},{"n",2204,49},{"n",2208,48}},t="item",text="Murloc Eye"}},prev=92109,r=10,side="A",xp=420,zone=40}
+Q[92111]={l=57,n="Of Friend and Fur",r=54,xp=600,zone=616}
 Q[92124]={en={247229},l=2,money=3,n="Book Inventory",r=1,sn={951},xp=15,zone=12}
+Q[92147]={l=58,money=6500,n="Highfeather Helper",obj={{id=268997,qty=18,t="item",text="Wormwing Pinfeather"}},r=55,xp=6200,zone=616}
+Q[92169]={kind="group",l=59,money=18000,n="Paying Back the Pact",obj={{qty=10,t="event",text="Slay Blackthorne Pact Members"},{qty=1,t="event",text="Test the Staff of the Mountain"},{id=267079,qty=1,t="item",text="Staff of the Mountain (Provided)"}},r=54,xp=8050,zone=616}
+Q[92171]={l=58,n="Taking to New Heights",next=92500,r=54,xp=620,zone=616}
+Q[92317]={l=58,n="Stolen Life",obj={{id=272973,qty=1,src={{"n",249226,0},{"n",249228,0},{"n",249247,0},{"n",267125,0}},t="item",text="Drop of Stolen Life"}},r=54,xp=4650,zone=616}
+Q[92328]={l=56,n="Siegecraft",obj={{id=251340,qty=1,t="kill",text="Battery cables connected"},{id=267917,qty=1,t="kill",text="Left and right gears adjusted"}},r=54,xp=1450,zone=616}
+Q[92329]={kind="group",l=60,n="Drum Up Trouble",obj={{id=251488,qty=1,t="kill",text="Ghansurok drawn towards the Glaive Thrower"}},r=54,xp=8300,zone=616}
+Q[92335]={l=59,n="Ashes of the Legion Ascent",obj={{id=253239,qty=1,t="item",text="Azgalor's Ashes"}},prev=96931,r=54,xp=1600,zone=616}
+Q[92343]={inst=true,kind="dungeon",l=55,n="Get to the Roots of It",obj={{id=250773,qty=10,t="item",text="Nordrassil Root Cap"}},prev=92346,r=45,side="H",xp=5650,zone=16554}
+Q[92344]={inst=true,kind="dungeon",l=55,n="Get to the Roots of It",obj={{id=250773,qty=10,t="item",text="Nordrassil Root Cap"}},prev=92345,r=45,side="A",xp=5650,zone=16554}
+Q[92345]={l=55,n="Beneath Nordrassil",r=45,side="A",xp=560,zone=16}
+Q[92346]={l=55,n="Beneath Nordrassil",next=92343,r=45,side="H",xp=560,zone=16}
 Q[92401]={en={250686},kind="dungeon",l=22,n="A Frightened Request",obj={{qty=1,t="event",text="Investigate the disappearance of Edward Heartweaver in the Ruins of Lordaeron."}},r=15,side="H",sn={250686},xp=2200,zone=1497}
 Q[92415]={en={14450},inst=true,kind="dungeon",l=22,n="Remember That I Love You",next=95161,obj={{from="provided",id=251522,qty=1,t="item",text="Blood-Stained Letter (Provided)"}},r=15,side="A",xp=2600,zone=16611}
 Q[92421]={en={266484},inst=true,kind="dungeon",l=22,money=4500,n="Light's Justice",obj={{id=268580,qty=25,t="item",text="Intact Limbs"}},r=15,side="H",sn={266484},xp=2200,zone=16611}
 Q[92422]={en={251001},inst=true,kind="dungeon",l=22,n="The Wrath of Rath'mael",obj={{id=250657,qty=1,t="kill",text="Rath'mael slain"}},r=15,sn={251001},zone=16611}
+Q[92432]={en={269127},l=33,n="An Alarming Request",next=92458,r=30,side="A",sn={247264},xp=660,zone=36}
+Q[92434]={en={269127},l=34,n="Blood in the Streets",next=96984,obj={{id=279469,qty=1,t="item",text="Grimy Key (Provided)"},{qty=1,t="event",text="Find a way into Dalaran along the Lordamere Lake"}},r=30,side="H",sn={2410},xp=270,zone=36}
+Q[92446]={kind="group",l=60,n="Head Scratcher",obj={{id=251781,qty=1,t="item",text="Head Scratcher's Scratchers"},{id=251780,qty=1,t="item",text="Rabbit Carcass (Provided)"}},r=54,side="H",xp=8300,zone=616}
+Q[92449]={l=58,n="Blight No More",obj={{id=249247,qty=3,src={{"n",249247,0}},t="kill",text="Forgotten Soldier slain"},{id=249228,qty=12,src={{"n",249228,0}},t="kill",text="Fleshflay Ravener slain"}},r=54,side="A",xp=6200,zone=616}
 Q[92454]={l=1,n="Welcome!",obj={{from="provided",id=251900,qty=1,t="item",text="Thendal Grove Gift Voucher (Provided)"}},r=1,si={id=251900,n="Thendal Grove Gift Voucher"},sort=-2}
+Q[92456]={en={5502},inst=true,kind="dungeon",l=33,n="A Green Sample",obj={{id=251983,qty=1,t="item",text="Fel Infused Blossom"}},r=24,side="A",sn={5502},xp=3950,zone=16544}
+Q[92457]={en={269127},inst=true,kind="dungeon",l=33,n="Starving Arcane",obj={{id=247003,qty=8,src={{"n",247003,0}},t="kill",text="Seeking Remnant slain"},{id=247001,qty=8,src={{"n",247001,0}},t="kill",text="Saturated Remnant slain"},{id=246600,qty=8,src={{"n",246600,0}},t="kill",text="Mana Echo slain"}},r=24,side="A",sn={269127},xp=3950,zone=16544}
+Q[92458]={en={269127},inst=true,kind="dungeon",l=33,n="Heart of Disruption",next=92459,obj={{id=251961,qty=1,src={{"n",246020,0}},t="item",text="Arcane Mote"}},prev=92432,provided={277507},r=24,side="A",sn={269127},xp=3950,zone=16544}
+Q[92459]={en={252085},l=33,n="Friend of the Kirin Tor",obj={{id=251961,qty=1,src={{"n",246020,0}},t="item",text="Arcane Mote (Provided)"}},prev=92458,r=24,side="A",sn={269127},xp=265,zone=36}
 Q[92460]={en={251361},l=1,n="Coming of Age",next=92461,r=1,sn={251362},sort=-2,xp=40}
 Q[92461]={en={251361},l=1,money=15,n="Harmony in Balance",obj={{id=250873,qty=8,src={{"n",250873,0}},t="kill",text="Juvenile Vuldren slain"}},prev=92460,r=1,sn={251361},sort=-2,xp=80}
 Q[92462]={en={251368},l=2,money=35,n="Infestation Investigation",obj={{id=251169,qty=8,src={{"n",251169,0}},t="kill",text="Pesky Cirrusfly slain"}},r=1,sn={251368},sort=-2,xp=170}
@@ -5456,23 +4762,34 @@ Q[92482]={classes=4,en={251376},l=2,n="The Way of the Hunter",obj={{from="provid
 Q[92483]={classes=8,en={251389},l=2,n="At Home in the Shadows",obj={{from="provided",id=282422,qty=1,t="item",text="Simple Note (Provided)"}},r=2,sn={251361},sort=4,xp=85}
 Q[92484]={classes=64,en={251374},l=2,n="Embracing the Elements",obj={{from="provided",id=282418,qty=1,t="item",text="Humming Recall Crystal (Provided)"}},r=2,sn={251361},sort=4,xp=85}
 Q[92485]={classes=1024,en={251373},l=2,n="A Student of Nature",obj={{from="provided",id=282420,qty=1,t="item",text="Folded Parchment (Provided)"}},r=2,sn={251361},sort=4,xp=85}
+Q[92489]={en={5694},inst=true,kind="dungeon",l=33,money=10000,n="Power Overwhelming",obj={{id=246016,qty=1,src={{"n",246016,0}},t="kill",text="Arcanic Enigma slain"}},r=24,side="A",sn={5694},xp=3950,zone=16544}
+Q[92500]={l=58,n="A Bit of the Sky",obj={{id=272974,qty=1,t="item",text="The Jewel of the Horizon"}},r=54,xp=620,zone=616}
 Q[92514]={en={251523},l=6,n="Welcome to Shen'dar Village",next=92517,obj={{id=251902,qty=1,src={{"n",251902,0}},t="kill",text="Speak with Illaya Amberwind"},{id=254089,qty=1,src={{"n",254089,0}},t="kill",text="Speak with the Innkeeper"}},prev=93461,r=4,side="H",sn={251523},sort=-2,xp=135}
 Q[92515]={en={251993},l=6,money=125,n="The Problem With Prideclaws",obj={{id=252670,qty=10,src={{"n",251245,46}},t="item",text="Prideclaw Pelt"}},r=4,sn={251993},sort=-2,xp=540}
 Q[92516]={en={251906},l=7,money=175,n="Hippogryph Harrassment",obj={{id=251291,qty=8,src={{"n",251291,0}},t="kill",text="Hippogryph Youth slain"},{id=251284,qty=6,src={{"n",251284,0}},t="kill",text="Hippogryph Protector slain"},{id=251261,qty=1,src={{"n",251261,0}},t="kill",text="Hippogryph Matriarch slain"}},r=4,sn={251906},sort=-2,xp=630}
 Q[92517]={en={251523},l=7,money=175,n="The Criminal Element",obj={{id=251918,qty=10,src={{"n",251918,0}},t="kill",text="Highlands Bandit slain"},{id=255534,qty=1,src={{"n",255534,0}},t="kill",text="\"Badwind\" Bennic slain"}},prev=93461,r=4,sn={251523},sort=-2,xp=475}
+Q[92519]={en={12920},l=36,n="Ward Restocking",obj={{id=278462,qty=1,t="item",text="Packaged Tonics"}},prev=97539,r=30,side="H",sn={12920},xp=2800,zone=45}
+Q[92521]={n="The Demon Tower",zone=616}
 Q[92528]={en={251523},l=8,n="Among the Faithful",next=92550,obj={{id=252078,qty=1,t="kill",text="Learn about the cultists' plans"}},prev=92529,r=5,sn={257065},sort=-2,xp=350}
 Q[92529]={en={257065},l=8,n="Falaath Village",next=92528,obj={{qty=1,t="event",text="Speak with Missionary Jasaan at the entrance to Falaath Village"}},prev=93036,r=5,sn={251904},sort=-2,xp=350}
 Q[92532]={classes=1,en={251964},l=2,n="The Warrior's Path",obj={{from="provided",id=282419,qty=1,t="item",text="Crumpled Note (Provided)"}},r=2,sn={251361},sort=4,xp=85}
+Q[92533]={l=60,n="Twisted Tools",obj={{id=273832,qty=1,src={{"n",249551,0},{"n",275173,0}},t="item",text="Wicked Ritualist's Kris"},{id=273828,qty=1,src={{"n",275174,0}},t="item",text="Recoiling Gnarlybark Staff"}},r=56,xp=6600,zone=616}
 Q[92534]={n="jktestquest1a",sort=-2}
 Q[92544]={en={252095},l=5,n="Al'Aketh Thugs",obj={{id=251145,qty=6,src={{"n",251145,0}},t="kill",text="Al'Aketh Brute slain"},{id=251448,qty=4,src={{"n",251448,0}},t="kill",text="Al'Aketh Neophyte slain"},{id=256935,qty=1,src={{"n",256935,0}},t="kill",text="Malduko Cloudcrush slain"}},r=2,sn={252095},sort=-2,xp=560}
 Q[92550]={en={251523},l=8,money=225,n="Havoc in the Highlands",next=92579,obj={{id=252068,qty=6,src={{"n",252068,0}},t="kill",text="Al'Aketh Stormcaller slain"},{id=251662,qty=4,src={{"n",251662,0}},t="kill",text="Living Lightning slain"},{id=252661,qty=1,src={{"n",251966,97}},t="item",text="Commander Cyclas's Head"}},prev=92528,r=5,sn={251523},sort=-2,xp=700}
 Q[92551]={en={252172},l=8,money=225,n="Stolen Supplies",obj={{id=252760,qty=10,src={{"n",259398,100},{"n",252068,49}},t="item",text="Stolen Shen'dar Supplies"}},r=5,sn={252172},sort=-2,xp=530}
 Q[92553]={en={251905},l=6,money=65,n="Restocking the Larders",obj={{id=6889,qty=3,src={{"n",250936,100},{"n",270298,90},{"n",10157,69},{"n",10158,68},{"n",10160,68},{"n",10159,68},{"n",12138,68},{"n",1194,63},{"n",428,63},{"n",154,61},{"n",1109,58},{"n",14268,57}},t="item",text="Small Egg"},{id=5469,qty=8,src={{"n",251661,47},{"n",2322,36},{"n",3245,36},{"n",2323,35},{"n",2321,33},{"n",3244,33},{"n",3246,32},{"n",2172,31}},t="item",text="Strider Meat"}},r=4,sn={251905},sort=-2,xp=405}
 Q[92579]={en={252383},l=8,n="To Valanaar",obj={{from="provided",id=253152,qty=1,t="item",text="Aonda's Written Report (Provided)"}},prev=92550,r=6,side="H",sn={251523},sort=-2,xp=175}
+Q[92591]={l=59,n="Final Death",obj={{id=268573,qty=1,t="item",text="Reanimator's Amulet"}},provided={274411},r=57,side="A",xp=6400,zone=616}
+Q[92592]={l=59,n="Final Death",obj={{id=268573,qty=1,t="item",text="Reanimator's Amulet"}},provided={274411},r=57,side="H",xp=6400,zone=616}
+Q[92593]={l=59,n="Avalanche of Corruption",r=54,side="A",xp=3200,zone=616}
+Q[92594]={l=56,money=4000,n="Kindling, Kinda",obj={{id=248395,qty=15,t="kill",text="Tainted Shrubbery slain"}},r=54,xp=4350,zone=616}
 Q[92595]={en={251902},l=6,n="The Windshapers",obj={{id=251902,qty=1,src={{"n",251902,0}},t="kill",text="Listen to Illaya"}},r=4,side="H",sn={251902},sort=-2,xp=135}
 Q[92596]={en={251903},l=6,n="The High Order",obj={{id=251903,qty=1,src={{"n",251903,0}},t="kill",text="Listen to Rathiril Sunlance"}},r=4,side="A",sn={251903},sort=-2,xp=135}
 Q[92597]={en={251371},l=4,n="Reading the Ley Lines",obj={{qty=1,t="event",text="Use your Read Ley Line ability near the Thendal Grove Ley Line"}},r=2,races=4294967296,side="A",sn={251371},sort=-2,xp=180}
 Q[92598]={en={251487},l=4,n="The Gift of Skysight",obj={{qty=1,t="event",text="Use Skysight near the Elemental Convergence"}},r=2,races=8589934592,side="H",sn={251487},sort=-2,xp=180}
+Q[92609]={l=57,n="Feathers in Flight",obj={{id=253341,qty=9,src={{"n",249053,0}},t="item",text="Hyjal Owl Feather"}},r=54,side="H",xp=6000,zone=616}
+Q[92612]={l=58,n="Aid from Moonglade",obj={{id=272925,qty=1,t="item",text="Ketharas' Note (Provided)"}},r=54,xp=620,zone=493}
 Q[92640]={en={252383},l=11,n="Desperate Times",next=93065,obj={{id=252383,qty=1,src={{"n",252383,0}},t="kill",text="Speak with Valennia Stormfist"},{id=251968,qty=1,src={{"n",251968,0}},t="kill",text="Recruit the Windshapers"},{id=252475,qty=1,src={{"n",252475,0}},t="kill",text="Recruit the High Order"}},prev=94568,r=6,sn={252476},sort=-2,xp=660}
 Q[92642]={en={252378},l=11,n="Disrupting Logistics",obj={{id=254596,qty=4,src={{"n",254596,0}},t="kill",text="Al'Aketh Healer slain"},{id=270201,qty=8,src={{"n",270201,0}},t="kill",text="Al'Aketh Brawler slain"}},r=6,sn={252378},sort=-2,xp=440}
 Q[92643]={en={253372},l=11,n="The Turncoat",next=92644,obj={{id=255013,qty=1,t="kill",text="Find the secluded house in Shen'dar Highlands"},{id=253372,qty=1,src={{"n",253372,0}},t="kill",text="Find the Al'Aketh Turncoat"}},prev=98512,r=6,sn={252476},sort=-2,xp=660}
@@ -5489,13 +4806,16 @@ Q[92698]={en={252800},l=9,n="What Is My Purpose?",r=5,sn={250929},sort=-2,xp=195
 Q[92699]={en={252475},l=9,n="The Supreme Magister",r=4,side="A",sn={252383},sort=-2,xp=80}
 Q[92700]={en={251968},l=9,n="The Grand Skyseer",r=4,side="H",sn={252383},sort=-2,xp=80}
 Q[92701]={en={252383},l=9,n="To Valanaar",obj={{from="provided",id=253152,qty=1,t="item",text="Aonda's Written Report (Provided)"}},r=6,side="A",sn={251523},sort=-2,xp=80}
+Q[92702]={l=56,n="Branch Out",obj={{id=274617,qty=1,t="item",text="Sturdy Tree Branch"}},r=54,side="A",xp=580,zone=616}
 Q[92703]={en={252448},l=9,n="Deliver the News",prev=92693,r=5,sn={252800},sort=-2,xp=590}
 Q[92706]={en={3391},kind="group",l=20,money=2500,n="WANTED: Bruuz",obj={{id=253710,qty=1,src={{"n",209797,100}},t="item",text="Bruuz's Dorsal Fin"}},r=15,so={3972},xp=1950,zone=17}
+Q[92707]={l=33,money=6500,n="The Giant in the Den",obj={{id=253711,qty=1,src={{"n",218032,0}},t="item",text="Goliath's Wristguards"}},r=30,side="H",xp=3300,zone=45}
 Q[92708]={en={251968},l=12,n="A Grand Adventure",obj={{id=273972,qty=1,t="kill",text="Listen to Ayessa"}},r=7,side="H",sn={251968},sort=-2,xp=90}
 Q[92709]={en={252475},l=12,n="A Grand Adventure",obj={{id=273972,qty=1,t="kill",text="Listen to Elaadrin"}},r=7,side="A",sn={252475},sort=-2,xp=90}
 Q[92727]={l=10,n="The Missing Scholar",r=4,side="A",sn={253204},sort=-2,xp=210}
 Q[92741]={en={253004},l=13,n="Unwelcome Visitors",obj={{id=254378,qty=8,src={{"n",256092,17}},t="item",text="Shriekling Talons"}},r=8,side="A",sn={253004},sort=-2,xp=910}
 Q[92742]={en={253092},l=12,money=250,n="Testing the Wells",obj={{from="crafted",id=254546,qty=1,t="item",text="Jansen Stead Water Sample"},{from="crafted",id=254547,qty=1,t="item",text="Molsen Farm Water Sample"},{from="provided",id=254545,qty=1,t="item",text="Well Water Sample Kit (Provided)"}},r=9,side="A",sn={253092},xp=455,zone=40}
+Q[92743]={en={5398},l=40,n="A Conqueror's Crown",next=92841,obj={{id=254392,qty=1,t="item",text="Conqueror's Helm"},{id=93,qty=1,t="faction",text="Magram Clan Centaur (Friendly)"}},prev=1369,r=30,sn={5398},xp=3150,zone=405}
 Q[92744]={en={253092},l=12,money=250,n="Murloc Gills",obj={{id=254548,qty=7,t="item",text="Longshore Murloc Gill"}},r=9,side="A",sn={253092},xp=455,zone=40}
 Q[92745]={en={253092},l=14,money=300,n="The State of the Mines",obj={{id=1236,qty=4,src={{"n",1236,0}},t="kill",text="Kobold Digger slain"},{id=1426,qty=6,src={{"n",1426,0}},t="kill",text="Riverpaw Miner slain"}},r=9,side="A",sn={253092},xp=490,zone=40}
 Q[92747]={en={253092},l=16,money=400,n="Moonbrook Espionage",obj={{id=254676,qty=8,t="item",text="Suspicious Industrial Supplies"}},r=9,side="A",sn={253092},xp=580,zone=40}
@@ -5505,34 +4825,126 @@ Q[92750]={en={1325},l=16,money=400,n="Detonation at a Distance",r=9,side="A",sn=
 Q[92751]={en={11026},l=16,money=400,n="Detonation at a Distance",obj={{from="provided",id=254552,qty=1,t="item",text="Remote Detonator Kit (Provided)"}},r=9,side="A",sn={1325},xp=580,zone=40}
 Q[92752]={en={253092},l=16,money=400,n="Explosive Consultation",obj={{from="provided",id=254553,qty=1,t="item",text="Extra-Destructive Explosives (Provided)"}},r=9,side="A",sn={11026},xp=580,zone=40}
 Q[92753]={en={253279},kind="dungeon",l=18,n="Destruction in Deadmines",obj={{id=253370,qty=1,t="kill",text="Explosives placed"},{from="provided",id=254553,qty=1,t="item",text="Extra-Destructive Explosives (Provided)"}},r=9,side="A",sn={253092},xp=1350,zone=40}
+Q[92754]={l=35,money=1800,n="A New Need for Shadow Protection",obj={{from="crafted",id=13459,qty=3,t="item",text="Greater Shadow Protection Potion"},{id=93,qty=1,t="faction",text="Magram Clan Centaur (Friendly)"}},r=30,xp=2050,zone=405}
+end)()
+;(function()
+Q[92755]={en={253096},l=35,money=1800,n="Mysterious Mysticism",obj={{id=11135,qty=3,src={{"n",469,0},{"n",1284,0},{"n",2215,0},{"n",2425,0},{"n",2859,0},{"n",3890,0},{"n",4968,0},{"n",8479,0},{"n",11865,0},{"n",11870,0},{"n",15126,0},{"n",15184,0}},t="item",text="Greater Mystic Essence"},{id=92,qty=1,t="faction",text="Gelkis Clan Centaur (Friendly)"}},r=30,side="A",xp=2050,zone=405}
+Q[92811]={en={253139},l=60,n="Economic Warfare",r=1,side="A",sn={253139},zone=405}
+Q[92812]={en={253140},l=60,n="Economic Warfare",r=1,sn={253140},zone=405}
+Q[92814]={l=35,money=1800,n="I Need a Tailor",obj={{from="crafted",id=10008,qty=1,t="item",text="White Bandit Mask"},{id=92,qty=1,t="faction",text="Gelkis Clan Centaur (Friendly)"}},r=30,xp=2050,zone=405}
+Q[92817]={l=35,money=1800,n="Leather Technique",obj={{from="crafted",id=5739,qty=1,t="item",text="Barbaric Harness"},{id=92,qty=1,t="faction",text="Gelkis Clan Centaur (Friendly)"}},r=30,xp=2050,zone=405}
+Q[92818]={en={253163},l=35,money=1800,n="Big, No, MASSIVE Iron Axes",obj={{from="crafted",id=3855,qty=2,t="item",text="Massive Iron Axe"},{id=93,qty=1,t="faction",text="Magram Clan Centaur (Friendly)"}},r=30,side="A",sn={253163},xp=2050,zone=405}
 Q[92819]={en={253279},l=18,money=500,n="Destruction in Deadmines",obj={{id=266995,qty=1,t="kill",text="Detonator used"}},r=9,side="A",sn={253279},xp=680,zone=40}
+Q[92833]={kind="group",l=60,money=18000,n="Ve'han's Fall",obj={{id=260674,qty=1,t="kill",text="Ve'han Talongrasp slain"}},provided={267079},r=54,xp=8300,zone=616}
 Q[92834]={en={252475},l=11,money=400,n="Avenged Tenfold",next=92860,obj={{id=255658,qty=10,src={{"n",253195,29},{"n",270201,27},{"n",253511,25}},t="item",text="Al'Aketh Windstone Charm"}},prev=92840,r=6,side="A",sn={252475},sort=-2,xp=880}
 Q[92840]={en={252475},l=11,money=400,n="Catching Wind",next=92834,obj={{id=253306,qty=1,src={{"n",253306,0}},t="kill",text="Protect the Index"},{from="provided",id=254584,qty=1,t="item",text="Index Esoteria (Provided)"}},r=5,side="A",sn={252475},sort=-2,xp=880}
+Q[92841]={en={253136},l=40,n="Valley of Bones",next=92844,obj={{id=93,qty=1,t="faction",text="Magram Clan Centaur (Honored)"}},prev=92743,r=35,side="A",sn={5398},xp=315,zone=16651}
+Q[92842]={l=55,n="A Cousin Abroad",r=55,xp=560,zone=28}
+Q[92844]={en={253136},l=42,money=3000,n="Mountain of Bones",next=92847,obj={{id=254663,qty=426,t="item",text="Gently Cursed Bone"},{id=93,qty=1,t="faction",text="Magram Clan Centaur (Honored)"}},prev=92846,r=35,side="A",sn={253136},xp=3450,zone=16651}
+Q[92846]={en={253136},l=40,n="Outcast Necromancers",next=92847,obj={{id=11559,qty=6,src={{"n",11559,0}},t="kill",text="Outcast Necromancer slain"},{id=93,qty=1,t="faction",text="Magram Clan Centaur (Honored)"}},prev=92844,r=35,side="A",sn={253136},xp=2350,zone=16651}
+Q[92847]={en={253136},l=42,n="Corrupting Tears",next=92873,obj={{id=254841,qty=3,t="item",text="Petrified Bark"},{id=254840,qty=3,t="item",text="Imbued Tears"},{id=93,qty=1,t="faction",text="Magram Clan Centaur (Honored)"}},prev=92846,r=35,side="A",sn={253136},xp=3450,zone=16651}
 Q[92849]={en={253284},l=10,n="The Missing Scholar",next=92850,obj={{id=253002,qty=1,src={{"n",253002,0}},t="kill",text="Find Fillion Flamebreeze"},{id=253281,qty=1,src={{"n",253281,0}},t="kill",text="Carry Fillion Flamebreeze to safety while avoiding enemies"}},r=4,side="A",sort=-2,xp=840}
 Q[92850]={en={253204},l=10,money=700,n="The Missing Scholar",obj={{id=257107,qty=1,src={{"n",253283,48}},t="item",text="Shriekling Matriarch's Head"}},prev=92849,r=4,side="A",sn={253284},sort=-2,xp=840}
+Q[92858]={kind="group",l=43,money=3000,n="WANTED: Ohk'zi",obj={{id=254692,qty=1,src={{"n",222233,0}},t="item",text="Staff of Ohk'zi"}},r=39,side="A",xp=4450,zone=357}
+Q[92859]={l=60,n="Shroud of the Winter Wilds",obj={{id=281241,qty=5,t="item",text="Chillwind Chimaera Fur"},{id=281242,qty=5,t="item",text="Winterspring Owl Feather"}},r=55,xp=3300,zone=618}
 Q[92860]={en={252383},l=12,n="In Service of Zephras",prev=92834,r=6,side="A",sn={252475},sort=-2,xp=225}
+Q[92867]={kind="group",l=39,money=4500,n="Ground to Keep",obj={{id=2569,qty=5,src={{"n",2569,0}},t="kill",text="Boulderfist Mauler slain"},{id=2590,qty=3,src={{"n",2590,0}},t="kill",text="Syndicate Conjuror slain"},{id=2588,qty=6,src={{"n",2588,0}},t="kill",text="Syndicate Prowler slain"},{id=2558,qty=3,src={{"n",2558,0}},t="kill",text="Witherbark Berserker slain"}},r=32,sn={219},xp=3000,zone=45}
 Q[92871]={en={252383},l=11,n="In Service of Zephras",r=6,side="H",sn={251968},sort=-2,xp=220}
+Q[92872]={en={2782},l=38,n="Dutiful Steps",obj={{id=269668,qty=1,t="kill",text="Pouch of Tomb Dust thrown into the sea behind Stromgarde"}},provided={278543},r=32,side="A",sn={2782},xp=2850,zone=45}
+Q[92873]={en={253136},l=41,n="Proof of Concept",next=92893,obj={{id=254842,qty=426,src={{"n",253360,0}},t="item",text="Well Cursed Bone"},{id=93,qty=1,t="faction",text="Magram Clan Centaur (Honored)"}},prev=92847,provided={254870},r=35,side="A",xp=2450,zone=16651}
+Q[92878]={kind="group",l=43,money=3000,n="Lost for Words",obj={{id=254877,qty=1,src={{"n",222286,0}},t="item",text="Namida's Hoof"}},r=36,side="H",xp=4450,zone=357}
 Q[92880]={en={252383},l=11,n="Return to Valanaar",r=6,sn={252378},sort=-2,xp=440}
 Q[92881]={en={252476},l=11,n="The High Elder's Request",next=92643,r=6,sn={252383},sort=-2,xp=90}
+Q[92893]={en={253136},l=42,n="No Mercy for the Weak",next=93066,obj={{id=253431,qty=5,src={{"n",253431,0}},t="kill",text="Gelkis Captive slain"},{id=93,qty=1,t="faction",text="Magram Clan Centaur (Honored)"}},prev=92894,r=35,side="A",sn={253136},xp=2550,zone=16651}
+Q[92894]={en={253136},l=40,n="Bone Raising",next=93066,obj={{id=253446,qty=10,src={{"n",253446,0}},t="kill",text="Summon or Slay Haggard Bones"},{id=93,qty=1,t="faction",text="Magram Clan Centaur (Honored)"}},prev=92893,provided={255403},r=35,side="A",xp=2350,zone=16651}
 Q[92909]={en={253395},l=15,money=500,n="Harvesting the Harvesters",obj={{id=255007,qty=14,src={{"n",276061,71}},t="item",text="Golem Isospring"},{id=255010,qty=5,t="item",text="Harvester Gyrostabilizer"}},r=8,side="A",sn={253395},xp=800,zone=40}
 Q[92910]={en={253395},l=15,money=500,n="Harvesting the Harvesters",obj={{from="provided",id=255155,qty=1,t="item",text="Precessive Autocognition Assembly (Provided)"}},r=8,si={id=255155,n="Precessive Autocognition Assembly"},side="A",xp=800,zone=40}
 Q[92911]={en={253395},l=15,money=500,n="Harvesting the Harvesters",obj={{id=255007,qty=8,src={{"n",276061,71}},t="item",text="Golem Isospring"},{id=4363,qty=4,src={{"o",19020,20},{"o",19019,11},{"v",1448,0},{"v",1694,0},{"v",2682,0},{"v",2684,0},{"v",2685,0},{"v",2687,0},{"v",2688,0},{"v",3133,0},{"v",3413,0},{"v",3495,0},{"v",4587,0},{"v",5175,0},{"v",5519,0},{"v",6730,0}},t="item",text="Copper Modulator"},{id=4405,qty=1,src={{"o",19020,4},{"o",19019,2}},t="item",text="Crude Scope"}},r=8,side="A",sn={253395},xp=800,zone=40}
+Q[92914]={l=43,money=3000,n="Strange Pylons",next=96010,r=35,xp=3600,zone=16651}
 Q[92947]={en={253576},l=12,money=500,n="Making Our Move",obj={{id=252762,qty=8,src={{"n",252762,0}},t="kill",text="Al'Aketh Guardian slain"},{id=252763,qty=6,src={{"n",252763,0}},t="kill",text="Al'Aketh Spiritcaller slain"},{id=252765,qty=6,src={{"n",252765,0}},t="kill",text="Al'Aketh Blademaster slain"},{id=253576,qty=1,src={{"n",253576,0}},t="kill",text="Report to Hyusaa Quickbreeze"}},prev=93065,r=7,sn={253844},sort=-2,xp=910}
+Q[92959]={kind="group",l=56,n="The Dying Ancients",obj={{id=268220,qty=1,t="kill",text="Seed planted in Sunderbark's remains"}},provided={248975},r=55,xp=7300,zone=616}
+Q[92960]={l=59,money=9000,n="Siphoned Ephemeral Essence",obj={{id=271220,qty=6,src={{"n",249230,0}},t="item",text="Ephemeral Essence"}},r=54,xp=6400,zone=616}
+Q[93016]={l=43,n="A Brief History Lesson",next=93394,obj={{id=253623,qty=1,t="kill",text="Speak with Mordent Evenshade"}},prev=96018,r=35,xp=360,zone=16651}
+Q[93030]={l=58,n="The Knight of Mourning",obj={{id=276110,qty=1,src={{"n",276110,0}},t="kill",text="Listen to the Knight's Tale"}},r=50,side="H",xp=620,zone=85}
+Q[93034]={en={253177},l=38,n="Valley of Bones",next=93035,obj={{id=92,qty=1,t="faction",text="Gelkis Clan Centaur (Honored)"}},prev=1373,r=35,sn={5397},xp=285,zone=16651}
+Q[93035]={en={253177},l=38,n="Ravaging Ravagers",next=93041,obj={{id=11561,qty=6,src={{"n",11561,0}},t="kill",text="Undead Ravager slain"},{id=92,qty=1,t="faction",text="Gelkis Clan Centaur (Honored)"}},prev=93037,r=35,sn={253177},xp=1450,zone=16651}
 Q[93036]={en={251904},l=8,n="Infiltrating the Cult",next=92529,r=5,sn={251523},sort=-2,xp=70}
+Q[93037]={en={253177},l=40,n="Outing Outcasts",next=93041,obj={{id=255875,qty=1,t="item",text="Necromantic Garb"},{id=92,qty=1,t="faction",text="Gelkis Clan Centaur (Honored)"}},prev=93035,r=35,sn={253177},xp=2350,zone=16651}
+Q[93041]={en={5397},l=38,n="Facing the Truth",next=93044,obj={{id=255945,qty=1,t="item",text="Accursed Skull"},{id=255941,qty=1,t="item",text="Gelkis Necromantic Garb (Provided)"},{id=92,qty=1,t="faction",text="Gelkis Clan Centaur (Honored)"}},prev=93037,r=35,sn={253177},xp=710,zone=16651}
+Q[93044]={en={5397},l=38,n="A Cleansing Cry",next=93045,obj={{id=254930,qty=1,t="kill",text="Speak with Mulara"},{id=255878,qty=3,t="item",text="Tear of Theradras"},{id=92,qty=1,t="faction",text="Gelkis Clan Centaur (Honored)"}},prev=93041,r=35,side="H",xp=2150,zone=405}
+Q[93045]={en={253177},l=38,n="Test Your Theory",obj={{from="crafted",id=256061,qty=1,t="item",text="Uthek's Draenethyst Staff"},{id=253754,qty=1,t="kill",text="Dispel the Accursed Skull"},{id=92,qty=1,t="faction",text="Gelkis Clan Centaur (Honored)"},{id=256058,qty=1,t="item",text="Uthek's Staff"}},prev=93044,provided={256057},r=35,side="H",xp=710,zone=405}
+Q[93058]={en={253177},l=42,n="Saving Our Own",next=93122,obj={{id=254825,qty=5,t="kill",text="Gelkis Captive rescued"},{id=92,qty=1,t="faction",text="Gelkis Clan Centaur (Honored)"}},prev=93062,r=35,side="H",xp=2550,zone=16651}
+Q[93062]={en={253177},l=42,n="Bone Burying",next=93122,obj={{id=253446,qty=8,src={{"n",253446,0}},t="kill",text="Haggard Bones laid to rest"},{id=92,qty=1,t="faction",text="Gelkis Clan Centaur (Honored)"}},prev=93058,provided={258661},r=35,side="H",xp=3450,zone=16651}
 Q[93065]={en={253844},l=12,n="Prepare for Battle",next=92947,obj={{id=253844,qty=1,src={{"n",253844,0}},t="kill",text="Find Valennia on the Road"}},prev=92640,r=7,sn={252383},sort=-2,xp=455}
+Q[93066]={en={253851},l=43,money=6000,n="Bristleback Retreat",next=93072,obj={{id=253524,qty=4,src={{"n",253524,0}},t="kill",text="Bristleback Nomad slain"},{id=253525,qty=6,src={{"n",253525,0}},t="kill",text="Bristleback Thornweaver slain"},{id=253526,qty=6,src={{"n",253526,0}},t="kill",text="Bristleback Skullcrusher slain"},{id=93,qty=1,t="faction",text="Magram Clan Centaur (Honored)"}},prev=92894,r=35,sn={253136},xp=3600,zone=16651}
+Q[93072]={l=43,money=3000,n="Long-Term Solutions",next=93188,obj={{id=254283,qty=2,src={{"n",254283,0}},t="kill",text="Outcast Scout slain"},{id=254284,qty=6,src={{"n",254284,0}},t="kill",text="Outcast Marauder slain"},{id=11559,qty=8,src={{"n",11559,0}},t="kill",text="Outcast Necromancer slain"}},prev=93129,r=35,xp=3600,zone=16651}
 Q[93089]={en={252475},l=13,n="What Comes Next",next=94946,prev=94369,r=7,side="A",sn={252476},sort=-2,xp=90}
 Q[93090]={en={251968},l=13,n="What Comes Next",next=95349,prev=93836,r=7,side="H",sn={252476},sort=-2,xp=455}
+Q[93122]={en={253177},l=43,n="Checking Things Out",next=93128,prev=93062,r=35,side="H",xp=360,zone=16651}
+Q[93125]={l=43,money=4500,n="Going Home",obj={{id=92,qty=1,t="faction",text="Gelkis Clan Centaur (Honored)"},{qty=1,t="event",text="Escort Rokren out of the Outcast Hideaway"}},r=35,xp=2700,zone=16651}
+Q[93127]={l=60,n="Summit Sentries",obj={{id=651979,qty=1,t="object",text="Northern Sentinel Stone empowered"},{id=651987,qty=1,t="object",text="Western Sentinel Stone empowered"},{id=651986,qty=1,t="object",text="Southern Sentinel Stone empowered"}},r=54,xp=4950,zone=616}
+Q[93128]={en={5397},l=42,n="Khan Jehn",obj={{id=5601,qty=1,src={{"n",5601,0}},t="kill",text="Khan Jehn slain"},{id=92,qty=1,t="faction",text="Gelkis Clan Centaur (Honored)"}},prev=93122,r=35,side="H",sn={253177},xp=3450,zone=405}
+Q[93129]={l=43,n="Threat of Starvation",next=93188,obj={{id=256892,qty=6,t="item",text="Stolen Supplies"},{id=93,qty=1,t="faction",text="Magram Clan Centaur (Honored)"}},prev=93072,r=35,xp=1800,zone=16651}
 Q[93159]={en={251684},l=13,n="The Strange Hermit",obj={{id=251684,qty=1,src={{"n",251684,0}},t="kill",text="Learn more about the Strange Hermit"}},r=8,sn={251684},sort=-2,xp=230}
 Q[93160]={en={251684},l=13,n="The Forest's Bounty",obj={{id=257128,qty=8,t="item",text="Zephyrseed"}},r=8,sn={251684},sort=-2,xp=680}
+Q[93161]={l=60,n="The Ancient Hilt",obj={{id=272313,qty=1,t="item",text="Ancient Hilt (Provided)"}},prev=93173,r=1,sort=-2}
+Q[93162]={l=50,n="Head of the Obliterator",obj={{id=221257,qty=1,src={{"o",441915,100}},t="item",text="Left Arm of the Obliterator"},{id=221256,qty=1,src={{"o",441914,100}},t="item",text="Right Arm of the Obliterator"},{id=221259,qty=1,src={{"o",441913,100}},t="item",text="Left Foot of the Obliterator"},{id=221258,qty=1,src={{"o",441912,100}},t="item",text="Right Foot of the Obliterator"}},r=40,zone=51}
+Q[93163]={l=50,money=14500,n="Heart of the Obliterator",obj={{id=257126,qty=1,t="item",text="Heart of the Obliterator"}},r=40,xp=5900,zone=51}
 Q[93165]={en={254151},l=13,money=400,n="Mercy Falls on Deaf Ears",obj={{id=258771,qty=10,src={{"n",252767,28},{"n",252762,25},{"n",252765,24},{"n",252664,23},{"n",252763,22},{"n",252665,22},{"n",252764,21},{"n",253195,17},{"n",253622,15},{"n",270201,12},{"n",253511,11},{"n",257196,6}},t="item",text="Al'Alketh Cultist's Ear"}},r=8,sn={254151},sort=-2,xp=910}
 Q[93172]={en={251684},l=13,n="Free the Hollows",obj={{id=251676,qty=10,src={{"n",251676,0}},t="kill",text="Wind Hollow freed"}},r=8,sn={251684},sort=-2,xp=680}
+Q[93173]={l=11,n="(UNUSED) The Rusty Gadget",next=93161,obj={{id=257215,qty=1,t="item",text="Rusty Gadget (Provided)"}},prev=93172,r=6,sort=-2,xp=220}
+Q[93174]={l=13,n="The Malfunctioning Construct",obj={{id=276250,qty=1,t="kill",text="Speak with Riaani Nightwind about the construct"},{id=276250,qty=1,t="kill",text="Speak with the Strange Hermit about the construct"}},r=8,sort=-2,xp=90}
+Q[93176]={en={217412},l=35,money=3500,n="My Little Friends",obj={{id=213566,qty=1,t="item",text="Arbor Tarantula Specimen"},{id=213568,qty=1,t="item",text="Hay Weevil Specimen"},{id=213567,qty=1,t="item",text="Flesh Picker Specimen"}},provided={213565},r=25,sn={217412},xp=2750,zone=8}
+Q[93188]={l=43,n="Return to Orgrul",next=93196,obj={{id=93,qty=1,t="faction",text="Magram Clan Centaur (Honored)"}},prev=93129,r=35,xp=360,zone=16651}
+Q[93196]={l=42,n="Khan Jehn",obj={{id=254362,qty=1,t="kill",text="Khan Jehn resurrected"},{id=93,qty=1,t="faction",text="Magram Clan Centaur (Honored)"}},prev=93188,provided={257517},r=35,xp=3450,zone=405}
+Q[93197]={l=58,n="Mending Communications",obj={{from="crafted",id=257808,qty=1,t="item",text="Parcel of Mail (Provided)"}},r=56,xp=3100,zone=616}
+Q[93224]={en={5396},l=40,n="Carved Centaur Totems",obj={{id=254432,qty=5,t="item",text="Carved Centaur Totem"}},r=30,side="A",sn={5396},xp=2350,zone=405}
+Q[93225]={en={5412},l=40,n="Carved Centaur Totems",obj={{id=254432,qty=5,t="item",text="Carved Centaur Totem"}},r=30,side="H",sn={5412},xp=2350,zone=405}
+Q[93226]={en={253139},l=45,n="Buying Friendship: Magram",obj={{id=257685,qty=1,t="item",text="Totem Tote (Provided)"}},r=30,side="A",xp=390,zone=405}
+Q[93227]={en={253140},l=45,n="Buying Friendship: Gelkis",obj={{id=257685,qty=1,t="item",text="Totem Tote (Provided)"}},r=30,side="A",sn={5396},xp=390,zone=405}
 Q[93317]={en={257006},l=9,money=200,n="Crab Season",obj={{id=257941,qty=6,src={{"n",254588,50}},t="item",text="Windsong Crawler Meat"}},r=4,sn={257006},sort=-2,xp=590}
 Q[93318]={en={252172},kind="group",l=9,money=600,n="WANTED: Vulgara the Insatiable",obj={{id=257942,qty=1,src={{"n",254589,83}},t="item",text="Vulgara's Head"}},r=4,sort=-2,xp=780}
 Q[93319]={en={251906},l=7,money=175,n="Pilfered Windstones",obj={{id=257945,qty=10,src={{"n",251918,47},{"n",255534,45}},t="item",text="Pilfered Windstone"}},r=4,sn={251906},sort=-2,xp=475}
 Q[93320]={en={252378},l=11,n="Tower Defense",r=6,sn={252383},sort=-2,xp=440}
+Q[93341]={l=43,n="Forlorn Gardens",r=35,xp=1800,zone=16651}
+Q[93362]={l=43,n="What They've Done to My Peonies",obj={{id=254566,qty=4,t="kill",text="Rowdy Rose slain"},{id=254567,qty=4,t="kill",text="Terrible Tulip slain"},{id=254572,qty=20,src={{"n",254572,0}},t="kill",text="Malevolent Marigold slain"}},r=35,xp=3600,zone=16651}
+Q[93383]={l=57,n="Contents Under Pressure",obj={{id=254777,qty=1,t="kill",text="Personal Survival Pack safely discharged"},{qty=1,t="event",text="Security Countdown Elapsed"}},r=54,side="A",xp=1500,zone=616}
+Q[93394]={l=43,n="Meeting the Magister",prev=93016,r=35,xp=360,zone=16651}
+Q[93404]={inst=true,kind="dungeon",l=49,n="Rot and Regret",obj={{id=258296,qty=1,t="item",text="Vial of Earth Song Water"},{id=255638,qty=1,t="kill",text="Woodwyrd extinguished"}},prev=93594,r=35,xp=5700,zone=2100}
+Q[93407]={l=60,money=7000,n="A Thorn in the Paw",obj={{id=263227,qty=18,t="item",text="Thorn Seed"}},r=57,xp=6600,zone=616}
+Q[93422]={kind="group",l=60,money=9000,n="Blackthorne Blackout",obj={{id=264508,qty=1,t="kill",text="Blackthorne Courier slain"},{id=273772,qty=1,t="item",text="Blackthorne Intelligence"}},r=54,xp=8300,zone=616}
+Q[93429]={en={254775},l=35,money=1800,n="Blood of My Blood",obj={{qty=10,src={{"n",759,0},{"n",760,0},{"n",761,0},{"n",762,0}},t="kill",text="Lost One slain"}},r=30,side="A",sn={254775},xp=2750,zone=8}
+Q[93430]={en={254770},l=35,n="Taking the Bait Back",obj={{id=258530,qty=1,t="item",text="Lucky Lure"}},r=30,xp=2050,zone=8}
+Q[93443]={l=36,n="Lost Shipping Crate",provided={276067},r=36,side="A",so={658116},xp=280,zone=33}
+Q[93444]={kind="group",l=60,n="Bait the Beast",obj={{id=264867,qty=1,t="kill",text="Ghansurok baited with Nightsaber meat"},{id=274162,qty=1,t="item",text="Venom-dripping Heart"},{id=274151,qty=1,t="item",text="Tender Nightsaber Haunch"}},r=56,xp=8300,zone=616}
+Q[93450]={l=42,n="Phantasmal Problems",next=93546,obj={{id=258735,qty=1,t="item",text="Phantasmal Blade"},{id=258734,qty=1,t="item",text="Unfinished Masterwork Sword"}},r=35,xp=860,zone=16651}
 Q[93459]={en={254151},l=13,n="More Al'Aketh Ears",obj={{id=258771,qty=5,src={{"n",252767,28},{"n",252762,25},{"n",252765,24},{"n",252664,23},{"n",252763,22},{"n",252665,22},{"n",252764,21},{"n",253195,17},{"n",253622,15},{"n",270201,12},{"n",253511,11},{"n",257196,6}},t="item",text="Al'Alketh Cultist's Ear"}},r=8,sort=-2}
 Q[93461]={en={251523},l=6,n="Welcome to Shen'dar Village",next=92517,obj={{id=251903,qty=1,src={{"n",251903,0}},t="kill",text="Speak with Rathiril Sunlance"},{id=254089,qty=1,src={{"n",254089,0}},t="kill",text="Speak with the Innkeeper"}},prev=92514,r=4,side="A",sn={251523},sort=-2,xp=135}
+Q[93464]={en={11863},l=38,n="The Visiting Mage",next=93465,r=30,side="H",xp=1450,zone=8}
+Q[93465]={l=40,money=5000,n="Notes on Draenethyst",obj={{id=258774,qty=1,src={{"n",255003,0}},t="item",text="Gimashi's Findings"}},prev=93464,r=30,side="H",sn={11863},xp=3150,zone=405}
+Q[93510]={l=58,n="Wake Memories",obj={{from="crafted",id=274795,qty=1,t="item",text="Embroidered Scabbard (Provided)"}},r=54,xp=6200,zone=616}
+Q[93546]={l=42,n="Spectral Iron Ore",next=96060,obj={{id=259226,qty=10,t="item",text="Spectral Iron Ore"}},prev=93450,provided={259229},r=35,xp=2550,zone=16651}
+Q[93547]={l=60,money=2300,n="A Thorny Solution",obj={{id=613773,qty=1,t="object",text="Thorn seed planted near inn"},{id=659199,qty=1,t="object",text="Thorn seed planted near storage tower"},{id=659200,qty=1,t="object",text="Thorn seed planted near group of trees"}},prev=93407,provided={259268},r=57,xp=1650,zone=616}
 Q[93552]={en={251363},l=4,money=75,n="Harvesting Windstones",obj={{id=258772,qty=15,t="item",text="Windstone Cluster"}},r=2,sn={251363},sort=-2,xp=355}
+Q[93568]={l=45,n="Partially Digested Collar",obj={{id=259461,qty=1,t="item",text="Partially Digested Collar"}},r=35,xp=3900,zone=16651}
+Q[93572]={l=55,n="To Serve The Draenei",obj={{qty=1,t="event",text="Protect the draenei refugees as they pass through Kum'isha's rift"}},r=45,xp=5650,zone=4}
+Q[93574]={l=45,money=13000,n="Corpsefeeder's Carapace",obj={{id=259893,qty=1,t="item",text="Corpsefeeder's Carapace"}},r=35,xp=4850,zone=16651}
+Q[93584]={l=60,money=9000,n="Cult Closure",obj={{id=249551,qty=10,src={{"n",249551,0}},t="kill",text="Blackthorne Cultist slain"},{id=264570,qty=10,t="kill",text="Blackthorne Adept slain"}},r=56,xp=6600,zone=616}
+Q[93585]={en={1776},l=34,n="This Light of Mine",obj={{qty=1,t="event",text="Escort Father Tuttle to The Harborage"}},r=30,side="A",sn={255597},xp=2700,zone=8}
+Q[93594]={l=43,n="Word of the Woods",next=93404,r=35,xp=360,zone=16651}
+Q[93601]={l=45,money=600,n="Passing the Blame",next=93604,prev=93404,r=35,xp=390,zone=16651}
+Q[93604]={inst=true,kind="dungeon",l=45,money=6500,n="Agamaggan's Blood",obj={{id=260237,qty=1,t="item",text="Virulent Blood of Agamaggan"}},r=35,xp=4850,zone=722}
+Q[93606]={l=45,n="Not on Squealing Terms",obj={{id=260237,qty=1,t="item",text="Virulent Blood of Agamaggan (Provided)"},{from="crafted",id=260244,qty=1,t="item",text="Benevolent Bouquet"},{id=260245,qty=5,t="item",text="Vibrant Flower"}},r=35,xp=3900,zone=16651}
+Q[93609]={l=45,money=13000,n="Forlorn Necklace",obj={{id=260247,qty=1,t="item",text="Forlorn Necklace"}},r=35,xp=4850,zone=16651}
+Q[93615]={l=57,n="Kits and Cats",obj={{id=255685,qty=1,t="kill",text="Solstice found"},{id=255771,qty=1,t="kill",text="Whisperfur found"},{id=255773,qty=1,src={{"n",255773,0}},t="kill",text="Brie found"}},r=54,xp=4500,zone=616}
+Q[93644]={l=45,money=6500,n="Tattered Journal",obj={{id=260347,qty=1,t="item",text="Tattered Journal"}},r=35,xp=3900,zone=16651}
+Q[93663]={en={1776},l=35,n="Lost in Transit",obj={{from="crafted",id=260452,qty=1,t="item",text="Courier's Shipment"}},r=30,side="H",sn={5591},xp=1350,zone=8}
+Q[93678]={l=40,n="Abridged Notes on Draenethyst",obj={{id=260518,qty=1,t="item",text="Azore's Transcription (Provided)"}},r=30,xp=1550,zone=405}
+Q[93679]={l=55,n="Visions of Another",next=93684,obj={{qty=1,t="event",text="Watch Onku's vision with Magtoor"}},r=45,xp=560,zone=8}
+Q[93680]={en={2410},l=33,n="Key to the City",obj={{id=279469,qty=1,t="item",text="Grimy Key"}},r=30,side="H",sn={2410},zone=36}
+Q[93684]={l=55,n="The Found One",r=45,xp=2800,zone=4}
+Q[93685]={l=55,money=25000,n="To Serve Kum'isha",obj={{id=8244,qty=1,src={{"n",7846,96}},t="item",text="Flawless Draenethyst Sphere"}},prev=93684,r=45,xp=8450,zone=4}
+Q[93689]={l=33,n="Friend of the Kirin Tor",r=24,xp=265,zone=36}
 Q[93735]={en={256083},l=9,n="The Broken Construct",r=4,side="H",sn={251968},sort=-2,xp=590}
 Q[93736]={en={254344},l=9,n="Unwelcome Spirits",obj={{id=262357,qty=10,src={{"n",251676,28}},t="item",text="Wind Hollow Essence"}},r=4,side="H",sn={254344},sort=-2,xp=780}
 Q[93737]={en={256083},l=9,n="The Broken Construct",next=93738,obj={{id=256083,qty=1,src={{"n",256083,0}},t="kill",text="Listen to what Riaani Nightwind has to say"},{id=260881,qty=1,t="item",text="Crystallized Lightning"},{id=260883,qty=1,t="item",text="Enchanted Gyrozephyr"},{id=260880,qty=1,t="item",text="Air Construct Core"}},r=4,side="H",sn={256083},sort=-2,xp=780}
@@ -5540,23 +4952,39 @@ Q[93738]={en={251968},l=9,n="The Broken Construct",prev=93737,r=4,side="H",sn={2
 Q[93739]={l=13,money=600,n="Exploring the Horde",obj={{id=3230,qty=1,src={{"n",3230,0}},t="kill",text="Obtain Instructions from Nazgrel"},{id=10540,qty=1,src={{"n",10540,0}},t="kill",text="Speak with Vol'jin"},{id=3057,qty=1,src={{"n",3057,0}},t="kill",text="Speak with Cairne Bloodhoof"},{id=10181,qty=1,src={{"n",10181,0}},t="kill",text="Speak with Lady Sylvanas Windrunner"}},prev=95350,r=7,races=8589934592,side="H",sn={4949},xp=1150,zone=1637}
 Q[93740]={en={251968},l=11,n="Blood for Blood",obj={{id=255658,qty=10,src={{"n",253195,29},{"n",270201,27},{"n",253511,25}},t="item",text="Al'Aketh Windstone Charm"}},r=6,side="H",sn={251968},sort=-2,xp=660}
 Q[93746]={en={251968},l=9,n="A Firm Response",obj={{id=256247,qty=1,src={{"n",256247,0}},t="kill",text="Confront Belathaan Brightwish"},{id=256251,qty=1,t="kill",text="Defeat the Living Storms"}},r=4,side="H",sn={251968},sort=-2,xp=590}
+Q[93747]={l=56,n="Violence Into Verdure",obj={{id=262036,qty=1,t="kill",text="Ruined Ballista reclaimed"},{id=266887,qty=1,t="kill",text="Ruined Catapult reclaimed"},{id=266886,qty=1,t="kill",text="Ruined Flying Machine reclaimed"}},provided={269944},r=54,xp=1450,zone=616}
+Q[93759]={l=56,n="The Bounty of Nature",obj={{id=251641,qty=2,src={{"n",248041,0},{"n",256809,0}},t="item",text="Hyjal Venison Cut"},{id=267289,qty=6,t="item",text="Scarlet Dart Tuber"}},r=54,xp=4350,zone=616}
+Q[93773]={l=58,n="The Pact",r=54,xp=3100,zone=616}
+Q[93786]={l=36,n="A Message in Blood",next=93787,obj={{id=256383,qty=12,src={{"n",256383,0}},t="kill",text="Meadowsbrook Farmhand slain"}},r=35,side="H",sn={256418},xp=2800,zone=16591}
+Q[93787]={en={256418},l=36,n="Food for the Taking",obj={{id=262640,qty=6,t="item",text="Feed Satchel"}},prev=93786,r=36,side="H",sn={256418},xp=2800,zone=16591}
+Q[93788]={en={256657},l=38,n="Borrowed Blades",next=93976,obj={{id=263972,qty=10,src={{"n",256434,0}},t="item",text="Woodworker's Axe"}},prev=94925,r=36,side="H",sn={256657},xp=2850,zone=16591}
 Q[93791]={classes=128,en={256507},l=10,n="Speak with Belann",next=93797,r=10,side="A",sn={252373,256507},sort=4,xp=420}
 Q[93797]={classes=128,en={256507},l=10,n="Boughs in the Wind",obj={{id=262668,qty=1,t="item",text="Wind-Infused Bough"}},prev=93791,r=10,side="A",sn={256507},sort=4,xp=840}
+Q[93825]={l=57,n="Barkbound Blessings",obj={{id=262802,qty=12,t="item",text="Moonveil Moss"}},r=54,xp=6000,zone=616}
+Q[93826]={l=57,money=4500,n="Deal Dread to Deadwood",obj={{id=252116,qty=8,src={{"n",252116,0}},t="kill",text="Deadwood Totemic slain"},{id=252096,qty=8,t="kill",text="Deadwood Fel-Tender slain"}},r=54,xp=6000,zone=616}
+Q[93827]={l=58,money=9000,n="Windswept Wards",obj={{id=263028,qty=16,t="item",text="Enchanted Harpy Amulet"}},r=54,xp=6200,zone=616}
+Q[93831]={l=57,n="Sweetpaw Jam",obj={{id=262818,qty=30,t="item",text="Bear Berries"}},r=54,xp=4500,zone=616}
 Q[93835]={en={252475},l=12,money=1000,n="Confront Lorthuna",next=94369,obj={{id=256634,qty=1,t="kill",text="Confront Lorthuna"}},r=7,side="A",sn={253590},sort=-2,xp=455}
 Q[93836]={en={252476},l=12,n="The Fate of Zephras",next=93090,obj={{id=252476,qty=1,src={{"n",252476,0}},t="kill",text="Speak with Talaanis Shadowsong"}},prev=92646,r=7,side="H",sn={251968},sort=-2,xp=455}
+Q[93862]={l=60,n="Crate Return",obj={{id=262917,qty=1,t="item",text="Notarized Shipping Container"}},r=1,sort=-2}
+Q[93925]={l=57,n="Beads for Brerufa",obj={{id=263439,qty=8,t="item",text="Deadwood Tribal Beads"}},r=54,xp=600,zone=361}
 Q[93926]={en={252155},l=8,n="The Western Watch",next=93927,obj={{id=252155,qty=1,src={{"n",252155,0}},t="kill",text="Check in on the Western Watchtower in the Shen'dar Highlands"}},r=5,sn={251523},sort=-2,xp=350}
 Q[93927]={en={251523},l=8,money=225,n="A Last Request",obj={{from="crafted",id=254871,qty=1,t="item",text="Bloody Note"},{id=256966,qty=1,src={{"n",256966,0}},t="kill",text="Skypriest Aanders slain"},{id=263415,qty=1,t="item",text="Raani's Lucky Feather"},{id=263418,qty=1,t="item",text="Shadowsong Family Signet"}},prev=93926,r=5,sn={252155},sort=-2,xp=530}
 Q[93928]={en={715},l=15,n="Of Mice and Milk",r=15,sn={6271},xp=105,zone=40}
 Q[93948]={en={252476},l=9,money=150,n="Deliver the Signet",obj={{from="provided",id=263491,qty=1,t="item",text="Shadowsong Family Signet (Provided)"}},r=6,sn={251523},sort=-2,xp=390}
 Q[93949]={en={252383},l=8,money=225,n="Bugged",obj={{id=257066,qty=8,t="kill",text="Enchanted Skyhopper Exterminated"}},r=6,sn={252383},sort=-2,xp=700}
 Q[93951]={en={251991},l=7,money=125,n="A Little Beauty",obj={{id=263493,qty=8,t="item",text="Hippogryph Down"}},r=4,sn={251991},sort=-2,xp=475}
+Q[93952]={l=57,n="Balance Through Strength",obj={{id=252063,qty=9,src={{"n",252063,0}},t="kill",text="Deadwood Den Guardian slain"}},r=54,xp=4500,zone=616}
 Q[93958]={en={253590},l=12,money=500,n="The Inner Sanctum",r=7,sn={253576},sort=-2,xp=910}
 Q[93963]={en={1748},l=13,money=600,n="Exploring the Alliance",obj={{id=275491,qty=1,src={{"n",275491,0}},t="kill",text="Recieve Instructions from Randal Emerson"},{id=7937,qty=1,src={{"n",7937,0}},t="kill",text="Speak with High Tinker Mekkatorque"},{id=2784,qty=1,src={{"n",2784,0}},t="kill",text="Speak with King Magni Bronzbeard"},{id=7999,qty=1,src={{"n",7999,0}},t="kill",text="Speak with Tyrande Whisperwind"}},prev=94947,r=7,races=4294967296,side="A",sn={1748},xp=1150,zone=1519}
+Q[93971]={l=45,money=13000,n="Farholde Scouting Report",provided={263930},r=36,side="H",xp=4850,zone=16591}
+Q[93976]={l=36,n="The Goblin Trader",next=95288,obj={{id=263973,qty=1,t="item",text="Beguiler's Blade (Provided)"}},prev=94928,r=36,side="H",xp=280,zone=16591}
 Q[94003]={en={252377},l=10,n="The Skybreaker Bulwark",obj={{id=263993,qty=1,src={{"n",257196,78}},t="item",text="Skybreaker Bulwark"}},r=10,races=12884901888,sn={252377},sort=4,xp=840}
 Q[94004]={l=60,n="Craftsman's Writ: Elixir of Ogre's Strength",obj={{id=264011,qty=1,t="item",text="Craftsman's Writ: Elixir of Ogre's Strength"},{from="crafted",id=3391,qty=1,t="item",text="Elixir of Ogre Strength"}},r=1,rep="daily",si={id=264011,n="Craftsman's Writ: Elixir of Ogre's Strength"},zone=16941}
 Q[94006]={en={255853},l=10,n="The Great Ursera Spirit",r=10,races=12884901888,sn={252359},sort=4,xp=840}
 Q[94007]={en={252389},l=10,n="Taming the Beast",next=6063,prev=6722,r=10,races=12884901888,sn={254084},sort=4,xp=210}
 Q[94013]={en={252389},l=10,n="Taming the Beast",next=6101,obj={{from="provided",id=264163,qty=1,t="item",text="Taming Rod (Provided)"},{qty=1,t="event",text="Tame a Vuldren"}},prev=94979,r=10,races=12884901888,sn={252389},sort=4,xp=840}
+Q[94049]={l=10,n="zzOLD Training the Beast",next=6101,obj={{qty=1,t="event",text="Tame a Vuldren"}},prev=94979,r=10,races=12884901888,sort=4,xp=840}
 Q[94050]={en={254411},l=10,n="Training the Beast",r=10,races=12884901888,sn={252389},sort=4,xp=420}
 Q[94212]={l=60,n="Craftsman's Writ: Elixir of Wisdom",obj={{id=264012,qty=1,t="item",text="Craftsman's Writ: Elixir of Wisdom"},{from="crafted",id=3383,qty=1,t="item",text="Elixir of Wisdom"}},r=1,rep="daily",si={id=264012,n="Craftsman's Writ: Elixir of Wisdom"},zone=16941}
 Q[94213]={l=60,n="Craftsman's Writ: Lesser Mana Potion",obj={{id=264013,qty=1,t="item",text="Craftsman's Writ: Lesser Mana Potion"},{id=3385,qty=1,src={{"o",105581,100},{"n",14276,50},{"n",15814,49},{"n",15807,40},{"n",15748,35},{"n",223543,33},{"n",15806,28},{"n",203139,25},{"o",4096,25},{"n",15815,20},{"n",212706,20},{"n",212728,20},{"v",1307,0},{"v",2481,0},{"v",2805,0},{"v",3134,0}},t="item",text="Lesser Mana Potion"}},r=1,rep="daily",si={id=264013,n="Craftsman's Writ: Lesser Mana Potion"},zone=16941}
@@ -5630,8 +5058,6 @@ Q[94280]={l=60,n="Craftsman's Writ: Mechanical Dragonling",obj={{id=264080,qty=1
 Q[94281]={l=60,n="Craftsman's Writ: Advanced Target Dummy",obj={{id=264081,qty=1,t="item",text="Craftsman's Writ: Advanced Target Dummy"},{from="crafted",id=4392,qty=1,t="item",text="Advanced Target Dummy"}},r=1,rep="daily",si={id=264081,n="Craftsman's Writ: Advanced Target Dummy"},zone=16941}
 Q[94282]={l=60,n="Craftsman's Writ: Craftsman's Monocle",obj={{id=264082,qty=1,t="item",text="Craftsman's Writ: Craftsman's Monocle"},{from="crafted",id=4393,qty=1,t="item",text="Craftsman's Monocle"}},r=1,rep="daily",si={id=264082,n="Craftsman's Writ: Craftsman's Monocle"},zone=16941}
 Q[94283]={l=60,n="Craftsman's Writ: Goblin Land Mine",obj={{id=264083,qty=1,t="item",text="Craftsman's Writ: Goblin Land Mine"},{from="crafted",id=4395,qty=1,t="item",text="Goblin Land Mine"}},r=1,rep="daily",si={id=264083,n="Craftsman's Writ: Goblin Land Mine"},zone=16941}
-end)()
-;(function()
 Q[94284]={l=60,n="Craftsman's Writ: Catseye Ultra Goggles",obj={{id=264084,qty=1,t="item",text="Craftsman's Writ: Catseye Ultra Goggles"},{from="crafted",id=10501,qty=1,t="item",text="Catseye Ultra Goggles"}},r=1,rep="daily",si={id=264084,n="Craftsman's Writ: Catseye Ultra Goggles"},zone=16941}
 Q[94285]={l=60,n="Craftsman's Writ: Unstable Trigger",obj={{id=264085,qty=1,t="item",text="Craftsman's Writ: Unstable Trigger"},{from="crafted",id=10560,qty=1,t="item",text="Unstable Trigger"}},r=1,rep="daily",si={id=264085,n="Craftsman's Writ: Unstable Trigger"},zone=16941}
 Q[94286]={l=60,n="Craftsman's Writ: Flash Bomb",obj={{id=264086,qty=1,t="item",text="Craftsman's Writ: Flash Bomb"},{from={"q",705},id=4852,qty=1,t="item",text="Flash Bomb"}},r=1,rep="daily",si={id=264086,n="Craftsman's Writ: Flash Bomb"},zone=16941}
@@ -5713,6 +5139,7 @@ Q[94369]={en={252476},l=12,n="The Fate of Zephras",next=93089,obj={{id=252476,qt
 Q[94373]={classes=64,en={257446},l=4,n="Call of Earth",next=94374,obj={{id=264356,qty=2,t="item",text="Iceclaw Bear Pendant"}},prev=96243,r=4,sn={257446},sort=4,xp=270}
 Q[94374]={classes=64,en={5891},l=4,n="Call of Earth",next=94375,prev=94373,provided={6635},r=4,sn={257446},sort=4,xp=270}
 Q[94375]={classes=64,en={257446},l=4,n="Call of Earth",obj={{from="provided",id=6656,qty=1,t="item",text="Rough Quartz (Provided)"}},prev=94374,r=4,side="A",sn={5891},sort=4,xp=445}
+Q[94399]={l=60,n="Ravasaur Provisions",obj={{id=264360,qty=5,t="item",text="Diemetradon Meat"},{id=264361,qty=5,t="item",text="Pterrordax Meat"}},r=58,side="H",zone=490}
 Q[94411]={en={251902},l=6,money=100,n="Meddlesome Mages",obj={{id=257521,qty=6,src={{"n",257521,0}},t="kill",text="High Order Apprentice defeated"}},r=4,side="H",sn={251902},sort=-2,xp=405}
 Q[94413]={en={251903},l=6,money=125,n="A Magical Affront",obj={{id=257532,qty=6,src={{"n",257532,0}},t="kill",text="Windshaper Novice Seer defeated"}},r=4,side="A",sn={251903},sort=-2,xp=540}
 Q[94414]={en={257554},l=2,n="The Anchors of Zephras",obj={{qty=1,t="event",text="View the Anchor Pylon"}},r=2,sn={257554},sort=-2,xp=85}
@@ -5730,6 +5157,10 @@ Q[94467]={classes=64,eo={61934},l=14,n="Call of Fire",next=94468,obj={{from="pro
 Q[94468]={classes=64,en={257597},l=14,n="Call of Fire",obj={{from="provided",id=6654,qty=1,t="item",text="Torch of the Eternal Flame (Provided)"}},prev=94467,r=10,side="A",so={61934},sort=4,xp=1250}
 Q[94472]={classes=64,en={257446},l=4,n="Earth Sapta",r=4,sn={257446},sort=4}
 Q[94473]={classes=64,en={257808},l=13,n="Fire Sapta",r=10,sn={257808},sort=4}
+Q[94479]={l=56,n="One Person's Trash",next=96796,obj={{id=272977,qty=1,t="item",text="Spare Part (Provided)"}},r=54,xp=580,zone=616}
+Q[94480]={l=36,n="A Gift From Our Enemies",next=94481,provided={265065},r=36,side="H",xp=280,zone=16591}
+Q[94481]={l=38,n="A Serving of Strength",obj={{id=256749,qty=8,src={{"n",256749,0}},t="kill",text="Rog'mar Trainee fed"}},prev=94480,provided={265066},r=36,side="H",xp=2150,zone=16591}
+Q[94483]={l=39,money=3500,n="Show Them How It's Done",obj={{id=270667,qty=8,src={{"n",270667,0}},t="kill",text="Farholde Priest slain"},{id=257926,qty=12,src={{"n",257926,0}},t="kill",text="Farholde Scout slain"}},r=36,side="H",xp=3000,zone=16591}
 Q[94484]={en={257944},l=11,n="Unnerving Silence",r=8,sn={252359},sort=-2,xp=220}
 Q[94485]={en={257944},l=12,n="Tears of the Lady",obj={{id=265105,qty=8,t="item",text="Lady's Tear Moss"}},r=8,sn={257944},sort=-2,xp=225}
 Q[94486]={en={257944},l=11,n="Feathers for Binding",obj={{id=265140,qty=20,src={{"n",256092,24}},t="item",text="Pristine Shriekling Feather"}},r=8,sn={257944},sort=-2,xp=880}
@@ -5747,11 +5178,37 @@ Q[94500]={classes=64,en={258203},l=23,n="Call of Water",next=94501,obj={{from="c
 Q[94501]={classes=64,en={258043},l=23,n="Call of Water",next=94502,obj={{from="provided",id=7810,qty=1,t="item",text="Vial of Purest Water (Provided)"}},prev=94500,r=20,side="A",sn={258203},sort=4,xp=460}
 Q[94502]={classes=64,l=23,n="Call of Water",next=94503,obj={{id=7812,qty=1,src={{"n",5894,98}},t="item",text="Corrupt Manifestation's Bracers"},{from="provided",id=7811,qty=1,t="item",text="Remaining Drops of Purest Water (Provided)"}},prev=94501,r=20,side="A",sn={258043},sort=4,xp=1400}
 Q[94503]={classes=64,en={5895},l=23,n="Call of Water",next=94505,prev=94502,r=20,side="A",sort=4,xp=185}
+Q[94504]={l=57,n="Barkskin Beginnings",r=54,xp=3000,zone=616}
 Q[94505]={classes=64,en={258043},l=23,n="Call of Water",obj={{from="provided",id=7813,qty=1,t="item",text="Shard of Water (Provided)"}},prev=94503,r=20,side="A",sn={5895},sort=4,xp=2750}
+Q[94532]={l=38,n="Gnoll Infestation",obj={{id=255770,qty=8,src={{"n",255770,0}},t="kill",text="Redridge Mystic slain"},{id=255772,qty=8,src={{"n",255772,0}},t="kill",text="Redridge Trapper slain"},{id=255769,qty=6,src={{"n",255769,0}},t="kill",text="Redridge Brute slain"}},r=36,side="H",xp=2850,zone=16591}
+Q[94533]={kind="group",l=40,n="Snargl's Snout",obj={{id=265357,qty=1,t="item",text="Snargl's Snout"}},r=36,side="H",xp=3150,zone=16591}
+Q[94535]={en={256657},l=38,money=4500,n="Bristle Hills Bandits",obj={{id=265358,qty=40,src={{"n",255769,0},{"n",255770,0},{"n",255772,0},{"n",255774,0}},t="item",text="Stolen Ore"}},r=36,side="H",xp=2850,zone=16591}
+Q[94556]={l=42,n="Jom-jom's Escape",obj={{qty=1,t="event",text="Help Jom-jom reach Bolder'ok"}},r=36,side="H",xp=4300,zone=16591}
 Q[94559]={l=11,n="UNUSED",obj={{id=258049,qty=1,t="kill",text="Find the Al'Aketh Turncoat"}},r=6,sort=-2,xp=660}
 Q[94568]={en={252476},l=11,money=400,n="The Cult's True Plans",next=92640,obj={{id=264712,qty=1,t="kill",text="Learn what you can from the crystal"},{qty=1,t="event",text="Observe the conversation"}},prev=92644,r=6,sn={252476},sort=-2,xp=440}
+Q[94613]={en={258317},l=38,n="My Kingdom for a Horse",next=94615,r=36,side="A",xp=285,zone=16591}
+Q[94614]={en={258317},l=38,money=2000,n="Freshwater Fiends",obj={{id=258574,qty=8,src={{"n",258574,0}},t="kill",text="Mudfin Warrior slain"},{id=258573,qty=8,src={{"n",258573,0}},t="kill",text="Mudfin Oracle slain"}},r=36,side="A",sn={258317},xp=2850,zone=16591}
+Q[94615]={en={258317},l=38,n="Foal Play",next=94617,obj={{id=267223,qty=1,t="item",text="Pawprint Tracing"}},prev=94613,r=36,side="A",xp=1450,zone=16591}
 Q[94616]={classes=64,l=20,n="Water Sapta",r=20,sort=4}
+Q[94617]={en={258317},l=38,n="Coyote Huntin'",obj={{id=265738,qty=1,src={{"n",258522,0}},t="item",text="Sootfur's Pelt"}},prev=94615,r=36,side="A",sn={258317},xp=2850,zone=16591}
+Q[94618]={en={259254},l=38,n="Wheeler's Fleeing Steeds",obj={{id=267178,qty=1,t="item",text="Wheeler's Steed Feed (Provided)"}},r=36,side="A",sn={258317},xp=1450,zone=16591}
 Q[94638]={en={255853},l=10,n="Strength and Mercy",obj={{id=258443,qty=1,src={{"n",258443,0}},t="kill",text="Ur'endra slain"}},r=10,races=12884901888,sn={255853},sort=4,xp=840}
+Q[94668]={l=41,n="Bloodmaster's Ring",next=94669,r=36,side="H",xp=330,zone=16591}
+Q[94669]={l=41,n="Pay to Play",next=94670,obj={{qty=1,t="event",text="Required money: 1"}},prev=94668,r=36,side="H",xp=330,zone=16591}
+Q[94670]={kind="group",l=41,n="Bloodmaster's Ring",next=94739,obj={{qty=1,t="event",text="Buzzbeak defeated"}},prev=94669,r=36,side="H",xp=4100,zone=16591}
+Q[94672]={l=41,money=5500,n="Encroaching Twilight",obj={{id=256952,qty=8,src={{"n",256952,0}},t="kill",text="Twilight Raider slain"},{id=254560,qty=8,src={{"n",254560,0}},t="kill",text="Twilight Shadowmancer slain"},{id=256798,qty=8,src={{"n",256798,0}},t="kill",text="Twilight Neophyte slain"}},r=36,side="H",xp=3300,zone=16591}
+Q[94678]={l=38,n="Gnoll Infestation",obj={{id=255770,qty=8,src={{"n",255770,0}},t="kill",text="Redridge Mystic slain"},{id=255772,qty=8,src={{"n",255772,0}},t="kill",text="Redridge Trapper slain"},{id=255769,qty=6,src={{"n",255769,0}},t="kill",text="Redridge Brute slain"}},r=36,side="A",xp=2850,zone=16591}
+Q[94679]={kind="group",l=40,n="Snargl's Snout",obj={{id=265357,qty=1,t="item",text="Snargl's Snout"}},r=36,side="A",xp=3150,zone=16591}
+Q[94680]={l=41,n="Twilight Missives",next=94727,obj={{id=265745,qty=3,src={{"n",254560,0}},t="item",text="Twilight Missive"}},r=36,side="H",xp=2450,zone=16591}
+Q[94727]={l=40,n="Digging for Answers",obj={{id=260931,qty=1,src={{"n",260931,0}},t="kill",text="Twilight miner convinced"}},prev=94680,r=36,side="H",xp=315,zone=16591}
+Q[94733]={l=41,n="Our Ogre Friend",next=94734,prev=94964,r=36,side="H",xp=330,zone=16591}
+Q[94734]={l=41,n="A Boar's Delight",next=94737,obj={{id=265808,qty=8,t="item",text="Sweetberry"},{id=265806,qty=12,t="item",text="Riverweed"}},prev=94733,r=36,side="H",xp=3300,zone=16591}
+Q[94737]={l=41,n="A Treat for a Friend",next=94965,prev=94734,provided={265810},r=36,side="H",xp=330,zone=16591}
+Q[94739]={kind="group",l=42,n="Bloodmaster's Ring",next=94962,obj={{qty=1,t="event",text="Kronk defeated"}},prev=94670,r=36,side="H",xp=4300,zone=16591}
+Q[94744]={l=43,n="The Wayward Warrior",prev=95428,r=38,side="H",xp=360,zone=16591}
+Q[94745]={l=44,money=6500,n="Carving a Path",obj={{id=256795,qty=8,src={{"n",256795,0}},t="kill",text="Twilight Fanatic slain"},{id=256797,qty=8,t="kill",text="Twilight Corrupter slain"},{id=256799,qty=8,src={{"n",256799,0}},t="kill",text="Twilight Champion slain"}},r=38,side="H",xp=3750,zone=16591}
+Q[94748]={l=44,n="Break Their Chains",obj={{id=272737,qty=5,t="kill",text="Rog'mar Scout rescued"},{id=265821,qty=5,src={{"n",256799,0}},t="item",text="Twilight Key"}},r=38,side="H",xp=3750,zone=16591}
+Q[94768]={kind="group",l=46,n="Bring Me His Head",obj={{id=265837,qty=1,t="item",text="Kilgar's Head"}},r=38,side="H",xp=5050,zone=16591}
 Q[94773]={classes=16,l=10,n="Divine Grace",r=10,races=1,side="A",sort=4}
 Q[94774]={classes=16,en={376},l=10,n="Divine Grace",r=10,races=1,side="A",sn={377},sort=4,xp=210}
 Q[94775]={classes=16,l=10,n="Divine Grace",r=10,races=1,side="A",sort=4,xp=210}
@@ -5759,6 +5216,8 @@ Q[94776]={classes=16,l=10,n="Divine Grace",r=10,races=1,side="A",sort=4,xp=210}
 Q[94777]={classes=16,l=10,n="Divine Grace",r=10,races=1,side="A",sort=4,xp=210}
 Q[94778]={classes=16,l=10,n="Divine Grace",r=10,races=1,side="A",sort=4}
 Q[94779]={classes=16,l=10,n="Divine Grace",r=10,races=1,side="A",sort=4,xp=210}
+Q[94782]={l=57,n="The Western Post",r=54,side="H",xp=600,zone=616}
+Q[94789]={classes=64,en={259023},l=30,n="Call of Air",next=96264,r=30,side="A",sn={258098},sort=4,xp=2450}
 Q[94792]={classes=4,en={251507},l=10,n="Taming the Beast",next=94863,obj={{from="provided",id=266158,qty=1,t="item",text="Taming Rod (Provided)"},{qty=1,t="event",text="Tame a Rockhide Boar"}},r=10,side="A",sn={251507},sort=4,xp=840}
 Q[94793]={classes=4,en={258930},l=10,n="Training the Beast",prev=94864,r=10,side="A",sn={251507},sort=4,xp=420}
 Q[94817]={classes=16,en={258785},l=10,n="Confounding Flash",r=10,races=64,side="A",sn={258785},sort=4}
@@ -5769,63 +5228,276 @@ Q[94821]={classes=16,l=10,n="Confounding Flash",r=10,races=64,side="A",sort=4,xp
 Q[94822]={classes=16,en={258785},l=10,n="Confounding Flash",r=10,races=64,side="A",sort=4,xp=210}
 Q[94823]={classes=16,l=10,n="Confounding Flash",r=10,races=64,side="A",sort=4,xp=210}
 Q[94824]={classes=16,en={258785},l=10,n="Confounding Flash",r=10,races=64,side="A",sn={1226},sort=4,xp=210}
+end)()
+;(function()
 Q[94825]={classes=16,l=10,n="Confounding Flash",r=10,races=64,side="A",sort=4,xp=210}
 Q[94826]={classes=16,l=10,n="Confounding Flash",r=10,races=64,side="A",sort=4,xp=210}
+Q[94829]={en={258697},l=40,n="What We Lost",next=94858,obj={{id=266148,qty=5,src={{"n",256952,0}},t="item",text="Farmers' Mementos"},{id=621813,qty=5,src={{"o",621813,0}},t="object",text="Mementos buried"}},r=36,side="A",xp=2350,zone=16591}
+Q[94841]={l=38,n="Lost Shipping Crate",provided={276067},r=36,side="A",so={656789},xp=285,zone=405}
+Q[94842]={en={256438},l=38,money=2000,n="Unsavory Plant Food",obj={{id=266157,qty=4,src={{"n",258588,0}},t="item",text="Jumbo Crawfish Shell"},{id=266156,qty=4,t="item",text="Fresh Manure"},{id=267266,qty=8,src={{"n",258573,0},{"n",258574,0}},t="item",text="Mudfin Murloc Head"}},r=36,side="A",sn={256438},xp=2850,zone=16591}
+Q[94843]={en={256438},l=38,n="From Seed to Sprout",obj={{id=621767,qty=5,src={{"o",621767,0}},t="object",text="Sapling planted"},{id=266161,qty=1,t="item",text="Tree Sprouting Kit (Provided)"}},r=36,side="A",sn={256438},xp=2150,zone=16591}
+Q[94857]={l=39,n="If a Tree Falls, and No One Hears...",r=36,side="A",xp=300,zone=16591}
+Q[94858]={l=40,n="All That's Left",obj={{id=266251,qty=1,t="item",text="Discarded Doll"},{id=266252,qty=1,t="item",text="Damaged Locket"}},prev=94829,r=36,side="A",xp=2350,zone=16591}
+Q[94861]={l=39,n="Helping Hands",obj={{qty=1,t="event",text="Go with Hurley to save Curly."}},r=36,side="A",xp=3000,zone=16591}
 Q[94863]={classes=4,en={251507},l=10,n="Taming the Beast",next=94864,obj={{from="provided",id=266253,qty=1,t="item",text="Taming Rod (Provided)"},{qty=1,t="event",text="Tame a Gray Forest Wolf"}},prev=94792,r=10,side="A",sn={251507},sort=4,xp=840}
 Q[94864]={classes=4,en={251507},l=10,n="Taming the Beast",next=94793,obj={{from="provided",id=266254,qty=1,t="item",text="Taming Rod (Provided)"},{qty=1,t="event",text="Tame a Young Forest Bear"}},prev=94863,r=10,side="A",sn={251507},sort=4,xp=840}
+Q[94872]={en={253139},l=45,n="Buying Friendship: Magram",obj={{id=257685,qty=1,t="item",text="Totem Tote (Provided)"}},r=30,side="H",sn={5412},xp=390,zone=405}
+Q[94873]={en={253140},l=45,n="Buying Friendship: Gelkis",obj={{id=257685,qty=1,t="item",text="Totem Tote (Provided)"}},r=30,side="H",sn={5412},xp=390,zone=405}
+Q[94877]={l=40,n="Saving Sunnyglade",obj={{id=256952,qty=8,src={{"n",256952,0}},t="kill",text="Twilight Raider slain"},{id=254560,qty=8,src={{"n",254560,0}},t="kill",text="Twilight Shadowmancer slain"},{id=256798,qty=8,src={{"n",256798,0}},t="kill",text="Twilight Neophyte slain"}},r=36,side="A",xp=3150,zone=16591}
+Q[94879]={l=40,n="Scraps of Knowledge",obj={{id=266424,qty=5,t="item",text="Twilight Page"}},r=36,side="A",sn={257591},xp=3150,zone=16591}
+Q[94881]={l=38,n="Curious Trinkets",obj={{id=266425,qty=25,src={{"n",254560,0},{"n",256798,0}},t="item",text="Twilight Charm"}},r=36,side="A",sn={257591},xp=2850,zone=16591}
+Q[94884]={l=41,n="An Unsettling Discovery",obj={{id=266426,qty=1,src={{"n",256899,0}},t="item",text="Filled Crystal Catalyst (Provided)"}},r=36,side="A",sn={256831},xp=1650,zone=16591}
+Q[94885]={l=40,money=2500,n="Field Marshal's Log",next=94887,obj={{id=266427,qty=1,t="item",text="Field Marshal's Log"}},r=36,side="A",xp=3150,zone=16591}
+Q[94886]={l=44,n="The Western Front",r=38,side="A",xp=375,zone=16591}
+Q[94887]={l=47,n="Saving Marshal Ryan",next=94892,obj={{id=257250,qty=1,t="kill",text="Marshal Ryan found"}},prev=94885,provided={267256},r=36,side="A",xp=2100,zone=16591}
+Q[94888]={l=44,n="No Soldier Left Behind",obj={{id=272737,qty=5,t="kill",text="Farholde Scouts rescued"},{id=265821,qty=5,src={{"n",256799,0}},t="item",text="Twilight Key"}},r=38,side="A",xp=3750,zone=16591}
+Q[94889]={l=44,money=3000,n="Carving a Path",obj={{id=256795,qty=8,src={{"n",256795,0}},t="kill",text="Twilight Fanatic slain"},{id=256797,qty=8,t="kill",text="Twilight Corrupter slain"},{id=256799,qty=8,src={{"n",256799,0}},t="kill",text="Twilight Champion slain"}},r=38,side="A",xp=3750,zone=16591}
+Q[94890]={kind="group",l=46,n="Bring Me His Head",next=94891,obj={{id=265837,qty=1,t="item",text="Kilgar's Head"}},r=38,side="A",xp=5050,zone=16591}
+Q[94891]={l=46,n="News to Farholde",obj={{id=265837,qty=1,t="item",text="Kilgar's Head (Provided)"}},prev=94890,r=38,side="A",xp=4050,zone=16591}
+Q[94892]={l=47,n="Dying Wish",next=94893,obj={{id=266428,qty=1,t="item",text="Marshal Ryan's Crest (Provided)"}},prev=94887,r=36,side="A",xp=4200,zone=16591}
+Q[94893]={l=47,money=7000,n="Delivering Closure",obj={{id=266428,qty=1,t="item",text="Marshal Ryan's Crest (Provided)"}},prev=94892,r=36,side="A",xp=4200,zone=16591}
+Q[94894]={l=45,n="The Twilight Threat",obj={{id=265837,qty=1,t="item",text="Kilgar's Head (Provided)"}},r=38,side="A",xp=4850,zone=16591}
+Q[94895]={en={255897},l=38,n="Lost Shipping Crate",provided={276067},r=36,side="H",so={658115},xp=285,zone=405}
 Q[94896]={en={259012},l=11,n="Aid For The Refugees",obj={{id=266433,qty=8,t="item",text="Abandoned Belongings"}},r=8,sn={259012},sort=-2,xp=880}
 Q[94897]={en={259012},l=11,n="The Fate of a Loved One",obj={{id=266434,qty=1,src={{"n",259013,0}},t="item",text="Resaan's Heirloom"}},r=8,sn={259012},sort=-2,xp=880}
 Q[94898]={l=11,n="Violent Winds (Temp Disabled)",obj={{id=251676,qty=10,src={{"n",251676,0}},t="kill",text="Wind Hollow slain"}},r=8,sort=-2,xp=880}
 Q[94901]={l=11,n="Hopping Helpers",r=8,sort=-2,xp=880}
 Q[94902]={l=11,n="Valanaar Vintages",r=8,sort=-2,xp=880}
+Q[94907]={l=44,n="A Small Favor",next=94984,obj={{qty=1,t="kill",text="Twilight Thrall captured"},{id=268646,qty=1,t="item",text="Amberhall's Soulstone (Provided)"}},r=36,side="A",xp=3750,zone=16591}
 Q[94911]={en={3033},l=10,n="Child of Nature",r=10,races=8589934592,side="H",sn={259118},sort=4,xp=840}
 Q[94912]={en={5504},l=10,n="Child of Nature",r=10,races=4294967296,side="A",sn={2543},sort=4,xp=840}
 Q[94913]={en={11802},l=10,n="Moonglade",next=5930,prev=5922,r=10,races=8589934592,side="H",sn={3033},sort=4,xp=210}
 Q[94914]={en={11802},l=10,n="Moonglade",next=5929,prev=5921,r=10,races=4294967296,side="A",sn={5504},sort=4,xp=210}
+Q[94923]={l=38,money=2000,n="Hats Off",obj={{id=266884,qty=1,t="item",text="Robbie's Hat"}},r=36,side="A",xp=2150,zone=16591}
+Q[94924]={l=39,money=2500,n="Hunting the Hunters",obj={{id=259052,qty=12,src={{"n",259052,0}},t="kill",text="Rog'mar Poacher slain"}},r=36,side="A",xp=3000,zone=16591}
+Q[94925]={l=39,n="A Fur Trade",next=93976,obj={{id=266888,qty=8,src={{"n",259054,0},{"n",259055,0}},t="item",text="Prized Lion Hide"}},prev=93788,r=36,side="A",xp=3000,zone=16591}
+Q[94926]={kind="group",l=45,n="Drop the Hammer",obj={{id=266889,qty=1,t="item",text="Komuk's Warmaul"}},r=38,side="A",xp=4850,zone=16591}
+Q[94927]={l=44,n="Dunston Checks Out",obj={{qty=1,t="event",text="Help Dunston break out of Bolder'ok"}},r=38,side="A",xp=4650,zone=16591}
+Q[94928]={l=39,n="A Few Furs for Friz",next=95288,obj={{id=267263,qty=1,t="item",text="Bundle of Lion Pelts (Provided)"}},prev=93976,r=36,side="A",xp=300,zone=16591}
+Q[94929]={l=38,n="Deliver the Second Shipment",obj={{id=266891,qty=1,t="item",text="Shipment to Farholde Keep (Provided)"}},r=36,side="A",xp=285,zone=8}
+Q[94930]={l=38,n="Lost Shipping Crate",provided={276067},r=36,side="H",xp=285,zone=400}
+Q[94931]={en={256438},l=38,n="Stolen Saws",obj={{id=266897,qty=8,t="item",text="Saw Blade"}},r=36,side="A",sn={256438},xp=2850,zone=16591}
 Q[94946]={en={259084},l=13,n="The Magical City of Dalaran",next=94947,prev=93089,r=7,side="A",sn={252475},sort=-2,xp=90}
 Q[94947]={en={1748},l=13,n="Welcome to Azeroth",next=93963,obj={{qty=1,t="event",text="Take the Skyborne Portal to Stormwind"}},prev=94946,r=7,races=4294967296,side="A",sn={259084},xp=680,zone=1519}
+Q[94961]={l=40,n="Biting the Hand",next=94963,obj={{id=267073,qty=20,src={{"n",254560,0},{"n",256798,0},{"n",256952,0},{"n",260969,0}},t="item",text="Twilight Finger Bone"}},r=36,xp=2350,zone=16591}
+Q[94962]={kind="group",l=42,n="Bloodmaster's Ring",next=94964,obj={{qty=1,t="event",text="Bonegnaw defeated"}},prev=94739,r=36,side="H",xp=4300,zone=16591}
+Q[94963]={l=40,money=5000,n="Biting the Hand",obj={{id=259158,qty=1,src={{"n",259158,0}},t="kill",text="Fuzzle slain"},{qty=1,t="event",text="Help Fuzzle escape Sunnyglade."}},prev=94961,r=36,xp=3150,zone=16591}
+Q[94964]={kind="group",l=43,n="Bloodmaster's Ring",next=94733,obj={{qty=1,t="event",text="Mog'thar defeated"}},prev=94962,r=36,side="H",xp=4450,zone=16591}
+Q[94965]={kind="group",l=44,n="Bloodmaster's Ring",next=95063,obj={{qty=1,t="event",text="Snufflesnout defeated"}},prev=94737,r=36,side="H",xp=4650,zone=16591}
+Q[94968]={inst=true,kind="dungeon",l=45,money=13000,n="Eye of Mugg",obj={{id=267086,qty=1,t="item",text="Eye of Mugg"}},r=40,side="H",xp=4850,zone=16842}
+Q[94971]={classes=2,en={246378},l=40,n="A Paladin's Steed",prev=97022,r=40,races=16,side="H",sn={246378},sort=4,xp=780}
+Q[94972]={inst=true,kind="dungeon",l=44,n="Tome of Twilight",obj={{id=267104,qty=1,t="item",text="Tome of Twilight"}},r=39,side="H",xp=4650,zone=16842}
+Q[94973]={inst=true,l=41,money=5500,n="Krol'dok Moulding",provided={267137},r=38,side="H",xp=3300,zone=16842}
+Q[94974]={inst=true,l=41,money=5500,n="Key Ingredients",obj={{id=4304,qty=4,src={{"n",221331,100},{"n",6507,78},{"n",5427,78},{"n",9165,78},{"n",9162,78},{"n",8759,78},{"n",9683,78},{"n",221408,78},{"n",7848,77},{"n",6377,77},{"n",5262,77},{"n",6505,77},{"v",14846,0}},t="item",text="Thick Leather"},{id=3575,qty=12,src={{"n",223542,33},{"n",223543,13},{"n",223544,13}},t="item",text="Iron Bar"}},r=38,side="H",xp=3300,zone=16842}
+Q[94975]={inst=true,kind="dungeon",l=42,n="A Token of Vengeance",obj={{id=267091,qty=15,t="item",text="Cultist Ear"}},r=38,side="H",xp=3450,zone=16842}
 Q[94978]={en={252389},l=10,n="Taming the Beast",next=6101,obj={{from="provided",id=267272,qty=1,t="item",text="Taming Rod (Provided)"},{qty=1,t="event",text="Tame a Windsong Crawler"}},prev=94979,r=10,races=12884901888,sn={252389},sort=4,xp=840}
 Q[94979]={en={252389},l=10,n="Taming the Beast",next=6101,obj={{from="provided",id=267298,qty=1,t="item",text="Taming Rod (Provided)"},{qty=1,t="event",text="Tame an Ornery Galestrider"}},prev=94978,r=10,races=12884901888,sn={252389},sort=4,xp=840}
+Q[94980]={inst=true,l=41,money=5500,n="Krol'dok Moulding",provided={267138},r=38,side="A",xp=3300,zone=16842}
+Q[94981]={inst=true,l=41,money=5500,n="Key Ingredients",obj={{id=4304,qty=4,src={{"n",221331,100},{"n",6507,78},{"n",5427,78},{"n",9165,78},{"n",9162,78},{"n",8759,78},{"n",9683,78},{"n",221408,78},{"n",7848,77},{"n",6377,77},{"n",5262,77},{"n",6505,77},{"v",14846,0}},t="item",text="Thick Leather"},{id=3575,qty=12,src={{"n",223542,33},{"n",223543,13},{"n",223544,13}},t="item",text="Iron Bar"}},r=38,side="A",xp=3300,zone=16842}
+Q[94982]={inst=true,kind="dungeon",l=45,money=13000,n="Eye of Mugg",obj={{id=267086,qty=1,t="item",text="Eye of Mugg"}},r=40,side="A",xp=4850,zone=16842}
+Q[94983]={inst=true,kind="dungeon",l=42,n="Twilight Mementos",obj={{id=267234,qty=8,t="item",text="Twilight Bangle"}},r=38,side="A",xp=4300,zone=16842}
+Q[94984]={inst=true,kind="dungeon",l=44,n="Tome of Twilight",obj={{id=267104,qty=1,t="item",text="Tome of Twilight"}},prev=94907,r=39,side="A",xp=4650,zone=16842}
+Q[94992]={l=38,money=2000,n="Rescue Roundup",obj={{qty=1,t="event",text="Escort the lost horse to Wheeler's Grange."}},r=36,side="A",sn={259254},xp=2850,zone=16591}
+Q[94997]={inst=true,l=42,money=5500,n="Lingering Essence",prev=94983,provided={268035},r=38,side="A",xp=3450,zone=16842}
+Q[94998]={inst=true,l=42,money=5500,n="Curios of Curiosity",provided={268036},r=38,side="A",xp=3450,zone=16842}
+Q[94999]={l=36,n="Eyes for the Watchman",obj={{id=267244,qty=1,t="item",text="Care Package (Provided)"}},r=36,side="A",xp=700,zone=16591}
+Q[95006]={l=58,n="Stolen Power",obj={{id=278309,qty=1,t="kill",text="Events Observed"},{id=268298,qty=1,t="item",text="Concoction of Cleansing"},{id=272925,qty=1,t="item",text="Ketharas' Note"}},r=54,xp=620,zone=2361}
+Q[95026]={l=58,n="Blight No More",obj={{id=249247,qty=3,src={{"n",249247,0}},t="kill",text="Forgotten Soldier slain"},{id=249228,qty=12,src={{"n",249228,0}},t="kill",text="Fleshflay Ravener slain"}},r=54,side="H",xp=6200,zone=616}
+Q[95027]={l=57,n="Feathers in Flight",obj={{id=253341,qty=9,src={{"n",249053,0}},t="item",text="Hyjal Owl Feather"}},r=54,side="A",xp=6000,zone=616}
+Q[95033]={l=41,n="On the Other Side",r=40,side="H",xp=330,zone=16591}
 Q[95034]={classes=2,en={259620},l=24,n="The Debt",obj={{id=259620,qty=1,src={{"n",259620,0}},t="kill",text="Speak with Lumina Windsinger"}},r=18,races=16,side="H",sn={259620},sort=4,xp=195}
 Q[95036]={classes=2,kind="dungeon",l=25,n="A Moon-Kissed Blade",obj={{from="crafted",id=267454,qty=1,t="item",text="Trevan's Weapon Notes"},{id=6994,qty=1,t="item",text="Whitestone Oak Lumber"},{id=267361,qty=1,t="item",text="Enchanted Silver Ingot"},{from={"q",95042},id=272448,qty=1,t="item",text="Purified Kor Gem"}},r=20,races=16,side="H",sn={259620},sort=4,xp=1000}
 Q[95041]={en={11028},l=10,n="Data Hoarders",obj={{id=267413,qty=7,t="item",text="Gnomeregan Archival Data"}},r=7,sn={11028},xp=630,zone=1}
 Q[95042]={classes=2,en={259649},kind="group",l=25,n="Seeking the Kor Gem",obj={{id=6995,qty=1,src={{"n",4802,2},{"n",4803,1}},t="item",text="Corrupted Kor Gem"}},r=20,side="H",sort=4,xp=2000}
+Q[95059]={en={257558},l=36,n="Frazzlespark's Crate",provided={276066},r=36,side="A",sn={255897},xp=280,zone=16591}
+Q[95062]={l=36,n="Frazzlespark's Crate",provided={276066},r=36,side="H",sn={255897},xp=280,zone=16591}
+Q[95063]={kind="group",l=45,money=13000,n="Bloodmaster's Ring",obj={{qty=1,t="event",text="Chub'chob defeated"}},prev=94965,r=36,side="H",xp=4850,zone=16591}
+Q[95064]={l=39,n="Preventative Measures",obj={{id=256749,qty=12,src={{"n",256749,0}},t="kill",text="Rog'mar Trainee slain"}},r=36,side="A",xp=3000,zone=16591}
 Q[95065]={en={267118},l=12,money=500,n="Fishin' Time",obj={{id=6529,qty=1,src={{"v",66,0},{"v",777,0},{"v",843,0},{"v",1250,0},{"v",1286,0},{"v",1465,0},{"v",1678,0},{"v",1684,0},{"v",1692,0},{"v",2118,0},{"v",2383,0},{"v",2626,0},{"v",3029,0},{"v",3081,0},{"v",3168,0},{"v",3178,0}},t="item",text="Shiny Bauble"},{id=6530,qty=3,src={{"n",228612,44},{"n",8530,31},{"n",1796,30},{"n",1795,30},{"n",12262,30},{"n",1793,30},{"n",10580,30},{"n",1794,30},{"n",1791,29},{"n",8532,29},{"n",4475,28},{"n",4474,28},{"v",777,0},{"v",843,0},{"v",960,0},{"v",989,0}},t="item",text="Nightcrawlers"}},r=7,side="A",sn={267118},xp=910,zone=1519}
+Q[95066]={l=39,n="The Rog'mar Situation",provided={274981},r=36,side="A",xp=1500,zone=16591}
 Q[95111]={classes=2,l=25,n="An Underrated Talent",obj={{from="provided",id=268192,qty=1,t="item",text="Bundle of Blacksmithing Materials (Provided)"}},r=20,races=16,side="H",sort=4,xp=1000}
+Q[95118]={l=41,money=4000,n="Saltwater Savages",obj={{id=256801,qty=8,src={{"n",256801,0}},t="kill",text="Murloc Warrior slain"},{id=255898,qty=8,src={{"n",255898,0}},t="kill",text="Murloc Oracle slain"}},r=36,sn={259961},xp=3300,zone=16591}
+Q[95119]={en={259961},l=43,money=6000,n="Unfriendly Competition",obj={{id=257901,qty=10,src={{"n",257901,0}},t="kill",text="Eastsea Buccaneer slain"},{id=257910,qty=10,src={{"n",257910,0}},t="kill",text="Eastsea Musketeer slain"}},r=38,sn={259961},xp=3600,zone=16591}
+Q[95120]={kind="group",l=42,money=3000,n="WANTED: Old Rot-Chum",obj={{id=268341,qty=1,t="item",text="Rot-Covered Harpoon"}},r=36,xp=4300,zone=16591}
+Q[95121]={en={259962},l=40,n="A Taste of the Sea",obj={{id=268344,qty=12,src={{"n",255898,0},{"n",255899,0},{"n",256801,0}},t="item",text="Saltwater Murloc Eye"},{id=268345,qty=6,src={{"n",255901,0},{"n",256807,0}},t="item",text="Sand Crawler Meat"}},r=36,sn={259962},xp=3150,zone=16591}
+Q[95122]={l=44,money=3000,n="Unchecked Expansion",obj={{id=257915,qty=8,src={{"n",257915,0}},t="kill",text="Eastsea Raider slain"},{id=257916,qty=8,src={{"n",257916,0}},t="kill",text="Eastsea Bombardier slain"}},r=38,xp=3750,zone=16591}
+Q[95123]={l=44,n="A Blast Ye Scurvy Dogs!",obj={{id=268346,qty=5,t="item",text="Eastsea Powder Keg"}},r=38,xp=3750,zone=16591}
+Q[95124]={l=45,money=6500,n="Admiral Lamora",obj={{id=257861,qty=1,t="kill",text="Admiral Lamora slain"},{id=268506,qty=1,t="item",text="Lamora's Loot"}},r=38,xp=3900,zone=16591}
 Q[95125]={classes=2,l=25,n="Ott's Masterwork",obj={{id=259966,qty=1,t="kill",text="Watch Ott craft the blade"}},r=20,races=16,side="H",sort=4,xp=1000}
 Q[95126]={classes=2,l=25,n="The Moonsilver Blade",obj={{from="provided",id=268359,qty=1,t="item",text="Ott's Masterwork (Provided)"}},r=20,races=16,side="H",sort=4,xp=1000}
 Q[95140]={classes=2,en={259620},kind="group",l=26,n="Old Fire-Eye",obj={{id=259897,qty=1,src={{"n",259897,0}},t="kill",text="Old Fire-Eye slain"},{from={"q",95126},id=268484,qty=1,t="item",text="Moonsilver Blade"}},r=20,races=16,side="H",sort=4,xp=2650}
+Q[95141]={en={256418},l=38,n="Report to Rog'mar",r=36,side="H",sn={2464},xp=285,zone=33}
+Q[95143]={l=38,n="Finding Tan'jani",r=36,side="H",sn={2706},xp=285,zone=45}
+Q[95144]={l=38,n="Overseas Delivery",provided={276065},r=36,sn={7733},xp=285,zone=440}
+Q[95147]={l=37,n="The Lost Scout",next=95148,provided={263931},r=36,side="A",xp=285,zone=16591}
+Q[95148]={l=37,n="Southern Watch Gnoll Report",prev=95147,provided={268421},r=36,side="A",xp=285,zone=16591}
+Q[95156]={en={260080},l=37,n="Stuff 'Em and Stick 'Em",obj={{id=268536,qty=3,t="item",text="Bundle of Hay"}},r=36,side="A",xp=2100,zone=16591}
 Q[95161]={en={228},l=22,n="Remember That I Love You",obj={{from="provided",id=251522,qty=1,t="item",text="Blood-Stained Letter (Provided)"}},prev=92415,r=15,sn={14450},xp=175,zone=16591}
+Q[95162]={l=41,n="Paletusk Harvesting",obj={{id=769,qty=10,src={{"n",3099,98},{"n",119,77},{"n",1190,75},{"n",1192,74},{"n",1191,74},{"n",3100,74},{"n",454,73},{"n",157,73},{"n",547,72},{"n",524,65},{"n",390,55},{"n",113,53}},t="item",text="Chunk of Boar Meat"}},r=38,side="H",xp=3300,zone=16591}
+Q[95163]={l=40,n="Drive Them Back",obj={{qty=10,src={{"n",258331,0}},t="kill",text="Young Paletusk returned"},{id=268521,qty=1,t="item",text="Swineherd's Staff (Provided)"}},r=38,side="H",xp=3150,zone=16591}
+Q[95165]={l=44,n="See Ya, Scallywags!",obj={{id=629425,qty=1,t="object",text="First Ship Charge planted"},{id=629426,qty=1,t="object",text="Second Ship Charge planted"},{id=629427,qty=1,t="object",text="Third Ship Charge planted"},{id=268505,qty=1,t="item",text="Remote Explosive Charge (Provided)"}},r=38,xp=3750,zone=16591}
+Q[95183]={l=41,n="Step One: Rock",next=96026,obj={{id=271892,qty=10,t="item",text="Good Rock"}},r=38,side="H",xp=1650,zone=16591}
+Q[95184]={l=38,money=2000,n="The Sharpest of Blades",obj={{from="crafted",id=7964,qty=8,t="item",text="Solid Sharpening Stone"}},r=36,side="A",xp=2850,zone=16591}
 Q[95189]={en={15991},inst=true,kind="dungeon",l=22,n="Crest of Lordaeron",obj={{from="provided",id=268579,qty=1,t="item",text="Crest of Lordaeron (Provided)"}},r=16,si={id=268579,n="Crest of Lordaeron"},side="A",xp=2600,zone=16611}
+Q[95194]={l=53,n="Our Man in Theramore",obj={{id=260146,qty=1,src={{"n",260146,0}},t="kill",text="Find Shaw's Agent in Theramore"}},r=48,side="A",xp=1300,zone=15}
 Q[95195]={en={466},inst=true,kind="dungeon",l=22,money=4500,n="Bloodied Insignia",obj={{from="provided",id=268540,qty=10,t="item",text="Bloodied Insignia (Provided)"}},r=16,side="A",xp=2600,zone=16611}
+Q[95196]={l=53,n="Watch Yer Back",obj={{id=260146,qty=1,src={{"n",260146,0}},t="kill",text="Speak with Sully"}},prev=95194,r=48,side="A",xp=1300,zone=15}
+Q[95198]={l=53,n="The Return of the King?",obj={{id=260146,qty=1,src={{"n",260146,0}},t="kill",text="Relieve Jaina's guard and eavesdrop"},{id=269000,qty=1,t="item",text="SI:7 Disguise Kit (Provided)"}},r=48,side="A",xp=1300,zone=15}
 Q[95204]={en={7825},inst=true,kind="dungeon",l=22,n="Crest of Lordaeron",obj={{from="provided",id=275521,qty=1,t="item",text="Crest of Lordaeron (Provided)"}},r=16,si={id=275521,n="Crest of Lordaeron"},xp=2600,zone=16611}
 Q[95212]={en={1265},l=10,n="Never Saddle on Quality",obj={{id=267414,qty=6,src={{"n",260157,42}},t="item",text="Pristine Leopard Pelt"}},r=7,sn={1265},xp=630,zone=1}
 Q[95213]={en={1256},l=10,n="Stolen Blasting Powder",obj={{id=268548,qty=1,t="item",text="Empty Powder Keg"}},r=7,si={id=268548,n="Empty Powder Keg",src={{"n",1116,0.6},{"n",1118,0.5}}},xp=85,zone=1}
 Q[95214]={en={1256},l=10,n="Stolen Blasting Powder",obj={{id=267415,qty=16,src={{"n",1116,2},{"n",1118,2}},t="item",text="Stolen Blasting Powder"}},r=7,sn={1256},xp=840,zone=1}
 Q[95216]={en={11835},inst=true,kind="dungeon",l=22,n="The New Plague",obj={{id=275443,qty=1,t="item",text="Highly Toxic Strain"}},r=16,side="H",sn={11835},xp=2600,zone=16611}
 Q[95217]={en={1698},l=10,money=175,n="The Quarry's Smith",obj={{id=2840,qty=12,src={{"n",223542,33},{"n",223340,12}},t="item",text="Copper Bar"},{id=267416,qty=4,t="item",text="Toughened Boar Hide"}},r=7,sn={1698},xp=630,zone=1}
+Q[95219]={l=41,n="From Port to Port",provided={276068},r=40,side="A",sn={255897},xp=330,zone=16591}
+Q[95248]={l=59,money=900,n="To the Summit of Eternity",r=54,side="H",xp=640,zone=616}
 Q[95250]={inst=true,kind="dungeon",l=21,n="Abominable Creatures",obj={{from="provided",id=268518,qty=1,t="item",text="Head of the Baron"}},r=16,side="A",xp=1650,zone=16611}
+Q[95254]={en={259962},l=42,money=3000,n="WANTED: Trapclaw",obj={{id=268586,qty=1,src={{"n",260235,0}},t="item",text="Trapclaw's Pincer"}},r=36,so={628948},xp=3450,zone=16591}
+Q[95260]={l=42,n="Terrors From the Deep",r=38,xp=345,zone=16591}
+Q[95261]={l=42,n="It Takes Guts",obj={{id=268632,qty=15,src={{"n",255851,0},{"n",255901,0},{"n",256807,0},{"n",258331,0},{"n",258522,0},{"n",258588,0},{"n",259054,0},{"n",259055,0},{"n",259267,0},{"n",260235,0},{"n",262037,0},{"n",263307,0}},t="item",text="Beast Entrails"},{id=268664,qty=8,t="item",text="Rotflesh Mushroom"}},r=38,xp=3450,zone=16591}
+Q[95262]={inst=true,kind="dungeon",l=53,n="The Secret Prison",obj={{id=255702,qty=1,t="kill",text="Explore Alcaz Prison"},{id=264861,qty=1,t="kill",text="Learn what became of Varian Wrynn"}},r=48,side="A",xp=6550,zone=16620}
+Q[95263]={inst=true,kind="dungeon",l=53,n="Somber News",prev=96335,r=48,side="A",xp=1300,zone=16620}
+Q[95264]={l=53,money=8000,n="Shaw Needs To Know",r=48,side="A",xp=1300,zone=1519}
+Q[95267]={l=42,n="The Monster Surfaces",obj={{id=268633,qty=1,t="item",text="Sea Monster's Head"},{id=268647,qty=1,t="item",text="Big Ball o' Bait (Provided)"}},r=38,xp=3450,zone=16591}
+Q[95278]={l=45,n="It Is Time, Brother...",provided={268705},r=38,side="H",xp=390,zone=16591}
+Q[95283]={l=53,n="The Missing Kor'kron",next=95284,r=48,side="H",xp=1300,zone=15}
+Q[95284]={kind="group",l=53,n="The Elite of the Elite",r=48,side="H",xp=1300,zone=15}
+Q[95285]={l=53,money=2000,n="Right Place, Wrong Time",obj={{id=260383,qty=1,src={{"n",260383,0}},t="kill",text="Speak with Sergeant Ulka"}},prev=95284,r=48,side="H",xp=1300,zone=15}
+Q[95288]={l=43,n="Smuggler's Paradise",next=95293,obj={{id=268796,qty=8,src={{"n",257901,0},{"n",257910,0}},t="item",text="Smuggled Goods"}},prev=94928,r=38,xp=3600,zone=16591}
+Q[95293]={en={260390},l=42,n="Smuggler's Special",obj={{id=268824,qty=1,t="item",text="The Friz Special (Provided)"}},prev=95288,r=38,xp=1700,zone=16591}
+Q[95294]={l=42,n="Smuggler's Bargain",next=95296,r=38,xp=345,zone=16591}
+Q[95295]={en={3945},l=40,n="I Know a Guy",next=95322,r=36,xp=315,zone=16591}
+Q[95296]={l=40,n="Shipping and Handling",next=95383,obj={{id=268811,qty=1,t="item",text="Friz's Secret Stash (Provided)"},{qty=1,t="event",text="Required money: 10"}},prev=95294,r=36,xp=315,zone=16591}
+Q[95309]={inst=true,kind="dungeon",l=53,n="No Orc Left Behind",obj={{id=257016,qty=1,t="kill",text="Find Commander Folkar"}},r=48,side="H",xp=6550,zone=16620}
+Q[95312]={l=40,n="Coming to Collect",next=95321,prev=95383,r=36,xp=315,zone=16591}
 Q[95314]={en={2132},l=10,money=350,n="That Shadowvale Green Elixir",obj={{id=268801,qty=8,t="item",text="Bottle of Whispering Elixir"}},r=7,sn={2132},xp=840,zone=85}
+Q[95315]={l=38,n="The Riverglades Report",provided={275994},r=36,side="A",sn={2700},xp=285,zone=45}
+Q[95316]={l=57,n="The Experimental Method",obj={{id=263806,qty=1,t="kill",text="Vessel Workstation disrupted"},{id=263808,qty=1,t="kill",text="Disease Workstation disrupted"},{id=263807,qty=1,t="kill",text="Alchemy Workstation disrupted"},{id=264352,qty=1,t="kill",text="Slime Workstation disrupted"}},provided={273323},r=54,xp=6000,zone=616}
+Q[95317]={l=57,n="Notation, Notation, Notation",obj={{id=274396,qty=12,src={{"n",260422,0}},t="item",text="Fel Ash Experimentation Notes"}},r=54,xp=6000,zone=616}
+Q[95318]={l=57,n="Taste of Ash",next=95319,obj={{id=260422,qty=12,src={{"n",260422,0}},t="kill",text="Ashen Acolyte slain"}},r=54,xp=6000,zone=616}
+Q[95319]={l=57,n="Crystalline Collection",obj={{id=274412,qty=8,t="item",text="Fel-Slime Crystal"},{id=268990,qty=1,t="item",text="Pristine Fel-Slime Crystal"}},r=54,xp=6000,zone=616}
+Q[95320]={l=57,n="A Curious Question",r=54,xp=600,zone=616}
+Q[95321]={l=40,n="Tazzik's Dues",obj={{id=260857,qty=1,src={{"n",260857,0}},t="kill",text="Tazzik confronted"}},prev=95312,r=36,xp=3150,zone=16591}
+Q[95322]={l=40,n="Get the Goods",next=95325,obj={{id=639870,qty=1,t="object",text="Bloodsail Trunk examined"}},prev=95295,r=36,xp=2350,zone=16591}
+Q[95325]={l=40,n="We've Been Robbed!",prev=95322,r=36,xp=2350,zone=16591}
+Q[95326]={l=39,n="The Big Payback",obj={{id=268810,qty=1,src={{"n",260429,0}},t="item",text="Ruzzgot's Shipment"}},r=36,xp=3000,zone=16591}
+Q[95327]={l=40,n="All's Well That Ends Well",obj={{id=268810,qty=1,src={{"n",260429,0}},t="item",text="Ruzzgot's Shipment (Provided)"}},r=36,xp=3150,zone=16591}
 Q[95328]={en={4607},l=10,money=350,n="Whispering Horror Residue",obj={{id=268812,qty=1,src={{"n",260396,100}},t="item",text="Whispering Horror Residue"}},r=7,si={id=268812,n="Whispering Horror Residue",src={{"n",260396,100}}},side="H",xp=840,zone=85}
+Q[95329]={l=38,n="Out in the Field",r=36,side="A",xp=285,zone=16591}
+Q[95330]={en={256438},l=37,n="Love Thy Neighbor",obj={{id=268816,qty=1,t="item",text="Surplus Crops (Provided)"}},r=36,side="A",xp=285,zone=16591}
+Q[95331]={l=45,n="REUSE ME",r=38,zone=16591}
 Q[95349]={en={259119},l=13,n="The Earthen Ring",next=95350,prev=93090,r=7,side="H",sn={251968},sort=-2,xp=90}
 Q[95350]={en={4949},l=13,n="Welcome to Azeroth",next=93739,prev=95349,r=7,races=8589934592,side="H",sn={259119},xp=680,zone=1637}
+Q[95378]={l=58,money=4500,n="The Hydra's Head",obj={{id=273291,qty=1,t="item",text="Bones of Tyaeha Darkoath"},{id=273292,qty=1,t="item",text="Bones of Dazka Shadowsleep"},{id=273290,qty=1,src={{"n",260818,0}},t="item",text="Bones of Frezzlie Popwhiz"}},r=54,xp=6200,zone=616}
+Q[95379]={l=58,money=4500,n="A Revenge So Sweet",obj={{id=260440,qty=1,t="kill",text="Brashann Grimdark slain"}},provided={274414},r=54,xp=6200,zone=616}
+Q[95380]={l=57,n="A Prolific Source",obj={{id=273008,qty=8,t="item",text="Fel-Slime Ooze"}},r=54,xp=6000,zone=616}
+Q[95383]={l=40,n="Shipping and Handling",next=95312,obj={{id=268811,qty=1,t="item",text="Friz's Secret Stash (Provided)"}},prev=95296,r=36,xp=315,zone=16591}
+Q[95384]={l=40,money=5000,n="Partial Mystical Notes",obj={{id=213127,qty=1,src={{"n",780,2}},t="item",text="Partial Mystical Notes"}},r=32,xp=3150,zone=33}
+Q[95385]={l=43,money=6000,n="Torn Mystical Scroll",obj={{id=217161,qty=1,src={{"n",780,2}},t="item",text="Torn Mystical Scroll"}},r=35,xp=3600,zone=33}
+Q[95417]={l=40,n="The Purple Ones",next=95601,prev=95425,r=36,side="H",xp=315,zone=16591}
+Q[95418]={l=40,n="Spread the Word",next=95420,obj={{id=265750,qty=1,src={{"n",256899,0}},t="item",text="Chogg's Head (Provided)"}},prev=95427,r=36,side="H",xp=315,zone=16591}
+Q[95420]={l=40,n="Land of Giants",obj={{id=265750,qty=1,src={{"n",256899,0}},t="item",text="Chogg's Head (Provided)"}},prev=95418,r=36,side="H",xp=315,zone=16591}
+Q[95424]={l=41,money=5500,n="Might Makes Right",next=95417,obj={{id=260968,qty=7,src={{"n",260968,0}},t="kill",text="Twilight Mauler slain"},{id=261497,qty=7,src={{"n",261497,0}},t="kill",text="Twilight Firecaller slain"}},prev=95425,r=36,side="H",xp=3300,zone=16591}
+Q[95425]={l=42,n="Unworthy Champion",next=95417,obj={{id=269257,qty=1,t="item",text="Skullbasher"}},prev=95424,r=36,side="H",xp=3450,zone=16591}
+Q[95426]={l=39,n="Rog'mar Supplies",obj={{id=274975,qty=8,t="item",text="Rog'mar Supply Crate"}},r=36,side="A",xp=3000,zone=16591}
+Q[95427]={kind="group",l=41,money=2500,n="Twilight No More!",next=95418,obj={{id=265750,qty=1,src={{"n",256899,0}},t="item",text="Chogg's Head"},{id=265751,qty=1,src={{"n",256899,0}},t="item",text="Zac's Head"}},prev=95602,r=36,side="H",xp=3300,zone=16591}
+Q[95428]={l=41,n="Clugfist's Decree",next=94744,r=36,side="H",xp=330,zone=16591}
+Q[95431]={l=41,n="Rumblings of Discontent",next=95424,prev=95433,r=38,side="H",xp=330,zone=16591}
+Q[95432]={l=43,n="Rise Up!",next=95431,obj={{qty=5,src={{"n",260995,0}},t="kill",text="Ogre Miners recruited"}},r=36,side="H",xp=1800,zone=16591}
+Q[95433]={kind="group",l=46,n="Death to the Executioner",next=95424,obj={{id=269351,qty=1,t="item",text="Executioner's Mace"}},prev=95431,r=36,side="H",xp=5050,zone=16591}
+Q[95454]={inst=true,kind="dungeon",l=53,n="The Honor of the Kor'kron",obj={{id=255702,qty=1,t="kill",text="Find Varian Wrynn"},{id=264861,qty=1,t="kill",text="Read the note on the ground"}},r=48,side="H",xp=6550,zone=16620}
+Q[95472]={l=40,n="Consolation Prize",obj={{id=268805,qty=1,t="item",text="Tazzik's Sweaty Shirt (Provided)"}},prev=95321,r=36,xp=2350,zone=16591}
+Q[95483]={inst=true,kind="dungeon",l=53,n="Thrall Needs to Know",r=48,side="H",xp=1300,zone=16620}
 Q[95494]={en={3682},l=18,money=1000,n="Bruised Pride and Lion Hides",next=95495,obj={{id=269715,qty=6,src={{"n",3241,3}},t="item",text="Savannah Lion Hide"}},prev=95507,r=14,side="H",sn={3682},xp=1350,zone=17}
 Q[95495]={en={261366},l=18,n="The Hermit Tanner",next=95621,obj={{from="provided",id=269718,qty=1,t="item",text="Bundle of Hides (Provided)"}},prev=95507,r=14,side="H",sn={3682},xp=340,zone=17}
 Q[95507]={en={3682},l=18,money=1000,n="Vrang's Game",next=95495,obj={{id=269719,qty=8,t="item",text="Trapped Game"}},prev=95494,r=14,side="H",sn={3682},xp=1350,zone=17}
 Q[95508]={en={261366},l=18,n="Unwelcome Guests",obj={{id=261367,qty=1,src={{"n",261367,0}},t="kill",text="Assist Walton"}},r=14,side="H",sn={261366},xp=1000,zone=17}
+Q[95511]={l=40,n="Your First Feline Friend",obj={{id=261529,qty=1,src={{"n",261529,0}},t="kill",text="Inspect the Striped Frostsaber"},{id=261578,qty=1,src={{"n",261578,0}},t="kill",text="Inspect the Striped Nightsaber"},{id=261579,qty=1,src={{"n",261579,0}},t="kill",text="Inspect the Spotted Frostsaber"},{id=265472,qty=1,src={{"n",265472,0}},t="kill",text="Inspect the Striped Dawnsaber"}},r=40,races=8,side="A",xp=1550,zone=1657}
+Q[95534]={en={2378,2402},l=36,money=4000,n="Strahnbrad Mystery",obj={{id=217305,qty=1,src={{"n",217305,0}},t="kill",text="Discover the fiery mystery of Strahnbrad"},{id=213421,qty=1,src={{"n",2319,3},{"n",2318,2}},t="item",text="Singed Note"}},r=25,xp=2800,zone=36}
+Q[95561]={l=38,n="Apple of My Eye",next=95913,obj={{id=271431,qty=6,t="item",text="Fresh Apple"}},r=36,side="A",sn={263089},xp=1450,zone=16591}
+Q[95562]={en={256831},kind="group",l=41,money=2500,n="Cut Off the Heads",obj={{id=265750,qty=1,src={{"n",256899,0}},t="item",text="Chogg's Head"},{id=265751,qty=1,src={{"n",256899,0}},t="item",text="Zac's Head"}},r=36,side="A",xp=3300,zone=16591}
+Q[95568]={l=56,n="Seeds for a New Season",obj={{id=260176,qty=10,t="item",text="Untainted Seed"}},r=54,xp=4350,zone=616}
+Q[95569]={l=56,n="Hope for Hatchlings",obj={{id=269920,qty=12,t="item",text="Hyjal Owl Egg"}},r=54,xp=5800,zone=616}
+Q[95599]={l=42,money=5500,n="The Old Key",obj={{id=287992,qty=1,t="item",text="Old Key (Provided)"}},r=35,xp=3450,zone=357}
+Q[95601]={l=40,n="The Purple Ones",next=95427,obj={{id=261711,qty=5,src={{"n",261711,0}},t="kill",text="Empowered Brute slain"},{id=262169,qty=10,src={{"n",262169,0}},t="kill",text="Twilight Ritualist slain"}},prev=95602,r=36,side="H",xp=3150,zone=16591}
+Q[95602]={l=40,n="Sickening Lights",next=95427,obj={{id=272603,qty=5,t="kill",text="Twilight Ritual Circle destroyed"}},prev=95601,r=36,side="H",xp=3150,zone=16591}
+Q[95603]={en={262031},l=38,n="Bats in the Belfry",obj={{id=262037,qty=5,src={{"n",262037,0}},t="kill",text="Roosting Duskbat slain"}},r=36,side="A",sn={262031},xp=2150,zone=16591}
+Q[95611]={l=56,n="Rites of Respect",obj={{id=262049,qty=1,t="kill",text="Remains buried"}},provided={269998},r=54,xp=1450,zone=616}
+Q[95613]={en={262031},l=38,money=3000,n="Keeping the Light On",obj={{id=17028,qty=5,src={{"v",958,0},{"v",983,0},{"v",1257,0},{"v",1275,0},{"v",1307,0},{"v",1308,0},{"v",1351,0},{"v",1463,0},{"v",1673,0},{"v",2805,0},{"v",3323,0},{"v",3335,0},{"v",3351,0},{"v",3490,0},{"v",3500,0},{"v",3542,0}},t="item",text="Holy Candle"}},r=36,side="A",xp=2150,zone=16591}
+Q[95615]={l=38,n="In Memoriam",obj={{id=642517,qty=3,src={{"o",642517,0}},t="object",text="Candles replaced"},{id=269997,qty=1,t="item",text="Bundle of Candles (Provided)"}},r=36,side="A",xp=2150,zone=16591}
 Q[95621]={en={261366},l=18,n="Trouble in the Valley",obj={{id=270151,qty=1,src={{"n",262119,60}},t="item",text="Benedict's Orders"}},prev=95495,r=14,side="H",sn={261366},xp=1000,zone=17}
+Q[95642]={en={256831},l=40,n="Abominable Magics",obj={{qty=25,src={{"n",261711,0},{"n",262169,0}},t="kill",text="Crystal Catalyst filled"},{id=269990,qty=1,t="item",text="Crystal Catalyst (Provided)"}},r=36,side="A",sn={256831},xp=3150,zone=16591}
+Q[95643]={en={256831},l=40,n="Indiscriminate Purge",obj={{id=261711,qty=5,src={{"n",261711,0}},t="kill",text="Empowered Brute slain"},{id=262169,qty=5,src={{"n",262169,0}},t="kill",text="Twilight Ritualist slain"}},r=36,side="A",sn={256831},xp=3150,zone=16591}
+Q[95646]={en={1244},inst=true,kind="dungeon",l=31,n="Horrors in the Highland",obj={{id=270180,qty=1,t="item",text="Horrible Rootcore"}},r=24,races=4294967372,side="A",sn={1244},xp=3150,zone=16732}
+Q[95647]={inst=true,kind="dungeon",l=31,n="Lost in the Thicket Things",next=95809,obj={{id=262681,qty=1,t="kill",text="Learn what happened to Ardin Grassman"}},r=24,races=4294967372,side="A",sn={1480},xp=2500,zone=16732}
+Q[95663]={en={13155},inst=true,kind="dungeon",l=31,n="Dragonmaw Rumors",next=95682,r=24,side="H",sn={2787},xp=250,zone=16732}
+Q[95664]={en={9087},inst=true,kind="dungeon",l=31,n="Elder Knowledge",next=98823,obj={{id=270866,qty=1,t="item",text="Titan Relic"}},r=24,side="H",xp=630,zone=16732}
+Q[95682]={en={13155},inst=true,kind="dungeon",l=31,n="Open the Maw",obj={{id=275045,qty=2,t="kill",text="Dragonmaw Saboteur slain"},{id=275044,qty=4,t="kill",text="Dragonmaw Warder slain"},{id=284844,qty=1,t="item",text="Dragonmaw Dispatch"}},prev=95663,r=24,side="H",sn={13155},xp=3150,zone=16732}
+Q[95697]={en={3368},inst=true,kind="dungeon",l=31,n="Changing Tastes",obj={{id=271100,qty=4,t="item",text="Thicket Raptor Meat"}},r=24,side="H",sn={3368},xp=3150,zone=16732}
+Q[95737]={en={1480},inst=true,kind="dungeon",l=31,n="Seeking Caitlin",r=24,side="A",sn={3970},xp=630,zone=16732}
+Q[95748]={en={2519},l=40,money=5000,n="The Gurubashi Legends of Old",obj={{id=2007,qty=1,src={{"o",52,100}},t="item",text="The Third Troll Legend"}},r=30,side="H",sn={2519},xp=3150,zone=33}
+Q[95753]={classes=64,l=45,money=3000,n="Challenge of the Desert Wolf",r=37,sort=4,xp=1950}
+Q[95770]={en={2519},l=40,money=5000,n="Locating the Lost City",r=30,side="H",sn={2519},xp=3150,zone=33}
 Q[95771]={l=10,money=350,n="A Taste of Darkness",obj={{qty=1,t="event",text="Scout through the Fargodeep Mine"}},r=6,xp=840,zone=12}
+Q[95772]={inst=true,kind="dungeon",l=31,n="Songblade Search",r=24,races=4294967372,side="A",sn={956},xp=3150,zone=16732}
+Q[95773]={en={2464},l=37,money=4000,n="Enemies in the Water",obj={{id=270305,qty=10,src={{"n",262397,0}},t="item",text="Brinescale Trident"}},r=30,side="H",sn={2464},xp=2850,zone=33}
 Q[95774]={en={3432},l=20,money=1200,n="Her Name Is Olgra",obj={{id=277277,qty=4,src={{"n",268624,18}},t="item",text="Olgra's Adornments"}},prev=4921,r=14,side="H",sn={3432},xp=1550,zone=17}
+Q[95775]={en={2519},inst=true,kind="dungeon",l=40,n="The Drowned City",obj={{id=270308,qty=1,t="item",text="The First Tablet of I'lalai"},{id=270309,qty=1,t="item",text="The Second Tablet of I'lalai"},{id=270310,qty=1,t="item",text="The Third Tablet of I'lalai"},{id=270311,qty=1,t="item",text="The Fourth Tablet of I'lalai"}},r=30,side="H",sn={2519},xp=3150,zone=16550}
+Q[95776]={en={2464},inst=true,kind="dungeon",l=38,money=13000,n="The Only Good Brinescale...",obj={{id=258924,qty=1,t="kill",text="Var'Taka slain"}},r=30,side="H",sn={2464},xp=3550,zone=16550}
+Q[95786]={l=40,money=5000,n="An Acquaintance in Southshore",provided={270340},r=30,side="A",xp=3150,zone=33}
+Q[95787]={inst=true,kind="dungeon",l=40,money=15000,n="Take Two With Water",obj={{id=270308,qty=1,t="item",text="The First Tablet of I'lalai"},{id=270309,qty=1,t="item",text="The Second Tablet of I'lalai"},{id=270310,qty=1,t="item",text="The Third Tablet of I'lalai"},{id=270311,qty=1,t="item",text="The Fourth Tablet of I'lalai"}},r=30,side="A",xp=3150,zone=16550}
+Q[95788]={inst=true,kind="dungeon",l=40,n="Magics of the Drowned City",obj={{id=270343,qty=5,t="item",text="I'lalai Fetish"}},r=30,side="A",xp=3150,zone=16550}
+Q[95789]={inst=true,kind="dungeon",l=40,money=10000,n="Shady Saltseers",obj={{id=270333,qty=10,t="item",text="Voodoo-Infused Artifact"}},r=34,sn={773},xp=3900,zone=16550}
+Q[95791]={en={773},inst=true,kind="dungeon",l=40,n="The Saltseer Captain",obj={{id=260042,qty=1,t="kill",text="Captain Dreadrise slain"},{id=260353,qty=3,t="kill",text="Saltseer Coroner slain"}},r=34,sn={773},xp=3900,zone=16550}
+Q[95792]={l=42,n="Clear 'em Out",obj={{id=262473,qty=8,src={{"n",262473,0}},t="kill",text="Cinderscale Whelp slain"},{id=262477,qty=4,src={{"n",262477,0}},t="kill",text="Cinderscale Warrior slain"}},r=36,xp=3450,zone=16591}
+Q[95793]={l=59,money=4500,n="Stemming the Demon Tide",obj={{id=249229,qty=12,src={{"n",249229,0}},t="kill",text="Felguard Sentinel slain"}},r=54,xp=6400,zone=616}
+Q[95795]={en={956},inst=true,kind="dungeon",l=31,n="Fallen in the Fen",r=24,side="A",xp=3150,zone=16732}
+Q[95798]={l=40,money=3500,n="The Web of Magic",provided={270339},r=30,side="A",xp=2350,zone=36}
+Q[95799]={l=40,money=3500,n="Findings for the Explorer's League",r=30,side="A",xp=2350,zone=1537}
 Q[95803]={classes=2,en={10181},l=12,money=500,n="A Token of Good Faith",obj={{from="provided",id=270436,qty=1,t="item",text="Rudolph Gelhardt's Head (Provided)"}},r=9,races=16,side="H",sn={246378},sort=4,xp=910}
 Q[95805]={l=4,n="Grace of An'she and Mu'sha",obj={{from="provided",id=277199,qty=1,t="item",text="Pouch of Smoldering Incense (Provided)"}},r=1,side="H",sn={2982},xp=180,zone=215}
+Q[95809]={en={1480},inst=true,kind="dungeon",l=31,n="Heartwoven",obj={{id=270901,qty=1,t="item",text="Reed-woven Heart (Provided)"}},prev=95647,r=24,side="A",xp=3150,zone=16732}
+Q[95810]={en={1077},inst=true,kind="dungeon",l=31,n="Lost Relic Carry",next=98824,obj={{id=270865,qty=1,t="item",text="Titan Relic"}},r=24,side="A",xp=630,zone=16732}
 Q[95816]={l=60,money=900,n="Sign Me Up!",obj={{id=270888,qty=1,src={{"v",256389,0}},t="item",text="Advertising License Application"},{from="crafted",id=270897,qty=1,t="item",text="Massive Pile of Completed Forms"}},provided={270896},r=1,si={id=270888,n="Advertising License Application"},xp=660,zone=44}
+Q[95817]={l=60,money=900,n="Rotgath Stonebeard",next=95818,prev=95816,r=1,xp=660,zone=1537}
+Q[95818]={l=60,money=9000,n="A Quick Craft",obj={{id=3860,qty=25,src={{"n",223544,13},{"n",230146,10}},t="item",text="Mithril Bar"},{id=4234,qty=15,src={{"n",728,80},{"n",4660,79},{"n",4690,79},{"n",2635,79},{"n",4702,78},{"n",4388,78},{"n",221292,78},{"n",4681,78},{"n",4355,78},{"n",4727,78},{"n",4701,78},{"n",4356,78},{"v",14846,0}},t="item",text="Heavy Leather"},{id=3821,qty=5,src={{"o",2046,99}},t="item",text="Goldthorn"}},prev=95817,r=1,xp=6600,zone=1537}
 Q[95819]={l=60,money=900,n="Sign Me Up!",obj={{id=270887,qty=1,src={{"v",256384,0}},t="item",text="Advertising License Application"},{from="crafted",id=270897,qty=1,t="item",text="Massive Pile of Completed Forms"}},provided={270896},r=1,si={id=270887,n="Advertising License Application"},xp=660,zone=17}
+Q[95882]={en={258031},kind="group",l=43,n="WANTED: Scoutmaster Vargas",obj={{id=268581,qty=1,src={{"n",260211,0}},t="item",text="Scoutmaster's Eye"}},r=38,side="H",so={707249},xp=4450,zone=16591}
 Q[95883]={l=23,n="The Tortured Soul",next=95885,obj={{id=271350,qty=1,t="item",text="Tortured Soul"}},prev=95884,r=20,xp=1400,zone=130}
 Q[95884]={l=23,n="The Offering Stone",next=95883,obj={{id=271343,qty=1,t="item",text="Note Scrap"}},r=20,si={id=271343,n="Note Scrap",src={{"n",1973,0.2},{"n",1974,0.1}}},xp=185,zone=130}
 Q[95885]={kind="group",l=23,n="The Offering of Blood",obj={{qty=1,t="event",text="Willingly offer blood"},{qty=1,t="event",text="Release Tortured Soul"},{id=212753,qty=1,src={{"n",212753,0}},t="kill",text="Tortured Soul slain"}},prev=95883,provided={210713},r=20,xp=1850,zone=130}
+Q[95912]={kind="group",l=42,n="WANTED: Blademaster Kaijo",obj={{id=271425,qty=1,src={{"n",263071,0}},t="item",text="Blademaster's Banner"}},r=38,side="A",xp=4300,zone=16591}
+Q[95913]={l=38,n="Fit for a Princess",next=95961,obj={{id=271432,qty=3,src={{"n",259267,0}},t="item",text="Coyote Pelt"}},prev=95561,r=36,side="A",xp=2850,zone=16591}
+Q[95924]={kind="dungeon",l=60,money=9000,n="Panic at the Digsite",obj={{id=261813,qty=1,t="kill",text="Venomridge slain"},{id=253215,qty=6,t="kill",text="Ravasaur Matriarch slain"},{id=261786,qty=8,t="kill",text="Ironhide Ravasaur slain"}},r=55,side="A",xp=6600,zone=16985}
+Q[95925]={kind="dungeon",l=60,n="Mapping the Way Forward",obj={{id=263458,qty=1,t="kill",text="Pillar of Assimilation"},{id=263277,qty=1,t="kill",text="The Achromatic Crystal"},{id=263461,qty=1,t="kill",text="The Western Gates"},{id=263460,qty=1,t="kill",text="The Regrowth Vestibule"},{id=263462,qty=1,t="kill",text="The Unearthed Stone Watcher"}},provided={271770},r=55,side="A",xp=6600,zone=16985}
+Q[95928]={kind="dungeon",l=60,n="Crystalline Elements",obj={{id=271894,qty=1,t="item",text="Fiery Crystal"},{id=271898,qty=1,t="item",text="Charged Crystal"},{id=271902,qty=1,t="item",text="Noxious Crystal"},{id=271912,qty=1,t="item",text="Moist Crystal"}},r=55,side="H",xp=6600,zone=16985}
+Q[95934]={l=42,n="Proof of Profit",obj={{id=271611,qty=1,t="item",text="Cubic Draconia"}},r=36,xp=3450,zone=16591}
+Q[95935]={kind="group",l=43,money=12000,n="Hail the Dragonslayer",obj={{id=271612,qty=1,t="item",text="Head of Scaldaron"}},r=36,side="A",xp=4450,zone=16591}
+Q[95936]={kind="group",l=43,money=12000,n="Hail the Dragonslayer",obj={{id=271613,qty=1,t="item",text="Head of Scaldaron"}},r=36,side="H",xp=4450,zone=16591}
+Q[95943]={en={260070},l=38,n="Foreman's Plight",obj={{id=271620,qty=1,t="item",text="Foreman's Crate"}},r=36,side="A",xp=2150,zone=16591}
+Q[95951]={l=38,money=2000,n="Fetch 'n' Fletch",obj={{from="crafted",id=271630,qty=20,t="item",text="Makeshift Stickin' Spear"}},r=36,side="H",sn={263190},xp=2850,zone=16591}
+Q[95955]={l=39,n="Stick 'Em",next=95913,obj={{id=263190,qty=10,src={{"n",263190,0}},t="kill",text="Freshwater Crocolisk impaled"}},prev=95561,provided={271639},r=36,side="H",xp=3000,zone=16591}
+Q[95957]={l=38,n="Drink Up!",next=95975,obj={{id=271822,qty=1,t="item",text="Frothing Mug (Provided)"}},prev=95988,r=36,side="A",xp=285,zone=16591}
+Q[95961]={l=38,n="Stepped Out",prev=95913,r=36,side="A",xp=285,zone=16591}
+Q[95975]={l=41,n="Her World",obj={{id=271823,qty=20,t="item",text="Wildflower"}},prev=95957,r=36,side="A",xp=3300,zone=16591}
 Q[95981]={en={2121},l=20,money=1200,n="Watching the Roads",next=480,obj={{id=1888,qty=8,src={{"n",1888,0}},t="kill",text="Dalaran Watcher slain"},{id=1889,qty=8,src={{"n",1889,0}},t="kill",text="Dalaran Wizard slain"}},prev=479,r=10,side="H",sn={2121},xp=1550,zone=130}
+Q[95982]={l=38,n="Not My Circus",obj={{from="crafted",id=274971,qty=10,t="item",text="Briny Seafood Stew"}},r=36,sn={260540},xp=2850,zone=16591}
+Q[95983]={l=38,n="A Feast for Buzzards",next=95984,obj={{id=271777,qty=1,t="item",text="Gnawed Skull (Provided)"}},r=36,side="A",xp=710,zone=16591}
+Q[95984]={l=39,n="Song of the Strider",next=95986,obj={{id=271778,qty=1,src={{"n",263348,0}},t="item",text="Intact Tallstrider Beak"}},prev=95983,r=36,side="A",xp=3000,zone=16591}
+Q[95986]={kind="group",l=41,n="King of the Wild Plains",obj={{id=281052,qty=1,src={{"n",263315,0}},t="item",text="Ombassa's Hide"},{id=271779,qty=1,t="item",text="Tallstrider Call (Provided)"}},prev=95984,r=36,side="A",xp=3300,zone=16591}
+Q[95988]={l=38,n="Goes Down Smooth",next=95957,obj={{id=271650,qty=3,src={{"n",256807,0}},t="item",text="Crawler Spittle"},{id=271657,qty=1,src={{"v",260487,0}},t="item",text="Fresh Chum"},{id=271653,qty=1,src={{"v",260565,0}},t="item",text="Goblin Degreaser"},{id=271654,qty=1,src={{"v",260560,0}},t="item",text="Expired Poison"}},provided={276101},r=36,side="A",xp=2850,zone=16591}
+Q[95991]={kind="group",l=42,n="WANTED: Ghostmaw",obj={{id=271828,qty=1,src={{"n",263380,0}},t="item",text="Ghostmaw's Fang"}},r=38,side="A",xp=4300,zone=16591}
+Q[95992]={kind="group",l=42,n="WANTED: Ghostmaw",obj={{id=271828,qty=1,src={{"n",263380,0}},t="item",text="Ghostmaw's Fang"}},r=38,side="H",so={645164},xp=4300,zone=16591}
 Q[95998]={en={263399},l=6,n="The Great Outdoors",obj={{qty=1,t="event",text="Use the /sit emote near the campfire"},{qty=1,t="event",text="Gain the Boosted Rest buff"}},r=4,side="A",sn={263399},sort=-2,xp=405}
 Q[95999]={en={344},kind="group",l=25,money=3500,n="WANTED: Incinerator Gar'im",obj={{id=271872,qty=1,src={{"n",214519,100}},t="item",text="Broken Staff of Incinerator Gar'im"}},r=16,side="A",xp=2550,zone=44}
+Q[96003]={l=60,n="Drawing Down the Malevolent",obj={{id=263427,qty=1,t="kill",text="Bethra'zel slain"},{id=263426,qty=1,t="kill",text="Mazzogore slain"}},prev=92960,provided={271879},r=54,xp=6600,zone=616}
+Q[96009]={en={260070},l=38,n="High Stakes",obj={{id=271877,qty=10,t="item",text="Wood Bundle"}},r=36,side="A",xp=2150,zone=16591}
+Q[96010]={l=41,n="Fragments of the Pylons",next=96018,obj={{id=255656,qty=1,t="item",text="Pylon Fragment"},{id=255657,qty=1,t="item",text="Pylon Shard"}},prev=92914,r=35,xp=2450,zone=16651}
+Q[96015]={l=43,n="A Miner Problem",obj={{qty=5,src={{"n",260995,0}},t="kill",text="Ogre Miner slain"},{id=260996,qty=5,src={{"n",260996,0}},t="kill",text="Twilight Subjugator slain"}},r=38,side="A",xp=3600,zone=16591}
+Q[96016]={classes=64,en={6176},l=40,n="The Tempest's Weapons",obj={{id=212792,qty=1,src={{"n",216474,0}},t="item",text="Eye of the Tempest (Provided)"}},prev=96135,r=30,side="A",sn={259023},sort=4,xp=3900}
+Q[96018]={l=43,n="Powering the Pylons",next=93016,obj={{id=255662,qty=1,t="item",text="Mana Sieve"},{id=263435,qty=1,t="kill",text="Western pylon repaired"},{id=263436,qty=1,t="kill",text="Eastern pylon repaired"},{id=271882,qty=1,t="item",text="Pile of Pylon Parts (Provided)"},{id=255667,qty=1,t="item",text="Coalesced Mana Crystal"}},prev=96010,r=35,xp=3600,zone=16651}
+Q[96020]={classes=256,l=35,money=3500,n="Playing with Fire",obj={{id=271880,qty=1,t="item",text="Activated Brimstone Carving"},{id=213583,qty=1,t="item",text="Brimstone Carving"}},r=29,sort=4,xp=2750}
+Q[96026]={l=41,n="Step Two: More Rock",obj={{from="crafted",id=3241,qty=10,t="item",text="Heavy Weightstone"}},prev=95183,r=38,side="H",xp=2450,zone=16591}
 Q[96031]={en={1466},l=6,n="Camping 101: Leatherworking",obj={{qty=1,t="event",text="Raise your leatherworking skill to 20"}},r=4,side="A",sn={265813},sort=-2,xp=270}
 Q[96044]={en={1241},l=6,n="Camping 101: Blacksmithing",obj={{qty=1,t="event",text="Raise your blacksmithing skill to 20"}},r=4,side="A",sn={265813},sort=-2,xp=270}
 Q[96045]={en={1246},l=6,n="Camping 101: Alchemy",obj={{qty=1,t="event",text="Raise your alchemy skill to 20"}},r=4,side="A",sn={1246},sort=-2,xp=270}
@@ -5837,14 +5509,60 @@ Q[96056]={en={6291},l=6,n="Camping 101: Skinning",obj={{qty=1,t="event",text="Ra
 Q[96057]={en={1703},l=6,n="Camping 101: Tailoring",obj={{qty=1,t="event",text="Raise your tailoring skill to 20"}},r=4,side="A",sn={265813},sort=-2,xp=270}
 Q[96058]={en={1702},l=6,n="Camping 101: Engineering",obj={{qty=1,t="event",text="Raise your engineering skill to 20"}},r=4,side="A",sn={265813},sort=-2,xp=270}
 Q[96059]={en={11065},l=6,n="Camping 101: Enchanting",obj={{qty=1,t="event",text="Raise your enchanting skill to 20"}},r=4,side="A",sn={11065},sort=-2,xp=270}
+Q[96060]={l=42,n="Tempered Expectations",obj={{qty=8,src={{"n",255174,0},{"n",255207,0},{"n",263681,0}},t="kill",text="Shen'dralas wildlife slain with the blade"}},prev=93546,provided={271992},r=35,xp=3450,zone=16651}
+Q[96063]={l=38,n="Gaseous Gold",obj={{id=272004,qty=8,t="item",text="Marsh Gas Vial"}},r=36,xp=2850,zone=16591}
+Q[96067]={l=40,n="Rock 'em and Sock 'em",obj={{qty=1,t="event",text="Fight G45-B4G in a stress test of Sleebo's engine."}},r=36,xp=2350,zone=16591}
+Q[96076]={l=60,n="In Demand - Ancient Elven Curiosities",obj={{id=272020,qty=1,t="item",text="Felvine Seed"},{id=272022,qty=1,t="item",text="Earthstone Diamond Pinky Ring"},{id=272021,qty=1,t="item",text="Ancient Memento"}},r=60,zone=33}
+Q[96077]={l=58,n="Belle's Ring",provided={273799},r=54,side="A",xp=6200,zone=616}
+Q[96078]={en={3188},l=40,money=3500,n="A Tale Spun Around the Fire",r=30,side="H",xp=2350,zone=33}
+Q[96081]={l=40,n="Wound Dressings",obj={{id=4338,qty=20,src={{"n",222286,100},{"n",221407,83},{"n",6000,79},{"n",6003,79},{"n",6184,78},{"n",5241,78},{"n",6127,77},{"n",5976,77},{"n",5997,77},{"n",6188,77},{"n",6125,77},{"n",6126,77}},t="item",text="Mageweave Cloth"}},r=36,side="A",xp=1550,zone=16591}
+Q[96082]={l=40,n="Doctor's Orderly",obj={{id=263614,qty=3,src={{"n",263614,0}},t="kill",text="Wounded Soldier treated"},{id=272126,qty=1,t="item",text="Makeshift Bandages (Provided)"}},r=36,side="A",xp=1550,zone=16591}
+Q[96083]={l=40,n="Clerical Quarantine",r=36,side="A",xp=315,zone=16591}
+Q[96084]={l=40,n="Something's in the Water",obj={{from="crafted",id=281228,qty=1,t="item",text="Filled Freshwater Phial"}},provided={281229},r=36,side="A",xp=3150,zone=16591}
+Q[96085]={kind="group",l=42,n="Upstream Contamination",obj={{id=263615,qty=1,src={{"n",263615,0}},t="kill",text="Contaminant eliminated"}},r=36,side="A",xp=4300,zone=16591}
 Q[96101]={en={263664},l=6,n="The Great Outdoors",obj={{qty=1,t="event",text="Use the /sit emote near the campfire"},{qty=1,t="event",text="Gain the Boosted Rest buff"}},prev=96638,r=4,sn={263664},sort=-2,xp=405}
 Q[96102]={en={2855},l=6,n="Camping 101: Tailoring",obj={{qty=1,t="event",text="Raise your tailoring skill to 20"}},r=4,side="H",sn={265809},sort=-2,xp=270}
+Q[96103]={l=38,n="A Feast for Buzzards",next=96104,obj={{id=271777,qty=1,t="item",text="Gnawed Skull (Provided)"}},r=36,side="H",xp=710,zone=16591}
+Q[96104]={l=39,n="Song of the Strider",next=96105,obj={{id=271778,qty=1,src={{"n",263348,0}},t="item",text="Intact Tallstrider Beak"}},prev=96103,r=36,side="H",xp=3000,zone=16591}
+Q[96105]={kind="group",l=41,n="King of the Wild Plains",obj={{id=281052,qty=1,src={{"n",263315,0}},t="item",text="Ombassa's Hide"},{id=271779,qty=1,t="item",text="Tallstrider Call (Provided)"}},prev=96104,r=36,side="H",xp=3300,zone=16591}
+Q[96107]={en={258031},l=40,n="Feathers for Fletching",next=96108,obj={{id=271793,qty=6,src={{"n",263343,0}},t="item",text="Plains Buzzard Feather"}},r=36,side="H",sn={258031},xp=3150,zone=16591}
+Q[96108]={en={258031},l=40,n="Poison Tips",next=96109,obj={{id=271776,qty=4,src={{"n",263307,0}},t="item",text="Glade Viper Venom"}},prev=96107,r=36,side="H",xp=2350,zone=16591}
+Q[96109]={l=40,n="A Hunter's Quiver",obj={{id=266888,qty=6,src={{"n",259054,0},{"n",259055,0}},t="item",text="Prized Lion Hide"}},prev=96108,r=36,side="H",xp=3150,zone=16591}
+Q[96125]={l=43,n="In Need of Relief",r=38,side="A",xp=360,zone=16591}
+Q[96126]={l=44,n="An Ogre's Captive",obj={{id=272190,qty=1,src={{"n",263749,0}},t="item",text="Gronok's Key"}},r=38,side="A",xp=3750,zone=16591}
 Q[96130]={en={3065},l=8,money=110,n="Chakuyak",obj={{id=270302,qty=1,src={{"n",268558,94}},t="item",text="Chakuyak's Pelt"}},r=5,side="H",sn={3065},xp=350,zone=215}
+Q[96131]={l=58,n="An Oldstone But An Old Friend",prev=96321,provided={273845},r=54,xp=620,zone=616}
+Q[96135]={classes=64,en={259023},kind="group",l=40,money=5000,n="Heed My Call",next=96016,obj={{id=212792,qty=1,src={{"n",216474,0}},t="item",text="Eye of the Tempest"},{id=268582,qty=1,t="item",text="Corrupted Totems (Provided)"}},prev=79358,r=30,side="A",sn={259023},sort=4,xp=3150}
+Q[96136]={l=35,money=3500,n="Call of Air",r=30,races=8589934592,side="H",sort=4,xp=2750}
 Q[96137]={l=24,n="Ira's Dagger",obj={{id=923,qty=10,src={{"n",923,0}},t="kill",text="Young Black Ravager slain"},{id=628,qty=7,src={{"n",628,0}},t="kill",text="Black Ravager slain"},{from="provided",id=281143,qty=1,t="item",text="Ira's Dagger (Provided)"}},r=18,si={id=281143,n="Ira's Dagger"},side="A",xp=1950,zone=10}
 Q[96138]={l=28,n="Merrick's Bow",obj={{id=212,qty=8,src={{"n",212,0}},t="kill",text="Splinter Fist Warrior slain"},{id=892,qty=4,src={{"n",892,0}},t="kill",text="Splinter Fist Taskmaster slain"},{from="provided",id=281142,qty=1,t="item",text="Merrick's Bow (Provided)"}},r=18,si={id=281142,n="Merrick's Bow"},side="A",xp=2300,zone=10}
 Q[96139]={l=22,n="The Valor Family",obj={{id=281046,qty=1,t="item",text="Raven Hill Tome"}},r=18,side="A",sn={268},xp=1750,zone=10}
+Q[96145]={l=58,n="Past Wing and Claw",r=55,xp=620,zone=616}
 Q[96204]={classes=2,en={259620},l=22,money=1400,n="The Windshaper's Wrath",obj={{qty=1,t="event",text="Escort Lumina Windsinger to safety"}},r=18,races=16,side="H",sn={248755},sort=4,xp=1750}
+Q[96209]={l=58,n="The Ancient, Orokai",r=54,xp=620,zone=2361}
+Q[96222]={en={253066},kind="group",l=42,money=11500,n="Khan Hratha",obj={{id=6077,qty=1,src={{"n",5402,96}},t="item",text="Maraudine Key Fragment"},{id=6074,qty=1,src={{"n",6070,9},{"n",6069,9},{"n",4657,5},{"n",4656,5},{"n",4658,4},{"n",4659,4},{"n",4654,3},{"n",4655,3}},t="item",text="War Horn Mouthpiece"}},r=35,sn={253066},xp=4300,zone=405}
+Q[96241]={en={264074},l=29,money=2500,n="Talkin' bout Toxins, Mon",obj={{id=273001,qty=5,src={{"n",264096,0}},t="item",text="Gloomrise Toxin Sample"},{id=273015,qty=1,t="item",text="Toxin Extractor (Provided)"}},r=23,side="H",sn={264074},xp=2350,zone=215}
 Q[96243]={classes=64,l=10,n="Call of Earth",next=94373,r=10,side="A",sort=4,xp=420}
+Q[96252]={l=58,n="Tarnished Treasures",obj={{id=273164,qty=8,t="item",text="Tarnished Highfeather Bangle"}},r=55,xp=3100,zone=616}
+Q[96255]={kind="group",l=58,money=9000,n="Amalgamated Marrow",obj={{id=264306,qty=1,t="kill",text="Awakened Fel Ash Slime slain"}},r=54,xp=7750,zone=616}
+Q[96259]={en={259118},l=29,n="Defending the Dead",obj={{id=264079,qty=10,src={{"n",264079,0}},t="kill",text="Gloomrise Hatchling slain"},{id=264083,qty=5,src={{"n",264083,0}},t="kill",text="Gloomrise Soldier slain"}},r=23,side="H",sn={259118},xp=2350,zone=215}
+Q[96260]={en={264072},l=29,n="Stronger than Steel",obj={{id=273181,qty=3,src={{"n",264081,0}},t="item",text="Crystalline Silk"}},r=23,side="H",sn={264072},xp=1750,zone=215}
+Q[96261]={en={259118},kind="group",l=30,n="The Broodmother",obj={{id=264082,qty=1,src={{"n",264082,0}},t="kill",text="Broodmother Valraxx slain"}},r=23,side="H",sn={259118},xp=3050,zone=215}
+Q[96262]={l=57,n="Prickly Pinecones",obj={{id=273304,qty=10,t="item",text="Prickly Pinecone"}},r=54,xp=4500,zone=616}
+Q[96264]={classes=64,en={259023},kind="dungeon",l=33,money=3500,n="Elemental Aid",next=79358,obj={{id=274463,qty=1,t="item",text="Tattered Note"}},prev=94789,r=30,side="A",sn={259023},sort=4,xp=3300}
+Q[96294]={en={259118},l=30,money=1400,n="A Darker Truth",obj={{id=273659,qty=1,t="item",text="Bloody Parchment (Provided)"}},r=23,side="H",xp=1850,zone=215}
+Q[96296]={l=58,n="Fetid Corruption",obj={{id=651430,qty=6,t="object",text="Corrupted Growth"}},r=55,xp=4650,zone=616}
+Q[96303]={l=60,n="Memory Mist",obj={{id=264715,qty=5,t="kill",text="Wisp released"},{id=273857,qty=1,t="item",text="Enchanted Branch (Provided)"}},r=54,xp=3300,zone=616}
+Q[96321]={l=58,n="The Dying God",obj={{id=273845,qty=1,t="item",text="Faintly Glowing Staff (Provided)"}},r=54,xp=620,zone=616}
+Q[96332]={inst=true,kind="dungeon",l=53,money=8000,n="A Little Payback",obj={{id=255995,qty=15,t="kill",text="Strashaz Soldier slain"},{id=255373,qty=8,t="kill",text="Strashaz Enchantress slain"},{id=273883,qty=1,t="item",text="Ca'zass's Head"}},r=48,side="H",xp=5250,zone=16620}
+Q[96334]={inst=true,kind="dungeon",l=53,n="Blood Red Bandanas",obj={{id=274028,qty=8,t="item",text="Blood Red Bandana"}},r=48,side="H",xp=5250,zone=16620}
+Q[96335]={inst=true,kind="dungeon",l=53,n="The Man in the Iron Chains",obj={{id=274029,qty=1,t="item",text="Ornate Shackle Key"}},r=48,xp=1300,zone=16620}
+Q[96337]={inst=true,kind="dungeon",l=53,n="More Valuable Than Gold",obj={{id=653847,qty=1,t="object",text="Find Mason Connery's Treasure"}},provided={274077},r=48,xp=5250,zone=16620}
+Q[96339]={en={6791},l=60,n="Legacy Reward: Replica Ironforge Air Rifle",sn={6791},zone=17}
+Q[96369]={inst=true,kind="dungeon",l=53,n="Bad News for Folkar",next=95483,prev=95454,r=48,side="H",xp=1300,zone=16620}
+Q[96377]={inst=true,l=53,n="State Secrets",obj={{id=274041,qty=1,t="item",text="Document Box"}},r=48,side="A",xp=6550,zone=16620}
+Q[96381]={inst=true,kind="dungeon",l=53,money=8000,n="A Bit of Wet Work",obj={{id=255995,qty=15,t="kill",text="Strashaz Soldier slain"},{id=255373,qty=8,t="kill",text="Strashaz Enchantress slain"},{id=273883,qty=1,t="item",text="Ca'zass's Head"}},r=48,side="A",xp=5250,zone=16620}
+Q[96383]={en={6791},l=60,n="Legacy Reward: Spectral Bear Cub",sn={6791},zone=17}
 Q[96390]={en={264936},l=13,n="Nip 'Em in the Bud",obj={{id=6123,qty=10,src={{"n",6123,0}},t="kill",text="Dark Iron Spy slain"}},prev=96392,r=9,sn={264936},xp=910,zone=1}
 Q[96391]={en={264936},l=15,money=700,n="Underground Map",next=96393,obj={{id=274268,qty=1,src={{"n",6124,4},{"n",6123,2}},t="item",text="Dark Iron Map (Provided)"}},r=9,si={id=274268,n="Dark Iron Map",src={{"n",6124,4},{"n",6123,2}}},xp=1050,zone=1}
 Q[96392]={en={264936},l=13,n="Farsen's Watch",next=96390,obj={{id=264936,qty=1,src={{"n",264936,0}},t="kill",text="Use Farsen's Farsight"}},prev=96408,r=9,sn={264936},xp=680,zone=1}
@@ -5853,11 +5571,18 @@ Q[96394]={en={264943},inst=true,kind="dungeon",l=15,money=700,n="The Restless De
 Q[96395]={inst=true,kind="dungeon",l=15,n="An Ancient Grudge",obj={{id=261306,qty=1,t="kill",text="Faldrim Anvilmar slain"}},r=10,xp=1050,zone=16919}
 Q[96403]={en={265003},inst=true,kind="dungeon",l=15,money=700,n="Important Heirlooms",obj={{id=274289,qty=8,src={{"o",457387,100}},t="item",text="Dwarven Heirloom"}},r=10,sn={265003},xp=1350,zone=16919}
 Q[96408]={en={264936},l=13,n="A Visitor to Dun Morogh",next=96392,r=9,side="A",sn={1376},xp=680,zone=1}
+Q[96438]={classes=2,l=40,n="Battle at the Mannoroc Coven",r=35,side="A",sort=4,xp=2350}
+Q[96449]={classes=2,l=40,n="Aeonas's Secret Refuge",obj={{id=273097,qty=1,t="kill",text="Ride the Old Dinghy"}},r=35,side="A",sort=4,xp=2350}
+Q[96476]={classes=2,l=53,n="In Search of Aeonas",obj={{id=221832,qty=1,src={{"n",221832,0}},t="kill",text="Look for signs of Aeonas at the Emerald Sanctuary"},{id=221587,qty=1,src={{"n",221587,0}},t="kill",text="Follow Aeonas's trail in Felwood"}},prev=81766,r=45,side="A",sort=4,xp=2650}
+Q[96559]={l=57,n="Supply Drop",next=93383,prev=92064,r=54,side="A",xp=3000,zone=616}
+Q[96603]={inst=true,kind="group",l=60,money=18000,n="Unstable Magic",obj={{id=274964,qty=10,t="item",text="Mote of Unstable Magic"}},provided={275730},r=48,side="A",xp=8300,zone=16560}
 Q[96604]={en={265809},l=6,n="The Great Outdoors",obj={{qty=1,t="event",text="Use the /sit emote near the campfire"},{qty=1,t="event",text="Gain the Boosted Rest buff"}},r=4,side="H",sn={265809},sort=-2,xp=405}
 Q[96605]={en={265810},l=6,n="The Great Outdoors",obj={{qty=1,t="event",text="Use the /sit emote near the campfire"},{qty=1,t="event",text="Gain the Boosted Rest buff"}},r=4,side="H",sn={265810},sort=-2,xp=405}
 Q[96606]={en={265811},l=6,n="The Great Outdoors",obj={{qty=1,t="event",text="Use the /sit emote near the campfire"},{qty=1,t="event",text="Gain the Boosted Rest buff"}},r=4,side="A",sn={265811},sort=-2,xp=405}
 Q[96607]={en={265812},l=6,n="The Great Outdoors",obj={{qty=1,t="event",text="Use the /sit emote near the campfire"},{qty=1,t="event",text="Gain the Boosted Rest buff"}},r=4,side="H",sn={265812},sort=-2,xp=405}
 Q[96608]={en={265813},l=6,n="The Great Outdoors",obj={{qty=1,t="event",text="Use the /sit emote near the campfire"},{qty=1,t="event",text="Gain the Boosted Rest buff"}},r=4,side="A",sn={265813},sort=-2,xp=405}
+Q[96609]={inst=true,l=52,money=15500,n="A Taste of Home",obj={{id=274966,qty=10,t="item",text="Silvermoon Shimmerwine"}},r=44,side="A",xp=5100,zone=16560}
+Q[96616]={l=57,n="Herbs for the Bruised and Weary",obj={{id=274979,qty=12,t="item",text="Hyjal Silphium"}},r=54,side="H",xp=4500,zone=616}
 Q[96626]={en={1430},l=6,n="Camping 101: Cooking",obj={{qty=1,t="event",text="Learn cooking from Tomas in Goldshire"}},r=4,side="A",sn={263399},sort=-2,xp=270}
 Q[96627]={en={263399},l=6,n="The Adventurer",r=4,side="A",sn={197},sort=-2,xp=405}
 Q[96628]={en={265813},l=6,n="The Adventurer",obj={{from="provided",id=275019,qty=1,t="item",text="Supply Bundle (Provided)"}},r=4,side="A",sn={1965},sort=-2,xp=405}
@@ -5873,6 +5598,27 @@ Q[96658]={en={265944},l=6,n="Camping 101: Cooking",obj={{qty=1,t="event",text="L
 Q[96659]={en={265810},l=6,n="The Adventurer",obj={{from="provided",id=275019,qty=1,t="item",text="Supply Bundle (Provided)"}},r=4,side="H",sn={2981},sort=-2,xp=405}
 Q[96661]={en={3067},l=6,n="Camping 101: Cooking",obj={{qty=1,t="event",text="Learn cooking from Pyall Silentstride in Bloodhoof Village"}},r=4,side="H",sn={265810},sort=-2,xp=270}
 Q[96735]={n="Toast!?",sort=-2}
+Q[96770]={inst=true,kind="dungeon",l=46,money=13000,n="The Witch Doctor's Head",obj={{id=277112,qty=1,t="item",text="Zum'rah's Head"}},r=39,side="A",xp=5050,zone=1176}
+Q[96771]={inst=true,kind="dungeon",l=45,money=6500,n="Vengeance of the Highborne",obj={{id=268423,qty=1,t="kill",text="Zalfan Moonshadow slain"}},r=37,side="A",xp=4850,zone=16842}
+Q[96772]={inst=true,kind="dungeon",l=53,money=8000,n="The Dragon's Journal",obj={{id=276890,qty=1,t="item",text="Zarla's Journal"}},r=46,side="A",xp=6550,zone=16620}
+Q[96773]={inst=true,kind="dungeon",l=41,money=5500,n="The Coldbringer's Eye",obj={{id=276916,qty=1,t="item",text="The Coldbringer's Eye"}},r=34,side="A",sn={20735},xp=4100,zone=722}
+Q[96774]={inst=true,kind="dungeon",l=40,money=10000,n="Ancient Gurubashi Idol",obj={{id=276894,qty=1,t="item",text="Ancient Gurubashi Idol"}},r=30,side="H",sn={264074},xp=3900,zone=16550}
+Q[96775]={inst=true,kind="dungeon",l=46,money=6500,n="Zum'rah's Head",obj={{id=277112,qty=1,t="item",text="Zum'rah's Head"}},r=42,side="H",xp=5050,zone=1176}
+Q[96776]={inst=true,kind="dungeon",l=51,money=7500,n="An'she's Radiance",obj={{id=277140,qty=1,t="item",text="An'she's Radiance"}},r=43,side="H",xp=6100,zone=2100}
+Q[96779]={classes=8,en={13085},l=24,money=1700,n="Syndicate Sabotage",obj={{id=266216,qty=1,src={{"n",266216,0}},t="kill",text="Lord Tomas slain"}},r=24,sn={13085},sort=4,xp=1950}
+Q[96781]={classes=8,en={13085},l=36,n="What's the Big Idea?",next=96782,obj={{id=275482,qty=1,t="item",text="Barton's Scouting Report"}},r=24,sn={13085},sort=4,xp=2800}
+Q[96782]={classes=8,en={13085},l=36,money=2000,n="Covert Extraction",obj={{id=275635,qty=1,t="item",text="Blade of House Perenolde"},{id=275636,qty=1,t="item",text="Royal Aegis of Perenolde"}},prev=96781,r=24,sort=4,xp=2800}
+Q[96783]={classes=8,eo={656157},l=36,n="A Way In",r=24,sn={13085},sort=4,xp=2800}
+Q[96784]={classes=8,en={266847},l=36,money=4000,n="Master of Disguise",provided={275706},r=24,so={656157},sort=4,xp=2800}
+Q[96785]={classes=8,en={266847},l=36,n="Ain't No Telling",obj={{id=275709,qty=1,t="item",text="Stolen Funds"}},provided={275706},r=24,sn={266847},sort=4,xp=2800}
+Q[96786]={classes=8,en={13085},l=36,money=7500,n="The Syndicate Sting",obj={{id=275882,qty=1,t="item",text="Intercepted Shipment"},{id=275706,qty=1,t="item",text="Syndicate Uniform"}},r=24,sn={266847},sort=4,xp=3500}
+Q[96796]={l=56,n="Woods Workshop",obj={{id=272977,qty=1,t="item",text="Spare Part (Provided)"}},r=54,xp=580,zone=616}
+Q[96797]={l=54,money=8000,n="The Orphan",r=45,side="A",xp=4100,zone=4}
+Q[96798]={l=54,money=8000,n="Into the Darkness",r=45,side="A",xp=5450,zone=4}
+Q[96799]={l=54,money=4000,n="A Heavy Responsibility",obj={{id=266593,qty=1,t="kill",text="Speak with Sergeant Danneth"}},r=45,side="A",xp=2700,zone=4}
+Q[96800]={en={264265},inst=true,kind="dungeon",l=38,money=4500,n="Past Due",obj={{id=273169,qty=1,t="item",text="The Lost Magic of the Runemasters"}},r=30,side="A",sn={264265},xp=2850,zone=796}
+Q[96811]={l=54,money=8000,n="Escaping the Shadows",obj={{qty=1,t="event",text="Escort Sergeant Danneth"}},r=45,side="A",xp=5450,zone=4}
+Q[96812]={inst=true,l=54,money=16500,n="Thicker Than Water",r=45,side="A",xp=5450,zone=16560}
 Q[96821]={en={3139},l=6,money=100,n="Legging It",obj={{id=266850,qty=6,src={{"n",266850,0}},t="kill",text="Ridgeshade Creeper slain"},{id=266849,qty=6,src={{"n",266849,0}},t="kill",text="Ridgeshade Lurker slain"}},r=1,side="H",sn={3194},xp=405,zone=14}
 Q[96822]={en={266940},l=6,money=100,n="For Honor",obj={{id=275713,qty=1,t="item",text="Raider's Bow"},{id=275716,qty=1,t="item",text="Raider's Battleaxe"},{id=275717,qty=1,t="item",text="Raider's Shield"}},r=3,side="H",sn={266940},xp=405,zone=14}
 Q[96825]={en={3191},l=6,money=100,n="This Fruit Could Bite Back",obj={{id=275718,qty=8,t="item",text="Prickly Pear Fruit"}},r=3,side="H",sn={3191},xp=405,zone=14}
@@ -5884,13 +5630,62 @@ Q[96877]={en={5811},l=12,money=350,n="Halikor's Hoof",obj={{id=275723,qty=1,src=
 Q[96895]={en={267009},l=13,money=300,n="The Argent Emissary",r=10,side="H",sn={1738},xp=455,zone=85}
 Q[96896]={en={267008},l=13,n="A Righteous Cause",next=98545,prev=96899,r=10,side="H",sn={267008},xp=90,zone=85}
 Q[96897]={en={267009},l=13,n="The Cult of the Damned",obj={{id=267006,qty=8,src={{"n",267006,0}},t="kill",text="Dark Neophyte slain"},{id=275437,qty=8,src={{"n",275437,0}},t="kill",text="Dark Enforcer slain"}},r=10,side="H",sn={267009},xp=910,zone=85}
+end)()
+;(function()
 Q[96898]={en={267009},l=13,n="Remnants of War",obj={{id=275851,qty=12,src={{"n",275437,39},{"n",267006,35}},t="item",text="Necrotic Crystal Fragment"}},r=10,side="H",sn={267009},xp=910,zone=85}
 Q[96899]={en={267008},l=13,n="Bandarion Keep",next=96896,r=10,side="H",sn={267009},xp=455,zone=85}
+Q[96912]={l=60,n="Field of Honor: Week 1",obj={{qty=1,t="event",text="Win 10 duels"}},r=60,zone=976}
+Q[96931]={l=58,n="Heading Up the Mountain",r=54,xp=620,zone=616}
+Q[96959]={l=59,n="Blademaster's Bonfires",obj={{id=656668,qty=1,t="object",text="South Bonfire lit"},{id=656669,qty=1,t="object",text="Southeast Bonfire lit"}},r=56,xp=3200,zone=616}
+Q[96979]={l=57,n="Sacred Refreshment",obj={{id=267213,qty=1,t="kill",text="Galvinquam's Drinking Gourd refilled"},{id=275991,qty=1,t="item",text="Galvinquam's Drinking Gourd (Provided)"}},r=56,xp=1500,zone=616}
+Q[96982]={l=40,n="Your First Riding Kodo",obj={{id=267226,qty=1,src={{"n",267226,0}},t="kill",text="Grey Riding Kodo"},{id=267227,qty=1,src={{"n",267227,0}},t="kill",text="Brown Riding Kodo"},{id=267216,qty=1,src={{"n",267216,0}},t="kill",text="White Riding Kodo"}},r=40,races=32,side="H",zone=215}
+Q[96983]={kind="group",l=60,n="Yashiro's Windwalk",obj={{id=267439,qty=1,t="kill",text="Doomguard Xarkul slain"}},prev=96959,r=56,xp=8300,zone=616}
+Q[96984]={en={2410},inst=true,kind="dungeon",l=33,n="Heart of Disruption",next=97287,obj={{id=251961,qty=1,src={{"n",246020,0}},t="item",text="Arcane Mote"}},prev=92434,provided={277507},r=24,side="H",sn={269127},xp=3950,zone=16544}
+Q[96986]={en={2278},inst=true,kind="dungeon",l=33,money=10000,n="The Grave Knight",obj={{id=247126,qty=1,src={{"n",247126,0}},t="kill",text="Atrexis the Grave Knight slain"}},r=24,side="H",sn={2278},xp=3950,zone=16544}
+Q[96987]={inst=true,kind="dungeon",l=33,n="Opportunistic Education",obj={{id=275996,qty=1,t="item",text="The Founding of Dalaran"}},r=24,side="H",xp=3950,zone=16544}
+Q[96988]={en={11044},inst=true,kind="dungeon",l=33,n="Source of Power",obj={{id=275997,qty=6,src={{"n",246664,0}},t="item",text="Cracked Sentry Core"}},r=24,side="H",sn={11044},xp=3950,zone=16544}
+Q[96989]={l=40,n="Your First Riding Raptor",obj={{id=267291,qty=1,src={{"n",267291,0}},t="kill",text="Emerald Riding Raptor"},{id=267297,qty=1,src={{"n",267297,0}},t="kill",text="Turquoise Riding Raptor"},{id=267298,qty=1,src={{"n",267298,0}},t="kill",text="Violet Riding Raptor"}},r=40,races=128,side="H",zone=14}
+Q[96992]={l=57,n="Resupply",next=92593,obj={{id=276087,qty=30,t="item",text="Nail"},{id=276088,qty=6,t="item",text="Metal Bracket"}},r=54,side="A",xp=3000,zone=616}
+Q[96994]={l=40,n="Your First Riding Wolf",obj={{id=267299,qty=1,src={{"n",267299,0}},t="kill",text="Brown Riding Wolf"},{id=267300,qty=1,src={{"n",267300,0}},t="kill",text="Dire Riding Wolf"},{id=267301,qty=1,src={{"n",267301,0}},t="kill",text="Timber Riding Wolf"},{id=267302,qty=1,src={{"n",267302,0}},t="kill",text="Black Riding Wolf"}},r=40,races=2,side="H",zone=1637}
+Q[96996]={l=40,n="Your First Riding Galestrider",obj={{id=267304,qty=1,src={{"n",267304,0}},t="kill",text="Empyrean Galestrider"},{id=267305,qty=1,src={{"n",267305,0}},t="kill",text="Stormy Galestrider"},{id=267306,qty=1,src={{"n",267306,0}},t="kill",text="Umber Galestrider"}},prev=97205,r=40,races=12884901888,sort=-2,xp=3150}
+Q[96997]={l=40,n="A Steed in Death as They Were in Life",obj={{id=267357,qty=1,src={{"n",267357,0}},t="kill",text="Red Skeletal Horse"},{id=267364,qty=1,src={{"n",267364,0}},t="kill",text="Brown Skeletal Horse"},{id=267358,qty=1,src={{"n",267358,0}},t="kill",text="Blue Skeletal Horse"},{id=267354,qty=1,src={{"n",267354,0}},t="kill",text="Black Skeletal Horse"}},r=40,races=16,side="H",zone=85}
+Q[96998]={l=58,n="Tribal Colors",obj={{id=276064,qty=1,t="item",text="War Paint Wrap (Provided)"}},r=54,side="H",xp=620,zone=616}
+Q[96999]={l=58,n="Wrap Return",obj={{id=276064,qty=1,t="item",text="War Paint Wrap (Provided)"}},prev=96998,r=54,side="H",xp=6200,zone=616}
+Q[97000]={l=57,n="Grain of Memory",r=54,side="H",xp=3000,zone=616}
 Q[97003]={en={267310},kind="group",l=21,money=5000,n="Chol'aruk the Ravener",obj={{id=276070,qty=1,src={{"n",267307,96}},t="item",text="Chol'aruk's Head"}},r=15,side="H",sn={267310},xp=2050,zone=17}
 Q[97005]={en={267309},kind="group",l=21,money=5000,n="Chol'aruk the Ravener",obj={{id=276070,qty=1,src={{"n",267307,96}},t="item",text="Chol'aruk's Head"}},r=15,side="A",sn={267309},xp=2050,zone=17}
+Q[97009]={l=59,n="Maerion's Misery",obj={{id=276100,qty=12,src={{"n",249230,0}},t="item",text="Felhound Spike"}},r=56,xp=6400,zone=616}
+Q[97017]={l=40,n="Your First Riding Ram",obj={{id=267474,qty=1,src={{"n",267474,0}},t="kill",text="White Ram"},{id=267473,qty=1,src={{"n",267473,0}},t="kill",text="Brown Ram"},{id=267475,qty=1,src={{"n",267475,0}},t="kill",text="Gray Ram"}},r=40,races=4,side="A",xp=1550,zone=1}
+Q[97018]={l=40,n="Learning to Ride",obj={{qty=1,t="event",text="Learn: Apprentice Riding"}},r=40,races=4,side="A",zone=1}
+Q[97022]={classes=2,en={246378},l=40,n="Report to Danitha",next=94971,r=40,races=16,side="H",sort=4,xp=780}
+Q[97029]={l=60,n="Eluvi'ana",obj={{id=264501,qty=1,t="item",text="Ancient Skyborne Blade"}},r=1,sort=-2}
+Q[97045]={l=40,n="Your First Horse",obj={{id=267678,qty=1,src={{"n",267678,0}},t="kill",text="Pinto Horse"},{id=267674,qty=1,src={{"n",267674,0}},t="kill",text="Brown Horse"},{id=267677,qty=1,src={{"n",267677,0}},t="kill",text="Chestnut Mare"}},r=40,races=1,side="A",zone=12}
+Q[97046]={l=40,n="Your First Mechanostrider",obj={{id=267688,qty=1,src={{"n",267688,0}},t="kill",text="Unpainted Mechanostrider"},{id=267684,qty=1,src={{"n",267684,0}},t="kill",text="Green Mechanostrider"},{id=267687,qty=1,src={{"n",267687,0}},t="kill",text="Blue Mechanostrider"},{id=267683,qty=1,src={{"n",267683,0}},t="kill",text="Red Mechanostrider"}},r=40,races=64,side="A",xp=1550,zone=1}
+Q[97047]={en={218230},l=38,n="The Cook in the Cage",obj={{id=216616,qty=1,src={{"n",939,100},{"n",978,33}},t="item",text="Compound Cage Key"},{id=216617,qty=1,src={{"o",424002,100}},t="item",text="Kurzen Fighter's Uniform"}},r=30,side="A",sn={218230},xp=2850,zone=33}
+Q[97048]={en={218229},l=38,money=4500,n="Returning to Port",r=30,side="A",xp=2850,zone=33}
+Q[97049]={kind="dungeon",l=60,money=9000,n="Essence of Seeping Slimes",obj={{id=276235,qty=8,t="item",text="Seeping Slime Essence"}},r=55,side="H",xp=6600,zone=16985}
 Q[97065]={l=60,n="Tip the Scales - Keefer's Angelfish",obj={{id=19805,qty=1,t="item",text="Keefer's Angelfish"}},prof={356},r=1,sort=5}
 Q[97066]={l=60,n="Tip the Scales - Brownell's Blue Striped Racer",obj={{id=19803,qty=1,t="item",text="Brownell's Blue Striped Racer"}},prof={356},r=1,sort=5}
 Q[97067]={l=60,n="Tip the Scales - Dezian Queenfish",obj={{id=19806,qty=1,t="item",text="Dezian Queenfish"}},prof={356},r=1,sort=5}
+Q[97074]={l=40,n="Learning to Ride",obj={{qty=1,t="event",text="Learn: Apprentice Riding"}},r=40,races=8,side="A",zone=1657}
+Q[97130]={inst=true,kind="dungeon",l=40,money=5000,n="Ancient Gurubashi Secrets",obj={{id=276894,qty=1,t="item",text="Ancient Gurubashi Idol"}},r=34,side="A",sn={31439},xp=3900,zone=16550}
+Q[97168]={classes=64,l=60,n="Material Assistance",obj={{id=12800,qty=1,src={{"n",228725,5},{"o",181069,2}},t="item",text="Azerothian Diamond"},{id=18335,qty=1,src={{"n",7069,4}},t="item",text="Pristine Black Diamond"}},r=58,side="A",sort=4,xp=4950}
+Q[97170]={l=40,n="Learning to Ride",obj={{qty=1,t="event",text="Learn: Apprentice Riding"}},r=40,races=1,side="A",zone=12}
+Q[97171]={l=40,n="Your First Horse",obj={{id=268318,qty=1,src={{"n",268318,0}},t="kill",text="Pinto Horse"},{id=268314,qty=1,src={{"n",268314,0}},t="kill",text="Brown Horse"},{id=268316,qty=1,src={{"n",268316,0}},t="kill",text="Chestnut Mare"},{id=268313,qty=1,src={{"n",268313,0}},t="kill",text="Black Stallion"}},r=40,races=1,side="A",xp=1550,zone=11}
+Q[97173]={inst=true,kind="dungeon",l=59,money=9000,n="Blackmaw Magic",obj={{id=276893,qty=1,t="item",text="Blackmaw Ritual Totem"}},r=52,side="A",xp=6400,zone=16554}
+Q[97174]={classes=2,l=60,n="A Worthy Endeavor",next=97175,r=60,side="H",sort=4,xp=660}
+Q[97175]={classes=2,l=60,n="Due Sacrifice",obj={{qty=1,t="event",text="Required money: 150"}},prev=97174,r=60,side="H",sort=4,xp=660}
+Q[97178]={classes=2,l=60,n="Ott of Tarren Mill",r=60,sort=4,xp=660}
+Q[97179]={classes=2,kind="dungeon",l=60,n="Collection of Goods",obj={{id=13180,qty=5,src={{"o",176224,100}},t="item",text="Stratholme Holy Water"},{id=8836,qty=10,src={{"o",176642,100},{"o",142141,99}},t="item",text="Arthas' Tears"},{id=14047,qty=40,src={{"n",228230,100},{"n",228231,100},{"n",239047,100},{"n",7075,83},{"n",9605,82},{"n",1756,81},{"n",228233,80},{"n",12322,79},{"n",7379,78},{"n",8564,77},{"n",12261,77},{"n",11291,77}},t="item",text="Runecloth"},{from="crafted",id=12360,qty=6,t="item",text="Arcanite Bar"},{qty=1,t="event",text="Required money: 150"}},prev=97178,r=60,side="H",sort=4,xp=1650}
+Q[97188]={en={7955},l=40,n="Learning to Ride",obj={{qty=1,t="event",text="Learn: Apprentice Riding"}},r=40,races=64,side="A",sn={7954},zone=1}
+Q[97194]={l=40,n="Learning to Ride",obj={{qty=1,t="event",text="Learn: Apprentice Riding"}},r=40,races=2,side="H",zone=1637}
+Q[97196]={en={264078},inst=true,kind="dungeon",l=41,money=5500,n="The Coldbringer's Eye",obj={{id=276916,qty=1,t="item",text="The Coldbringer's Eye"}},r=34,side="H",sn={264078},xp=4100,zone=722}
+Q[97197]={inst=true,kind="dungeon",l=55,money=8500,n="Fragment of the Firelands",obj={{id=277129,qty=1,t="item",text="Fragment of the Firelands"}},r=46,side="H",xp=7050,zone=1584}
+Q[97198]={inst=true,kind="dungeon",l=59,money=9000,n="Blackmaw Magic",obj={{id=276893,qty=1,t="item",text="Blackmaw Ritual Totem"}},r=52,side="H",xp=8050,zone=16554}
+Q[97200]={l=40,n="Learning to Ride",obj={{qty=1,t="event",text="Learn: Apprentice Riding"}},r=40,races=128,side="H",zone=1637}
+Q[97203]={l=40,n="Learning to Ride",obj={{qty=1,t="event",text="Learn: Apprentice Riding"}},r=40,races=16,side="H",zone=85}
+Q[97204]={l=40,n="Learning to Ride",obj={{qty=1,t="event",text="Learn: Apprentice Riding"}},r=40,races=32,side="H",zone=215}
+Q[97205]={l=40,n="Learning to Ride",next=96996,obj={{qty=1,t="event",text="Learn: Apprentice Riding"}},r=40,races=12884901888,sort=-2}
 Q[97220]={en={483},l=15,n="Philmor's Favor",next=97222,obj={{from="provided",id=277119,qty=1,t="item",text="Gatehouse Shipment (Provided)"}},prev=97249,r=9,sn={268511},xp=540,zone=1519}
 Q[97222]={en={483},l=15,n="Gatehouse Goods",obj={{id=268571,qty=1,t="kill",text="Gatehouse Shipment delivered"}},prev=97249,provided={277198},r=9,sn={483},xp=800,zone=1519}
 Q[97223]={en={7953},l=8,money=225,n="Bloodtalon Matriarch",obj={{id=277128,qty=1,src={{"n",268530,77}},t="item",text="Bloodtalon Martriarch Eggs"}},r=5,sn={7953},xp=700,zone=14}
@@ -5908,22 +5703,53 @@ Q[97250]={en={5911},kind="group",l=23,money=3000,n="Wrongly Blamed, Justly Corre
 Q[97253]={en={7161},l=14,money=600,n="Parts and Pieces",obj={{id=277331,qty=5,t="item",text="Handful of Complicated Parts"}},r=9,sn={7161},xp=980,zone=17}
 Q[97257]={en={252382},l=10,money=350,n="Call of Fire",obj={{from="provided",id=277329,qty=1,t="item",text="Torch of Eternal Flame (Provided)"},{id=268764,qty=1,t="kill",text="Complete the Ritual with Olariaan"},{id=268679,qty=1,src={{"n",268679,0}},t="kill",text="Light the Brazier of Eternal Flame"}},prev=97245,r=10,races=8589934592,side="H",sn={268592},sort=4,xp=1050}
 Q[97263]={en={258098},l=2,money=8,n="Your Package Has Arrived",obj={{from="provided",id=277505,qty=1,t="item",text="Misplaced Package (Provided)"}},r=1,side="A",xp=45,zone=1537}
+Q[97264]={l=58,n="Shardtooth Pulling",obj={{id=7445,qty=12,src={{"n",7445,0}},t="kill",text="Elder Shardtooth slain"}},r=55,side="H",xp=6200,zone=618}
+Q[97265]={en={268705},l=33,money=3500,n="Hate the Hatefury",obj={{id=4671,qty=2,src={{"n",4671,0}},t="kill",text="Hatefury Trickster slain"},{id=4675,qty=2,src={{"n",4675,0}},t="kill",text="Hatefury Hellcaller slain"},{id=4674,qty=2,src={{"n",4674,0}},t="kill",text="Hatefury Shadowstalker slain"},{id=4672,qty=2,src={{"n",4672,0}},t="kill",text="Hatefury Felsworn slain"},{id=4670,qty=2,src={{"n",4670,0}},t="kill",text="Hatefury Rogue slain"}},r=28,side="H",sn={268705},xp=2650,zone=405}
+Q[97270]={kind="pvp",l=60,n="Brawl at the Maul",provided={277556},r=55,xp=660,zone=3217}
+Q[97271]={l=60,n="Maul or Nothing!",obj={{id=277558,qty=1,t="item",text="Mushgog's Crown of Thorns"},{id=277556,qty=1,t="item",text="Razza's Heart"},{id=277557,qty=1,t="item",text="Skarr's Broken Gauntlet"}},r=55,sort=-2}
 Q[97275]={en={11046},l=15,n="Whuut's the Rush",obj={{from="provided",id=277566,qty=1,t="item",text="Yelmak's Potion (Provided)"}},r=9,side="H",sn={3347},xp=800,zone=1637}
 Q[97277]={en={2756},l=6,n="Grund and Gozwin",obj={{id=277976,qty=1,t="item",text="Gozwin's Mechanic's Log"},{id=269075,qty=1,src={{"n",269075,0}},t="kill",text="Snow Leopard Prowler slain"}},r=4,sn={2756},xp=405,zone=77}
 Q[97279]={en={3159},l=2,n="Wayward Weapons",obj={{id=277653,qty=6,t="item",text="Abandoned Training Weapon"}},r=1,sn={3143},xp=170,zone=14}
 Q[97281]={en={3293},l=11,n="A Simmering Storm",next=97282,r=7,xp=880,zone=14}
 Q[97282]={en={3293},l=11,money=400,n="Stormy Potential",obj={{id=277665,qty=5,src={{"n",3131,1}},t="item",text="Charged Thunder Lizard Organ"}},prev=97281,r=7,sn={3293},xp=880,zone=14}
+Q[97284]={en={5642},l=33,money=6500,n="Vahlarriel's Vengeance",obj={{id=4663,qty=4,src={{"n",4663,0}},t="kill",text="Burning Blade Augur slain"},{id=4664,qty=4,src={{"n",4664,0}},t="kill",text="Burning Blade Reaver slain"},{id=4665,qty=4,src={{"n",4665,0}},t="kill",text="Burning Blade Adept slain"},{id=4666,qty=4,src={{"n",4666,0}},t="kill",text="Burning Blade Felsworn slain"}},r=30,side="A",sn={5642},xp=2650,zone=405}
 Q[97286]={classes=128,en={211022,211033},l=20,n="Research Access",r=1,sn={211033},sort=4}
+Q[97287]={en={252085,269127},l=33,n="Shrewd Negotiations",obj={{id=251961,qty=1,src={{"n",246020,0}},t="item",text="Arcane Mote (Provided)"}},prev=96984,r=24,side="H",sn={2410},xp=265,zone=36}
 Q[97288]={en={2055},inst=true,kind="dungeon",l=21,n="Unending Torment",next=97289,obj={{from="provided",id=280438,qty=1,t="item",text="Abominable Head (Provided)"},{qty=1,t="event",text="Deliver the Abominable Head to someone within the Undercity."}},r=16,si={id=280438,n="Abominable Head"},side="H",xp=1650,zone=16611}
 Q[97289]={en={271613},inst=true,l=21,money=1300,n="Unending Torment",next=97290,obj={{from="provided",id=268518,qty=1,t="item",text="Head of the Baron (Provided)"}},prev=97288,r=16,side="H",sn={2055},xp=1650,zone=16611}
 Q[97290]={en={2055},l=21,money=1300,n="Unending Torment",next=97291,prev=97289,r=16,side="H",sn={271613},xp=1650,zone=1497}
 Q[97291]={en={2055},inst=true,l=21,money=1300,n="Unending Torment",next=97292,obj={{id=281246,qty=1,src={{"v",4554,0}},t="item",text="Toxic Skullcap"},{id=281300,qty=1,t="item",text="Blisterweed"},{id=8923,qty=1,src={{"n",352,0},{"n",469,0},{"n",1855,0},{"n",2432,0},{"n",12197,0},{"n",12425,0},{"n",12596,0},{"n",14921,0},{"n",15070,0},{"n",15126,0},{"n",16131,0},{"n",16378,0},{"v",1325,0},{"v",1326,0},{"v",1457,0},{"v",2622,0}},t="item",text="Essence of Agony"}},prev=97290,r=16,side="H",sn={2055},xp=1650,zone=16611}
 Q[97292]={en={2055},inst=true,l=21,money=1300,n="Unending Torment",obj={{id=272513,qty=1,t="kill",text="Hissing Serum administered"},{from="provided",id=281327,qty=1,t="item",text="Hissing Serum (Provided)"}},prev=97291,r=16,side="H",sn={2055},xp=1650,zone=16611}
+Q[97319]={l=55,n="A Cousin Abroad",r=55,side="H",xp=560,zone=28}
 Q[97326]={en={268684},l=15,n="Rocks to Rests",obj={{id=277952,qty=8,t="item",text="Smooth Boulder"}},r=5,side="H",sn={268684},xp=800,zone=1637}
+Q[97327]={inst=true,kind="dungeon",l=60,money=9000,n="Blackmaw Pouches",obj={{id=273050,qty=5,t="item",text="Blackmaw Pouch"}},r=55,xp=6600,zone=16554}
+Q[97328]={en={4631},l=35,money=1800,n="Anything of Value",next=97332,obj={{id=277953,qty=8,t="item",text="Stolen Shipment"}},prev=97331,r=30,so={661516},xp=2750,zone=33}
+Q[97329]={en={268992},l=35,n="Where's the Key?",next=97328,obj={{id=277957,qty=1,t="item",text="Primitive Key"}},r=30,side="A",sn={268992},xp=2750,zone=33}
+Q[97331]={en={4631},l=35,money=3500,n="Zimmix's Great Escape",next=97332,obj={{qty=1,t="event",text="Escort Zimmix Sputterspark to safety"}},prev=97328,r=30,side="A",sn={268992},xp=2750,zone=33}
+Q[97332]={l=41,n="Twice Misplaced Trust",obj={{id=277974,qty=1,t="item",text="Twice Reordered Package (Provided)"}},prev=97331,r=36,sn={4631},xp=3300,zone=33}
+Q[97378]={l=50,n="Mirrorscale",obj={{id=277972,qty=1,t="item",text="Mirrorscale's Wing"}},r=45,xp=4700,zone=357}
+Q[97386]={kind="group",l=44,n="The Offense of Grom'gol",obj={{id=710,qty=3,src={{"n",710,0}},t="kill",text="Mosh'Ogg Spellcrafter slain"},{id=709,qty=3,src={{"n",709,0}},t="kill",text="Mosh'Ogg Warmonger slain"},{id=678,qty=3,src={{"n",678,0}},t="kill",text="Mosh'Ogg Mauler slain"},{id=679,qty=3,src={{"n",679,0}},t="kill",text="Mosh'Ogg Shaman slain"}},r=38,side="H",sn={2464},xp=4650,zone=33}
+Q[97403]={l=59,n="Two-Headed Ravagers",obj={{id=7449,qty=15,src={{"n",7449,0}},t="kill",text="Chillwind Ravager slain"}},r=55,side="H",xp=6400,zone=618}
+Q[97404]={l=59,n="Too Bad to Bear",obj={{id=278097,qty=1,t="item",text="Kuroma's Head"},{id=278098,qty=1,t="item",text="Kamuro's Head"}},r=55,side="H",xp=6400,zone=618}
+Q[97405]={kind="group",l=44,n="Noise Complaints",obj={{id=710,qty=3,src={{"n",710,0}},t="kill",text="Mosh'Ogg Spellcrafter slain"},{id=709,qty=3,src={{"n",709,0}},t="kill",text="Mosh'Ogg Warmonger slain"},{id=678,qty=3,src={{"n",678,0}},t="kill",text="Mosh'Ogg Mauler slain"},{id=679,qty=3,src={{"n",679,0}},t="kill",text="Mosh'Ogg Shaman slain"}},r=38,side="A",xp=4650,zone=33}
+Q[97411]={kind="dungeon",l=60,n="An Earnest Proposition",obj={{id=22381,qty=15,src={{"n",11738,4},{"n",11736,3},{"n",11735,2},{"n",11739,1},{"n",11737,1}},t="item",text="Silithus Venom Sample"},{id=16722,qty=1,t="item",text="Lightforge Bracers"},{qty=1,t="event",text="Required money: 20"}},r=58,side="H",xp=6600,zone=1637}
+Q[97420]={l=36,n="Reduce, Reuse, Reconcile",obj={{id=277986,qty=4,t="item",text="Drum of Crude Oil"}},r=31,side="A",xp=2800,zone=33}
+Q[97446]={l=40,n="Your First Riding Kodo",obj={{id=269139,qty=1,src={{"n",269139,0}},t="kill",text="Grey Riding Kodo"},{id=269140,qty=1,src={{"n",269140,0}},t="kill",text="Brown Riding Kodo"},{id=269138,qty=1,src={{"n",269138,0}},t="kill",text="White Riding Kodo"},{id=269141,qty=1,src={{"n",269141,0}},t="kill",text="Lavender Riding Kodo"}},r=40,races=32,side="H",zone=406}
+Q[97453]={en={1148},l=38,n="Weed Whacked",obj={{id=269175,qty=6,src={{"n",269175,0}},t="kill",text="Carnivorous Weed slain"}},r=33,side="H",sn={269166},xp=1450,zone=33}
 Q[97485]={en={269068},l=10,money=175,n="Traditions of the Bluff",obj={{from="crafted",id=278078,qty=1,t="item",text="Prepared Incense"},{id=269255,qty=1,t="kill",text="Spread incense"}},r=3,side="H",sn={269068},xp=420,zone=1638}
+Q[97490]={kind="group",l=60,n="Halt the Hail",obj={{id=278091,qty=1,t="item",text="Hailspite Frostmoss"}},r=56,xp=6600,zone=616}
+Q[97530]={l=47,money=3500,n="Dunemaul Dues",obj={{id=278186,qty=1,t="item",text="Brilliantly Polished Bangle"}},r=40,xp=4200,zone=440}
+Q[97534]={l=45,n="Gritty Business",obj={{id=278191,qty=7,t="item",text="Desert Debris"}},r=40,side="H",xp=2900,zone=440}
+Q[97536]={l=45,n="Gnomish Garbage",obj={{id=269319,qty=5,t="kill",text="Experimental Refuse discarded"}},provided={278194},r=40,side="A",xp=2900,zone=440}
 Q[97538]={l=26,money=2000,n="Pigments for Paints",obj={{id=278201,qty=30,t="item",text="Mirkweed Pods"}},r=20,side="H",sn={3024},xp=2100,zone=406}
+Q[97539]={en={12920},l=36,money=4000,n="Silky Sutures",next=92519,obj={{id=278225,qty=12,t="item",text="Surgical Spidersilk"}},r=30,side="H",sn={12920},xp=2800,zone=45}
+Q[97540]={l=50,n="Oasis",r=40,xp=3550,zone=440}
 Q[97558]={en={3549},l=11,money=300,n="Hides for the Forsaken",obj={{id=278242,qty=8,t="item",text="Duskbat Wing Membrane"},{id=278243,qty=6,t="item",text="Darkhound Hide"},{id=278244,qty=3,src={{"n",1545,2},{"n",1544,1}},t="item",text="Vile Fin Murloc Skin"}},r=6,sn={3549},xp=660,zone=85}
 Q[97583]={l=1,n="WRIGGLE.",obj={{id=278265,qty=1,src={{"v",4612,0}},t="item",text="Nutritious Slime Sludge"}},r=1,side="H",sort=-2,xp=10}
+Q[97617]={l=40,money=2500,n="Safety Checks",obj={{id=278402,qty=8,t="item",text="Unstudied Artifact"},{id=278403,qty=1,t="item",text="Explorers' League Mining Helmet"},{id=278404,qty=1,t="item",text="Pristine Mattock"}},r=35,side="A",xp=3150,zone=3}
+Q[97663]={l=40,money=2500,n="Supplies and Studies",obj={{id=278515,qty=1,t="item",text="Mus'hale's Stolen Supplies"},{id=668003,qty=1,t="object",text="Small rock rubbing"},{id=668004,qty=1,t="object",text="Large rock rubbing"}},r=34,sn={269647},xp=3150,zone=3}
+Q[97821]={kind="group",l=42,money=4500,n="Mirage Mirror",obj={{id=278744,qty=1,t="item",text="Mirage Mirror"}},r=37,xp=4300,zone=3}
+Q[97884]={en={5819},l=40,money=5000,n="Armory of Sunnyglade",obj={{id=278868,qty=1,t="item",text="Tremayne Family Blacksmithing Techniques"}},r=36,side="H",xp=3150,zone=16591}
 Q[97891]={en={11044},l=16,money=800,n="Prompt Potion Runner",obj={{id=11044,qty=1,src={{"n",11044,0}},t="kill",text="Speak to Doctor Martin Felben"}},provided={279020},r=9,side="H",sn={7683},xp=1150,zone=1497}
 Q[97894]={en={6301},l=17,n="Business in Auberdine",next=982,obj={{qty=1,t="event",text="Take the boat to Auberdine and find Gorbold Steelhand."}},r=13,side="A",sn={7232},zone=148}
 Q[97899]={en={11046},l=6,n="Camping 101: Alchemy",obj={{qty=1,t="event",text="Raise your alchemy skill to 20"}},r=4,side="H",sn={265809},sort=-2,xp=270}
@@ -5994,25 +5820,49 @@ Q[97972]={l=6,n="Camping 101: Tailoring",obj={{qty=1,t="event",text="Raise your 
 Q[97973]={en={251991},l=6,n="Camping 101: Tailoring",obj={{qty=1,t="event",text="Raise your tailoring skill to 20"}},r=4,side="A",sn={263664},sort=-2,xp=270}
 Q[97977]={en={1992},l=3,money=50,n="Nature's Call",obj={{id=279082,qty=4,t="item",text="Gnarlpine Totem"}},r=1,sn={1992},xp=250,zone=141}
 Q[97979]={en={3595},l=1,money=8,n="The Goddess Provides",obj={{qty=1,t="event",text="Elune's Light cast"},{qty=1,t="event",text="Shadowmeld cast"}},r=1,races=8,side="A",sn={3595},sort=-2,xp=40}
+Q[97985]={en={270038},kind="group",l=33,money=6500,n="Thundering Hearts",obj={{id=279186,qty=1,src={{"n",270094,0}},t="item",text="Stormheart's Still-beating Heart"}},r=25,side="H",sn={270038},xp=3300,zone=1497}
+Q[97986]={l=57,n="Argent Arbiter",r=53,xp=600,zone=139}
+Q[97987]={l=57,n="Stormwind's High Order",r=53,side="A",xp=6000,zone=139}
 Q[98013]={en={270269},l=20,n="Swelling Forces",obj={{id=2181,qty=12,src={{"n",2181,0}},t="kill",text="Stormscale Myrmidon slain"},{id=2182,qty=8,src={{"n",2182,0}},t="kill",text="Stormscale Sorceress slain"},{id=2183,qty=6,src={{"n",2183,0}},t="kill",text="Stormscale Warrior slain"}},r=12,sn={270269},xp=1550,zone=148}
 Q[98021]={en={234},l=13,money=300,n="Journey to Sentinel Hill",r=7,races=4294967296,side="A",sn={1748},xp=455,zone=40}
 Q[98024]={en={3429},l=13,money=300,n="Journey to the Crossroads",r=7,races=8589934592,side="H",sn={4949},xp=455,zone=17}
 Q[98025]={en={2930},l=13,n="WANTED: Jai'vhanel",obj={{id=281038,qty=1,src={{"n",270196,93}},t="item",text="Feather of Jai'vhanel"}},r=10,side="A",so={175320},xp=1150,zone=148}
+Q[98027]={en={3961},l=26,n="Gleaming Crescent Necklace",provided={279274},r=22,side="A",so={669176},xp=1600,zone=331}
 Q[98028]={en={3616},l=21,money=2500,n="Baron Marinous",obj={{id=279275,qty=1,src={{"n",270294,100}},t="item",text="Clouded Water Globe (Provided)"}},r=17,si={id=279275,n="Clouded Water Globe",src={{"n",270294,100}}},side="A",xp=2050,zone=148}
 Q[98042]={en={3649},l=17,money=900,n="It's All Fun and Games Until...",obj={{id=279279,qty=1,t="item",text="Peerless Eye"}},r=12,xp=1250,zone=148}
 Q[98046]={en={4092},l=11,n="Crown of the Earth",next=98065,obj={{from="provided",id=279291,qty=1,t="item",text="Drained Vessel (Provided)"}},r=1,sn={3516},xp=90,zone=141}
+Q[98059]={en={251493},l=27,money=1100,n="Hillsbrad's Hoard",obj={{id=270424,qty=1,t="kill",text="Sealed Company Request delivered to Hillsbrad council"}},provided={279386},r=23,side="A",sn={251493},xp=2200,zone=267}
 Q[98065]={en={7999},l=11,n="Crown of the Earth",obj={{from="provided",id=279331,qty=1,t="item",text="Moonwell Remnants (Provided)"}},prev=98046,r=1,sn={4092},xp=90,zone=141}
 Q[98067]={en={8396},l=11,n="Eyes of the Sentinels",obj={{id=270418,qty=1,src={{"n",270418,0}},t="kill",text="Cenarion Hold depths entrance"},{id=270419,qty=1,src={{"n",270419,0}},t="kill",text="Darnassus Bank"},{id=270420,qty=1,src={{"n",270420,0}},t="kill",text="Craftsman's Terrace Inn"},{id=270421,qty=1,t="kill",text="City Gate"}},provided={279378},r=1,side="A",sn={8396},xp=660,zone=1657}
+Q[98069]={en={4877},l=30,n="Stolen Freewind Supplies",obj={{id=279383,qty=8,t="item",text="Stolen Freewind Supplies"}},r=25,side="H",sn={4877},xp=2450,zone=400}
+Q[98070]={en={4877},l=30,money=2500,n="Stop the Screeching",obj={{id=4100,qty=5,src={{"n",4100,0}},t="kill",text="Screeching Harpy slain"},{id=4101,qty=5,src={{"n",4101,0}},t="kill",text="Screeching Roguefeather slain"},{id=4104,qty=5,src={{"n",4104,0}},t="kill",text="Screeching Windcaller slain"}},r=25,side="H",sn={4877},xp=2450,zone=400}
+Q[98071]={en={2705},l=27,n="Brewer's Trade",obj={{id=270426,qty=1,t="kill",text="Fallrook Varietal delivered to Dun Garok"},{id=279389,qty=1,t="item",text="Sack of Homebrew Hops"}},provided={279390},r=23,side="A",sn={2705},xp=2200,zone=267}
 Q[98072]={l=27,n="Crocs of the Sky",next=98240,obj={{id=279385,qty=8,t="item",text="Pristine Crimson Scale"}},r=19,xp=2200,zone=11}
 Q[98093]={l=23,n="Field to Clear",obj={{id=4128,qty=7,src={{"n",4128,0}},t="kill",text="Hecklefang Stalker slain"},{id=3238,qty=7,src={{"n",3238,0}},t="kill",text="Stormhide slain"}},r=18,side="H",xp=1850,zone=17}
 Q[98094]={l=25,money=900,n="Scout Support",next=98095,obj={{from="provided",id=279394,qty=1,t="item",text="Darthalia's Orders (Provided)"}},r=19,side="H",xp=2000,zone=17}
 Q[98095]={l=25,n="Valuable Vantages",obj={{id=270575,qty=1,t="kill",text="Western vial placed"},{id=270574,qty=1,t="kill",text="Northern vial placed"},{id=270573,qty=1,t="kill",text="Southern vial placed"}},provided={279395},r=19,side="H",xp=2000,zone=17}
+Q[98096]={l=47,n="Sisters In Duty",r=45,xp=420,zone=16}
+Q[98109]={l=57,n="Bleeding Edge",next=97987,r=53,xp=600,zone=139}
+Q[98155]={en={11826},l=29,n="Pristine Pesterhide Pelts",next=98156,obj={{id=279472,qty=5,t="item",text="Pristine Pesterhide Pelt"}},r=24,side="A",sn={11826},xp=2350,zone=400}
+Q[98156]={en={11827},l=29,money=1300,n="Packaged Pristine Pelts",prev=98155,provided={279481},r=24,side="A",sn={11826},xp=2350,zone=400}
+Q[98166]={l=40,n="Your First Horse",obj={{id=270544,qty=1,src={{"n",270544,0}},t="kill",text="Pinto Horse"},{id=270542,qty=1,src={{"n",270542,0}},t="kill",text="Brown Horse"},{id=270543,qty=1,src={{"n",270543,0}},t="kill",text="Chestnut Mare"}},r=40,races=1,side="A",xp=1550,zone=11}
 Q[98189]={l=25,n="Return the Statuette",next=98190,obj={{from="provided",id=279589,qty=1,t="item",text="Menethil Statuette (Provided)"}},prev=286,r=20,side="A",xp=200,zone=11}
 Q[98190]={l=25,n="A Friend of the Family",next=98191,obj={{from="provided",id=279595,qty=1,t="item",text="Menethil Statuette (Provided)"}},prev=98189,r=20,side="A",zone=1519}
 Q[98191]={l=25,n="A Friend of the Family",obj={{from="provided",id=279598,qty=1,t="item",text="Menethil Statuette (Provided)"}},prev=98190,r=20,side="A",xp=200,zone=1519}
+Q[98192]={l=43,n="Skin Careful, Skin Sharp",obj={{id=279601,qty=8,t="item",text="Intact Raptor Hide"}},r=38,sn={4883},xp=3600,zone=15}
 Q[98197]={l=22,money=1400,n="Spoils of War",obj={{id=279821,qty=6,t="item",text="Khaz Modan Timber"},{id=279822,qty=30,t="item",text="Khaz Modan Iron"}},r=18,side="A",xp=1750,zone=11}
+Q[98203]={l=49,n="Witch Doctor Ti'ik",obj={{id=279913,qty=1,t="item",text="Ti'ik's Head"}},r=45,side="H",xp=5700,zone=47}
+Q[98205]={l=44,n="Whelps are the Worst!",obj={{id=4323,qty=8,src={{"n",4323,0}},t="kill",text="Searing Hatchling slain"},{id=4324,qty=8,src={{"n",4324,0}},t="kill",text="Searing Whelp slain"}},r=39,xp=3750,zone=15}
 Q[98208]={l=29,money=2500,n="Bloom of the Heavens",obj={{id=279915,qty=1,t="item",text="Nord'el"}},r=22,xp=2350,zone=11}
+Q[98209]={en={3649},l=29,money=1300,n="Bloom of the Heavens",obj={{id=279924,qty=1,t="item",text="Nord'el (Provided)"}},prev=98208,r=22,races=4294967372,side="A",sn={270844},xp=1200,zone=11}
+Q[98215]={l=44,money=6500,n="Dragon Scales, Post Burnt Tails",obj={{id=279934,qty=20,t="item",text="Shed Dark Dragonscale"}},r=39,xp=3750,zone=15}
+Q[98216]={en={1077},kind="group",l=31,n="Understanding Our Present",next=98310,obj={{id=279993,qty=1,src={{"n",270892,0}},t="item",text="Titanic Keystone"}},prev=299,provided={279996},r=23,side="A",sn={1077},xp=3150,zone=11}
 Q[98219]={l=30,n="The Shamed Lieutenant",r=20,side="A",xp=245,zone=1519}
+Q[98221]={en={2104},l=28,n="From the Ashes",next=465,obj={{id=671481,qty=1,src={{"o",671481,0}},t="object",text="Attack Plan: Menethil Harbor destroyed"},{id=671486,qty=1,src={{"o",671486,0}},t="object",text="Attack Plan: Thelsamar destroyed"},{id=671483,qty=1,src={{"o",671483,0}},t="object",text="Attack Plan: Southshore destroyed"},{id=671487,qty=1,src={{"o",671487,0}},t="object",text="Attack Plan: Ironforge destroyed"}},prev=464,r=23,races=4294967372,side="A",sn={2104},xp=2300,zone=11}
+Q[98223]={en={2104},l=31,n="Old Habits",obj={{id=280042,qty=1,t="item",text="Tattered Spellbook (Provided)"}},r=23,races=4294967372,side="A",so={671518},xp=1250,zone=11}
+Q[98230]={en={270637},l=29,n="This Land Was Their Land",r=22,side="A",sn={2104},xp=235,zone=11}
+Q[98231]={l=44,money=6500,n="Active Ingredient",obj={{id=280092,qty=10,t="item",text="Wyrmtail"}},r=39,xp=3750,zone=15}
+Q[98233]={l=42,money=5500,n="Sword in the Slime",obj={{id=280203,qty=1,t="item",text="Jameson's Training Sword"}},r=36,side="A",sn={271167},xp=3450,zone=15}
 Q[98240]={l=29,money=5000,n="Crimson Crate Delivery",obj={{from="provided",id=280099,qty=1,t="item",text="Crimson Crate (Provided)"}},prev=98072,r=19,side="A",xp=1200,zone=11}
 Q[98245]={l=29,n="Razormaw Needling",obj={{id=280103,qty=10,t="item",text="Razormaw Incisor"}},prev=98240,r=21,side="A",xp=2350,zone=11}
 Q[98246]={l=29,n="Trying Times",obj={{id=280132,qty=12,t="item",text="Perfect Razormaw Egg"}},r=21,side="A",xp=2350,zone=11}
@@ -6021,24 +5871,31 @@ Q[98248]={en={256386},l=60,n="Shipping Label",obj={{id=280180,qty=1,t="item",tex
 Q[98251]={l=22,money=700,n="Never Coming Back",next=98252,obj={{id=3817,qty=6,src={{"n",3817,0}},t="kill",text="Shadowhorn Stag slain"},{id=3809,qty=6,src={{"n",3809,0}},t="kill",text="Ashenvale Bear slain"}},r=18,side="H",xp=1750,zone=1638}
 Q[98252]={l=22,n="A Void Path",obj={{id=271182,qty=1,t="kill",text="Eye of Kilrogg guided to the road"}},prev=98251,r=18,side="H",xp=1300,zone=1638}
 Q[98282]={l=22,n="Alchemical Hazards",obj={{id=280319,qty=1,t="item",text="Unruptured Stalker Gland"}},r=20,side="A",xp=1750,zone=11}
+Q[98283]={en={1244},kind="group",l=30,n="Carnage",obj={{id=280331,qty=1,src={{"n",271334,0}},t="item",text="Malignant Rotclaw Flesh"},{id=280330,qty=1,src={{"n",271336,0}},t="item",text="Carnage's Head"}},prev=275,r=22,races=4294967372,side="A",sn={1244},xp=3050,zone=11}
 Q[98284]={en={257020},l=6,n="Camping 101: Enchanting",obj={{qty=1,t="event",text="Raise your enchanting skill to 20"}},r=4,side="H",sort=-2,xp=270}
 Q[98285]={en={251684},l=6,n="Camping 101: Engineering",obj={{qty=1,t="event",text="Raise your engineering skill to 20"}},r=4,sn={251684},sort=-2,xp=270}
 Q[98286]={en={257020},l=6,n="Camping 101: Enchanting",obj={{qty=1,t="event",text="Raise your enchanting skill to 20"}},r=4,side="A",sn={263664},sort=-2,xp=270}
 Q[98287]={l=6,n="Camping 101: Engineering",obj={{qty=1,t="event",text="Raise your engineering skill to 20"}},r=4,side="A",sort=-2,xp=270}
+Q[98291]={en={270637},kind="group",l=30,money=1400,n="Death to the Dragonmaw",obj={{id=271351,qty=8,src={{"n",271351,0}},t="kill",text="Dragonmaw Reclaimer slain"},{id=271348,qty=5,src={{"n",271348,0}},t="kill",text="Dragonmaw Soulbinder slain"},{id=271346,qty=3,src={{"n",271346,0}},t="kill",text="Dragonmaw Infiltrator slain"}},r=22,races=4294967372,side="A",sn={270637},xp=3050,zone=11}
 Q[98293]={kind="group",l=30,n="Forced Disarmament",obj={{id=280369,qty=30,t="item",text="Dragonmaw Armaments"}},r=22,side="A",xp=3050,zone=11}
+Q[98297]={en={270637},kind="group",l=34,n="Stopping the Cycle",obj={{id=271373,qty=1,src={{"n",271373,0}},t="kill",text="Subdued Dragonspawn slain"}},r=24,side="A",sn={270637},xp=2700,zone=11}
 Q[98298]={en={1938},l=16,money=800,n="Arugal's Folly",obj={{id=280375,qty=6,src={{"n",1924,3}},t="item",text="Worgen Bits"}},prev=99,r=9,sn={1938},xp=1150,zone=130}
 Q[98299]={en={1938},l=20,money=1200,n="Stop the Spread",obj={{id=2053,qty=5,src={{"n",2053,0}},t="kill",text="Haggard Refugee slain"},{id=2054,qty=5,src={{"n",2054,0}},t="kill",text="Sickly Refugee slain"}},r=9,sn={1938},xp=1550,zone=130}
+Q[98300]={en={2784},l=34,money=1700,n="Word to Ironforge",obj={{id=280392,qty=1,t="item",text="Howin's Missive (Provided)"}},r=24,side="A",sn={270637},xp=2700,zone=1537}
+Q[98310]={en={1077},kind="group",l=32,money=1600,n="Gleaning Our Future",next=98313,obj={{id=280395,qty=1,src={{"n",271338,0}},t="item",text="Heart of Ados"},{id=280396,qty=1,src={{"n",271460,0}},t="item",text="Heart of Modr"},{id=280397,qty=1,src={{"n",271462,0}},t="item",text="Heart of Golm"},{id=280398,qty=1,src={{"n",271458,0}},t="item",text="Heart of Neru"}},prev=98216,provided={280394},r=24,side="A",sn={1077},xp=3200,zone=11}
+Q[98313]={en={2916},l=32,n="For Further Study",obj={{id=280403,qty=1,t="item",text="Whelgar Relic Package (Provided)"}},prev=98310,r=24,side="A",sn={1077},zone=1537}
 Q[98319]={en={271546},l=8,n="Secure the Mountain",next=98323,prev=98322,r=4,sn={271546},xp=175,zone=1}
 Q[98321]={en={1241},l=7,money=45,n="Flintfire's Shipment",obj={{id=280413,qty=8,t="item",text="Flintfire's Shipment"}},r=4,sn={1241},xp=630,zone=1}
 Q[98322]={en={271546},l=8,n="Secure the Mountain",next=98319,r=4,sn={1252},xp=70,zone=1}
 Q[98323]={en={1252},l=8,n="Secure the Mountain",obj={{from="provided",id=280430,qty=1,t="item",text="Mountaineer Gretchen's Report (Provided)"}},prev=98319,r=4,sn={271546},xp=70,zone=1}
-end)()
-;(function()
+Q[98325]={inst=true,kind="dungeon",l=60,money=900,n="Blood and Thunder",obj={{qty=1,t="event",text="Speak to Warlord Goretooth to serve the Kargath Expeditionary Force"}},r=55,side="H",xp=660,zone=1583}
 Q[98326]={en={8508},l=9,money=300,n="Frosthowl",obj={{id=280426,qty=1,src={{"n",271587,69}},t="item",text="Sack of Fish"}},r=5,sn={8508},xp=780,zone=1}
+Q[98338]={l=33,n="REUSE ME",r=30,sort=-2}
 Q[98340]={classes=1024,en={11802},l=20,n="The Great Cat Spirit",next=98341,r=20,races=8589934624,side="H",sn={3033},sort=4,xp=390}
 Q[98341]={en={272054},l=20,n="The Great Windborne Cat Spirit",next=98342,prev=98405,r=20,races=12884901888,sn={11802},sort=4,xp=780}
 Q[98342]={classes=1024,en={11957},l=20,n="The Great Cat Spirit",next=98739,obj={{id=280502,qty=1,t="item",text="Relic of the Fang"},{id=280679,qty=1,t="item",text="Relic of the Claw"},{id=280680,qty=1,t="item",text="Relic of the Silent Shadow"}},prev=98405,r=20,races=32,side="H",sort=4,xp=780}
 Q[98362]={classes=1024,en={3033},l=20,n="To Thunder Bluff",prev=98739,r=20,races=8589934624,side="H",sn={11802},sort=4,xp=155}
+Q[98372]={en={271866},l=60,n="An Unfortunate End",r=1,sn={271866},sort=-2}
 Q[98386]={en={341},l=21,money=1300,n="Alther's Mill",next=19,obj={{qty=12,src={{"n",505,0},{"n",271898,0}},t="kill",text="Greater Tarantula slain"},{id=271912,qty=6,t="kill",text="Tarantula Egg destroyed"}},prev=98387,r=15,sn={341},xp=1650,zone=44}
 Q[98387]={en={382},l=21,money=1300,n="Blackrock Blockade",next=19,obj={{id=280839,qty=10,t="item",text="Stolen Supplies"},{id=280841,qty=8,t="item",text="Stolen Weapon"}},prev=98386,r=18,sn={382},xp=1650,zone=44}
 Q[98389]={en={244808},l=4,n="A Light in the Darkness",obj={{id=271961,qty=6,src={{"n",271961,0}},t="kill",text="Webbed Forsaken freed"}},r=2,side="H",sn={244808},xp=355,zone=85}
@@ -6053,6 +5910,8 @@ Q[98403]={en={3567},kind="group",l=12,money=1000,n="Twisted Hatred",obj={{id=272
 Q[98404]={en={272054},l=20,n="The Great Windborne Cat Spirit",next=98738,obj={{id=280502,qty=1,t="item",text="Relic of the Fang"},{id=280679,qty=1,t="item",text="Relic of the Claw"},{id=280680,qty=1,t="item",text="Relic of the Silent Shadow"}},r=20,races=12884901888,sn={272054},sort=4,xp=780}
 Q[98405]={classes=1024,en={11957},l=20,n="The Great Cat Spirit",next=98342,prev=98341,r=20,races=32,side="H",sn={11802},sort=4,xp=780}
 Q[98407]={en={1070},l=17,money=700,n="Show of Force",obj={{id=280911,qty=5,t="item",text="Spiked Collar"}},r=11,sn={1070},xp=950,zone=44}
+Q[98417]={en={221269},l=28,n="Vengeful Trail",next=98418,obj={{id=281014,qty=1,t="item",text="Vine-Wrapped Scroll"}},r=23,side="A",sn={221269},xp=1700,zone=331}
+Q[98418]={en={221269},l=30,money=2100,n="Shared Fury",obj={{id=3754,qty=5,src={{"n",3754,0}},t="kill",text="Xavian Betrayer slain"},{id=3755,qty=5,src={{"n",3755,0}},t="kill",text="Xavian Felsworn slain"},{id=3757,qty=5,src={{"n",3757,0}},t="kill",text="Xavian Hellcaller slain"},{id=3752,qty=5,src={{"n",3752,0}},t="kill",text="Xavian Rogue slain"}},prev=98417,r=23,side="A",sn={221269},xp=2450,zone=331}
 Q[98423]={en={2784},l=16,money=1600,n="The Treaty of Understanding",obj={{from="provided",id=281030,qty=1,t="item",text="Treaty of Understanding (Provided)"}},r=9,si={id=281030,n="Treaty of Understanding"},side="A",xp=1150,zone=1}
 Q[98424]={en={2988},l=10,n="Fizsprocket's Notes",next=98427,obj={{id=281035,qty=1,t="item",text="Shredder Operation Instructions"},{id=281036,qty=1,t="item",text="Barrens Operations Best Practices"},{id=281037,qty=1,t="item",text="One \"Gerenzo\", of Stonetalon"},{id=281031,qty=1,src={{"n",3051,2}},t="item",text="Mulgore Expansion Plans"}},r=5,si={id=281031,n="Mulgore Expansion Plans",src={{"n",3051,2}}},side="H",xp=840,zone=215}
 Q[98427]={en={2988},kind="group",l=12,n="Ceasing Operations",obj={{id=281048,qty=1,src={{"n",272173,87}},t="item",text="Clearcutter Key"}},prev=98424,r=5,side="H",sn={2988},xp=1150,zone=215}
@@ -6061,6 +5920,9 @@ Q[98435]={en={5769},l=10,n="Thunderhorn's Report",obj={{qty=1,t="event",text="Cl
 Q[98447]={l=27,n="The Valor Family",obj={{id=272450,qty=1,src={{"n",272450,0}},t="kill",text="Raven Hill investigated"}},r=18,xp=2200,zone=10}
 Q[98459]={en={1481},l=21,n="A Lack of Virtue",obj={{from="provided",id=281240,qty=1,t="item",text="Tom's Gift (Provided)"}},r=18,side="A",sn={254078},xp=165,zone=11}
 Q[98461]={en={2096},l=21,money=125,n="Unrequited Love",obj={{from="provided",id=281243,qty=1,t="item",text="Hollee's Note (Provided)"}},r=18,side="A",sn={2913},xp=165,zone=11}
+Q[98463]={en={2832},l=33,n="Talk of the Town",r=28,side="A",sn={2366},xp=265,zone=33}
+Q[98471]={l=35,n="Message from the Supreme Magister",obj={{id=281330,qty=1,t="item",text="Message from the Supreme Magister (Provided)"}},r=30,races=4294967296,side="A",sort=7,xp=1350}
+Q[98477]={kind="group",l=60,money=18000,n="Unstable Magic",obj={{id=274964,qty=10,t="item",text="Mote of Unstable Magic"}},provided={281371},r=48,side="H",xp=8300,zone=215}
 Q[98512]={en={273017},l=11,n="Al'Aketh Assassins",next=92644,obj={{id=254626,qty=10,src={{"n",254626,0}},t="kill",text="Al'Aketh Assassin slain"}},prev=92643,r=6,sn={273017},sort=-2,xp=880}
 Q[98517]={l=10,n="Call of Fire",obj={{from="provided",id=6653,qty=1,t="item",text="Torch of the Dormant Flame"}},r=10,races=8589934592,side="H",sort=4,xp=420}
 Q[98545]={en={272526},l=13,n="Leonid's Letter",obj={{from="provided",id=282065,qty=1,t="item",text="Sealed Letter (Provided)"}},prev=96896,r=10,side="H",sn={267008},xp=90,zone=85}
@@ -6072,6 +5934,31 @@ Q[98601]={classes=2,en={244808},l=1,n="A Difficult Path",obj={{from="provided",i
 Q[98731]={classes=1024,en={11802},l=20,n="Blessings of the Great Cat Spirit",next=98397,prev=98396,r=20,races=8,side="A",sn={11957},sort=4,xp=780}
 Q[98738]={en={11802},l=20,n="Blessings of the Great Windborne Cat Spirit",prev=98404,r=20,races=12884901888,sn={272054},sort=4,xp=780}
 Q[98739]={classes=1024,en={11802},l=20,n="Blessings of the Great Cat Spirit",next=98362,prev=98342,r=20,races=32,side="H",sn={11957},sort=4,xp=780}
+Q[98815]={en={2094},inst=true,kind="dungeon",l=28,money=1200,n="Highland Hides",next=484,obj={{id=284845,qty=4,t="item",text="Thicket Raptor Hide"}},prev=469,r=24,races=4294967372,side="A",sn={2094},xp=1150,zone=16732}
+Q[98823]={en={259118},inst=true,kind="dungeon",l=31,money=6000,n="Earthen Echo",obj={{id=287958,qty=1,t="item",text="Titan Relic (Provided)"}},prev=95664,r=24,side="H",sn={9087},xp=3150,zone=16732}
+Q[98824]={en={5387},inst=true,kind="dungeon",l=31,money=6000,n="Prehistoric Prism",obj={{id=287959,qty=1,t="item",text="Titan Relic (Provided)"}},prev=95810,r=24,side="A",sn={1077},xp=3150,zone=16732}
+Q[98887]={en={15350},kind="pvp",l=39,money=4500,n="Conflict at Darkspear Islands",obj={{from="crafted",id=274895,qty=3,t="item",text="Darkspear Islands Mark of Honor"}},r=30,side="H",sn={15350},sort=6,xp=1500}
+Q[98888]={en={15350},kind="pvp",l=39,n="Conflict at Darkspear Islands",r=30,side="H",sn={15350},sort=6}
+Q[98889]={kind="pvp",l=49,money=7000,n="Conflict at Darkspear Islands",obj={{from="crafted",id=274895,qty=3,t="item",text="Darkspear Islands Mark of Honor"}},r=40,sort=6}
+Q[98891]={kind="pvp",l=59,money=9000,n="Conflict at Darkspear Islands",obj={{from="crafted",id=274895,qty=3,t="item",text="Darkspear Islands Mark of Honor"}},r=50,sort=6,xp=6400}
+Q[98893]={kind="pvp",l=60,money=9000,n="Conflict at Darkspear Islands",obj={{from="crafted",id=274895,qty=3,t="item",text="Darkspear Islands Mark of Honor"}},r=60,sort=6,xp=6600}
+Q[98895]={en={15351},kind="pvp",l=39,money=4500,n="Darkspear Islands Clash",obj={{from="crafted",id=274895,qty=3,t="item",text="Darkspear Islands Mark of Honor"}},r=30,side="A",sn={15351},sort=6,xp=1500}
+Q[98896]={en={15351},kind="pvp",l=39,n="Darkspear Islands Clash",r=30,side="A",sn={15351},sort=6}
+Q[98897]={kind="pvp",l=49,money=7000,n="Darkspear Islands Clash",obj={{from="crafted",id=274895,qty=3,t="item",text="Darkspear Islands Mark of Honor"}},r=40,sort=6}
+Q[98899]={kind="pvp",l=59,money=9000,n="Darkspear Islands Clash",obj={{from="crafted",id=274895,qty=3,t="item",text="Darkspear Islands Mark of Honor"}},r=50,sort=6,xp=6400}
+Q[98901]={kind="pvp",l=60,money=9000,n="Darkspear Islands Clash",obj={{from="crafted",id=274895,qty=3,t="item",text="Darkspear Islands Mark of Honor"}},r=60,sort=6,xp=6600}
+Q[98903]={en={275273},kind="pvp",l=39,money=9000,n="The Battle for Darkspear Islands!",obj={{id=275188,qty=1,t="kill",text="Win in Darkspear Islands"}},r=30,side="A",sn={275273},sort=6,xp=3000}
+Q[98904]={kind="pvp",l=49,money=14000,n="The Battle for Darkspear Islands!",obj={{id=275188,qty=1,t="kill",text="Win in Darkspear Islands"}},r=40,sort=6,xp=4550}
+Q[98905]={kind="pvp",l=60,money=18000,n="The Battle for Darkspear Islands!",obj={{id=275188,qty=1,t="kill",text="Win in Darkspear Islands"}},r=50,sort=6,xp=6600}
+Q[98906]={en={275276},kind="pvp",l=39,money=9000,n="The Battle for Darkspear Islands!",obj={{id=275188,qty=1,t="kill",text="Win in Darkspear Islands"}},r=30,side="H",sn={275276},sort=6,xp=3000}
+Q[98907]={kind="pvp",l=49,money=14000,n="The Battle for Darkspear Islands!",obj={{id=275188,qty=1,t="kill",text="Win in Darkspear Islands"}},r=40,sort=6,xp=4550}
+Q[98908]={kind="pvp",l=60,money=18000,n="The Battle for Darkspear Islands!",obj={{id=275188,qty=1,t="kill",text="Win in Darkspear Islands"}},r=50,sort=6,xp=6600}
+Q[98910]={l=39,n="Darkspear's Basic Care Package",obj={{id=2798,qty=1,t="faction",text="Darkspear Raiders (Friendly)"}},r=30,sort=6,xp=300}
+Q[98911]={l=49,n="Darkspear's Standard Care Package",obj={{id=2798,qty=1,t="faction",text="Darkspear Raiders (Friendly)"}},r=40,sort=6,xp=455}
+Q[98912]={l=60,n="Darkspear's Advanced Care Package",obj={{id=2798,qty=1,t="faction",text="Darkspear Raiders (Friendly)"}},r=50,sort=6,xp=660}
+Q[98913]={l=39,n="Theramore Basic Care Package",obj={{id=2799,qty=1,t="faction",text="Theramore Expeditionary Force (Friendly)"}},r=30,sort=6,xp=300}
+Q[98914]={l=49,n="Theramore Standard Care Package",obj={{id=2799,qty=1,t="faction",text="Theramore Expeditionary Force (Friendly)"}},r=40,sort=6,xp=455}
+Q[98915]={l=60,n="Theramore Advanced Care Package",obj={{id=2799,qty=1,t="faction",text="Theramore Expeditionary Force (Friendly)"}},r=50,sort=6,xp=660}
 Q[98977]={l=60,n="Mossheart the Elder",r=1,sort=9}
 Q[98983]={l=60,n="Frostleaf the Elder",r=1,sort=9}
 Q[99046]={en={275683},l=9,n="The Lost Runner",next=99047,r=4,side="A",sn={2081},xp=80,zone=141}
@@ -6110,7 +5997,20 @@ Q[99160]={en={1253},l=8,n="Rime's Wrath",obj={{id=276003,qty=10,src={{"n",276003
 Q[99161]={en={1253},l=8,n="Rime's Wrath",obj={{id=286325,qty=1,src={{"n",276009,100}},t="item",text="Avala's Core"}},r=5,side="A",sn={1253},xp=700,zone=1}
 Q[99162]={en={1253},l=8,n="Treacherous Cold",obj={{id=286360,qty=1,t="item",text="Stoneanvil's Rifle"},{id=286359,qty=1,t="item",text="Sunhammer's Rifle"},{id=286358,qty=1,t="item",text="Coalbeard's Rifle"}},r=5,side="A",sn={1253},xp=700,zone=1}
 Q[99191]={l=60,n="A Donation of Wool",obj={{id=2592,qty=60,src={{"n",2153,100},{"n",5085,100},{"n",2044,77},{"n",212730,75},{"n",223542,67},{"n",2392,60},{"n",3900,54},{"n",3899,54},{"n",889,54},{"n",4057,53},{"n",4969,53},{"n",4051,53}},t="item",text="Wool Cloth"}},r=12,side="A",xp=660,zone=36}
+Q[99192]={l=60,n="A Donation of Silk",obj={{id=4306,qty=60,src={{"n",210697,100},{"n",218029,100},{"n",222233,100},{"o",19021,100},{"o",153468,100},{"n",754,84},{"n",6072,80},{"n",2396,75},{"n",221223,75},{"n",5057,71},{"n",5045,67},{"n",5044,67}},t="item",text="Silk Cloth"}},r=26,side="A",xp=1650,zone=36}
+Q[99193]={l=60,n="A Donation of Mageweave",obj={{id=4338,qty=60,src={{"n",222286,100},{"n",221407,83},{"n",6000,79},{"n",6003,79},{"n",6184,78},{"n",5241,78},{"n",6127,77},{"n",5976,77},{"n",5997,77},{"n",6188,77},{"n",6125,77},{"n",6126,77}},t="item",text="Mageweave Cloth"}},r=40,side="A",xp=3300,zone=36}
+Q[99194]={l=60,n="A Donation of Runecloth",obj={{id=14047,qty=60,src={{"n",228230,100},{"n",228231,100},{"n",239047,100},{"n",7075,83},{"n",9605,82},{"n",1756,81},{"n",228233,80},{"n",12322,79},{"n",7379,78},{"n",8564,77},{"n",12261,77},{"n",11291,77}},t="item",text="Runecloth"}},r=50,xp=6600,zone=36}
 Q[99196]={l=60,n="A Donation of Wool",obj={{id=2592,qty=60,src={{"n",2153,100},{"n",5085,100},{"n",2044,77},{"n",212730,75},{"n",223542,67},{"n",2392,60},{"n",3900,54},{"n",3899,54},{"n",889,54},{"n",4057,53},{"n",4969,53},{"n",4051,53}},t="item",text="Wool Cloth"}},r=12,side="H",xp=660,zone=215}
+Q[99197]={l=60,n="A Donation of Silk",obj={{id=4306,qty=60,src={{"n",210697,100},{"n",218029,100},{"n",222233,100},{"o",19021,100},{"o",153468,100},{"n",754,84},{"n",6072,80},{"n",2396,75},{"n",221223,75},{"n",5057,71},{"n",5045,67},{"n",5044,67}},t="item",text="Silk Cloth"}},r=26,side="H",xp=1650,zone=215}
+Q[99198]={l=60,n="A Donation of Mageweave",obj={{id=4338,qty=60,src={{"n",222286,100},{"n",221407,83},{"n",6000,79},{"n",6003,79},{"n",6184,78},{"n",5241,78},{"n",6127,77},{"n",5976,77},{"n",5997,77},{"n",6188,77},{"n",6125,77},{"n",6126,77}},t="item",text="Mageweave Cloth"}},r=40,side="H",xp=3300,zone=215}
+Q[99205]={l=60,n="Swift as the Wind",obj={{qty=1,t="event",text="Learn: Journeyman Riding"}},r=60,races=8,side="A",zone=1657}
+Q[99207]={l=60,n="Swift as the Wind",obj={{qty=1,t="event",text="Learn: Journeyman Riding"}},r=60,races=64,side="A",zone=1}
+Q[99257]={l=43,n="A Heart of Crystal",next=99258,obj={{id=286647,qty=1,t="item",text="Depleted Crystal Heart"}},r=35,xp=3600,zone=16651}
+Q[99258]={kind="group",l=43,n="Mana Mania",obj={{id=276401,qty=1,t="kill",text="Nascent Pylon Protector slain"}},prev=99257,provided={286648},r=35,xp=4450,zone=16651}
+Q[99260]={en={252475},l=10,n="Fillion's Mission",next=92840,prev=92850,r=5,races=4294967296,side="A",sn={253285},sort=-2,xp=85}
+Q[99267]={en={271866},l=60,n="An Unfortunate End",r=1,side="A",sn={271866},sort=-2}
+Q[99326]={l=40,n="Your First Horse",obj={{id=276789,qty=1,src={{"n",276789,0}},t="kill",text="Pinto Horse"},{id=276788,qty=1,src={{"n",276788,0}},t="kill",text="Brown Horse"},{id=276790,qty=1,src={{"n",276790,0}},t="kill",text="Chestnut Mare"}},r=40,races=1,side="A",zone=267}
+Q[99411]={en={277182},l=7,money=175,n="Kyle's Gone Missing!",obj={{id=277154,qty=1,src={{"n",277154,0}},t="kill",text="Kyle Fed"},{id=287505,qty=1,t="item",text="Tender Strider Meat"}},r=5,races=50,side="H",sn={277182},xp=630,zone=215}
 end)()
 ;(function()
 N[3]={lv={24,25},n="Flesh Eater",p={[1431]={214346,214360,214372,214382,218346,220342,220358,220384,220386,222324,222370,222396,224328,226334,226362,226374,228384,228396,230390,238374,238396,242382,244390,252384,254334,254344,254352,254360,254374,254388,256350,256372,256384,256392,258362,260322,260340,260398,262332,266334}},ra=-1,rh=-1}
@@ -6164,6 +6064,7 @@ N[213]={lv={19,20},n="Starving Dire Wolf",p={[1431]={90402,92464,102604,104300,1
 N[215]={lv={24,25},n="Defias Night Runner",p={[1431]={204642,210616,218702,226654,228656,234634,238644,248688,484738,488732,488738,492716,502734,502736,504708,506750,508710,512744,516778,520770,524740,548730,564724,564726}},ra=-1,rh=-1}
 N[217]={lv={19,20},n="Venom Web Spider",p={[1431]={98380,122550,150274,188278,238278,278290,286308,288296,348244,424204,424208}},ra=-1,rh=-1}
 N[218]={lv={24,25},n="Grave Robber",p={[1431]={134448,142456,144434,144444,144450,146444,148448,150458,150466,154434,156442,156454,160462,186546,192494,192508,194478,194504,196478,198452,198460,198468,200492,200498,202440,204432,208424,212434,212438,212458,216432,220438}},ra=-1,rh=-1}
+N[219]={elite=1,n="Groundskeeper Lomar",p={[1417]={270572}}}
 N[227]={lv={26,26},n="Mabel Solaj",p={[1431]={738456,740448}},ra=1}
 N[228]={lv={24,24},n="Avette Fellwood",p={[1431]={730444,732448}},ra=1}
 N[232]={lv={23,23},n="Farmer Ray",p={[1424]={324358,326358,330350,332366,336354,338358,340366}},ra=1,rh=-1}
@@ -6409,6 +6310,10 @@ N[751]={lv={43,44},n="Marsh Flesheater",p={[1435]={604854,608834,624808,624872,6
 N[752]={lv={44,45},n="Marsh Oracle",p={[1435]={604854,604856,608834,608868,622872,624876,624888,628806,628898,630910,632804,632848,632884,632886,634844,634864,636802,636870,638912,642884,642886,644902,646886,884784,886784,940304,942522,944600,944612,946614,948504,948594,948600,952512,954248,970200}},ra=-1,rh=-1}
 N[754]={lv={31,32},n="Rebel Watchman",p={[1434]={380034,380036,384048,386050}},ra=1,rh=-1}
 N[757]={lv={35,36},n="Lost One Fisherman",p={[1435]={430390,432384,436312,482302,486302,544302,548294,548302,548306,564274,564276,570272,576268}},ra=-1,rh=-1}
+N[759]={lv={36,37},n="Lost One Hunter",p={[1435]={544300,548302,548306,554288,556290,558284,564252,564256,566252,566256,572244,576234,576238,576250,582266,584264,586264,614224,614226,618224,618234,624238,626234,626238,628246,644234,644236,646236,648208,648220,648230,656214,656216}},ra=-1,rh=-1}
+N[760]={lv={36,37},n="Lost One Muckdweller",p={[1435]={562316,566318,582236,584248,588234,590244,590246,596240,604266,612252,612266,614264,616264,616266,622190,626188,628260,630184,632172,634210,634254,636216,640172,640256,642206,644184,644186,644204,644252,646184,646186,646202,646250,646256,648210,664176,674214}},ra=-1,rh=-1}
+N[761]={lv={37,38},n="Lost One Seer",p={[1435]={594214,596214,598238,600224,600228,606206,606222,608226,610244,616212,616240,640232,644200,644222,646226,648220,650210,652192,652198,656202}},ra=-1,rh=-1}
+N[762]={lv={37,38},n="Lost One Riftseeker",p={[1435]={600224,600228,606224,608232,610240,618208,640232,642236,644222,646222,646226,650202,650206}},ra=-1,rh=-1}
 N[764]={lv={38,39},n="Swampwalker",p={[1435]={114362,114386,122374,124324,124364,132348,136334,136346,136356,136374,144318,144390,152410,154354,154372,162366,164394,170368,454422,460376,464364,466428,476376,492350,500366,508420,510366,512384,512404,544324}},ra=-1,rh=-1}
 N[765]={lv={39,40},n="Swampwalker Elder",p={[1435]={74314,74324,78334,80340,84304,84320,86352,90314,92340,94320,94334,96294,100366,102304,104350,106316,106340,106370,114380,114386,116312,116362,118322,118350,124328,124338,124372,124388,130358,136320,136334,136338,136374,138360,138384,154356}},ra=-1,rh=-1}
 N[766]={lv={40,41},n="Tangled Horror",p={[1435]={74314,82338,84302,88356,560384,560426,562504,564362,572528,574350,574538,584440,588480,608352,666232,672314,674302,702232,704332,712348,714724,722258,730296,732326,740716,760752,760826,762304,764836,772774,822736,836748,840718,844664}},ra=-1,rh=-1}
@@ -6446,7 +6351,6 @@ N[837]={lv={5,5},n="Branstock Khalder",p={[1426]={286664,286666}},ra=1}
 N[840]={lv={42,42},n="Watcher Backus",p={[1431]={722350,722364,722366,724340,724378,726336,726382,728332,728386,736394,738396,744408,746414,746420,746426,748438}},ra=1,rh=-1}
 N[843]={lv={15,15},n="Gina MacGregor",p={[1436]={574540,576540}},ra=1,rh=-1}
 N[844]={lv={35,35},n="Antonio Perelli",p={[1429]={424666,426664,426666,688716,750724},[1431]={194606,196606,508666,750464},[1433]={288474,288476,296478},[1436]={568536,572530,574242,574286,574522,578650,584206,586202,596200,604190}},ra=1,rh=-1}
-N[854]={lv={36,37},n="Young Jungle Stalker",p={[1434]={304434,304440,306440,308434,312446,316436,318424,320430,322414}},ra=-1,rh=-1}
 N[855]={lv={30,31},n="Young Stranglethorn Raptor",p={[1434]={234154,244154,244158,246154,250158,256158}},ra=-1,rh=-1}
 N[858]={lv={36,37},n="Sorrow Spinner",p={[1435]={60512,164552,192532,204432,206552,220594,222634,224372,224622,240622,244590,254498,260462,262612,264594,268446,274634,288634,294520,294532,312506,322516,328288,344544,354306,362312,372294,384372,384454,390304,404294,408294,432424,434442,474348,482356}},ra=-1,rh=-1}
 N[859]={lv={33,33},n="Guard Berton",p={[1433]={264464,264466,266462,266468}},ra=1,rh=-1}
@@ -6467,11 +6371,13 @@ N[895]={lv={5,5},n="Thorgas Grimson",p={[1426]={290674,290676}},ra=1}
 N[898]={lv={26,27},n="Nightbane Worgen",p={[1431]={568304,574310,582292,592250,598684,600358,612658,614654,616650,618524,620490,624682,624688,626682,632338,632560,648352,662416,670428,674390}},ra=-1,rh=-1}
 N[900]={lv={30,30},n="Bailiff Conacher",p={[1433]={294444,296442}},ra=1}
 N[903]={lv={30,30},n="Guard Howe",p={[1433]={314580,316572,316578}},ra=1,rh=-1}
+N[906]={lv={10,10},n="Maximillian Crowe",p={[1429]={444660}},ra=1}
 N[909]={lv={25,26},n="Defias Night Blade",p={[1431]={214720,214728,222716,224714,232728,234714,234716,236714,236718,236732,244704,474776,476754,476774,476776,478760,484786,492784,492786,494764,494770,496754,496774,498778,500788,502762,506758,506770,506778,508786}},ra=-1,rh=-1}
 N[910]={lv={26,27},n="Defias Enchanter",p={[1431]={210722,214728,216732,218718,232716,234714,236714,244720,484766,486764,486776,494768,502772,504764,504776,506762,506770,506776}},ra=-1,rh=-1}
 N[911]={lv={5,5},n="Llane Beshere",p={[1429]={502422}},ra=1}
 N[912]={lv={5,5},n="Thran Khorman",p={[1426]={288672}},ra=1}
 N[913]={lv={12,12},n="Lyria Du Lac",p={[1429]={410658}},ra=1}
+N[914]={lv={60,60},n="Ander Germaine",p={[1453]={782472,782476,786466}},ra=1}
 N[915]={lv={5,5},n="Jorik Kerridan",p={[1429]={504398,506400}},ra=1}
 N[916]={lv={5,5},n="Solm Hargrin",p={[1426]={284674,284676}},ra=1}
 N[917]={lv={11,11},n="Keryn Sylvius",p={[1429]={438658}},ra=1}
@@ -6502,19 +6408,24 @@ N[950]={lv={50,50},n="Swamp Talker",p={[1435]={604852,604860,604870,606852,60685
 N[951]={lv={27,27},n="Brother Paxton",p={[1429]={494404,496404}},ra=1}
 N[952]={lv={50,50},n="Brother Neals",p={[1429]={494414,494416}},ra=1}
 N[955]={lv={10,10},n="Sergeant De Vries",p={[1429]={240730}},ra=1}
+N[956]={lv={22,22},n="Dorin Songblade",p={[1433]={308464,308466}},ra=1}
 N[958]={lv={35,35},n="Dawn Brightstar",p={[1429]={648692}},ra=1}
 N[960]={lv={30,30},n="Gunder Thornbush",p={[1431]={738450}},ra=1}
 N[963]={lv={10,10},n="Deputy Rainer",p={[1429]={242744,242746}},ra=1}
 N[978]={lv={38,38},n="Kurzen Subchief",p={[1434]={488048,492064,492066,492076,494040,496040,496058}},ra=-1,rh=-1}
+end)()
+;(function()
 N[979]={lv={38,38},n="Kurzen Shadow Hunter",p={[1434]={484056,486050,492064,492066,494040,496058,498038}},ra=-1,rh=-1}
 N[982]={lv={45,45},n="Thultash",p={[1435]={464542,464548,466540}},rh=1}
 N[983]={lv={45,45},n="Thultazor",p={[1435]={458530}},rh=1}
+N[985]={lv={50,50},n="Malosh",p={[1435]={448574,448576}},rh=1}
+N[986]={lv={50,50},n="Haromm",p={[1435]={478574,480578}},rh=1}
+N[987]={lv={50,50},n="Ogromm",p={[1435]={472532,476532}},rh=1}
+N[988]={lv={50,50},n="Kartosh",p={[1435]={484554,484556,486554,486556}},rh=1}
 N[989]={lv={50,50},n="Banalash",p={[1435]={444570,446568}},rh=1}
 N[1007]={lv={20,21},n="Mosshide Gnoll",p={[1437]={552740,560742,560746,604714,604716,604726,610598,610714,610726,612672,612718,614690,614738,616690,618704,618712,618736,620734,624674,624682,624718,626674,626680,626694,626726,628706,630696,634622,634626,636622,640614,644632,644638,644646,646624,646632,646638,646646,650658,652680}},ra=-1,rh=-1}
 N[1008]={lv={21,22},n="Mosshide Mongrel",p={[1437]={564750,594554,594560,594582,604582,604594,604714,604724,606576,606586,608714,608726,612564,612574,612602,612676,612736,614690,616574,616724,620588,620700,620706,624674,624680,624692,626566,632706,634624,636606,640624,640634,644646,646624,646630,646646,650656,652676,654670}},ra=-1,rh=-1}
 N[1009]={lv={22,23},n="Mosshide Mistweaver",p={[1437]={388340,434344,436344,436346,452318,454344,454346,456344,456346,514308,528274,528276,602580,610584,624692,626692}},ra=-1,rh=-1}
-end)()
-;(function()
 N[1010]={lv={22,23},n="Mosshide Fenrunner",p={[1437]={262372,278352,294350,298372,332336,334350,342344,354320,360346,380336,388338,396338,398334,432334,434344,436356,444314,444334,446342,448352,450314,450316,454356,456344,514308,522274,526284,594582,602586,604584,610580,610586,612564,618614,636598,642568,642626,644618,646554}},ra=-1,rh=-1}
 N[1011]={lv={23,24},n="Mosshide Trapper",p={[1437]={264368,270352,282298,282352,286380,288302,294350,296354,298372,304332,308318,314314,322332,322360,332332,334336,334350,342344,342346,354320,360346,362344,394342,396344,396346,424316,424330,424336,426308,426324,426336,430332,436344,436346}},ra=-1,rh=-1}
 N[1012]={lv={24,25},n="Mosshide Brute",p={[1437]={280292,282296,284316,290328,300308,302296,302336,304292,304322,308304,314328,316312,318324,318340,320284,320302,322330,328278,346302,352274,364294,368292,374282,378296,384306,384318,388294,392276,394262,396304,400274,404282,406286,408264,408276,424318,424328,428310,428324,428336}},ra=-1,rh=-1}
@@ -6554,6 +6465,7 @@ N[1065]={lv={12,13},n="Riverpaw Shaman",p={[1436]={404200,412208,414204,416180,4
 N[1068]={lv={40,40},n="Gorn",p={[1418]={28458}},ra=-1,rh=1}
 N[1070]={lv={33,33},n="Deputy Feldon",p={[1433]={304604,308594,308600,308606}},ra=1,rh=-1}
 N[1071]={lv={35,35},n="Longbraid the Grim",p={[1437]={498182}},ra=1,rh=-1}
+N[1072]={lv={30,30},n="Roggo Harlbarrow",p={[1437]={498182}},ra=1,rh=-1}
 N[1073]={lv={27,27},n="Ashlan Stonesmirk",p={[1437]={500182}},ra=1,rh=-1}
 N[1074]={lv={30,30},n="Motley Garmason",p={[1437]={496182}},ra=1,rh=-1}
 N[1075]={lv={25,25},n="Rhag Garmason",p={[1437]={498182}},ra=1,rh=-1}
@@ -6685,6 +6597,7 @@ N[1268]={lv={10,10},n="Ozzie Togglevolt",p={[1426]={458492}},ra=1}
 N[1269]={lv={20,20},n="Razzle Sprysprocket",p={[1426]={458492}},ra=1}
 N[1270]={lv={29,30},n="Fetid Corpse",p={[1431]={752334,752364,752372,754338,756334,758354,758356,764342,764374,764376,766342,766366,768310,770328,770348,772324,774356,776334,776344,776348,780368,782314,782318,784360,786354,786358,790338,792314,794316,798328,806336,810324,810326}},ra=-1,rh=-1}
 N[1274]={lv={50,50},n="Senator Barin Redstone",p={[1455]={394558,394570,396556,396570}},ra=1}
+N[1275]={lv={30,30},n="Kyra Boucher",p={[1453]={562650,566648}},ra=1}
 N[1284]={elite=3,lv={9999,9999},n="Archbishop Benedictus",p={[1453]={394274,394276,396274,396276}},ra=1}
 N[1286]={lv={30,30},n="Edna Mullby",p={[1453]={580606,582604}},ra=1}
 N[1287]={lv={30,30},n="Marda Weller",p={[1453]={572570}},ra=1}
@@ -6693,10 +6606,10 @@ N[1302]={lv={30,30},n="Bernard Gump",p={[1453]={642610,646606}},ra=1}
 N[1303]={lv={30,30},n="Felicia Gump",p={[1453]={642604,642606,648604}},ra=1}
 N[1305]={lv={30,30},n="Jarel Moor",p={[1453]={282756,284752,286750}},ra=1}
 N[1307]={lv={50,50},n="Charys Yserian",p={[1453]={324800,326798,326806}},ra=1}
+N[1308]={lv={30,30},n="Owen Vaughn",p={[1453]={360744,360748}},ra=1}
 N[1309]={lv={30,30},n="Wynne Larson",p={[1453]={416766,418764}},ra=1}
 N[1311]={lv={30,30},n="Joachim Brenlow",p={[1453]={404902,404906,408898,410894,512938}},ra=1}
 N[1313]={lv={30,30},n="Maria Lumere",p={[1453]={464788,466788}},ra=1}
-N[1318]={lv={30,30},n="Jessara Cordell",p={[1453]={430642}},ra=1}
 N[1323]={lv={30,30},n="Osric Strang",p={[1453]={742474,742476,770612}},ra=1}
 N[1325]={lv={30,30},n="Jasper Fel",p={[1453]={778596,782584,782588}},ra=1}
 N[1326]={lv={25,25},n="Sloan McCoy",p={[1453]={764600,768598}},ra=1}
@@ -6707,6 +6620,7 @@ N[1343]={lv={30,30},n="Mountaineer Stormpike",p={[1432]={248182}},ra=1}
 N[1344]={lv={15,15},n="Prospector Ironband",p={[1432]={658654,658656}},ra=1}
 N[1345]={lv={15,15},n="Magmar Fellhew",p={[1432]={648664,648666}},ra=1}
 N[1347]={lv={30,30},n="Alexandra Bolero",p={[1453]={434740,436740}},ra=1}
+N[1351]={lv={30,30},n="Brother Cassius",p={[1453]={430264,434268}},ra=1}
 N[1353]={lv={29,29},n="Sarltooth",p={[1437]={324508,330512,332516,354476}},ra=-1}
 N[1356]={lv={30,30},n="Prospector Stormpike",p={[1455]={738130,744114,744120,746114,746120,746126}},ra=1}
 N[1364]={elite=1,lv={34,34},n="Balgaras the Foul",p={[1437]={460164,464166,466164,466188,468180,474150,616300,616316,618310}},ra=-1,rh=-1}
@@ -6722,6 +6636,8 @@ N[1387]={elite=1,lv={55,55},n="Thysta",p={[1434]={324292,326292}},ra=-1,rh=1}
 N[1388]={elite=1,lv={11,11},n="Vagash",p={[1426]={614470,622468,622480,622496,624462,624488,626462,632500,644500}},ra=-1}
 N[1393]={lv={19,20},n="Berserk Trogg",p={[1432]={672632,680686,682660,682684,684624,684628,686624,688632,688660,690636,690682,692666,696674,698660,700628,702622,704614,704644,704646,704678,706632,706652,706656,706666,706678,710642,720642,722682,724616,724652,724664,724670,726620,726628,726642,726652,726662,726666}},ra=-1}
 N[1397]={lv={8,9},n="Frostmane Seer",p={[1426]={402428,406434,408350,412342,412444,412456,414360,414448,416438,420344,420446,422350,422366,424358,426338,428366,430358}},ra=-1,rh=-1}
+N[1404]={lv={40,40},n="Kragg",p={[1434]={312284,312286}},ra=-1,rh=1}
+N[1411]={lv={47,47},n="Ian Strom",p={[1434]={268772}},ra=1,rh=1}
 N[1416]={lv={50,50},n="Grimand Elmore",p={[1453]={516122,516126,596340}},ra=1}
 N[1417]={lv={21,22},n="Young Wetlands Crocolisk",p={[1437]={136502,136544,146514,150472,154452,154502,158460,180498,184472,186514,194454,212444,264404,264408,286364,290344,304388,330372,338384,364362,374344,384360,500322,502360,504340,514388,518368,522412,526334,538424,550452,564476,594532,608536,618566,622596,634654,638696,638758}},ra=-1,rh=-1}
 N[1418]={lv={28,29},n="Bluegill Raider",p={[1437]={62736,64724,64726,70714,70724,72726,78714,78724,80702,80726,86724,88678,94664,94666,94688,94700,94714,94726,96664,96674,96676,96724,96726,98686,102700,102710,108714,112652,112656,118632,118642,120666,124652,124662,126652,130634,134642,136642}},ra=-1,rh=-1}
@@ -6746,11 +6662,13 @@ N[1453]={lv={25,25},n="Dewin Shimmerdawn",p={[1437]={80562}},ra=1}
 N[1454]={lv={25,25},n="Jennabink Powerseam",p={[1437]={80558}},ra=1}
 N[1456]={lv={25,25},n="Kersok Prond",p={[1437]={104604,104606,106604,106606}},ra=1}
 N[1457]={lv={25,25},n="Samor Festivus",p={[1437]={104602,106602}},ra=1}
+N[1463]={lv={25,25},n="Falkan Armonis",p={[1437]={84564,84566}},ra=1}
 N[1464]={lv={30,30},n="Innkeeper Helbrek",p={[1437]={106608}},ra=1}
 N[1465]={lv={15,15},n="Drac Roughcut",p={[1432]={354488,356490}},ra=1}
 N[1466]={lv={24,24},n="Gretta Finespindle",p={[1455]={390324,390328,392336,396338}},ra=1}
 N[1470]={lv={25,25},n="Ghak Healtouch",p={[1432]={370492}},ra=1}
 N[1474]={lv={15,15},n="Rann Flamespinner",p={[1432]={360460}},ra=1}
+N[1480]={lv={20,20},n="Caitlin Grassman",p={[1437]={116584,118586}},ra=1}
 N[1481]={lv={20,20},n="Bart Tidewater",p={[1437]={78574,84584,84586,86578,86586,88598}},ra=1,rh=-1}
 N[1488]={lv={43,44},n="Zanzil Zombie",p={[1434]={342520,342526,344502,344510,346504,346518,346526,348506,384566,386584,386586,388596,394574,396592,396596,398572,398578,406598,408582,408590,412572,416564,416566}},ra=-1,rh=-1}
 N[1489]={lv={43,44},n="Zanzil Hunter",p={[1434]={344510,344520,346518,348504,348506,386566,386586,388576,388596,396592,398572,400580,404598,406600,408582,408590,412572,416564,416566}},ra=-1,rh=-1}
@@ -6837,6 +6755,7 @@ N[1664]={lv={11,11},n="Captain Vachon",p={[1420]={794558,796558,798554}},ra=-1,r
 N[1665]={lv={12,12},n="Captain Melrache",p={[1420]={794254,794260,794266,796252,796262,796268}},rh=-1}
 N[1667]={lv={5,5},n="Meven Korgal",p={[1420]={360684,364686,364696,366682,366686,366696}},rh=-1}
 N[1672]={lv={5,5},n="Lohgan Eva",p={[1431]={756446,758444}},ra=1}
+N[1673]={lv={7,7},n="Alyssa Eva",p={[1431]={760452}},ra=1}
 N[1674]={lv={6,7},n="Rot Hide Gnoll",p={[1420]={564344,564352,564384,572332,572368,574342,574360,574396,576376,582386,582412,584334,584424,584436,586334,586342,586364,586388,586414,586426,588382,588400,590448,598370,600340,600350,608376,610364}},ra=-1,rh=-1}
 N[1675]={lv={7,8},n="Rot Hide Mongrel",p={[1420]={564334,564336,570388,574322,574334,574344,574348,574374,576344,582304,582346,582368,584312,584318,584326,584364,586312,586346,586362,588318,588370,588376,594328,594336,596312,596316,596336,596382,598334,602362,602374,604386,606324,606388,608326,608336,608372,608378,610346,610362}},rh=-1}
 N[1678]={lv={10,10},n="Vernon Hale",p={[1433]={274474,274476,276474,276478}},ra=1,rh=-1}
@@ -6893,10 +6812,11 @@ N[1796]={lv={55,56},n="Freezing Ghoul",p={[1422]={518654,520666,524630,524644,52
 N[1797]={lv={12,13},n="Giant Grizzled Bear",p={[1421]={344154,352196,356182,358164,362204,390144,390156,404186,408156,408178,414214,424234,440164,462188,466174,484704,502660,506612,510676,512524,512586,512622,514552,532644,536548,540560,544694,546522,548720,548738,560676}},ra=-1,rh=-1}
 N[1802]={lv={56,58},n="Hungering Wraith",p={[1422]={612572,612596,614582,614594,616574,616592,618606,620584,620596,624564,626586,630598,634554,634556,634574,634576,636548,638556,638570,638584,638596,642586,646582,646590,650574,652596}},ra=-1,rh=-1}
 N[1804]={lv={56,57},n="Wailing Death",p={[1422]={612596,614574,614582,614594,614608,616592,618606,620596,624552,624564,624574,624576,626554,626586,628556,630614,630616,632596,634568,634576,636602,636608,638586,642582,644564,644566,646566,646590,646598,650564,650578,650606}},ra=-1,rh=-1}
-N[1805]={elite=1,lv={56,57},n="Flesh Golem",p={[1422]={404702,406704,414708,434708,436678,438706,440704,446698,454694,464692,464696,466684,466692,466696}},ra=-1,rh=-1}
 N[1809]={lv={50,52},n="Carrion Vulture",p={[1420]={662604,684610,718630,738466,754526,762686,774584,780708,786672,802600,802624,802684,806654,806692,808594,808678,808712,810672,812656,814696,816670,818690,818702,822556,822706,830684,830690,832706,832722,834704,836704,838524,846702,848710},[1422]={294608,298544,300646,302622,302630,304560,306602,308564,308582,308638,310550,310614,312586,316552,316568,318636,320584,320586,322620,328560,328630,330588,330620,332574,332646,336606,336678,338570,348642,350624,350632}},ra=-1,rh=-1}
 N[1815]={lv={51,52},n="Diseased Black Bear",p={[1420]={762612,786652,800668,812696,814406,814428,820702,822706,824522,830706,834704,836706,842704,846704,846708},[1422]={284574,288588,294552,294608,300644,304580,308624,308636,324554,332576,332664,334604,336536,340642,342618,354524,356604,358624,360684,362672,364654,390628}},ra=-1,rh=-1}
 N[1816]={lv={55,56},n="Diseased Grizzly",p={[1422]={522512,522546,524584,530494,532614,534482,536524,538604,546452,546474,558646,560494,560606,562512,562546,562582,562620,590608,594546,596488,598524,608508,614486,620472,632444,636474,640508,652494,652542,654444,660456,660484,660556,662574,678452}},ra=-1,rh=-1}
+end)()
+;(function()
 N[1817]={lv={53,54},n="Diseased Wolf",p={[1422]={400482,422546,424470,434398,434496,434578,444322,444372,454442,456450,460372,462470,462594,464398,466306,468298,484612,500464,504532,508642,510314,510516,512574,514694,524344}},ra=-1,rh=-1}
 N[1821]={lv={52,53},n="Carrion Lurker",p={[1422]={412490,422546,424470,424564,434578,440504,444370,444462,444592,446426,446452,448324,450404,458460,462374,464490,464594,468286,468394,468418,470454,486260,488372,490384,492594,492614,500340,502464,504634,508316,508536,508640,512506,512580,512604,514474,514694,516608,524344}},ra=-1,rh=-1}
 N[1822]={lv={50,51},n="Venom Mist Lurker",p={[1420]={798666,806686,814698,820704,824706,832704,834706,836706,842704,846704,846708},[1422]={284574,288588,294552,294608,300644,304578,306628,310550,320646,330570,330588,330646,332664,334608,336536,354524,356624,362662,364634,392626}},ra=-1,rh=-1}
@@ -6915,8 +6835,6 @@ N[1867]={lv={13,14},n="Dalaran Apprentice",p={[1421]={490694,494604,494608,49467
 N[1869]={lv={14,15},n="Ravenclaw Champion",p={[1421]={524322,530316,532314,532340,532354,534332,534358,536312,536334,536336,536354,538356,544324,548314,552322,554328,554340,556314,556322,556338,560334,560348,570324,570326,576328,578336}},ra=-1,rh=-1}
 N[1872]={lv={12,12},n="Tharek Blackstone",p={[1426]={460516}},ra=1}
 N[1888]={lv={18,19},n="Dalaran Watcher",p={[1421]={560766,560782,574774,574784,578784,588766,592762,592778,598766,598794,598796,600760,604744,604780,610780,612794,612796,614764,614766,616758,616770,618746,620782,622798,624730,626744,626772,626782,628608,630602,632594,638774,638784,646788}},ra=1,rh=0}
-end)()
-;(function()
 N[1889]={lv={19,20},n="Dalaran Wizard",p={[1421]={560764,562766,574774,576774,584776,594778,600780,610780,620684,620686,622764,624706,624768,624782,626710,628720,628760,628782,632652,636784,638588,640568,640738,644786,646788,648740,648754,648764,648766,650496,652776,658758,660782,660786}},ra=1,rh=0}
 N[1890]={lv={2,3},n="Rattlecage Skeleton",p={[1420]={314604,314606,320602,320610,322594,322618,322626,326610,328604,330616,330632,330636,332594,336608,336628,336646,338618,344644,346644,346646}},rh=0}
 N[1891]={elite=1,lv={13,14},n="Pyrewood Watcher",p={[1421]={430730,440722,444734,448734,452724,454740,454746,456722,456744,456746,464730,466728,474722,474736,484720,484726,486718}},ra=1,rh=-1}
@@ -6925,6 +6843,7 @@ N[1893]={elite=1,lv={14,15},n="Moonrage Sentry",p={[1421]={434730,436730,444724,
 N[1894]={elite=1,lv={14,15},n="Pyrewood Sentry",p={[1421]={434730,436730,442736,444724,448734,452714,452724,454742,454750,456746,460730,460742,468726,474722,474736,478722,480728,486718}},ra=1,rh=-1}
 N[1895]={elite=1,lv={14,15},n="Pyrewood Elder",p={[1421]={434730,436730,452714,452722,452734,454740,454746,456742,462728,464718,466726,470724,474738,480724,480732}},ra=1,rh=-1}
 N[1896]={elite=1,lv={14,15},n="Moonrage Elder",p={[1421]={434730,436730,452714,452724,452734,454742,454746,456742,460730,464720,466726,470724,474738,476722,480732,486718}},ra=-1,rh=-1}
+N[1901]={lv={45,45},n="Kelstrum Stonebreaker",p={[1455]={670894,670896,672884}},ra=1}
 N[1907]={lv={43,44},n="Naga Explorer",p={[1434]={240624,240638,244598,244614,244628,244646,246614,246616,246630,246646,250592,250604,250636,256630,256636,258594,260608,260622,262604,268592,268636,270602,270612,270622,272630,278614,278622,278628,280646,282642,288620}},ra=-1,rh=-1}
 N[1908]={lv={19,20},n="Vile Fin Oracle",p={[1421]={642422,644412,652436,664480,668484,668486,674196,674450,674456,696184,708086,710188,712184,716112,720184,722186,730160,730172,730184,730186,736184}},ra=-1,rh=-1}
 N[1909]={lv={18,19},n="Vile Fin Lakestalker",p={[1421]={640208,642216,644194,644198,644408,646214,646432,648200,654222,656458,658192,658196,658450,664470,668462,668468,670210,674444,674492,676496,682184,694208,704220,708192,714094,714212,724164,724166,730166,734158,734192,738158,740176,742188,744172,746174,750184,752158,756172}},ra=-1,rh=-1}
@@ -7040,6 +6959,7 @@ N[2122]={lv={5,5},n="David Trias",p={[1420]={324656,326656}},rh=1}
 N[2123]={lv={5,5},n="Dark Cleric Duesten",p={[1420]={310660}},rh=1}
 N[2124]={lv={5,5},n="Isabella",p={[1420]={308660}},rh=1}
 N[2126]={lv={5,5},n="Maximillion",p={[1420]={308662}},rh=1}
+N[2127]={lv={15,15},n="Rupert Boch",p={[1420]={616524,616526}},rh=1}
 N[2128]={lv={14,14},n="Cain Firesong",p={[1420]={618524}},rh=1}
 N[2129]={lv={17,17},n="Dark Cleric Beryl",p={[1420]={616522}},rh=1}
 N[2130]={lv={13,13},n="Marion Call",p={[1420]={616520}},rh=1}
@@ -7164,6 +7084,7 @@ N[2358]={lv={34,35},n="Dalaran Summoner",p={[1416]={110786,114758,128762,150764,
 N[2359]={lv={33,34},n="Elemental Slave",p={[1416]={102788,104764,110752,136776,138788,160754,160768,160786,184544,188748,188770,188786,190576,194730,204542,204594,204612,206570,206708,206734,206752,206764,212640}},ra=1,rh=0}
 N[2360]={lv={22,23},n="Hillsbrad Farmhand",p={[1424]={300382,312362,312366,316358,318382,320354,320386,322374,332358,334400,334410,336402,336408,342422,342426,350418,350426,352386,352408,354378,354400,356400,356424,358408,360426,364394,366394,366396,368410}},ra=1,rh=-1}
 N[2361]={lv={15,15},n="Tamara Armstrong",p={[1424]={508584,510586}},ra=1,rh=-1}
+N[2366]={lv={40,40},n="Barkeep Kelly",p={[1424]={514584,514586,516586}},ra=1,rh=-1}
 N[2368]={lv={28,29},n="Daggerspine Shorestalker",p={[1424]={594740,600744,602754,602756,612754,614760,614766,616754,616760,618770,626764,630778,634770,642772,644784,644786,646774,646784,648794,650800,652806,654816,654828,660794,660810,660820,660838,660850,662796,664828,664856,666806,666826,666836,666852,668792,668800,670864,672870}},ra=-1,rh=-1}
 N[2369]={lv={30,31},n="Daggerspine Shorehunter",p={[1424]={514664,524648,524680,526650,526656,526680,534634,534666,544646,544680,546686,548646,550644,554664,556642,556662,558724,560650,574664,578684,578758,580690,582714,582720,584740,584746,586724,586740,586770,588730,588746,596718,604744}},ra=-1,rh=-1}
 N[2370]={lv={29,30},n="Daggerspine Screamer",p={[1424]={614760,616760,624772,628764,630778,634770,638768,644764,646764,658802,660794,664824,664828,666806,666858,668800}},ra=-1,rh=-1}
@@ -7172,6 +7093,7 @@ N[2374]={lv={28,29},n="Torn Fin Muckdweller",p={[1424]={230644,234646,236644,244
 N[2375]={lv={29,30},n="Torn Fin Coastrunner",p={[1424]={230644,236644,236646,246638,248682,250690,252696,254712,256710,268714,268716,274726,276724,280726,296736,298724,304732,306730,322722,322726,324712,326722,328726,330714,334694,334696,336714,342694,342696,348700,348706}},ra=-1,rh=-1}
 N[2376]={lv={30,31},n="Torn Fin Oracle",p={[1424]={354664,354666,356664,356666,358684,360686,366694,374662,374666,380694,380696,386688,404692,406692,412678,416702,424692,426690,428684,436686,440660,442674,442676,446674,446676,454664,456654,456660,456666,460638,462630,478660,486648,486656,488644,490624}},ra=-1,rh=-1}
 N[2377]={lv={31,32},n="Torn Fin Tidehunter",p={[1424]={348676,350674,358680,360686,364696,374664,376696,404684,404692,410702,412694,414678,418692,420674,420678,430702,432670,434680,436662,440668,444654,448652,448676,450668,454644,454662,462630,462654,462666,474646,486646,490624,490632}},ra=-1,rh=-1}
+N[2378]={lv={34,34},n="Kundric Zanden",p={[1424]={486590,486596}},ra=1,rh=-1}
 N[2380]={lv={34,34},n="Nandar Branson",p={[1424]={508570}},ra=1,rh=-1}
 N[2381]={lv={40,40},n="Micha Yance",p={[1424]={490550}},ra=1,rh=-1}
 N[2382]={lv={30,30},n="Darren Malvew",p={[1424]={524560}},ra=1,rh=-1}
@@ -7187,6 +7109,7 @@ N[2393]={lv={32,32},n="Christoph Jeffcoat",p={[1424]={622190}},rh=1}
 N[2394]={lv={32,32},n="Mallen Swain",p={[1424]={620210}},ra=-1,rh=1}
 N[2396]={lv={32,32},n="Hans Zandin",p={[1424]={546356,552292,552304,556276,558310,564300,564316,568290,580276,582254,582262,582272,586292,590192,590228,590242,590248,596236,598260,600200,608220,608278,612242,614234,614246,614266,616234,616240,616246,622272,626238,626282,628260}},ra=-1,rh=1}
 N[2397]={lv={32,32},n="Derak Nightfall",p={[1424]={630194,630196}},ra=-1,rh=1}
+N[2402]={lv={32,32},n="Shara Blazen",p={[1424]={634208,636210}},rh=1}
 N[2403]={lv={24,24},n="Farmer Getz",p={[1424]={352380,352386,352404,354406,356406,364394,364396,366394,366396}},rh=-1}
 N[2404]={lv={26,26},n="Blacksmith Verringtan",p={[1424]={318466,320456,320476,322452,324444,326444,326446,326468,328456,332432,336436,336450}},ra=1,rh=-1}
 N[2406]={lv={32,33},n="Mountain Lion",p={[1416]={298816,304840,308762,310802,324798,328840,330810,334872,340838,344854,352820,362842,366852,372872,374894,380902,392912,394854,394864,396898,396930,398888,424784,434804,440794,444766,460762,486756,492744,670518},[1424]={386234,390244,392248,392256,532124,532132}},ra=-1,rh=-1}
@@ -7267,6 +7190,7 @@ N[2554]={lv={32,33},n="Witherbark Axe Thrower",p={[1417]={598738,604724,614714,6
 N[2555]={lv={33,34},n="Witherbark Witch Doctor",p={[1417]={308434,316458,324448,612720,628676,632674,644714,644728,652684,660716,662634,670736,680712,680734,682744,684760,692616,698614,698664,704704,706684,708690,712672,714656,716634,716642,718614,718622,724658,728644,736646}},ra=-1,rh=-1}
 N[2556]={lv={34,35},n="Witherbark Headhunter",p={[1417]={598714,626730,634714,642684,660814,662694,664798,668700,674774,674818,676778,676818,678768,680724,680732,680794,682714,682744,684764,684806,688718,688736,688786,690730,698718,698778,700684,702790,704700,706692,708670,714630,714658,718628,724644}},ra=-1,rh=-1}
 N[2557]={lv={35,36},n="Witherbark Shadow Hunter",p={[1417]={662806,662818,664794,664798,666804,668814,670788,674774,674782,674818,676772,676784,676818,680794,682764,682798,684806,686786,686810,688816,692796,694784,696782,696812,700774,702790}},ra=-1,rh=-1}
+N[2558]={elite=1,lv={36,37},n="Witherbark Berserker",p={[1417]={226648,234662,242644,242648,242658,244622,244634}},ra=-1,rh=-1}
 N[2559]={lv={30,31},n="Highland Strider",p={[1417]={218368,228390,260244,280180,304182,324364,364512,384520,396722,398586,400432,428790,444662,454554,458548,462502,464394,470632,508410,516320,524444,534466,582366,584412,600456,644510,654364,660434,664340,666542,684360,688484,690516,692274,694304,760308},[1424]={680454,762578,768536,770576,774534,776534,778570,782542,786570,802552,808556,814566,824574,824576,830578,874476,906452}},ra=-1,rh=-1}
 N[2560]={lv={33,34},n="Highland Thrasher",p={[1417]={172474,182564,234510,294564,312656,314572,342610,346366,354296,354678,362244,384420,392688,408644,434344,464344,516612,550684,560682,576694,588638,616602}},ra=-1,rh=-1}
 N[2561]={lv={36,37},n="Highland Fleshstalker",p={[1417]={454764,460794,462768,464754,464806,466780,474734,474744,474818,476756,476794,478802,478826,486804,486812,494682,494704,496688,500680,502662,502706,504634,504644,504674,508662,510634,510682,516696,522646,524664,524676,526640,530686,540670,544634,544648,546676,556664}},ra=-1,rh=-1}
@@ -7276,6 +7200,7 @@ N[2564]={lv={33,34},n="Boulderfist Enforcer",p={[1417]={312438,318442,324448,324
 N[2565]={lv={35,36},n="Giant Plains Creeper",p={[1417]={442358,444318,446320,522606,568620,616696}},ra=-1,rh=-1}
 N[2566]={lv={35,36},n="Boulderfist Brute",p={[1417]={504798,508764,508766,514728,518740,518772,520746,522714,522716,522756,526758,530768,532746,534728,534742,536762,538746,542808,544736,544778,544786,546734,546736,546780,546794,546800,546806,550724}},ra=-1,rh=-1}
 N[2567]={lv={36,37},n="Boulderfist Magus",p={[1417]={504742,506744,514778,516776,522754,522756,530768,532744,536798,540714,540716,540776,544812,546812}},ra=-1,rh=-1}
+N[2569]={elite=1,lv={37,38},n="Boulderfist Mauler",p={[1417]={178682,180688,188676,190674,198654,200664,200674,200676,208686,212676,214670,216658,216670,218654,222676,230666,234662,238656,242650,244614,244622,244634,244636}},ra=-1,rh=-1}
 N[2570]={elite=1,lv={38,39},n="Boulderfist Shaman",p={[1417]={180684,180688,186662,188674,188676,194644,194646,194686,196644,196648,200674,200676,202692,208654,210658,210674,214682,216664,216668,216682}},ra=-1,rh=-1}
 N[2571]={elite=1,lv={39,40},n="Boulderfist Lord",p={[1417]={180686,182682,184674,186690,188676,190654,190660,190674,196688,198654,198676,200660,200674,208680,210674,216670}},ra=-1,rh=-1}
 N[2572]={lv={35,36},n="Drywhisker Kobold",p={[1417]={760442,762424,762426,770438,772434,774354,776354,776356,780396,782370,782394,784344,784380,784414,786344,786380,790356,792398,792412,794332,794348,798400,818396,820360,822368,822378,822390,828358}},ra=-1,rh=-1}
@@ -7292,6 +7217,8 @@ N[2590]={elite=1,lv={35,36},n="Syndicate Conjuror",p={[1417]={254622,254648,2546
 N[2591]={elite=1,lv={37,38},n="Syndicate Magus",p={[1417]={262652,264644,266644,266646,282604,282608,292614,292622,292626}},ra=-1,rh=-1}
 N[2594]={lv={37,37},n="Sprogger",p={[1434]={264734,264736,266736}},ra=1,rh=1}
 N[2595]={lv={38,39},n="Daggerspine Raider",p={[1417]={174884,184900,188852,192838,194902,204854,204856,204870,208894,210902,210914,212842,218868,220838,220854,220856,224902,228926,230904,230922,232844,232882,234864,234874,236842,238886,244862,248892,252904,254854,254870,256856}},ra=-1,rh=-1}
+end)()
+;(function()
 N[2596]={lv={39,40},n="Daggerspine Sorceress",p={[1417]={190896,192894,204848,206850,210842,218898,224844,226844,226846,234896,236844,236894,236896,238848}},ra=-1,rh=-1}
 N[2597]={elite=1,lv={40,40},n="Lord Falconcrest",p={[1417]={260644,260654,260656,266644}},ra=-1,rh=-1}
 N[2599]={elite=1,lv={38,38},n="Otto",p={[1417]={260644,260646,260656}},ra=-1,rh=-1}
@@ -7317,8 +7244,6 @@ N[2645]={elite=1,lv={48,49},n="Vilebranch Shadow Hunter",p={[1425]={592702,60070
 N[2646]={elite=1,lv={49,50},n="Vilebranch Blood Drinker",p={[1425]={580704,580708,580726,584662,584674,584678,584692,586662,586672,586684,586690,600734,600736,604648,604664,604684,604694,604706,604718,606654,608720,616724,632780,634800,634828,634836,640824,640826,642814,646818,654804,658820,664778,668802,668806,676774}},ra=-1,rh=-1}
 N[2647]={elite=1,lv={49,50},n="Vilebranch Soul Eater",p={[1425]={580704,580708,580724,584662,584674,584676,586672,586682,586690,600730,600738,602704,602714,604664,604678,606648,606686,606696,612724,616724,634800,634826,638826,640824,642806,654804,654810,658822,660802,664778,666806,670804,674778,676778}},ra=-1,rh=-1}
 N[2648]={elite=1,lv={50,51},n="Vilebranch Aman'zasi Guard",p={[1425]={544838,546836,548834,554848,556848,558834,560818,564808,564836,566836,566854,566856,570834,572684,572688,572822,574804,574808,574866,576690,576810,576816,576864,576866,580796,580828,582764,582766,584794,586788,590764,590770,594780,596780,602802,618814,648814}},ra=-1,rh=-1}
-end)()
-;(function()
 N[2649]={lv={40,41},n="Witherbark Scalper",p={[1425]={214574,216574,218552,218556,224576,226552,232584,232586,234564,234566,236564,236566,240584,240586,242550,246552,246590,252562,252578,252600,252606,254566}},ra=-1,rh=-1}
 N[2650]={lv={41,42},n="Witherbark Zealot",p={[1425]={214570,218564,218566,224554,224578,228564,234550,234572,234584,234586,236550,236574,236584,240586,244564,244600,246564,246566,246600,252580,252588}},ra=-1,rh=-1}
 N[2651]={lv={42,43},n="Witherbark Hideskinner",p={[1425]={274586,276574,278580,280588,288564,288566,294576,294612,296578,296612,302564,304574,304602,306574,306576,312586,314562,314598,316564,316598,320576,324572,324588,326564,326570,326588,326598,330582}},ra=-1,rh=-1}
@@ -7395,6 +7320,7 @@ N[2771]={lv={30,30},n="Drum Fel",p={[1417]={742338}},rh=1}
 N[2772]={lv={35,35},n="Korin Fel",p={[1417]={740332}},rh=1}
 N[2773]={elite=1,lv={40,40},n="Or'Kalar",p={[1417]={184662,186660,188652,190674,194684,194686,196654,196662,196684,196686,200672,206680,208654,208656,214666,216654,216664,216666}},ra=-1,rh=-1}
 N[2774]={lv={38,38},n="Doctor Draxlegauge",p={[1417]={338804,338806}},ra=1,rh=1}
+N[2782]={elite=1,lv={41,41},n="Caretaker Alaric",p={[1417]={292594,292596,296596,298594}},ra=1,rh=-1}
 N[2783]={elite=1,lv={40,40},n="Marez Cowl",p={[1417]={284610,284640,292612,292640,294616,296614,296616,296642}},ra=-1,rh=-1}
 N[2784]={elite=3,lv={9999,9999},n="King Magni Bronzebeard",p={[1455]={394554,394558,396556,400552}},ra=1,rh=-1}
 N[2785]={lv={30,30},n="Theldurin the Lost",p={[1418]={514764,514768,516764,516766}},ra=1,rh=1}
@@ -7419,7 +7345,6 @@ N[2830]={lv={37,39},n="Buzzard",p={[1418]={482552,494642,504596,504762,510548,51
 N[2831]={lv={39,41},n="Giant Buzzard",p={[1418]={136678,142606,142670,144602,148606,150600,150628,152618,154584,154586,156604,162574,162586,162614,162616,162626,164584,166574,166616,170600,172586,172610,174582,176582,176586,176600,176614,176620,178574,184746,186746,238780,250742}},ra=-1,rh=-1}
 N[2832]={lv={38,38},n="Nixxrax Fillamug",p={[1434]={270772}},ra=1,rh=1}
 N[2835]={elite=1,lv={55,55},n="Cedrik Prose",p={[1417]={456460}},ra=1,rh=-1}
-N[2836]={lv={54,54},n="Brikk Keencraft",p={[1434]={290754,290756}},ra=1,rh=1}
 N[2846]={lv={43,43},n="Blixrez Goodstitch",p={[1434]={282774,282776}},ra=1,rh=1}
 N[2848]={lv={45,45},n="Glyx Brewright",p={[1434]={280780}},ra=1,rh=1}
 N[2851]={elite=1,lv={55,55},n="Urda",p={[1417]={730326}},ra=-1,rh=1}
@@ -7502,19 +7427,27 @@ N[3001]={lv={35,35},n="Brek Stonehoof",p={[1456]={344574,344576,346574,346576}},
 N[3005]={lv={30,30},n="Mahu",p={[1456]={434438,438444,438446}},rh=1}
 N[3007]={lv={46,46},n="Una",p={[1456]={414426,416424,418426}},rh=1}
 N[3009]={lv={35,35},n="Bena Winterhoof",p={[1456]={468334,468336}},rh=1}
-N[3012]={lv={30,30},n="Nata Dawnstrider",p={[1456]={450384,450390,452400,456396,458382,458390}},rh=1}
 N[3013]={lv={35,35},n="Komin Winterhoof",p={[1456]={494392,498394,498398}},rh=1}
 N[3014]={lv={30,30},n="Nida Winterhoof",p={[1456]={492396,494382,494394,496392,498382,498396}},rh=1}
 N[3024]={lv={30,30},n="Tah Winterhoof",p={[1456]={534478,540474,542476,548476,550474}},rh=1}
 N[3027]={lv={40,40},n="Naal Mistrunner",p={[1456]={502516,504514,506512,510522,510528,514536,516534,518522}},rh=1}
 N[3029]={lv={40,40},n="Sewa Mistrunner",p={[1456]={552480,554472,558472,558476,566474,566476}},rh=1}
+N[3030]={lv={50,50},n="Siln Skychaser",p={[1456]={230204,230208,236204,236206}},rh=1}
+N[3031]={lv={40,40},n="Tigor Skychaser",p={[1456]={234192,234198,236192,238200}},rh=1}
 N[3032]={lv={60,60},n="Beram Skychaser",p={[1456]={222190,224198,226196,228194}},rh=1}
 N[3033]={lv={50,50},n="Turak Runetotem",p={[1456]={764274,764276,766274,766276}},rh=1}
+N[3034]={lv={60,60},n="Sheal Runetotem",p={[1456]={764274,764276,770274,770276,776280}},rh=1}
 N[3035]={lv={7,8},n="Flatland Cougar",p={[1412]={324424,332260,334294,342414,344514,358354,360480,406496,424374,432534,452314,458394,458422,460458,472320,514390,538440,538464,552552,552582,562684,574552,574636,584604,594440,594458,598694,628520},[1456]={328770}},ra=-1,rh=-1}
+N[3036]={lv={40,40},n="Kym Wildmane",p={[1456]={762298,764290,764306,768294,768298,776294,776296}},rh=1}
 N[3038]={lv={50,50},n="Kary Thunderhorn",p={[1456]={582870,582878}},rh=1}
 N[3039]={lv={60,60},n="Holt Thunderhorn",p={[1456]={572896,574884,574892,576884,576886}},rh=1}
+N[3040]={lv={40,40},n="Urek Thunderhorn",p={[1456]={588864,588866}},rh=1}
 N[3041]={lv={50,50},n="Torm Ragetotem",p={[1456]={574872,574876,576872,576876}},rh=1}
+N[3042]={lv={60,60},n="Sark Ragetotem",p={[1456]={570896,572890,574884,576884,576886}},rh=1}
+N[3043]={lv={40,40},n="Ker Ragetotem",p={[1456]={578854,578856}},rh=1}
 N[3044]={lv={40,40},n="Miles Welsh",p={[1456]={254154,254156,254166,256154,256156}},rh=1}
+N[3045]={lv={50,50},n="Malakai Cross",p={[1456]={240214,244222,246224,248226}},rh=1}
+N[3046]={lv={60,60},n="Father Cobb",p={[1456]={252204,254208,254216,256210,258220}},rh=1}
 N[3047]={lv={60,60},n="Archmage Shymm",p={[1456]={224154,224156,226148,226158}},rh=1}
 N[3048]={lv={40,40},n="Ursyn Ghull",p={[1456]={254144,254146,256144,256146,256156}},rh=1}
 N[3049]={lv={50,50},n="Thurston Xane",p={[1456]={244200,250204,250206,256214,258218}},rh=1}
@@ -7588,6 +7521,7 @@ N[3168]={lv={15,15},n="Flakk",p={[1411]={528420}},rh=1}
 N[3169]={lv={43,43},n="Tarshaw Jaggedscar",p={[1411]={540426,542424}},rh=1}
 N[3170]={lv={14,14},n="Kaplak",p={[1411]={520434,520436}},rh=1}
 N[3171]={lv={16,16},n="Thotar",p={[1411]={518434,518436}},rh=1}
+N[3172]={lv={37,37},n="Dhugru Gorelust",p={[1411]={542412}},rh=1}
 N[3173]={lv={15,15},n="Swart",p={[1411]={544424,544426}},rh=1}
 N[3174]={lv={27,27},n="Dwukk",p={[1411]={520406}},rh=1}
 N[3175]={lv={16,16},n="Krunn",p={[1411]={518408}},rh=1}
@@ -7670,18 +7604,27 @@ N[3304]={lv={11,11},n="Master Vornal",p={[1411]={558744,560746}},rh=1}
 N[3305]={elite=1,lv={55,55},n="Grisha",p={[1427]={348302,348308}},ra=-1,rh=1}
 N[3309]={lv={45,45},n="Karus",p={[1454]={494692,496694,498700}},ra=-1,rh=1}
 N[3310]={elite=1,lv={55,55},n="Doras",p={[1454]={452638,456640}},ra=-1,rh=1}
+N[3323]={lv={30,30},n="Horthus",p={[1454]={454564,454568,456568}},rh=1}
+N[3324]={lv={50,50},n="Grol'dar",p={[1454]={480462,480468}},rh=1}
+N[3325]={lv={50,50},n="Mirket",p={[1454]={482476,484470,486470}},rh=1}
 N[3326]={lv={50,50},n="Zevrost",p={[1454]={482454,484456,486454,486456}},rh=1}
+N[3327]={lv={40,40},n="Gest",p={[1454]={428504,428514,428516}},rh=1}
 N[3328]={lv={50,50},n="Ormok",p={[1454]={440544,440546}},rh=1}
 N[3332]={lv={35,35},n="Lumak",p={[1454]={694284,694292,696292,698296}},rh=1}
+N[3335]={lv={30,30},n="Hagrus",p={[1454]={460460,462466}},rh=1}
 N[3336]={lv={30,30},n="Takrin Pathseeker",p={[1411]={508434,508436}},ra=-1,rh=1}
 N[3337]={lv={15,15},n="Kargal Battlescar",p={[1413]={622194}},ra=-1,rh=1}
 N[3338]={elite=1,lv={60,60},n="Sergra Darkthorn",p={[1413]={522310}},ra=-1,rh=1}
 N[3339]={lv={25,25},n="Captain Thalo'thas Brightsun",p={[1413]={622390}},ra=1,rh=1}
 N[3341]={lv={18,18},n="Gann Stonespire",p={[1413]={458772,458776,458786,460754,460762,460804,460812}},ra=-1,rh=1}
-N[3346]={lv={35,35},n="Kithas",p={[1454]={534372,536374,536380}},rh=1}
+N[3344]={lv={60,60},n="Kardris Dreamseeker",p={[1454]={384372,388364,388366}},ra=-1,rh=1}
 N[3347]={lv={35,35},n="Yelmak",p={[1454]={564332,564338,566332,566336}},rh=1}
+end)()
+;(function()
 N[3348]={lv={30,30},n="Kor'geld",p={[1454]={562342,562346}},rh=1}
+N[3351]={lv={30,30},n="Magenius",p={[1454]={458404,458406}},rh=1}
 N[3352]={lv={60,60},n="Ormak Grimshot",p={[1454]={662182,662186}},rh=1}
+N[3353]={lv={60,60},n="Grezz Ragefist",p={[1454]={794312,794316,796312,796316}},rh=1}
 N[3354]={lv={50,50},n="Sorek",p={[1454]={798326,802324,804314}},rh=1}
 N[3363]={lv={35,35},n="Magar",p={[1454]={632506,634500,636500}},rh=1}
 N[3365]={lv={35,35},n="Karolek",p={[1454]={628444,628446}},rh=1}
@@ -7712,15 +7655,15 @@ N[3399]={lv={35,35},n="Zamja",p={[1454]={574534,574536,576534,576536}},rh=1}
 N[3400]={lv={30,30},n="Xen'to",p={[1454]={574532,576532}},rh=1}
 N[3401]={lv={60,60},n="Shenthul",p={[1454]={430534,430536}},rh=1}
 N[3402]={lv={35,35},n="Zando'zan",p={[1454]={428530}},rh=1}
+N[3403]={lv={40,40},n="Sian'tsu",p={[1454]={374372,378364,378366}},ra=-1,rh=1}
 N[3404]={lv={35,35},n="Jandi",p={[1454]={554394,554396,556394,556396}},rh=1}
+N[3406]={lv={50,50},n="Xor'juul",p={[1454]={670192,670200}},rh=1}
 N[3407]={lv={40,40},n="Sian'dur",p={[1454]={674174,674184,676174,678178}},rh=1}
 N[3408]={lv={40,40},n="Zel'mak",p={[1454]={802294,802296}},rh=1}
 N[3412]={lv={35,35},n="Nogg",p={[1454]={754248,758252}},rh=1}
 N[3413]={lv={30,30},n="Sovik",p={[1454]={750244,754250,756252}},rh=1}
 N[3415]={lv={11,12},n="Savannah Huntress",p={[1413]={492274,494280,496284,496286,502232,504314,504316,506316,512214,512262,514270,522258,534274,534278,536276,538308,540270,540300,542294,546308,548304,558172,558176}},ra=-1,rh=-1}
 N[3416]={lv={17,18},n="Savannah Matriarch",p={[1413]={594314,594320,600316,602312,604334,604336,606314,606316,606334,612344,612346,616342,616346,618324,618334,626334,626336}},ra=-1,rh=-1}
-end)()
-;(function()
 N[3418]={lv={22,22},n="Kirge Sternhorn",p={[1413]={448584,448586}},ra=-1,rh=1}
 N[3419]={lv={22,22},n="Apothecary Zamah",p={[1456]={224198,228204,230210,236214,236216}},rh=1}
 N[3421]={lv={23,23},n="Feegly the Exiled",p={[1413]={490862}},ra=-1,rh=1}
@@ -7770,7 +7713,7 @@ N[3489]={lv={16,16},n="Zargh",p={[1413]={524298,526298}},rh=1}
 N[3490]={lv={30,30},n="Hula'mahi",p={[1413]={514302}},ra=-1,rh=1}
 N[3494]={lv={25,25},n="Tinkerwiz",p={[1413]={626362}},ra=1,rh=1}
 N[3495]={lv={20,20},n="Gagsprocket",p={[1413]={626362}},ra=1,rh=1}
-N[3497]={lv={24,24},n="Kilxx",p={[1413]={628382}},ra=1,rh=1}
+N[3500]={lv={52,52},n="Tarhus",p={[1444]={746448}},rh=1}
 N[3503]={lv={18,19},n="Silithid Protector",p={[1413]={424694,424696,426694,428710,428716,434704,436700,440714,442716,444726,450694,450696,452714,452722,472702,478710,484698,486698}},ra=-1,rh=-1}
 N[3514]={lv={10,10},n="Tenaron Stormgrip",p={[1438]={590394}},ra=1}
 N[3515]={lv={10,10},n="Corithras Moonrage",p={[1438]={562614,562616}},ra=1}
@@ -7787,7 +7730,7 @@ N[3531]={elite=1,lv={14,15},n="Moonrage Tailor",p={[1421]={460714,464722,464726,
 N[3532]={elite=1,lv={14,15},n="Pyrewood Leatherworker",p={[1421]={440738,442734,446734,446736}},ra=1,rh=-1}
 N[3533]={elite=1,lv={14,15},n="Moonrage Leatherworker",p={[1421]={440738,444734,446734,462750}},rh=-1}
 N[3535]={elite=4,lv={13,13},n="Blackmoss the Fetid",p={[1438]={382394,386388,394382,408266,408302,408330,408396,410364,414284,414382,420420,420448,422256,422280,422332,422400,422428,424290,424320,428372,432364,434346,438478,440282,440306,448302,450404,456292,456328}},ra=-1}
-N[3540]={lv={40,40},n="Hal McAllister",p={[1424]={498622}},ra=1,rh=-1}
+N[3542]={lv={40,40},n="Jaysin Lanyda",p={[1424]={508590}},ra=1,rh=-1}
 N[3548]={lv={12,12},n="Selina Weston",p={[1420]={618500}},ra=-1,rh=1}
 N[3549]={lv={25,25},n="Shelene Rhobart",p={[1420]={654600,656598}},ra=-1,rh=1}
 N[3566]={lv={9,9},n="Flatland Prowler",p={[1412]={318206,352164,374112,392276,402100,408190,432304,444130,444264,456116,456190,458296,462264,472088,516162,532314,536104,540204,540228,564346,570314,584260,620654,620706,624584,654650,662596},[1456]={120184,180104,294052,434174,452146,652330,686428,704450,708452,718138,830182,852380,870294}},ra=-1,rh=-1}
@@ -7856,8 +7799,6 @@ N[3725]={lv={18,19},n="Dark Strand Cultist",p={[1440]={254278,256286,260280,3023
 N[3727]={lv={20,21},n="Dark Strand Enforcer",p={[1440]={254278,256274,256280,256286,312316,314304,314312,316310,316316,318304}},ra=-1,rh=-1}
 N[3728]={lv={18,19},n="Dark Strand Adept",p={[1440]={254278,256284,256286,302310,302318,308310,308316,310302,314292,320300,324292,326292}},ra=-1,rh=-1}
 N[3730]={lv={19,20},n="Dark Strand Excavator",p={[1440]={254278,256274,256280,256286,312316,314304,314312,316310,316316,318304}},ra=-1,rh=-1}
-N[3732]={lv={18,19},n="Forsaken Seeker",p={[1440]={304240,304250,306248,308240,310222,310232,314204,314212,316232,316238,320214,320222,326222,328226,332210}},ra=-1,rh=1}
-N[3733]={lv={18,19},n="Forsaken Herbalist",p={[1440]={304234,304240,304250,304256,306236,306248,310222,310230,314204,314212,316230,320240,320246,322208,324224,326222,328226,330210}},ra=-1,rh=1}
 N[3737]={lv={19,20},n="Saltspittle Puddlejumper",p={[1440]={190404,192430,192438,194414,194422,196414,196424,196434,198448,200438,206446,210404,210406,210436,212424,212432,216414,216422,216426}},ra=-1,rh=-1}
 N[3739]={lv={19,20},n="Saltspittle Warrior",p={[1440]={190404,192430,192436,194414,194422,196414,196422,196426,200448,204444,206446,210404,210406,210434,210436,214416,216414,216422,216426}},ra=-1,rh=-1}
 N[3740]={lv={20,21},n="Saltspittle Muckdweller",p={[1440]={192438,198414,200430,204422,204440,206404,206408,206422,206432,210440}},ra=-1,rh=-1}
@@ -7928,6 +7869,10 @@ N[3942]={lv={32,32},n="Mavoris Cloudsbreak",p={[1440]={748734,748742}},ra=0,rh=0
 N[3943]={lv={22,22},n="Ruuzel",p={[1440]={64124,64132,64136,66124,66132,66146,72136,76124,76134,76136,86128}},ra=-1,rh=-1}
 N[3944]={lv={20,21},n="Wrathtail Priestess",p={[1440]={62118,66146,72120,72128,72136,76124,78134,78136,94276,96274,96276,114310,116314,116316}},ra=-1,rh=-1}
 N[3945]={lv={30,39},n="Caravaneer Ruzzgot",p={[1434]={272740}},ra=1,rh=1}
+N[3955]={lv={24,24},n="Shandrina",p={[1440]={494670,496670}},ra=1}
+N[3961]={lv={19,19},n="Maliynn",p={[1440]={366498}},ra=1}
+N[3963]={lv={35,35},n="Danlaar Nightstride",p={[1440]={500678}},ra=1,rh=-1}
+N[3970]={lv={25,25},n="Llana",p={[1440]={350484,350486}},ra=1}
 N[3978]={lv={30,30},n="Sage Truthseeker",p={[1456]={344472,344482,346472,348478}},rh=1}
 N[3979]={lv={30,30},n="Librarian Mae Paledust",p={[1455]={740134,740136,744124,746124,746126}},ra=1}
 N[3980]={lv={30,30},n="Raleigh the Devout",p={[1424]={514584,514586}},ra=1,rh=-1}
@@ -7972,8 +7917,6 @@ N[4028]={lv={25,26},n="Charred Ancient",p={[1442]={278634,282656,284670,292684,2
 N[4029]={lv={27,28},n="Blackened Ancient",p={[1442]={274630,274644,274660,280676,284624,284698,292724,294604,294654,300756,302770,304632,304642,304686,304722,306746,310672,314602,330722,330738,334632,336672,338636,340684,344594,348562,350554,356608,358602,360668,360722,362648,362684,368736,428658}},ra=-1,rh=-1}
 N[4031]={lv={25,27},n="Fledgling Chimaera",p={[1442]={290712,292702,302700,302710,302732,304750,310694,312730,314704,314714,316720,318676,320674,322712,322736,324704,328726,332692,334704,334712,334736,338714,340736,342746,346708,346722,352702,354734,356720,358710,366714,366726}},ra=-1,rh=-1}
 N[4032]={lv={23,25},n="Young Chimaera",p={[1442]={274642,274646,280634,282668,284638,284656,284678,286642,288634,288648,288662,292670,294678,298660,300654,300680,302666,304686,308654,310676,312674,320670,322654,324660,324678,326684,332686,334660,334672,336676,340654,342642,348670,352654,356644,360650,364658,366662,368666}},ra=-1,rh=-1}
-N[4034]={lv={24,25},n="Enraged Stone Spirit",p={[1442]={282656,284644,284650,286644,286650,288656,296656,298648,302666,302676,308664,308666,324674,324676,326674,326676,340644,340652,340656,346654,354634,354644,360644,360652,362656,366642}},ra=-1,rh=-1}
-N[4035]={lv={26,27},n="Furious Stone Spirit",p={[1442]={294724,294726,296724,296728,304702,312694,312698,312706,314722,314732,316704,316706,320724,324734,324738,326734,326738,338714,344724,344726,346714,346722,346726,358722,360734,362704,362706,366704,366712,366716}},ra=-1,rh=-1}
 N[4036]={lv={23,24},n="Rogue Flame Spirit",p={[1442]={334634,334638,338634,338638,342646,344594,344600,346592,346600,352534,356474,356530,364494,364496,364514,364518,364604,368604,370466,370486,372454,372462,434414,436414,440394,440398,444432,454440}},ra=-1,rh=-1}
 N[4037]={lv={24,25},n="Burning Ravager",p={[1442]={280662,280666,282654,284632,284636,286634,286636,286654,286666,288624,288658,300654,300656,304668,310664,310672,312676,316678,324674,326674,326676,340654,340656,352654,352658,354666,356656,362642,362648}},ra=-1,rh=-1}
 N[4038]={lv={26,27},n="Burning Destroyer",p={[1442]={294724,294726,296722,300736,302732,312698,312734,312736,318704,318708,320726,324736,332744,332746,334704,334706,336704,338714,338716,344726,346724,354734,354736,356734,356736,360722,364710,366712,366716}},ra=-1,rh=-1}
@@ -8000,12 +7943,18 @@ N[4080]={lv={23,23},n="Kaela Shadowspear",p={[1442]={598668}},ra=1,rh=-1}
 N[4081]={lv={29,29},n="Lomac Gearstrip",p={[1455]={712506,712528,714504,714522,718500,718514,718516}},ra=1,rh=-1}
 N[4083]={lv={24,24},n="Jeeda",p={[1442]={474618,476616}},rh=1}
 N[4086]={lv={24,24},n="Veenix",p={[1442]={582516}},ra=1,rh=1}
+N[4087]={lv={60,60},n="Arias'ta Bladesinger",p={[1457]={578344,580356,584350,586344,586352,586356}},ra=1}
 N[4088]={lv={62,62},n="Elanaria",p={[1457]={570358,574344,574348,576344,576348,576358}},ra=1}
+N[4089]={lv={40,40},n="Sildanair",p={[1457]={618408,618418,618426,618436}},ra=1}
 N[4090]={lv={60,60},n="Astarii Starseeker",p={[1457]={374808,382804,384808,386804,386808}},ra=1,rh=-1}
+N[4091]={lv={50,50},n="Jandria",p={[1457]={380824,380826,386820,386826}},ra=1}
 N[4092]={lv={40,40},n="Lariia",p={[1457]={394884,394888,400874,402884,402886,406882,406886,410896}},ra=1}
 N[4093]={lv={25,26},n="Galak Wrangler",p={[1441]={390324,390378,394370,398332,398346,398356,404378,410358,410388,410412,412348,412370,414382,414404,420382,422406,424404,428358,428380,428390,428404,430370,440354,442368,444386,444412,450394,450408,452422,454438,466404,466412,472418,478406,480404,482428,484438,488416,496414}},ra=-1,rh=-1}
 N[4094]={lv={24,25},n="Galak Scout",p={[1441]={390324,390376,394370,398332,398344,398356,398378,410358,410388,410412,412348,412368,414380,414404,420380,422406,428358,428380,428390,428402,430370,440354,442368,444386,444402,444412,450394,450408,452422,454440,466414,470404,478406,480404,482428,484438,488412,496414}},ra=-1,rh=-1}
 N[4096]={lv={24,25},n="Galak Windchaser",p={[1441]={390322,390376,394366,398334,398342,398356,398378,406352,408368,410388,410410,414382,414404,420380,422406,426356,428380,428388,430370,434404,440354,442366,444386,444402,444412,450394,452422,454406,454440,468404,470406,472418,476410,478424,480404,484432,488414,496414}},ra=-1,rh=-1}
+N[4100]={lv={28,29},n="Screeching Harpy",p={[1441]={260550,260556,262526,262566,264522,264536,266534,266558,268554,270520,272514,272540,276510,278494,280504,286502,286512}},ra=-1,rh=-1}
+N[4101]={lv={29,30},n="Screeching Roguefeather",p={[1441]={260548,260556,262526,262566,264524,264536,266534,266558,268554,270520,272514,272540,276500,278494,280512,286512,288504}},ra=-1,rh=-1}
+N[4104]={lv={30,30},n="Screeching Windcaller",p={[1441]={260554,260556,262526,264524,264536,264566,266534,266558,268554,270520,272514,272540,276510}},ra=-1,rh=-1}
 N[4107]={lv={28,29},n="Highperch Wyvern",p={[1441]={94342,94354,102354,104332,104394,104398,106326,106396,108314,108316,108384,110344,110364,112348,112368,116348,118322,118330,118376,122362,124374,126342,128376,134388,134396,136374,138376,138394,154402,154406,160414,168414,176424,178404,178406}},ra=-1,rh=-1}
 N[4109]={lv={28,29},n="Highperch Consort",p={[1441]={94342,94354,98356,100394,104330,104366,104398,106322,106326,106396,108314,108388,110352,110364,112344,114370,118324,118336,118376,120354,122362,124374,126344,128376,132396,134388,136374,136392,138376,154402,154406,160414,166414,174422,178404,178406}},ra=-1,rh=-1}
 N[4110]={lv={30,31},n="Highperch Patriarch",p={[1441]={94342,100358,104342,104350,106332,110344,110352,110358,110366,110384,110386,116348,118332,118376,122364,124342,124374,126344,126374,126376,132386}},ra=-1,rh=-1}
@@ -8017,6 +7966,7 @@ N[4130]={lv={32,33},n="Silithid Searcher",p={[1441]={674824,674834,674840,674860
 N[4131]={lv={34,35},n="Silithid Invader",p={[1441]={638854,644858,646858,648844,652852,654866,656854,658862,670860,676860}},ra=-1,rh=-1}
 N[4132]={elite=4,lv={36,36},n="Silithid Ravager",p={[1441]={634854,644858,652868,666862,670840,674816,674880,676836,678792,678890,678902,680850,682802,682826,682864,690914,694854,694864,696902,698878,702842,702912,710860,716798,716834,716890,718874,732862,732878,738834,796778}},ra=-1,rh=-1}
 N[4133]={lv={33,34},n="Silithid Hive Drone",p={[1441]={638854,642858,648856,652852,654866,656854,658862,670860,672822,678860,678882,680854,684866,688858,690830,690870,692844,692894,692896,694812,694846,696812,696890,700844,700846,700858,702870,702882,708824,710826,710844,710846,710868,712858}},ra=-1,rh=-1}
+N[4138]={lv={60,60},n="Jeen'ra Nightrunner",p={[1457]={394058,394066,396054,396058}},ra=1}
 N[4139]={lv={33,34},n="Scorpid Terror",p={[1441]={690774,704730,712728,712764,714746,724804,730810,730898,732876,762832,766856,804860,804880,814864,814892,822850,826694,832738,834804,836722,836746,838786,838814,840774,868700,868722,870754,874800,876780,878682,890782}},ra=-1,rh=-1}
 N[4140]={lv={31,32},n="Scorpid Reaver",p={[1441]={692616,692650,694598,702684,704730,710558,722594,728616,742534,748654,750522,754684,760528,760674,764588,764700,766564,800670,802556,824612,824692,832592,844690,846614,846654,852584}},ra=-1,rh=-1}
 N[4142]={lv={30,31},n="Sparkleshell Tortoise",p={[1441]={692600,692614,694640,694662,704578,704692,710554,710660,712650,720590,720696,726614,734570,742534,744582,744626,748648,750602,758512,762518,762538,764588,766564,814524,814540,814562,836546}},ra=0,rh=0}
@@ -8030,7 +7980,6 @@ N[4154]={lv={30,32},n="Salt Flats Scavenger",p={[1441]={834562,836562,864650,864
 N[4155]={lv={45,45},n="Idriana",p={[1457]={398424,398426}},ra=1}
 N[4156]={lv={35,35},n="Astaia",p={[1457]={474564,474566,476564,476568}},ra=1}
 N[4158]={lv={32,34},n="Salt Flats Vulture",p={[1441]={674892,680790,684900,684914,692764,694686,694736,694808,712854,722816,732922,736752,736852,746762,754900,760844,762830,764912,768902,770788,778754,798778,798854,802826,804750,812890,816690,836734,836772,836844,836878,844800,846700,856656,886778}},ra=-1,rh=-1}
-N[4160]={lv={46,46},n="Ainethil",p={[1457]={550234,550238,554246,556244,556246}},ra=1}
 N[4163]={lv={40,40},n="Syurna",p={[1457]={362214,362216,368218}},ra=1}
 N[4197]={lv={20,20},n="Ken'zigla",p={[1442]={732950}},ra=-1,rh=1}
 N[4198]={lv={30,30},n="Braelyn Firehand",p={[1442]={460604,460606}},ra=-1,rh=1}
@@ -8040,9 +7989,10 @@ N[4202]={lv={27,27},n="Gerenzo Wrenchwhistle",p={[1442]={628404,628406,636396,64
 N[4205]={lv={50,50},n="Dorion",p={[1457]={422074,422076,422086}},ra=1}
 N[4212]={lv={46,46},n="Telonis",p={[1457]={644214,644216,646214,646216}},ra=1}
 N[4214]={lv={60,60},n="Erion Shadewhisper",p={[1457]={344258,346256,352252}},ra=1}
+N[4215]={lv={50,50},n="Anishar",p={[1457]={378196,378212,378216,386204,386214}},ra=1}
 N[4217]={lv={60,60},n="Mathrengyl Bearwalker",p={[1457]={348074,352080,352086}},ra=1}
 N[4218]={lv={50,50},n="Denatharion",p={[1457]={344074,344076,346074,348078,348086}},ra=1}
-N[4228]={lv={30,30},n="Vaean",p={[1457]={584144,584146,586134,586144,586146}},ra=1}
+N[4219]={lv={40,40},n="Fylerian Nightwing",p={[1457]={334084,334086,336084,336086,338072}},ra=1}
 N[4241]={lv={30,30},n="Mydrannul",p={[1457]={700444,704452,706440,706450,706456}},ra=1}
 N[4256]={lv={30,30},n="Golnir Bouldertoe",p={[1455]={510260,510266,514254,516264}},ra=1}
 N[4260]={lv={37,37},n="Venture Co. Shredder",p={[1434]={440200,440212,442182,442194,444224,444226,444236,446224,446236,448210,448230,450174,452178,452204,458180,460216,462214,462228,464194,464202,466184,466186,466204,466214,466220,466228}},ra=-1,rh=-1}
@@ -8065,15 +8015,14 @@ N[4324]={lv={42,43},n="Searing Whelp",p={[1445]={374742,380750,384760,392734,398
 N[4328]={lv={43,44},n="Firemane Scalebane",p={[1445]={366694,366696,372674,374676,380682,380692,382662,382668,386674,386678,484736,510756,516748,516756,526754,532728}},ra=-1,rh=-1}
 N[4329]={lv={41,42},n="Firemane Scout",p={[1445]={372686,374674,374678,382664,382666,382688,384682,386680,388654,390660,394644,394666,396644,396658,396668,400652,400738,420672,420732,424660,426666,430658,432652,438662,442644,442654,444672,446654,446656,448644,448676,448692,452672,456654,456660,456670,492690}},ra=-1,rh=-1}
 N[4331]={lv={42,43},n="Firemane Ash Tail",p={[1445]={368690,374674,374684,380682,382664,382668,386678,388654,392664,394644,394666,398652,420672,426666,432652,432658,438662,442644,442654,444672,446654,446656,448644,448676,452672,456658,458654}},ra=-1,rh=-1}
-N[4351]={lv={35,36},n="Bloodfen Raptor",p={[1445]={374280,376274,376278,378260,380236,380254,388216,388254,388264,388266,390214,394226,396228,408254,408256,414266,416252,416266,434234,460286,478258,494232,494262,496230,496262,514250,516252,522272,526238,552348,558208,558240,560234,560304,562252,572304,620378,628394}},ra=-1,rh=-1}
-N[4352]={lv={36,37},n="Bloodfen Screecher",p={[1445]={464188,468174,468176,472190,472196,474208,476208,492206}},ra=-1,rh=-1}
 N[4355]={lv={37,38},n="Bloodfen Scytheclaw",p={[1445]={332578,334454,334468,340546,342514,346418,352404,352486,352600,356538,380364,380410,382530,390464,394554,394572,410436,420636,422582,432482,432542,434320,434352,442294,454422,456268,456394,456430,456594,464618,470554,494636}},ra=-1,rh=-1}
 N[4356]={lv={39,40},n="Bloodfen Razormaw",p={[1445]={310658,320666,322642,322656,324654,326652,328662,332644,336640,336658,336720,338696,340650,346714,348664,350720,360698,364660,366688,374680,378668,378688,378704,382676}},ra=-1,rh=-1}
-N[4357]={lv={40,41},n="Bloodfen Lashtail",p={[1445]={314658,316642,318656,320666,324654,326652,332642,332658,340650}},ra=-1,rh=-1}
 N[4358]={lv={35,36},n="Mirefin Puddlejumper",p={[1445]={562218,564210,564228,568226,570212,572224,574204,576200,576216,576226,578194,578208}},ra=-1,rh=-1}
 N[4359]={lv={35,36},n="Mirefin Murloc",p={[1445]={562218,564210,564230,570212,570224,570226,574202,576200,576218,576226,578194,578208}},ra=-1,rh=-1}
 N[4360]={lv={37,38},n="Mirefin Warrior",p={[1445]={570110,574104,576104,576106,582094,584084,586084,590106,594094,594098,596072,596076,596092,596098,596106,616184,618192,622082,626176,626188,628080,628174,630064,630072,630088,630196,630272,630282,634290,636064,636070,636262,636274,638280,644290,646270,646292,648264,648280}},ra=-1,rh=-1}
 N[4361]={lv={36,37},n="Mirefin Muckdweller",p={[1445]={542140,542150,544160,546164,548166,560168,572148,574164,574168,574176,576152,576164,576174,576176,582144,586176,588158,588166,590154,616182,616194,624174,628188,630174,630278,632272,634264,634290,636262,636290,638274,638276,646292,648264,648270,648282}},ra=-1,rh=-1}
+end)()
+;(function()
 N[4362]={lv={36,37},n="Mirefin Coastrunner",p={[1445]={542134,542140,542150,544160,546164,548166,562168,570144,574154,574164,574168,574176,576164,576174,576176,578154,578186,584144,586146,586176,588158,588166,618184,618192,618196,628174,628188,630282,632274,634176,634290,636290,638280,640274,646270,646292,648264,648282}},ra=-1,rh=-1}
 N[4363]={lv={37,38},n="Mirefin Oracle",p={[1445]={570110,574104,582094,582102,584082,586080,590106,594094,594098,596074,596076,596106,600088,616182,616196,618194,622082,624072,624172,628064,628080,628088,628174,628188,630072,630196,630280,630290,632272,634176,636064,636082,636262,638276,644268,646292,648262,648270,648282}},ra=-1,rh=-1}
 N[4364]={elite=1,lv={59,60},n="Strashaz Warrior",p={[1445]={730184,732186,740184,740186,744156,744166,746156,748150,750144,754182,754218,756184,756220,764186,764200,766172,766186,766206,766220,768184,772198}},ra=-1,rh=-1}
@@ -8121,8 +8070,6 @@ N[4465]={elite=1,lv={45,46},n="Vilebranch Warrior",p={[1425]={662674,662682,6646
 N[4466]={lv={46,47},n="Vilebranch Scalper",p={[1425]={444664,452624,452630,452680,460642,462646,464690,466636,492644,494630,494654,496652,502630,502658,506624,522394,522406,524384,528380,530400,534406,536382,644446,654434,654444,654456,670444,672456,694480,702484,704464,704496,718472,718488,720484}},ra=-1,rh=-1}
 N[4467]={lv={46,47},n="Vilebranch Soothsayer",p={[1425]={444654,444656,452666,460682,468632,470654,470674,470676,474664,476664,480654,480672,484678,486686,488642,490682,494630,496630,530390,660444,660446,710484,710486}},ra=-1,rh=-1}
 N[4468]={elite=1,lv={47,48},n="Jade Sludge",p={[1425]={602724,604726,608732,610750,612740,614760,616738,622754,622766,624756,626742,628764,630750,630766}},ra=-1,rh=-1}
-end)()
-;(function()
 N[4474]={lv={53,54},n="Rotting Cadaver",p={[1422]={448530,454524,458540,460526,460560,462502,462524,464494,464506,464548,466494,466534,466546,468536,472500,472516,474510,476500,476510,476526,480516}},ra=-1,rh=-1}
 N[4475]={lv={52,53},n="Blighted Zombie",p={[1422]={442532,448522,448528,450540,452546,454514,456540,458552,460562,462502,462524,462526,464514,466494,466534,466536,466548,470516,472500,474512,476492,476528,478508,480498,480516}},ra=-1,rh=-1}
 N[4479]={lv={33,33},n="Fardel Dabyrie",p={[1417]={536400,544384,544386,546386,550382,554374,556370,564384,564390,564402,564406,564416,566384,566402,566406,566416,568386,578382}},ra=1,rh=-1}
@@ -8156,13 +8103,19 @@ N[4551]={elite=1,lv={55,55},n="Michael Garrett",p={[1458]={628472,634484,634486,
 N[4554]={lv={30,30},n="Tawny Grisette",p={[1458]={622424,622430,622450,624414,624466,628474,632480,634394,642390,644496,646494,654386,658496,660484,662396,664384,666496,670494,678384,680488,682394,684482,688476,690406,694464,696422,696428,698446}},rh=1}
 N[4556]={lv={30,30},n="Gordon Wendham",p={[1458]={614414,614416,616414,618418,620428}},rh=1}
 N[4563]={lv={60,60},n="Kaal Soulreaper",p={[1458]={852158,854154,860154,860156}},rh=1}
+N[4564]={lv={50,50},n="Luther Pickman",p={[1458]={854154,854156,860156,862152}},rh=1}
+N[4565]={lv={40,40},n="Richard Kerwin",p={[1458]={882148,882168,884162,886154,886160}},rh=1}
+N[4566]={lv={60,60},n="Kaelystia Hatebringer",p={[1458]={850146,852142,852156,856148,858142}},rh=1}
 N[4567]={lv={50,50},n="Pierce Shackleton",p={[1458]={852146,854138,856140,856146}},rh=1}
 N[4568]={lv={40,40},n="Anastasia Hartwell",p={[1458]={844110,848106,850102}},rh=1}
 N[4576]={lv={45,45},n="Josef Gregorian",p={[1458]={704304,704306,706304,706306,708292}},rh=1}
+N[4582]={lv={40,40},n="Carolyn Ward",p={[1458]={830728,834708,834724,838714,838716,838726}},rh=1}
 N[4583]={lv={50,50},n="Miles Dexter",p={[1458]={842710,842716,848716,850702,850712}},rh=1}
+N[4584]={lv={60,60},n="Gregory Charles",p={[1458]={842724,844734,844736,846732,846736,852722}},rh=1}
 N[4586]={lv={26,26},n="Graham Van Talen",p={[1458]={752724,754728,754736,754746,756732,756736,756746}},rh=1}
 N[4587]={lv={30,30},n="Elizabeth Van Talen",p={[1458]={754734,754738,754746,756734,756746,758738,758756}},rh=1}
 N[4593]={lv={60,60},n="Christoph Walker",p={[1458]={466166,468156,472150,476158,478148}},rh=1}
+N[4594]={lv={50,50},n="Angela Curthas",p={[1458]={482154,482156,484144}},rh=1}
 N[4595]={lv={40,40},n="Baltus Fowler",p={[1458]={464174,472170,474162,476168,478162}},rh=1}
 N[4598]={lv={35,35},n="Brom Killian",p={[1458]={554362,558360,560370}},rh=1}
 N[4602]={lv={30,30},n="Benijah Fenner",p={[1458]={584324,584326,586324,586326}},rh=1}
@@ -8170,8 +8123,8 @@ N[4603]={lv={30,30},n="Nicholas Atwood",p={[1458]={620276,622270,626264}},rh=1}
 N[4605]={lv={26,26},n="Basil Frye",p={[1458]={592294,594280,600284,600286,606278,610286}},rh=1}
 N[4606]={lv={60,60},n="Aelthalyste",p={[1458]={482192,490186,492182,494170,496172}},rh=1}
 N[4607]={lv={40,40},n="Father Lankester",p={[1458]={494154,494156,496154,496156}},rh=1}
+N[4608]={lv={50,50},n="Father Lazarus",p={[1458]={468198,474192,476192}},rh=1}
 N[4612]={lv={30,30},n="Boyle",p={[1458]={544644,544646,546634,552646,554644,554656,556642,560634,562646}},rh=1}
-N[4617]={lv={30,30},n="Thaddeus Webb",p={[1458]={614604,614606,620604,620608,622616}},rh=1}
 N[4618]={lv={42,42},n="Martek the Exiled",p={[1418]={422524,422526}},ra=1,rh=1}
 N[4619]={lv={32,32},n="Geltharis",p={[1440]={780424,780426,786428}},ra=-1,rh=-1}
 N[4629]={lv={30,30},n="Trackmaster Zherin",p={[1441]={814778,816778}},ra=1,rh=1}
@@ -8200,6 +8153,8 @@ N[4659]={lv={39,40},n="Maraudine Marauder",p={[1443]={290580,290608,292552,29450
 N[4660]={lv={37,38},n="Maraudine Bonepaw",p={[1443]={394612,394616,396612,396616}},ra=-1,rh=-1}
 N[4663]={lv={30,31},n="Burning Blade Augur",p={[1443]={530324,534292,542280,544272,544332,552274,552286,552300,554262,554276,556262,560274,560276,560312,562220,566300,570228,572222}},ra=-1,rh=-1}
 N[4664]={lv={30,31},n="Burning Blade Reaver",p={[1443]={524322,534292,542304,544272,546298,552274,552288,554262,554276,556262,556268,558284,560294,560296,560306,564212,566216,566298,574262,576264}},ra=-1,rh=-1}
+N[4665]={lv={31,32},n="Burning Blade Adept",p={[1443]={524288,526294,528282,534264,544272,544298,544332,546298,550262,550286,552268,554276,556262,558314,566300,568256,572278}},ra=-1,rh=-1}
+N[4666]={lv={31,32},n="Burning Blade Felsworn",p={[1443]={524286,530284,530294,540294,544274,552256,552302,554272,554278,554288,556264,556268,556280,556286}},ra=-1,rh=-1}
 N[4668]={lv={38,39},n="Burning Blade Summoner",p={[1443]={488776,488788,496782,498728,500762,504714,504768,506826,508822,510714,510846,512704,512836,518826,518846,528794,528804,530834,532814,532824,532846,534780,540756,540772,542704,542780,550730,552714,554720,566732,566768,794786,794812,798788,802770,808764,818804}},ra=-1,rh=-1}
 N[4670]={lv={31,32},n="Hatefury Rogue",p={[1443]={702154,710152,714178,720144,722210,730114,730244,734090,736122,738166,738254,742136,744222,746200,746246,758288,762158,764148,764256,764280,766188,766212,774244,786154,788244,794190}},ra=-1,rh=-1}
 N[4671]={lv={31,32},n="Hatefury Trickster",p={[1443]={700156,710152,712194,714210,720144,730114,730242,734092,742136,744112,744154,744220,744244,744266,746198,760226,762158,764256,764298,766188,774244,784142,790178,794166}},ra=-1,rh=-1}
@@ -8259,8 +8214,10 @@ N[4845]={elite=1,lv={36,37},n="Shadowforge Ruffian",p={[1418]={444124,450110,452
 N[4846]={elite=1,lv={35,36},n="Shadowforge Digger",p={[1418]={444094,444098,446122,450104,450110,450126,452088,456086,462084,464102,464112,464120,464126,466082,466112,466120,466126,468098,472094,476078,476098,476120,476126,478094,484114,486094,486096,486110,486116,486126},[1432]={464766,470774,470776,470788,470802,472820,474726,474752,474810,476806,476820,512752}},ra=-1,rh=-1}
 N[4856]={elite=1,lv={36,37},n="Stonevault Cave Hunter",p={[1415]={540582}},ra=-1,rh=-1}
 N[4872]={elite=1,lv={38,38},n="Obsidian Golem",p={[1415]={542582},[1418]={450124,518154}},ra=-1,rh=-1}
+N[4877]={lv={37,37},n="Jandia",p={[1441]={460514,460516}},rh=1}
 N[4878]={lv={36,36},n="Montarr",p={[1441]={450504,452506}},rh=1}
 N[4880]={lv={35,35},n="\"Stinky\" Ignatz",p={[1445]={468174,468176,472194,472196,474208,476208,480216,488244,488246,494224,494226,498224,498226}},ra=1,rh=1}
+N[4883]={lv={43,43},n="Krak",p={[1445]={364308}},rh=1}
 N[4899]={lv={37,37},n="Uma Bartulm",p={[1445]={640476}},ra=1}
 N[4921]={lv={40,40},n="Guard Byron",p={[1445]={660460}},ra=1}
 N[4926]={lv={40,40},n="Krog",p={[1445]={364318}},rh=1}
@@ -8295,19 +8252,31 @@ N[5089]={lv={38,38},n="Balos Jacken",p={[1445]={354538,360542}},ra=-1,rh=-1}
 N[5111]={lv={30,30},n="Innkeeper Firebrew",p={[1455]={184514,184516,186514,186516}},ra=1}
 N[5112]={lv={30,30},n="Gwenna Firebrew",p={[1455]={184514,184516,186514,188516,196524,196526}},ra=1,rh=-1}
 N[5113]={lv={45,45},n="Kelv Sternhammer",p={[1455]={692914,700894,700904,700906,706904,706906,712916}},ra=1}
+N[5114]={lv={45,45},n="Bilban Tosslespanner",p={[1455]={662882,662886,668874,668876}},ra=1}
+N[5115]={lv={60,60},n="Daera Brightspear",p={[1455]={700906,702882,704894,704900,706906,708894,710900,716884}},ra=1}
 N[5116]={lv={50,50},n="Olmin Burningbeard",p={[1455]={700846,704834,704838,706834,706838}},ra=1}
+N[5117]={lv={40,40},n="Regnus Thundergranite",p={[1455]={694844,694846,696846,698834,698836}},ra=1}
 N[5137]={lv={35,35},n="Reyna Stonebranch",p={[1455]={554584,554588,556584,556588,558596}},ra=1}
 N[5140]={lv={30,30},n="Edris Barleybeard",p={[1455]={720754,722760,726760,728746}},ra=1}
+N[5141]={lv={60,60},n="Theodrus Frostbeard",p={[1455]={232084,234086,234100,238084,238090,240102}},ra=1}
 N[5142]={lv={50,50},n="Braenna Flintcrag",p={[1455]={244090,246092,248096,254084,256090,256096}},ra=1}
+N[5143]={lv={40,40},n="Toldren Deepiron",p={[1455]={252102,252106,254092,256102,258092,258106}},ra=1}
 N[5144]={lv={40,40},n="Bink",p={[1455]={264094,264096,268086,270082}},ra=1}
+N[5145]={lv={50,50},n="Juli Stormkettle",p={[1455]={262072,262076,262086,266072,266084}},ra=1}
+N[5146]={lv={60,60},n="Nittlebur Sparkfizzle",p={[1455]={254044,254046,256044,258052,260058,260066,266064,266100,270068}},ra=1}
+N[5147]={lv={60,60},n="Valgar Highforge",p={[1455]={224056,226060,234050,236044,236050,246040}},ra=1}
+N[5148]={lv={50,50},n="Beldruk Doombrow",p={[1455]={244050,244060,246050,248044,248062}},ra=1}
 N[5149]={lv={50,50},n="Brandur Ironhammer",p={[1455]={234062,234066,236064,242068}},ra=1}
 N[5150]={lv={35,35},n="Nissa Firestone",p={[1455]={548584,548586,556592}},ra=1}
-N[5158]={lv={30,30},n="Tilli Thistlefuzz",p={[1455]={604442,608442}},ra=1}
 N[5159]={lv={35,35},n="Daryl Riknussun",p={[1455]={600368,602364,604380}},ra=1}
 N[5161]={lv={35,35},n="Grimnur Stonebrand",p={[1455]={482066,484064,486062}},ra=1}
 N[5164]={lv={60,60},n="Grumnus Steelshaper",p={[1455]={490436,494430,502424,502426,502436,506428,510422}},ra=1,rh=-1}
 N[5165]={lv={60,60},n="Hulfdan Blackbeard",p={[1455]={512160,514144,514146,516144,516148,518160,524134}},ra=1}
+N[5166]={lv={50,50},n="Ormyr Flinteye",p={[1455]={522134,524150,526148,528132}},ra=1}
+N[5167]={lv={40,40},n="Fenthwick",p={[1455]={514150,516150,518156,520136}},ra=1}
+N[5171]={lv={40,40},n="Thistleheart",p={[1455]={504064,504066,506064,508066,510084}},ra=1}
 N[5172]={lv={50,50},n="Briarthorn",p={[1455]={502054,502060,502074,506060}},ra=1}
+N[5173]={lv={60,60},n="Alexander Calder",p={[1455]={502062,502068,502076,506068,508064,508080}},ra=1}
 N[5174]={lv={45,45},n="Springspindle Fizzlegear",p={[1455]={682434,684440,684446,686442,688452}},ra=1}
 N[5175]={lv={30,30},n="Gearcutter Cogspinner",p={[1455]={678430,682440}},ra=1}
 N[5204]={lv={29,29},n="Apothecary Zinge",p={[1458]={492684,492686,500684,500686}},rh=1}
@@ -8319,6 +8288,7 @@ N[5237]={lv={41,42},n="Gordunni Ogre Mage",p={[1444]={744268,746266,746280,74825
 N[5238]={lv={45,46},n="Gordunni Battlemaster",p={[1444]={574724,574726,578702,584674,584676,584690,584706,584724,584726,586690,586706,586724,586726,592680,592702,594664,594670,596686,598664,600668,604680,604700,604710,608676,608686,608696,612720,620688,620732,622680,628684,628692,638688}},ra=-1,rh=-1}
 N[5239]={lv={45,46},n="Gordunni Mage-Lord",p={[1444]={574726,578702,584678,584692,584708,584724,584726,586692,586724,586726,592702,594670,594684,594706,596686,602670,602704,604680,604710,608676,608688,608696,612722,614710,620688,620734,624680,628692,640686}},ra=-1,rh=-1}
 N[5240]={lv={43,44},n="Gordunni Warlock",p={[1444]={582664,584650,584674,584676,586650,592634,594568,594636,594662,596644,598628,600662,600666,602650,604570,604576,606546,606576,608544,608566,608660,610564,618544,618546,618556}},ra=-1,rh=-1}
+N[5241]={lv={46,47},n="Gordunni Warlord",p={[1444]={578714,578718,590714,590718,594654,600654,600656,600668,604712,608664,608666,608712,608720,612684,612690,612732,616692,618674,618676,628684,628686,638688}},ra=-1,rh=-1}
 N[5243]={elite=1,lv={45,46},n="Cursed Atal'ai",p={[1415]={570756}},ra=-1,rh=-1}
 N[5244]={lv={45,46},n="Zukk'ash Stinger",p={[1444]={724644,728646,732634,732638,736634,736638,736646,764612,768614,772626,772642,772646,774620,776620,778642}},ra=-1,rh=-1}
 N[5245]={lv={44,45},n="Zukk'ash Wasp",p={[1444]={724618,724634,724636,726638,728628,732604,732622,734606,738616,738628,742608,744604,744636,746628,750592,752618,754600,754614,756602,756614,756616,756626,762592,766598,766630,768636}},ra=-1,rh=-1}
@@ -8356,8 +8326,6 @@ N[5319]={elite=1,lv={60,60},n="Jademir Tree Warder",p={[1444]={474074,474138,480
 N[5320]={elite=1,lv={62,62},n="Jademir Boughguard",p={[1443]={256700,336776,364768,386784,406834,408900,412878,414934,414942,414948,418950,420962,422966,466844},[1444]={474134,474138,476094,482074,484050,484104,484124,486118,490044,490154,490158,498064,500048,500152,502072,502118,502162,504086,504102,504126,504178,510160,510178,510188,514072,514124,518052,520080,520112,522166,524098,532164,534144,538128,540100,540114,544074}},ra=-1,rh=-1}
 N[5331]={lv={42,43},n="Hatecrest Warrior",p={[1444]={254494,254498,254512,254534,254540,254554,254556,256494,256496,256514,256558,260520,260528,264542,264554,264568,266506,266520,270534,276548,278528,282570,284504,284518,286514,286526,290504,290536,292546,292564,296528,296552,296570,302542,302562,312564,322560,332524,332526}},ra=-1,rh=-1}
 N[5332]={lv={41,42},n="Hatecrest Wave Rider",p={[1444]={254534,254540,254554,254556,256558,260528,262542,264524,264554,264568,266524,266564,266568,270534,270536,272548,276548,278544,278572,282576,288544,292564,292566,294552,296550,296568,300564,310564,312566,320560,326560,332496,332514,332522,332526,332552,338496}},ra=-1,rh=-1}
-N[5333]={lv={44,45},n="Hatecrest Serpent Guard",p={[1444]={254654,254658,254666,256664,260672,262676,264686,266684,266688,272696,276682,278700,280690,284706,286704,286706}},ra=-1,rh=-1}
-N[5334]={lv={43,44},n="Hatecrest Myrmidon",p={[1444]={234642,242640,242652,244632,246668,252628,254624,254644,254650,254658,256646,256662,258624,258638,262630,266650,270642,274628}},ra=-1,rh=-1}
 N[5335]={lv={41,42},n="Hatecrest Screamer",p={[1444]={252542,254494,254498,254512,254534,254554,260520,262552,264542,264568,266506,270534,272548,278528,278572,284504,284518,286514,290536,290546,292564,296526,296552,296570,302540,310564,322560,332498,332522}},ra=-1,rh=-1}
 N[5337]={lv={42,43},n="Hatecrest Siren",p={[1444]={252540,254552,254556,256558,260528,262540,262552,264524,264568,266524,266526,266570,270536,270546,276550,278544,278572,282576,292564,292566,294552,296552,298572,302562,312564,312566,322560,326560,332496,332514,332516,332526,332554,340496}},ra=-1,rh=-1}
 N[5343]={elite=4,lv={46,46},n="Lady Szallah",p={[1444]={248728,252724,256722,260672,264658,266658,270684,272688,276690,280678,282674}},ra=-1,rh=-1}
@@ -8426,17 +8394,25 @@ N[5477]={lv={39,39},n="Noboru the Cudgel",p={[1435]={242472,244514,256428,278362
 N[5479]={lv={50,50},n="Wu Shen",p={[1453]={788454,788456}},ra=1}
 N[5480]={lv={40,40},n="Ilsa Corbin",p={[1453]={784456,786454,786456}},ra=1}
 N[5481]={lv={47,48},n="Thistleshrub Dew Collector",p={[1446]={274678,276678,280644,280646,280674,282630,282686,286630,286642,286654,290662,290674,290676,294624,298668,300664,304642,304646,306642,306662,306672,312648}},ra=-1,rh=-1}
+N[5484]={lv={40,40},n="Brother Benjamin",p={[1453]={402262,404268,404280,406272,408262,412284,414288,414296,416278,416292,418296}},ra=1}
 N[5485]={lv={49,50},n="Thistleshrub Rootshaper",p={[1446]={274654,274656,276632,276662,278654,278688,280674,286654,286664,290618,292634,292636,294674,294676,296676,302664,302666,304652,306662,306672,308652}},ra=-1,rh=-1}
 N[5489]={lv={50,50},n="Brother Joshua",p={[1453]={384266,388264,388268}},ra=1}
 N[5490]={lv={48,49},n="Gnarled Thistleshrub",p={[1446]={276632,280654,280674,280688,282642,282664,282684,286642,286654,292626,294624,294664,294668,296664,296666,298624,300628,300636,304654,306672,310654,312656}},ra=-1,rh=-1}
+N[5491]={lv={40,40},n="Arthur the Faithful",p={[1453]={384324,384326,386324,386326}},ra=1}
 N[5492]={lv={50,50},n="Katherine the Pure",p={[1453]={374320,376326,378316,486490}},ra=1}
 N[5495]={lv={40,40},n="Ursula Deline",p={[1453]={260776,262774,268770}},ra=1}
+N[5496]={lv={50,50},n="Sandahl",p={[1453]={254784,258790,262784}},ra=1}
 N[5497]={lv={40,40},n="Jennea Cannon",p={[1453]={384794,384796,386794,386796}},ra=1,rh=-1}
+N[5498]={lv={50,50},n="Elsharin",p={[1453]={370812,374816,376812}},ra=1,rh=-1}
+N[5501]={lv={57,57},n="Kaerbrus",p={[1448]={618234,618236}},ra=1,rh=-1}
+N[5502]={lv={35,35},n="Shylamiir",p={[1453]={150494,152498,156500}},ra=1}
 N[5504]={lv={60,60},n="Sheldras Moontree",p={[1453]={210554,210556,216550,360672}},ra=1}
 N[5505]={lv={50,50},n="Theridran",p={[1453]={212526,214514,214516,216514}},ra=1}
+N[5506]={lv={40,40},n="Maldryn",p={[1453]={188526,188536,190524,196518,198526,344652,348648}},ra=1}
 N[5513]={lv={35,35},n="Gelman Stonehand",p={[1453]={510172}},ra=1}
 N[5515]={lv={60,60},n="Einris Brightspear",p={[1453]={614154,616154,618156}},ra=1}
 N[5516]={lv={50,50},n="Ulfir Ironbeard",p={[1453]={618156,620150}},ra=1}
+N[5517]={lv={40,40},n="Thorfin Stoneshield",p={[1453]={624144,624146,626144}},ra=1}
 N[5518]={lv={35,35},n="Lilliam Sparkspindle",p={[1453]={548078,550074,550086}},ra=1}
 N[5519]={lv={30,30},n="Billibub Cogspinner",p={[1453]={552074,552076}},ra=1}
 N[5520]={lv={40,40},n="Spackle Thornberry",p={[1453]={254778,254786,258774,258776}},ra=1}
@@ -8447,11 +8423,14 @@ N[5591]={lv={40,40},n="Dar",p={[1435]={448572}},rh=1}
 N[5592]={lv={43,43},n="Tok'Kar",p={[1435]={814804,814808,816806}},ra=-1,rh=1}
 N[5593]={lv={45,45},n="Katar",p={[1435]={834804,834806,836804,836806}},ra=-1,rh=1}
 N[5594]={lv={45,45},n="Alchemist Pestlezugg",p={[1446]={508270}},ra=1,rh=1}
+end)()
+;(function()
 N[5598]={lv={45,45},n="Atal'ai Exile",p={[1425]={336752}},ra=1,rh=1}
 N[5600]={lv={35,35},n="Khan Dez'hepah",p={[1443]={730456,730468,732418,732426,744488,746488}},ra=-1,rh=-1}
 N[5601]={lv={37,37},n="Khan Jehn",p={[1443]={660804,660806,666798,668794}},ra=-1,rh=-1}
 N[5602]={lv={37,37},n="Khan Shaka",p={[1443]={394948,402954,402956,406954,406956}},ra=-1,rh=-1}
 N[5611]={lv={13,13},n="Barkeep Morag",p={[1454]={544680,546680}},rh=1}
+N[5612]={lv={15,15},n="Gimrizz Shadowcog",p={[1426]={472534,472536}},ra=1}
 N[5615]={lv={43,44},n="Wastewander Rogue",p={[1446]={584364,584372,584384,584396,588364,588384,588392,588400,600370,602376,604324,604336,604392,606366,608322,608328,608336,608384,610396,614348,614356,618342,618354,634374,634380,634392,634398,636406,638398,650398,652370,652392,654362,656372}},ra=-1,rh=-1}
 N[5616]={lv={40,41},n="Wastewander Thief",p={[1446]={588234,588236,594248,598238,602224,602226,604246,606234,606246,608242,628304,628306,632324,632326,632340,634294,636296,636328,636340,638310,638316,640292,652328,652336,654322,656322}},ra=-1,rh=-1}
 N[5617]={lv={42,43},n="Wastewander Shadow Mage",p={[1446]={584372,584384,584386,588364,588372,588384,588392,588400,600370,604328,604392,608320,608334,608336,608384,608386,618342,618350,618356,628306,632374,634380,634398,636374,636380,636392,636406,638310,638398,646392,652370,652400,654362,656360,656372,662350}},ra=-1,rh=-1}
@@ -8485,8 +8464,6 @@ N[5718]={elite=1,lv={62,62},n="Rothos",p={[1425]={584302,584332,588274,594252,59
 N[5724]={lv={15,15},n="Ageron Kargal",p={[1420]={616524,616526}},rh=1}
 N[5752]={lv={39,39},n="Corporal Melkins",p={[1443]={666108}},ra=1}
 N[5753]={lv={20,20},n="Martha Strain",p={[1458]={854154,854158,858154,858158}},rh=1}
-N[5757]={lv={19,19},n="Lilly",p={[1421]={430508}},rh=1}
-N[5758]={lv={18,18},n="Leo Sarn",p={[1421]={538826,540822}},ra=-1,rh=1}
 N[5759]={lv={10,10},n="Nurse Neela",p={[1420]={618528}},rh=1}
 N[5760]={elite=1,lv={40,40},n="Lord Azrethoc",p={[1443]={554722,554726,554770,554776,558732,558738,558774,558776,560764,560786,562746,562804,562808,564720,566722,566762,566766,568810,570744,572784,572786,574734,574750,574796,576720,576734,576736,576754,576758,582784,584766,584786,586758,586786,588768,590748,590780,598766,608770}},ra=-1,rh=-1}
 N[5765]={lv={10,10},n="Ruzan",p={[1411]={424690,426690}},rh=1}
@@ -8502,6 +8479,7 @@ N[5810]={lv={20,20},n="Uzzek",p={[1413]={614210}},ra=-1,rh=1}
 N[5811]={lv={26,26},n="Kamari",p={[1454]={630450,632444}},rh=1}
 N[5814]={lv={30,30},n="Innkeeper Thulbek",p={[1434]={314296}},ra=-1,rh=1}
 N[5815]={lv={45,45},n="Kurgul",p={[1454]={474468,474476,476464,476468,476476}},rh=1}
+N[5819]={lv={30,30},n="Mirelle Tremayne",p={[1458]={612284,614286,616284,616290}},rh=1}
 N[5832]={elite=4,lv={24,24},n="Thunderstomp",p={[1413]={464772,464780,464786,464804,464808,470772,470782,470792,470804,472764,472814,472816,476768,476784,476816,480794,480808,482802,486802}},ra=-1,rh=-1}
 N[5837]={elite=4,lv={15,15},n="Stonearm",p={[1413]={420246,422244,422260,422272,464232,466230}},ra=-1,rh=-1}
 N[5838]={elite=4,lv={17,17},n="Brokespear",p={[1413]={530444,530446,534400,536400,544464,544466,564436,566436,570410}},ra=-1,rh=-1}
@@ -8523,13 +8501,13 @@ N[5860]={elite=1,lv={47,48},n="Twilight Dark Shaman",p={[1427]={158334,170342,18
 N[5861]={elite=1,lv={48,49},n="Twilight Fire Guard",p={[1427]={132410,134398,136426,140404,144372,162334,170342,178436,180374,182356,184414,188366,192412,194376,210360,220366,222266,224392,234274,234350,234376,234410,238280,238368,238384,240260,242334,244340,250396,254274,254304,254344,256294,260266,274242,276254,276344,294268,304268,322270}},ra=-1,rh=-1}
 N[5862]={elite=1,lv={49,50},n="Twilight Geomancer",p={[1427]={132410,134398,134424,136426,144372,144392,160434,162334,176438,180374,180376,184418,222264,234274,242260,246264,248268,248278,254248,256250,260266,264256,266254,274240,276254,278236,282260,286252,286264,296258,304266}},ra=-1,rh=-1}
 N[5863]={elite=4,lv={19,19},n="Geopriest Gukk'rok",p={[1413]={410452,412456,416456,432480,432486,432520,436482,436522,448518,450514,456520}},rh=-1}
-end)()
-;(function()
 N[5865]={elite=4,lv={13,13},n="Dishu",p={[1413]={494154,494156,494268,496154,496158,496270,510204,510206,514264,514266,516264,516268}},ra=-1,rh=-1}
 N[5875]={lv={40,40},n="Gan'rul Bloodeye",p={[1454]={482454,482456}},rh=1}
 N[5878]={lv={29,29},n="Thun'grim Firegaze",p={[1413]={572302}},ra=-1,rh=1}
 N[5880]={lv={14,14},n="Un'Thuwa",p={[1411]={562750}},rh=1}
 N[5881]={lv={45,45},n="Cursed Sycamore",p={[1444]={542674,542680,542690,542704,542706,542718,542738,544726,546672,546676,546702,546714,546724,546728,552738,556676,556744,560746,566744,566748}},ra=0,rh=0}
+N[5882]={lv={60,60},n="Pephredo",p={[1454]={384854,384856,386854,386856}},rh=1}
+N[5883]={lv={50,50},n="Enyo",p={[1454]={384858,386856,388854}},rh=1}
 N[5884]={lv={10,10},n="Mai'ah",p={[1411]={424690,426690}},rh=1}
 N[5885]={lv={40,40},n="Deino",p={[1454]={378866,384854,384858,386852,386860}},rh=1}
 N[5887]={lv={8,8},n="Canaga Earthcaller",p={[1411]={424690}},rh=1}
@@ -8556,6 +8534,7 @@ N[5939]={lv={13,13},n="Vira Younghoof",p={[1412]={460638,468608}},rh=1}
 N[5941]={lv={14,14},n="Lau'Tiki",p={[1411]={532814,532816}},rh=1}
 N[5943]={lv={15,15},n="Rawrk",p={[1411]={540420}},rh=1}
 N[5955]={lv={45,45},n="Tooga",p={[1446]={284636,284674,284676,286636,286672,286676,294604,294606,296604,296606,298738,300664,300704,302582,302644,302706,304646,306648,308660,318740,374544,442430,664256,666256}},ra=1,rh=1}
+N[5976]={lv={46,47},n="Dreadmaul Brute",p={[1419]={412120,412128,414138,416116,420112,424138,424154,428138,432130,434114,434116,434154,434156,436114,438118,438150,440128,440144,440158}},ra=-1,rh=-1}
 N[5982]={lv={46,48},n="Black Slayer",p={[1419]={462184,462188,466184,468194,468196,498186,500176,502174,504160,542366,544362,544440,546362,548444,548446,552366,554434,556434,556444,558366,560364,564354,566354,566362,566374,566378,614268,618276,624264,624266,626264,626266}},ra=-1,rh=-1}
 N[5984]={lv={45,46},n="Starving Snickerfang",p={[1419]={434270,436268,440262,442296,444194,444214,444228,444282,448244,452184,458174,462224,464204,466154,466198,474180,474224,476210,484196,492154,492214,496184,496196,496224,504284,506294,510274,520296}},ra=-1,rh=-1}
 N[5985]={lv={49,50},n="Snickerfang Hyena",p={[1419]={574422,574442,582358,582428,582436,582446,584404,584414,586414,586424,590454,592358,592404,592460,594354,594372,594376,594444,598386,598404,598460,600354,600410,600434,600442,602420,602448,606370,606378,608362,608440,608450,614462,616464,616466}},ra=-1,rh=-1}
@@ -8564,11 +8543,15 @@ N[5990]={lv={47,48},n="Redstone Basilisk",p={[1419]={552304,554284,554294,554312
 N[5991]={lv={51,52},n="Redstone Crystalhide",p={[1419]={444324,444344,444358,454402,454406,454494,454524,458344,458374,458480,460514,464496,466394,490366,494354,494382,502524,512396,512556,514366,514408,524354,524566,532380,534426,540348,544434,546368}},ra=-1,rh=-1}
 N[5992]={lv={48,49},n="Ashmane Boar",p={[1419]={552304,554284,554288,554312,554316,556314,556316,558304,562286,562326,564284,566324,570306,570334,572338,572356,574294,574346,576292,578274,580352,580356,584282,586282,586286,586354,602284,602286,604268,614264,614294,616264,616296,618286,622284,626262,626274,626278,626286}},ra=-1,rh=-1}
 N[5993]={lv={52,53},n="Helboar",p={[1419]={444324,444340,444364,444372,454396,454406,454490,454522,458482,460514,462344,462404,462502,466360,474372,476492,478342,490366,494354,494378,502536,508352,512374,512552,514396,514406,520364,524412,524534,524564,526552,530364,530396,534372,534428,544414,544432,546368,546390,548448}},ra=-1,rh=-1}
+N[5997]={lv={47,48},n="Nethergarde Engineer",p={[1419]={528112,534120,540140,548046,552158,554094,560036,562024,562078,564064,568104,570160,574128,594024,600034,614006,614036,614060,634032,634070,654086,664006,664026,668086,682074,684056,694104,698082,700034,702018,710010,712076,714052,716042}},ra=1,rh=-1}
+N[6000]={lv={49,51},n="Nethergarde Cleric",p={[1419]={604182,606182,610188,610216,612172,618226,626240,634194,640192,648192,660214,660238,662218,664232}},ra=1,rh=-1}
 N[6001]={lv={49,51},n="Nethergarde Analyst",p={[1419]={638210,654246,658234,658242,658246,668158}},ra=1,rh=-1}
+N[6003]={lv={50,51},n="Nethergarde Officer",p={[1419]={636214,644184,644186,644200,646184,646186,646200,660214,664224,664226,666226}},ra=1,rh=-1}
 N[6004]={lv={51,52},n="Shadowsworn Cultist",p={[1419]={614410,620424,622392,624428,628454,628468,634306,634440,636392,636428,638320,638336,638404,638406,638454,640352,642484,644468,646302,646476,650336,650348,652326,654324,656346,658310,666312,674292,674298,674316,676290,676298,676316,680312}},ra=-1,rh=-1}
 N[6005]={lv={52,53},n="Shadowsworn Thug",p={[1419]={616410,620396,624394,624430,626454,628440,628468,630390,634336,636392,636440,638306,638320,638336,638350,640404,640406,642484,644302,644332,644468,646302,646478,648344,648346,648356,652326,654324,656346,658320,658338,662304,664306,666312,674298,674316,676298,676316,682312,686312}},ra=-1,rh=-1}
 N[6006]={lv={52,53},n="Shadowsworn Adept",p={[1419]={614410,616410,618424,620396,624428,626454,628438,628470,630390,634426,636336,636440,638306,638320,638404,640352,640406,642484,644330,644468,646304,648344,648346,652326,654324,656346,658310,658320,658338,662304,666312,674294,674316,676290,676316,678298,682312,686312}},ra=-1,rh=-1}
 N[6011]={lv={54,55},n="Felguard Sentry",p={[1419]={534532,534542,538534,538536,538556,546594,564488,566488,568500,572484,578484,580492,580496,586486,588502,590484,600498,622514,622516}},ra=-1,rh=-1}
+N[6014]={lv={50,50},n="X'yera",p={[1454]={354874,354878,358874,358876}},rh=1}
 N[6015]={lv={45,45},n="Torta",p={[1446]={664254,664256,666254,666256}},ra=1,rh=1}
 N[6018]={lv={40,40},n="Ur'kyo",p={[1454]={354876,356874,356876}},ra=-1,rh=1}
 N[6019]={lv={30,30},n="Hornizz Brimbuzzle",p={[1443]={478614,478618}},ra=1,rh=1}
@@ -8621,10 +8604,10 @@ N[6178]={lv={10,10},n="Muiredon Battleforge",p={[1455]={234084,234086,236084,236
 N[6179]={lv={60,60},n="Tiza Battleforge",p={[1455]={264120,268110,274104,274120,276120,278128}},ra=1}
 N[6181]={lv={30,30},n="Jordan Stilwell",p={[1426]={524368,526368}},ra=1,rh=-1}
 N[6182]={lv={20,20},n="Daphne Stilwell",p={[1436]={414884,414886,422886,424884,426884}},ra=1,rh=-1}
+N[6184]={lv={46,47},n="Timbermaw Pathfinder",p={[1447]={314426,314438,314450,314460,316452,318418,322462,322466,326422,328450,330444,330462,332466,334432,336432,336438,342422,346422,348392,352362,352398,354412,356414,364358,366358,372352,374366}},ra=-1,rh=-1}
 N[6188]={lv={50,51},n="Timbermaw Shaman",p={[1447]={384324,414194,414202,422204,424214,428186,428204,434254,434256,434272,440234,440244,440254,440266,442194,442204,442224,444264,446236,448214,448220,448272,454232,454254,454262,454282,458220,460284,462292,474294,474302,474314,474316,478324,480294,480326,482312,486292}},ra=-1,rh=-1}
 N[6190]={lv={46,47},n="Spitelash Warrior",p={[1447]={238600,252522,256512,256550,260570,260610,264498,272554,278596,284532,288580,290500,290518,290600,292540,298526,304518,304552,310530,316558,320592,324530,324610,328498,338496,338594,340584,342620,344488,356628,374458,382434,386444}},ra=-1,rh=-1}
 N[6193]={lv={47,48},n="Spitelash Screamer",p={[1447]={236600,242592,252522,256512,256550,260570,260610,264498,272552,278594,284532,288500,288582,290514,292540,292600,298528,304518,304552,310530,316560,320592,322510,324610,328500,338494,338594,342580,342622,356628,374458,382432,386444}},ra=-1,rh=-1}
-N[6194]={lv={48,49},n="Spitelash Serpent Guard",p={[1447]={342544,344530,350562,354588,360518,360538,362502,362580,364480,364598,370610,380532,390464,390578,390594,394490,394510,394628,406478,408540,410508,414498,414634,416622,434646}},ra=-1,rh=-1}
 N[6195]={lv={51,52},n="Spitelash Siren",p={[1447]={344530,344548,354588,364480,370610,380532,390464,390580,394508,394628,430454,432618,434472,434508,434646,436586,438564,456438,458674,460530,460568,460590,460630,462394,462470,494636}},ra=-1,rh=-1}
 N[6196]={lv={50,51},n="Spitelash Myrmidon",p={[1447]={402522,410518,410542,414482,428454,428480,428614,434420,434472,434508,436586,438564,440482,442540,442614,448432,456438,458674,460550,460570,460590,460628,462394,462470,462488,462508,468410,474650,482540,482598,492420,492440,492560,494634,494674}},ra=-1,rh=-1}
 N[6198]={lv={51,52},n="Blood Elf Surveyor",p={[1447]={552274,554262,554284,554286,554296,556292,558270,558306,562296,564254,564256,564284,566254,566282,568274,568290,568302,570306,574262,578264,578302,580274,580282,582308,584288,586264,586274,586284,586290,586310,590296}},ra=-1,rh=-1}
@@ -8679,7 +8662,6 @@ N[6411]={lv={45,45},n="Velora Nitely",p={[1458]={624392,624396,626392,628398}},r
 N[6446]={lv={20,20},n="Therzok",p={[1454]={428534,428536}},rh=1}
 N[6466]={lv={12,12},n="Gamon",p={[1454]={540686,542682,546680}},ra=0,rh=0}
 N[6467]={lv={30,30},n="Mennet Carkad",p={[1458]={824692,826696,832690,834684,834706,836676,836686}},rh=1}
-N[6491]={lv={60,60},n="Spirit Healer",p={[1411]={442694,470174,470176,534444,534446,536444,536446,574732,576732},[1412]={426780,458594,458596,464554,464556,466554},[1413]={452610,506326,508324,602398},[1417]={486556,488554},[1418]={82554,82556,568244,570246},[1419]={510122},[1420]={312648,562494,790408,820694,820696},[1421]={442414,442416},[1422]={454854,454856,456854,456856,654748,656744,656746},[1423]={382704,382706,390924,390926,472442,472446,800644,800646,964914,964916,966916},[1424]={514526,516524,518526,634194,634196,636194,636196},[1425]={168444,168448,604388,606384,606386,620268,726680},[1426]={294698,296698,470550,542390},[1427]={354224,354228,356224,356228},[1428]={632234,632236},[1429]={394604,394606,396604,494434,496434,834694,834696,836696},[1430]={400750,400756},[1431]={200494,448672,478456,750590},[1432]={324464,324468,326470},[1433]={208564,208566},[1434]={300730,384088},[1435]={502622},[1436]={514498,516496,518494},[1437]={114434,116434,494414,494416,496416},[1438]={562632,586424,588426},[1439]={418364,418366,434924,436922},[1440]={178110,222282,402530,514632,516632,806580,842568,932422},[1441]={304234,304236,306234,306236,690534,692536},[1442]={574620,576620},[1443]={502628},[1444]={314480,316480,440074,504134,548474,548478,730448},[1445]={396308,634430,636430},[1446]={540286},[1447]={144784,144786,146786,542714,704156},[1448]={494306,496304,496308,562866},[1449]={800498},[1450]={620694,620696},[1451]={280874,280876,470384,470386,806198},[1452]={612348},[1456]={564174,564178,566174,566178,566190},[1457]={768276,770270,774262,776260},[1458]={674126,674142,678134,678142,678152},[2521]={402636,410224,550682,554450,688502}},ra=1,rh=1}
 N[6494]={lv={13,13},n="Tazan",p={[1413]={624440,630440,634454,634456,636460,638444,638448,646440}},ra=-1,rh=-1}
 N[6496]={lv={35,35},n="Brivelthwerp",p={[1441]={774770}},ra=1,rh=1}
 N[6497]={lv={13,13},n="Astor Hadren",p={[1420]={540760,542750,544730,544744,546736,550710,550716,552698,554672,554684,556680,556686,556700,558668,562658,564654,572648,574644,582642,588640,594634,600630,606626,612622,614532,614536,614614,616534,616618,616634,620550,624556,624610,626554,628604,630578,634566,634588,636574,638600},[1421]={458416,472402,476396,478412,484384,494310,494322,494380,498276,498288,500268,500338,510362,512240,514206,514234,522190,526212,532202,540184,552158,560144,564132,578126,592114,612110,628100,646088,658076,664070,668066,678048}},ra=-1,rh=1}
@@ -8843,6 +8825,8 @@ N[7287]={lv={22,22},n="Foreman Silixiz",p={[1413]={548060,550066}},rh=-1}
 N[7288]={elite=1,lv={23,23},n="Grand Foreman Puzik Gallywix",p={[1413]={548056}},rh=-1}
 N[7292]={lv={55,55},n="Dinita Stonemantle",p={[1455]={334598,338602,338606,346604,346608}},ra=1}
 N[7307]={lv={23,23},n="Venture Co. Lookout",p={[1413]={546054,546056}},rh=-1}
+end)()
+;(function()
 N[7308]={lv={22,22},n="Venture Co. Patroller",p={[1413]={546056}},rh=-1}
 N[7310]={lv={25,25},n="Mutated Venture Co. Drone",p={[1413]={548058}},rh=-1}
 N[7311]={lv={40,40},n="Uthel'nay",p={[1454]={388854,390860}},ra=-1,rh=1}
@@ -8925,8 +8909,6 @@ N[7737]={lv={30,30},n="Innkeeper Greul",p={[1444]={748450}},rh=1}
 N[7740]={lv={55,55},n="Gracina Spiritmight",p={[1457]={420854,420858,424866,426862}},ra=1}
 N[7744]={lv={30,30},n="Innkeeper Thulfram",p={[1425]={134418,138416}},ra=1}
 N[7750]={lv={55,55},n="Corporal Thund Splithoof",p={[1435]={334660,334666,336660}},ra=1,rh=1}
-end)()
-;(function()
 N[7763]={lv={48,48},n="Curgle Cranklehop",p={[1446]={522268}},ra=1,rh=1}
 N[7764]={lv={50,50},n="Troyas Moonbreeze",p={[1444]={318454,318456}},ra=1}
 N[7765]={lv={45,45},n="Rockbiter",p={[1444]={424220}},ra=1,rh=-1}
@@ -8987,6 +8969,8 @@ N[7881]={lv={30,30},n="Stoley",p={[1446]={670238}},ra=1,rh=1}
 N[7882]={lv={51,51},n="Security Chief Bilgewhizzle",p={[1446]={670238}},ra=1,rh=1}
 N[7883]={lv={45,45},n="Andre Firebeard",p={[1446]={732464,734470,734476,736464,736470,736476}},ra=-1,rh=-1}
 N[7884]={lv={60,60},n="Fraggar Thundermantle",p={[1425]={148444,148446}},ra=1}
+N[7885]={lv={53,54},n="Spitelash Battlemaster",p={[1447]={654768,654914,660778,664828,664894,670904,670918,678834,678912,684824,690822,692834,692912,694904,698804,698844,698904,704814,704856,704874,704894,712858,712894,718854,724894,726850,734864}},ra=-1,rh=-1}
+N[7886]={lv={54,55},n="Spitelash Enchantress",p={[1447]={652774,652916,654914,656764,660772,660780,664828,664892,670918,672904,678834,678912,684824,690822,690834,690916,694904,694940,698844,698904,700802,704814,704856,704874,704894,710894,712858,720854,734862}},ra=-1,rh=-1}
 N[7895]={elite=2,lv={36,36},n="Ambassador Bloodrage",p={[1413]={458876,478906,484956,486954,486956}},ra=-1,rh=-1}
 N[7899]={lv={44,45},n="Treasure Hunting Pirate",p={[1446]={508908,520944,532958,540924,540930,544950,546950,554914,554920,556922}},ra=-1,rh=-1}
 N[7900]={lv={50,50},n="Angelas Moonbreeze",p={[1444]={318454,318456}},ra=1}
@@ -8999,6 +8983,8 @@ N[7937]={elite=3,lv={9999,9999},n="High Tinker Mekkatorque",p={[1455]={690490,69
 N[7944]={lv={57,57},n="Tinkmaster Overspark",p={[1455]={694504,694506,696506,698494,698502,698520,706504}},ra=1,rh=-1}
 N[7950]={lv={57,57},n="Master Mechanic Castpipe",p={[1455]={694476,698484,698486,700474,700498}},ra=1,rh=-1}
 N[7953]={lv={50,50},n="Xar'Ti",p={[1411]={552754,552756}},rh=1}
+N[7954]={lv={50,50},n="Binjy Featherwhistle",p={[1426]={492480}},ra=1}
+N[7955]={lv={50,50},n="Milli Featherwhistle",p={[1426]={492480}},ra=1,rh=-1}
 N[7956]={lv={42,42},n="Kindal Moonweaver",p={[1444]={658456,666466}},ra=1,rh=-1}
 N[7957]={lv={36,36},n="Jer'kai Moonweaver",p={[1444]={658456}},ra=1,rh=-1}
 N[7976]={lv={30,30},n="Thalgus Thunderfist",p={[1455]={608898,612892,616890}},ra=1}
@@ -9017,6 +9003,9 @@ N[8115]={lv={50,50},n="Witch Doctor Uzer'i",p={[1444]={744434}},ra=-1,rh=1}
 N[8125]={lv={43,43},n="Dirge Quikcleave",p={[1446]={526280}},ra=1,rh=1}
 N[8126]={lv={55,55},n="Nixx Sprocketspring",p={[1446]={524272}},ra=1,rh=1}
 N[8136]={lv={47,47},n="Lord Shalzaru",p={[1444]={284704,284706,286704,286706}},ra=-1,rh=-1}
+N[8140]={lv={45,45},n="Brother Karman",p={[1445]={672476,674474,676474}},ra=1}
+N[8141]={lv={45,45},n="Captain Evencane",p={[1445]={678484,680486}},ra=1}
+N[8142]={lv={50,50},n="Jannos Lighthoof",p={[1444]={760422}},rh=1}
 N[8197]={elite=1,lv={61,61},n="Chronalis",p={[1446]={644502,644506,646502,646506}},ra=0,rh=0}
 N[8203]={elite=4,lv={47,47},n="Kregg Keelhaul",p={[1446]={724464,724468,726468,744462,744474,748474,748476,752458,758456,760450}},ra=-1,rh=-1}
 N[8207]={elite=4,lv={46,46},n="Greater Firebird",p={[1446]={412352,412356,420374,420386,422338,422364,422376,426336,432356,434350,436350,436362,448354,450364,454332,462334,468336,470346,470364,470378,470388,474370,476392,478398,480356,486378,490392,494348,496384,504394,508384,516388,518396,524384,526380,526388,528398,532406,540398}},ra=-1,rh=-1}
@@ -9035,10 +9024,10 @@ N[8301]={elite=4,lv={53,53},n="Clack the Reaver",p={[1419]={452432,454384,454414
 N[8302]={elite=4,lv={49,49},n="Deatheye",p={[1419]={432264,434250,444240,444254,444262,444272,444276,446258,448254,448266,452214,452238,452278,454234,462184,462186,462246,464172,464206,472160,472184,472224,474190,474200,476190,476196,476216,478206,482176,486174}},ra=-1,rh=-1}
 N[8303]={elite=4,lv={50,50},n="Grunter",p={[1419]={526324,536276,544274,550282,552270,552302,552310,552316,554294,556282,558292,562302,562306,564316,566294,566298,568306,572322,576262,576270,578280,588234,596248,598278,600260,600286,602266,610258,612270,612278,612290,618224,618274,624262,624278,626260}},ra=-1,rh=-1}
 N[8305]={lv={25,25},n="Kixxle",p={[1437]={502378}},ra=1,rh=1}
+N[8308]={lv={27,27},n="Alenndaar Lapidaar",p={[1440]={180598}},ra=1}
 N[8359]={lv={30,30},n="Ahanu",p={[1456]={452554,454558,456558}},rh=1}
 N[8379]={lv={60,60},n="Archmage Xylem",p={[1447]={292402,296404,296406}},ra=1,rh=1}
 N[8380]={lv={50,50},n="Captain Vanessa Beltis",p={[1447]={530878}},ra=1,rh=1}
-N[8383]={elite=1,lv={60,60},n="Master Wood",p={[1453]={792474,792476}},ra=1}
 N[8385]={lv={22,22},n="Mura Runetotem",p={[1421]={430420}},rh=1}
 N[8390]={lv={30,30},n="Chemist Cuely",p={[1458]={482726,484714,484716,486718,486726,490714}},rh=1}
 N[8391]={elite=1,lv={52,52},n="Lathoric the Black",p={[1427]={412276,414244,414254,414256,414266,416254,416258,416266,418244,426266}},ra=-1,rh=-1}
@@ -9202,6 +9191,7 @@ N[9454]={lv={54,54},n="Xavathras",p={[1448]={318664,324670,326664,326668,336666}
 N[9459]={elite=1,lv={55,55},n="Cyrus Therepentous",p={[1428]={948316,950314}},ra=1,rh=1}
 N[9461]={elite=1,lv={54,54},n="Frenzied Black Drake",p={[1428]={932326,934320,942318,946316,950314}},ra=-1,rh=-1}
 N[9464]={lv={51,51},n="Overlord Ror",p={[1448]={474932,474940,480948,482934,482940,484924,486924,486934,486936}},ra=-1,rh=-1}
+N[9465]={lv={60,60},n="Golhine the Hooded",p={[1448]={618246,620244}},ra=1,rh=-1}
 N[9477]={lv={50,52},n="Cloned Ooze",p={[1449]={370184,380640,384122,396496,398762,406800,442210,456688,462258,464626,474136,508356,514294,522134,532566,532626,534720,554208,556846,558416,562502,572878,602174,632686,650588,652448}},ra=-1,rh=-1}
 N[9500]={elite=1,lv={54,54},n="Mistress Nagmara",ra=1,rh=1}
 N[9501]={lv={30,30},n="Innkeeper Adegwa",p={[1417]={738324,738326}},rh=1}
@@ -9237,6 +9227,8 @@ N[9620]={lv={50,50},n="Dreka'Sur",p={[1448]={348526}},ra=-1,rh=1}
 N[9622]={lv={55,55},n="U'cha",p={[1449]={678138,684124,684126,684146,686124,686134,686136,686146}},ra=-1,rh=-1}
 N[9623]={lv={48,48},n="A-Me 01",p={[1449]={596170,654166,656164,658166,674168,676168}},ra=1,rh=1}
 N[9660]={lv={47,47},n="Agnar Beastamer",p={[1425]={140434,140436}},ra=1}
+end)()
+;(function()
 N[9683]={lv={49,50},n="Lar'korwi Mate",p={[1449]={582782,608722,622660,628804,630806,632772,632776,638628,664668,664676,666668,670624,670626,670736,672606,672730,714600,716600}},ra=-1,rh=-1}
 N[9684]={lv={56,56},n="Lar'korwi",p={[1449]={794498,796498}},ra=-1,rh=-1}
 N[9690]={lv={51,52},n="Ember Worg",p={[1428]={730574,768276,768312,776660,782578,784344,800316,800574,802248,802646,814560,834480,840198,840346,848704,858412,868470,886606,898292,898344,898530,912410,912466,912582,914284,914364,914556,916306}},ra=-1,rh=-1}
@@ -9325,10 +9317,7 @@ N[10666]={lv={30,30},n="Gordo",p={[1420]={402544,408544,410556,420550,424556,430
 N[10667]={lv={63,63},n="Chromie",p={[1422]={394668}},ra=1,rh=1}
 N[10668]={lv={16,16},n="Beaten Corpse",p={[1413]={492504}},ra=-1,rh=1}
 N[10684]={lv={56,56},n="Remorseful Highborne",p={[1452]={560446,562434,562444}},ra=1,rh=-1}
-N[10699]={lv={57,58},n="Carrion Scarab",p={[1423]={72434,74406,74436,76406,80384,80392,80400,86390,86402,92358,92366,98354,100376,104364,104366,106356,110346,110372,112334,114344,116344,116352,126320,130334,134310,136312,136326,138318,146316,652372,658390,660374,660376,666374,666382,666386,678398}},ra=-1,rh=-1}
 N[10717]={lv={55,57},n="Temporal Parasite",p={[1422]={448614,448622,450630,460626,464618,468616,468626,470614,474664,476662,480630,480654,480666,484624,484642,486624,486626,486636,494694,494696,496692,498664,504668,504676}},ra=-1,rh=-1}
-end)()
-;(function()
 N[10737]={elite=1,lv={60,60},n="Shy-Rotam",p={[1452]={494098,498094,498098,504108,506104,506106}},ra=-1,rh=-1}
 N[10738]={elite=1,lv={59,59},n="High Chief Winterfall",p={[1452]={684380,694384,696382}},ra=-1,rh=-1}
 N[10739]={lv={55,55},n="Mulgris Deepriver",p={[1422]={536646}},ra=1,rh=1}
@@ -9370,6 +9359,7 @@ N[10924]={lv={63,63},n="Ivy Leafrunner",p={[1448]={508814,508816}},ra=1,rh=1}
 N[10926]={lv={1,1},n="Pamela Redpath",p={[1423]={364908,366908}},ra=1,rh=1}
 N[10927]={lv={10,10},n="Marlene Redpath",p={[1422]={490788,492784}},ra=1,rh=1}
 N[10929]={elite=1,lv={62,62},n="Haleh",p={[1452]={544512,546512}},ra=1,rh=1}
+N[10930]={lv={25,25},n="Dargh Trueaim",p={[1432]={822624,824626}},ra=1}
 N[10936]={lv={60,60},n="Joseph Redpath",p={[1422]={494766,496764,496768},[1423]={390912}},ra=1,rh=1}
 N[10941]={lv={31,31},n="Wizlo Bearingshiner",p={[1441]={214324,214326,216324}},ra=-1,rh=1}
 N[10976]={lv={58,58},n="Jeziba",p={[1422]={394668}},ra=1,rh=1}
@@ -9449,6 +9439,7 @@ N[11555]={lv={55,55},n="Gorn One Eye",p={[1448]={652026,654024}},ra=-1,rh=-1}
 N[11556]={lv={55,55},n="Salfa",p={[1452]={278344,278346}},ra=1,rh=1}
 N[11557]={lv={55,55},n="Meilosh",p={[1448]={654028,656028}},ra=1,rh=1}
 N[11558]={lv={55,55},n="Kernda",p={[1448]={654014,654024,654028,656032}},ra=-1,rh=-1}
+N[11559]={lv={39,40},n="Outcast Necromancer",p={[1443]={592894,594896,600900,608904,610906,624912,626912,634894,634896,636892,638904,638906,644920,646918,648842,648894,648898,648910,650854,650876,652860,652866}},ra=-1,rh=-1}
 N[11560]={lv={38,39},n="Centaur Spectre",p={[1443]={624914,634914,634924,634926,638924,638926,642914,644904,646916,646926,648894,648904,652908,656906,658904}},ra=0,rh=0}
 N[11561]={lv={37,38},n="Undead Ravager",p={[1443]={582894,584900,588900,592894,596890,598882,604902,614908,620910,624902,624916,632912,632922,634894,634926,640804,640812,640880,640890,640916,642844,642848,642864,642870,642914,644824,644826,644900,646824,646912,646916,646926,648834,648888,648896,650854,650876,652858,652866}},ra=-1,rh=-1}
 N[11562]={lv={33,34},n="Drysnap Crawler",p={[1443]={176708,180762,180844,180862,184816,186814,188772,190776,194818,198760,198854,198856,200734,200736,202712,202792,206804,206806,208750,208824,208826,212760,218810,224752,230808,234770,242774,306346,328352,330286,332316}},ra=-1,rh=-1}
@@ -9509,6 +9500,8 @@ N[11814]={lv={12,12},n="Kali Remik",p={[1411]={562742}},rh=1}
 N[11820]={lv={28,28},n="Locke Okarr",p={[1440]={714676,716676}},ra=-1,rh=1}
 N[11821]={lv={30,30},n="Darn Talongrip",p={[1442]={732948}},rh=1}
 N[11823]={lv={10,10},n="Vark Battlescar",p={[1443]={232702}},rh=1}
+N[11826]={lv={45,45},n="Kristy Grant",p={[1444]={894462}},ra=1,rh=-1}
+N[11827]={lv={35,35},n="Kimberly Grant",p={[1453]={172514,172548,178504,178560,180566,184484,186492,186530,186536,186554,186586,190514,190516,194570,194578,196574,200492,200510,204504,208490,208502,208576,212506,214572,216492,220508,222576,224570,226510,226562,230548,234522,234528,234538,236544,236548,238522,238532,366642}},ra=1}
 N[11832]={elite=1,lv={62,62},n="Keeper Remulos",p={[1450]={362412,362418,366418}},ra=1,rh=1}
 N[11833]={lv={20,20},n="Rahauro",p={[1456]={694288,700292,700328,704296,704322,706294,706296,706314,706316}},rh=1}
 N[11834]={lv={14,14},n="Maur Grimtotem",ra=1,rh=1}
@@ -9562,6 +9555,7 @@ N[12046]={lv={49,49},n="Gor'marok the Ravager",p={[1446]={410574,414576,416578}}
 N[12047]={lv={55,55},n="Stormpike Mountaineer",p={[1426]={684186,686186}},ra=1,rh=-1}
 N[12096]={lv={55,55},n="Stormpike Quartermaster",ra=1,rh=-1}
 N[12097]={lv={55,55},n="Frostwolf Quartermaster",ra=-1,rh=1}
+N[12125]={elite=1,lv={56,57},n="Mammoth Shark",p={[1411]={654046,664038,668048,680034,686038,692018},[1447]={678026,726006,760020,796972,814450,816756,820442,822526,842460,852022,860036}},ra=-1,rh=-1}
 N[12126]={elite=1,lv={9999,9999},n="Lord Tirion Fordring",p={[1422]={538244,538246}},ra=1,rh=1}
 N[12128]={elite=1,lv={60,60},n="Crimson Elite",p={[1422]={480214,482216,486222,494230,498234,504236,512234,512236,516234,532244,534246,538244,538246,546236}},ra=-1,rh=-1}
 N[12136]={lv={45,45},n="Snurk Bucksquick",p={[1411]={506128}},ra=-1,rh=1}
@@ -9635,6 +9629,8 @@ N[12740]={elite=1,lv={55,55},n="Faustron",p={[1450]={322664,322666}},ra=-1,rh=1}
 N[12757]={lv={35,35},n="Karang Amakkar",p={[1440]={118344,118346}},ra=-1,rh=1}
 N[12759]={lv={27,27},n="Tideress",p={[1440]={460704,464706,466706,474704,476702,476706,484694,486700,488692,492706,496710,498704,504716,510710,514704,518716,520712,526714}},ra=-1,rh=-1}
 N[12800]={elite=1,lv={60,61},n="Chimaerok",p={[1444]={280754,280764,280766,282734,282736,284714,284720,284776,286716,288704,288786,290708,294754,294772,294776,294804,294818,296762,296790,298848,300808,302874,304818,304828,304844,306760,306786,306802,306816,308806,312782,312856,312874}},ra=-1,rh=-1}
+end)()
+;(function()
 N[12801]={elite=1,lv={60,62},n="Arcane Chimaerok",p={[1444]={280754,280764,282734,282736,284720,284774,286716,288704,288706,288784,292754,294756,294772,294804,294820,296760,298784,300794,300850,302874,304818,304828,304844,306760,306786,306802,306814,312782,312856,312874,316782}},ra=-1,rh=-1}
 N[12802]={elite=1,lv={61,62},n="Chimaerok Devourer",p={[1444]={280754,280764,280766,282724,282736,284776,286716,288704,288706,288786,292754,294758,294770,294780,294802,294806,294820,298774,300808,300850,300862,302874,304790,304818,304826,304844,306760,306786,306802,306814,306878,312782,312856,312870,316778,318878,336778}},ra=-1,rh=-1}
 N[12803]={elite=1,lv={62,62},n="Lord Lakmaeran",p={[1444]={286712,294724,294726,296722,298726}},ra=-1,rh=-1}
@@ -9662,9 +9658,11 @@ N[13018]={lv={12,12},n="Nipsy",p={[947]={0},[1415]={0}},ra=1,rh=-1}
 N[13019]={lv={33,33},n="Burning Blade Seer",p={[1443]={552300}},ra=-1,rh=-1}
 N[13020]={elite=3,lv={9999,9999},n="Vaelastrasz the Corrupt",ra=1,rh=1}
 N[13084]={elite=1,lv={50,50},n="Bixi Wobblebonk",p={[1455]={614884,614890,620894,620896}},ra=1}
+N[13085]={elite=1,lv={57,57},n="Myrokos Silentform",p={[1416]={850804}},ra=1,rh=1}
 N[13136]={lv={57,58},n="Hive'Ashi Drone",p={[1451]={588526,588558,598544,598568,600524,600558,602526,604504,608482,608496,608542,608582,610554,612490,616484,616512,616528,618542,618554,618584,618586,626480,626556,628502,628508,628516,628586,632474,634534,634548,636498,636514,636528,638472,638484,638584,646582,648472,658484,660496}},ra=-1,rh=-1}
 N[13153]={elite=1,lv={61,61},n="Commander Mulfort",p={[1459]={489869}},ra=-1,rh=1}
 N[13154]={elite=1,lv={61,61},n="Commander Louis Philips",ra=-1,rh=1}
+N[13155]={elite=1,n="Deathstalker Agent",p={[1437]={514592}}}
 N[13176]={elite=1,lv={60,60},n="Smith Regzar",ra=-1,rh=1}
 N[13177]={elite=1,lv={55,55},n="Vahgruk",p={[1428]={654240,656242}},ra=-1,rh=1}
 N[13179]={elite=1,lv={59,59},n="Wing Commander Guse",ra=-1,rh=1}
@@ -9674,6 +9672,7 @@ N[13220]={lv={55,55},n="Layo Starstrike",p={[1451]={818188}},ra=1,rh=1}
 N[13236]={elite=1,lv={60,60},n="Primalist Thurloga",ra=-1,rh=1}
 N[13257]={elite=1,lv={60,60},n="Murgot Deepforge",ra=1,rh=-1}
 N[13278]={elite=1,lv={60,60},n="Duke Hydraxis",p={[1447]={792734,792736}},ra=1,rh=1}
+N[13283]={lv={60,60},n="Lord Tony Romano",p={[1453]={782572,782580}},ra=1}
 N[13301]={lv={56,57},n="Hive'Ashi Ambusher",p={[1451]={602524,602526}},ra=-1,rh=-1}
 N[13319]={elite=1,lv={61,61},n="Commander Duffy",ra=1,rh=-1}
 N[13320]={elite=1,lv={61,61},n="Commander Karl Philips",ra=1,rh=-1}
@@ -9729,8 +9728,6 @@ N[14268]={elite=4,lv={15,16},n="Lord Condar",p={[1432]={570770,604778,612770,620
 N[14269]={elite=4,lv={21,21},n="Seeker Aqualon",p={[1433]={462578,464592,470608,486620,490638,512612,522604,534574,538592,558580,570592,578556,594586,598568,602608,612590,622618,634634,680720,692706,700718,712624,712702,714640,720720,736704,742668}},ra=-1}
 N[14270]={elite=4,lv={19,19},n="Squiddic",p={[1433]={334580,344466,346590,350512,362556,374620,380510,382638,384532,392486,398596,406652,432488,432526,440650,442536,446624,458512,458662,462548,464574,468626,474706,494556,500686,508666,520594,532598,532620,548674}},ra=-1}
 N[14271]={elite=4,lv={17,17},n="Ribchaser",p={[1433]={120692,124712,130650,130676,134622,136690,138594,152678,154582,158594,158636,164614,170686,182696,186654,186728,188622,188668,206600,230606,264824,274848,284824,286744,290852,294760,302786,304808,306858,308814,310784,320874,324756,332782,336848,338814,356838}},ra=-1}
-end)()
-;(function()
 N[14272]={elite=4,lv={18,18},n="Snarlflare",p={[1433]={338634,344650,350660,354626,354676,356652,360644,360662,412322,414332,422316,424312,426330,428342,434300,440314,440346,442322,450348,454368,458308,470308,476294,480306,480364,482324,484330,484344,490302,490324,492362,498342,502334,508338,546372}},ra=-1,rh=-1}
 N[14276]={elite=4,lv={30,30},n="Scargil",p={[1424]={222676,234640,234646,234656,234666,242654,244668,246636,246660,248654,248666,250704,252676,252692,254708,256634,258660,258708,260654,260716,262730,264644,264704,266714,270702,274726,282726,284744,286740,288724,288730,288748,292714,296714,296720,296730,314722}},ra=-1,rh=-1}
 N[14277]={elite=4,lv={33,33},n="Lady Zephris",p={[1424]={562736,572674,574728,576682,580692,580710,580748,592746,598734,604760,608758,614766,630790,634804,642766,642788,654812,654836,656806,656874,660852,662864,666816,668832,670774,678768,678812,678876,684802,700710}},ra=-1,rh=-1}
@@ -9744,7 +9741,6 @@ N[14340]={elite=4,lv={54,54},n="Alshirr Banebreath",p={[1448]={374800,382806,384
 N[14344]={elite=4,lv={50,50},n="Mongress",p={[1448]={406790,432764,432772,434776,436774,436776,442764,450772,458852,462838,466838,468834,472852}},ra=-1,rh=-1}
 N[14345]={elite=4,lv={51,51},n="The Ongar",p={[1448]={384484,384490,386486,390484,404482,410488,414472,418508,420454,420474,422476,422486,426472,426486,428476,434504,434506,436502,436506,438492}},ra=-1,rh=-1}
 N[14347]={elite=1,lv={62,62},n="Highlord Demitrian",p={[1451]={216084,218086}},ra=1,rh=1}
-N[14353]={elite=1,lv={60,60},n="Mizzle the Crafty",ra=1,rh=1}
 N[14355]={lv={60,60},n="Azj'Tordin",p={[1444]={768374,768376}},ra=1,rh=1}
 N[14358]={elite=1,lv={60,60},n="Shen'dralar Ancient",ra=1,rh=1}
 N[14363]={elite=1,lv={60,60},n="Thief Catcher Shadowdelve",p={[1455]={158854,166670,176734,192218,196276,198800,202512,204638,210534,212384,270644,270872,274146,290248,300770,308692,344146,370318,444818}},ra=1,rh=-1}
@@ -9757,7 +9753,6 @@ N[14383]={elite=1,lv={58,58},n="Lorekeeper Kildrath",ra=1,rh=1}
 N[14387]={elite=1,lv={60,60},n="Lothos Riftwaker",p={[1415]={484638}},ra=1,rh=1}
 N[14392]={elite=1,lv={60,60},n="Overlord Runthak",p={[1454]={512776,514744,514746,514756,514774,514786,516744,516752,516756,516774,516780,516792}},ra=-1,rh=1}
 N[14394]={elite=1,lv={60,60},n="Major Mattingly",p={[1453]={614784,614786,616780,616786}},ra=1,rh=-1}
-N[14401]={elite=1,lv={60,60},n="Master Elemental Shaper Krixix",ra=-1,rh=-1}
 N[14425]={elite=4,lv={24,24},n="Gnawbone",p={[1437]={294308,302300,302308,304330,308316,318312,320342,324330,326340,328290,328298,328348,330310,330326,336298,338314,338324,340346,342342,344360,348302,350314,350350,350360,352344,354372,356350,358296,360374,368294,368344,368354,372328,378346,382340,384298,384364,390290,390306,398282}},ra=-1}
 N[14427]={elite=4,lv={28,28},n="Gibblesnik",p={[1441]={508420,512438,514434,516434,518436,526432,528442,544484,550494,554484,554498,554514,554516,554534,556492,556504,556510,556516,558480,566500,580498,582462,586462,590480,592470,592488,596468,596480,596486,598564,604584,604590,606468,606586,608584,608598,610566,614556,620604}},ra=-1,rh=-1}
 N[14430]={elite=4,lv={9,9},n="Duskstalker",p={[1438]={502766,512762,512770,512778,518764,518774,524776,526776,534760,534772,538758,538768,540776,542754,546754,546760,546770,550778,556762,574746,574756,574766,578754,578772,584764,586764,588766,600712,600744,602754,602756,606754,606756,610744,612734,618720,618748,620726}},ra=-1}
@@ -9809,7 +9804,6 @@ N[14624]={lv={52,52},n="Master Smith Burninate",p={[1427]={384284,384286,386284,
 N[14625]={lv={60,60},n="Overseer Oilfist",p={[1427]={380264,382270}},ra=1,rh=1}
 N[14626]={lv={54,54},n="Taskmaster Scrange",p={[1427]={388274,388276}},ra=1,rh=1}
 N[14627]={lv={53,53},n="Hansel Heavyhands",p={[1427]={384278,386278}},ra=1,rh=1}
-N[14628]={lv={51,51},n="Evonice Sootsmoker",p={[1427]={380274,384278,386278}},ra=1,rh=1}
 N[14634]={lv={59,59},n="Lookout Captain Lolo Longstriker",p={[1427]={374266,376264,376266}},ra=1,rh=1}
 N[14637]={lv={40,40},n="Zorbin Fandazzle",p={[1444]={448434}},ra=1,rh=1}
 N[14661]={lv={47,47},n="Stinglasher",p={[1444]={732634,732636,736630,738636,744624,746626,752604,752616,754610,764612,768614,774620,776620}},ra=-1,rh=-1}
@@ -9860,11 +9854,9 @@ N[14910]={elite=1,lv={60,60},n="Exzhal",p={[1434]={152154,152156}},ra=1,rh=1}
 N[14921]={elite=1,lv={56,56},n="Rin'wosho the Trader",p={[1434]={150160}},ra=1,rh=1}
 N[14981]={elite=1,lv={61,61},n="Elfarran",p={[1453]={782196,784188,788194,788196}},ra=1,rh=-1}
 N[14983]={lv={62,62},n="Field Marshal Oslight",p={[1417]={458454,458456}},ra=1,rh=-1}
-N[14984]={lv={62,62},n="Sergeant Maclear",p={[1417]={458454,460456}},ra=1}
 N[15011]={lv={55,55},n="Wagner Hammerstrike",p={[1426]={524360,526360}},ra=1}
 N[15012]={lv={55,55},n="Javnir Nashak",p={[1411]={460134,460136}},rh=1}
 N[15021]={lv={62,62},n="Deathmaster Dwire",p={[1417]={732298}},ra=-1,rh=1}
-N[15022]={lv={62,62},n="Deathstalker Mortis",p={[1417]={734298,736298}},ra=-1,rh=1}
 N[15042]={elite=1,lv={60,60},n="Zanza the Restless",ra=1,rh=1}
 N[15070]={elite=1,lv={60,60},n="Vinchaxa",p={[1434]={144158,146158}},ra=1,rh=1}
 N[15077]={lv={50,50},n="Riggle Bassbait",p={[1434]={274768}},ra=1,rh=1}
@@ -9874,7 +9866,6 @@ N[15116]={lv={50,50},n="Grinkle",p={[1454]={522736,524724,524730,526724,526728,5
 N[15119]={lv={50,50},n="Barrus",p={[1455]={280732,282744,282746,286734,286750,290744,292756}},ra=1}
 N[15126]={elite=1,lv={55,55},n="Rutherford Twing",p={[1417]={734298}},ra=-1,rh=1}
 N[15127]={elite=1,lv={55,55},n="Samuel Hawke",p={[1417]={460452,460456}},ra=1}
-N[15162]={elite=1,lv={61,61},n="Scarlet Inquisitor",p={[1423]={804854,804856,806854,806856}},ra=-1,rh=-1}
 N[15165]={lv={51,51},n="Haughty Modiste",p={[1446]={664222,666222}},ra=1,rh=1}
 N[15170]={lv={60,60},n="Rutgar Glyphshaper",p={[1451]={412884,412886}},ra=1,rh=1}
 N[15171]={lv={60,60},n="Frankal Stonebridge",p={[1451]={408884,408886}},ra=1,rh=1}
@@ -9930,7 +9921,6 @@ N[15379]={elite=3,lv={9999,9999},n="Caelestrasz",p={[1451]={286892,288902,288906
 N[15380]={elite=3,lv={9999,9999},n="Arygos",ra=1,rh=1}
 N[15383]={elite=1,lv={56,56},n="Sergeant Stonebrow",p={[1455]={640690,644674,644678,646674,646676}},ra=1}
 N[15395]={lv={55,55},n="Nafien",p={[1448]={648082}},ra=1,rh=1}
-N[15419]={lv={54,54},n="Kania",p={[1451]={520394,520396}},ra=1,rh=1}
 N[15431]={elite=1,lv={58,58},n="Corporal Carnes",p={[1455]={650660,650668,652654,658666,660664}},ra=1}
 N[15432]={elite=1,lv={60,60},n="Dame Twinbraid",p={[1455]={634700,640688,640696,642684,646678,646698,648690}},ra=1}
 N[15434]={elite=1,lv={56,56},n="Private Draxlegauge",p={[1455]={700714,704724,704726,706722,706726,708714}},ra=1}
@@ -10041,6 +10031,8 @@ N[15703]={elite=1,lv={60,60},n="Senior Sergeant Grimsford",p={[1458]={624462,624
 N[15704]={elite=1,lv={60,60},n="Senior Sergeant Kai'jin",p={[1454]={514664,514666,516664,516666}},rh=1}
 N[15707]={elite=1,lv={60,60},n="Master Sergeant Fizzlebolt",p={[1455]={274714,274716,274728,276724,276730}},ra=1}
 N[15708]={elite=1,lv={60,60},n="Master Sergeant Maclure",p={[1453]={542594,542596,546592,546602}},ra=1}
+end)()
+;(function()
 N[15709]={elite=1,lv={60,60},n="Master Sergeant Moonshadow",p={[1457]={414420,418402,418420,418428,420412,428418}},ra=1}
 N[15731]={lv={55,55},n="Darnassus Commendation Officer",p={[1455]={602692,602702,604706,608710,610694,612698,616700,616710}},ra=1}
 N[15732]={lv={30,30},n="Wonderform Operator",p={[1411]={500134,500136},[1420]={610594,610596},[1426]={530356,532354},[1434]={266734,266736},[1437]={92584,92586},[1446]={534280,536280},[1453]={616604,620616,622608}},ra=1,rh=1}
@@ -10131,15 +10123,11 @@ N[16281]={lv={55,55},n="Keeper of the Rolls",p={[1423]={808602}},ra=1,rh=1}
 N[16283]={lv={59,59},n="Packmaster Stonebruiser",p={[1423]={804580,806582}},ra=1,rh=1}
 N[16298]={lv={59,60},n="Spectral Soldier",p={[1419]={452194,454206,460370,462206,462220,464192,464380,468184,470384,476372,476396,478388,514264,514278,514286,518276,520258,530274,530292,560338,564354,568330,570344,578360,600456,602432,604446,608418,608448,610434,618316,620306,624294,630304,630322,638302},[1423]={158780,162764,164766,164792,170764,170774,178790,180760,182774,214862,218832,218838,222850,226852,230734,230840,232700,234714,240714,242702,242726,654704,654710,664694,664714,664726,668736,676726,700586,702554,704564,704580,716564,752702,752720,754714,766716,772704},[1428]={232684,234500,234514,234700,238692,240684,242492,244508,244674,254536,260522,324690,332706,336720,338706,344682,658350,662368,674354,676356,732480,732504,740510,746484,784290,792284,794296,794306,810296},[1446]={294580,300578,300586,302574,344644,344646,346644,346646,354572,360574,360578,482294,482306,486292,504380,508388,510374,514494,514498,520494,520498,520506,522564,526564,540304,544314,544316,574534,576546,578522,578536},[1447]={172540,174534,174546,180676,182654,182664,184668,234592,234598,242584,242596,244592,248596,250582,434498,442586,444494,444496,444506,452574,452584,452586,452596,474532,474536,474546,480540,486528},[1452]={424372,424380,426386,428378,444410,444420,460372,462364,464376,466370,466376,494122,500124,500178,502186,504174,506122,506184,550150,552144,624472,624478,624514,624524,624526,630474,662526,664514,664520}},ra=0,rh=0}
 N[16299]={lv={59,60},n="Skeletal Shocktrooper",p={[1419]={448198,452214,458182,460204,462222,462364,464192,464380,466396,476372,510290,512260,514270,530274,562334,564354,578338,578360,604426,604450,608424,608450,620310,622294,630306,630322,634294},[1423]={162780,164764,170774,170786,180758,214862,218824,218834,220852,228842,230736,232704,234714,238704,238736,654704,662714,664728,676724,702554,702586,704566,714564,718554,752702,754716,754726,766714,766726,772704,778694},[1428]={232502,232682,234514,234698,238680,240664,240702,242498,244486,244508,250524,256504,260518,324698,330684,338706,344684,664354,664364,672378,676352,676370,730488,730506,734472,744506,782304,784288,792284,794298,810288},[1446]={300574,302578,302588,344634,344644,344646,346634,346644,346646,354572,354578,360574,360578,360586,480284,480294,484306,488308,504384,510374,510380,514494,514498,520494,520498,520506,522564,524554,526496,526564,540304,542314,544316,574524,574534,580524},[1447]={168524,172534,172540,176546,178530,178538,180676,182654,184664,184668,192676,234592,234598,240596,244582,244592,250582,250596,434496,440484,444494,444496,444506,444582,444588,450596,452574,452584,452586,474534,474542,478532,480540,486532,486538},[1452]={424372,424380,426386,444406,444420,454370,460372,464364,464376,466372,466376,494122,500124,500174,502186,506122,506170,506184,544152,546158,550150,552144,624472,624482,624514,624524,624526,630464,630474,664512,664520,664526}},ra=0,rh=0}
-end)()
-;(function()
 N[16361]={lv={55,55},n="Commander Thomas Helleran",p={[1423]={808602}},ra=1,rh=1}
-N[16365]={elite=1,lv={60,60},n="Master Craftsman Omarion",ra=1,rh=1}
 N[16376]={lv={57,57},n="Craftsman Wilhelm",p={[1423]={810594,810596}},ra=1,rh=1}
 N[16378]={elite=1,lv={60,60},n="Argent Sentry",p={[1423]={802574,802576,810572,814592,814600,816580,816594,816596}},ra=1,rh=1}
 N[16379]={elite=4,lv={61,61},n="Spirit of the Damned",p={[1419]={442192,452216,454380,462204,464186,466174,470370,470388,474222,476206,476380,478192,478358,478392,508276,512260,528258,556336,560326,560348,560358,574348,580362,582334,598456,600438,600448,608424,608440,610414,616298,620282,624306,630292,630330,632306},[1423]={162766,162780,168758,170782,172772,174730,208870,212858,218838,226714,226852,226868,230702,240726,242704,244712,660712,668702,676724,700564,704580,712568,714580,748712,764704,772724},[1428]={226684,230514,234674,238488,242708,248532,254706,256524,258490,302710,320696,322678,330704,334724,336642,340682,654342,660372,664354,722488,728474,740508,744470,744482,784292,786304,790262,792284,822304,826300},[1446]={300586,304574,304578,306572,342648,344642,346638,350652,352572,354576,358580,360570,362588,366576,480300,484288,486282,486302,502388,504378,508378,508388,512374,516500,520490,524558,524568,526552,528564,542314,544320,546314,546316,548304,570538,574528,576526,580536},[1447]={168522,168540,170530,174548,178528,178538,182662,182670,182680,184650,186652,186672,192664,200668,230582,234594,236590,238604,246592,442484,442488,442498,444510,448594,450494,450502,452574,454584,456500,456586,458582,472542,474522,478528,478546,482544,488530,490538},[1452]={422372,422378,422386,428386,444410,444420,448414,450420,454370,458374,460376,464364,466368,466382,494124,494172,496122,500186,504130,504172,506124,506182,548142,550148,622478,622524,622530,624470,626480,626514,626524,626526,630464,660524,662512,664526,668526,670510}},ra=0,rh=0}
 N[16380]={elite=4,lv={61,61},n="Bone Witch",p={[1419]={434220,442188,446238,452360,452390,456208,460374,466228,474386,488174,504262,508378,510190,510276,532274,538366,540314,566388,578446,592354,592398,594264,598464,608440,610186,610456,614292,616396,620308,620342},[1423]={148736,152796,158778,170746,174732,194760,204858,206748,214864,216802,218828,222664,228702,228780,230716,232736,232868,240828,240848,276706,306814,638724,654704,662724,666708,684732,702564,704594,706610,708542,716554,716564,720702,736706,746714,764734,770708,792708,794666},[1428]={220682,220692,230674,232502,238694,244474,244534,274610,290552,302526,314688,340676,342724,358650,650328,652372,672382,688328,692516,694360,712472,728388,730454,732518,736472,742580,756340,766320,772270,794260,798284,800312,826626,840308},[1446]={286560,288608,304572,304586,330638,340674,346572,360578,468362,478306,480298,490280,490318,498374,508388,510550,512492,514358,514570,520342,520512,532476,534320,540302,556348,562494,564554,574520},[1447]={158548,164676,166524,180522,180564,180634,180716,184682,186538,206674,216588,224578,242606,246572,254584,432506,438576,440472,440556,442592,444510,444608,458498,458516,458572,462588,466550,482520,484562,498552},[1452]={412390,422388,442404,442408,442432,456402,458374,470370,486382,494100,494122,494188,500118,500168,502140,506170,510184,532156,540148,540158,554182,622508,622538,624492,632462,632474,658506,658528,664520,666532,668500,676518}},ra=0,rh=0}
-N[16381]={elite=1,lv={60,60},n="Archmage Tarsis Kir-Moldir",ra=1,rh=1}
 N[16383]={elite=1,lv={53,55},n="Flameshocker",p={[1453]={162520,194504,290526,294718,312788,344484,374288,398392,404544,436788,454684,456368,514614,516210,520324,536416,554684,576060,650298,668618,684390,744220,772158,774586,802462},[1458]={424388,454752,458818,470260,482544,512210,514230,516614,524386,532898,550308,554730,642546,644224,646672,660466,684336,788442,798670,800188,802560,812122,818310}},ra=-1,rh=-1}
 N[16399]={lv={43,44},n="Bloodsail Traitor",p={[1434]={316708}},ra=1,rh=1}
 N[16416]={lv={55,56},n="Bronn Fitzwrench",p={[1452]={598394,598396}},ra=1,rh=1}
@@ -10163,17 +10151,17 @@ N[16787]={lv={55,55},n="Argent Outfitter",p={[1423]={808594,808596},[1454]={5207
 N[16788]={elite=1,lv={60,60},n="Festival Flamekeeper",p={[1438]={564920,566920},[1453]={382604,384610,386610,392618},[1454]={424334,424340,424346,426332,426344,428346},[1455]={626260,634242,634250,636244,636250,638256},[1456]={214262,214270,216262,218270},[1458]={654364,654366,656360,656366,658350}},ra=1,rh=1}
 N[16817]={elite=1,lv={60,60},n="Festival Loremaster",p={[1438]={564922,566922},[1453]={392612,392616,396622,398612},[1455]={634252,634256,634270,636252,638258,638268,650256}},ra=1}
 N[16818]={elite=1,lv={60,60},n="Festival Talespinner",p={[1454]={424344,424346,426344,426346},[1456]={214262,214270,214276,216262,216270,216276},[1458]={664374,664378,666364,666374,666378,672388}},ra=-1,rh=1}
-N[17068]={lv={55,55},n="Chief Expeditionary Requisitioner Enkles",p={[1451]={332510}},ra=1}
 N[17069]={lv={55,55},n="Emmisary Whitebeard",p={[1423]={812594,812596}},ra=1,rh=1}
-N[17070]={lv={55,55},n="Apothecary Quinard",p={[1451]={508694,508696}},rh=1}
 N[17072]={lv={55,55},n="Emmisary Gormok",p={[1423]={800574,800576}},ra=1,rh=1}
 N[17079]={lv={60,60},n="General Kirika",p={[1451]={508694,508696}},rh=1}
 N[17080]={lv={60,60},n="Marshal Bluewall",p={[1451]={332510}},ra=1}
 N[17081]={lv={55,55},n="Scout Bloodfist",p={[1451]={488366}},ra=1,rh=1}
 N[17082]={lv={55,55},n="Rifleman Torrig",p={[1451]={506344,506346}},ra=1,rh=1}
 N[17209]={elite=1,lv={60,60},n="William Kielar",p={[1423]={222314,224316}},ra=1,rh=1}
+N[20735]={elite=1,n="Archmage Lan'dalock",p={[1416]={154740,156736}}}
 N[28686]={n="Caliel Brightwillow",p={[1416]={112660}}}
 N[28687]={lv={35,35},n="Amisi Azuregaze",p={[1416]={182664}},ra=1}
+N[31439]={elite=1,n="Archmage Timear",p={[1416]={154740}}}
 N[32411]={n="Afsaneh Asrar",p={[1416]={178662}}}
 N[32413]={lv={35,35},n="Isirami Fairwind",p={[1416]={122662}},ra=1}
 N[41861]={elite=1,n="Fayran Elthas",p={[2482]={686440}}}
@@ -10191,18 +10179,9 @@ N[208875]={lv={10,10},n="Back-alley Mugger",p={[1454]={558446,560438,562428,5704
 N[208876]={lv={10,10},n="Cut-throat Mugger",p={[1453]={590278,614294,614296,618292,624296,628296,632292},[1455]={502116,506102,510122,514110,518114,518124,520126,526112,528092,528104,570120}},ra=0}
 N[209797]={elite=1,lv={20,20},n="Bruuz",p={[1413]={644390,644396,648398,652394}},ra=-1,rh=-1}
 N[210697]={elite=1,lv={20,20},n="Captain Namier",p={[1421]={366266,374284,374286,378284,378290,380296,384306,388292}},rh=-1}
-N[210845]={lv={20,20},n="Jixo Madrocket",p={[1442]={592624,592626,604622,606622}},ra=1,rh=1}
 N[210995]={lv={20,20},n="Alonso",p={[1440]={420692,424700,434704,434706,436704}},ra=1,rh=1}
 N[211022]={lv={40,40},n="Owen Thadd",p={[1458]={734330,736330,740324}},rh=1}
 N[211033]={lv={60,60},n="Garion Wendell",p={[1453]={374808,376808,378802,490864,490866}},ra=1}
-N[211188]={lv={50,50},n="Maethra Slagheart",p={[1457]={370888,380880,380890,380896,386890,386896}},ra=1}
-N[211200]={lv={25,25},n="Agon",p={[1431]={602318,602330,604298,606258,608292,608324,610306,612278,622254,626318,628358,630346,634250,634290,640324,642330,642350,642378,644238,644264,644368,652214,652232,652278,654300,660270,660362,662336,664292,668234,670306,676302,676320,676336,686280,696294,702334,708316}},ra=-1,rh=-1}
-N[211225]={lv={20,20},n="Baj'ura",p={[1458]={464194,464202,464206,470196,472194,480192,480196}},rh=1}
-N[211229]={lv={60,60},n="Dietrich Praice",p={[1454]={354880,356880}},rh=1}
-N[211298]={lv={40,40},n="Syrnoya",p={[1439]={376438}},ra=1}
-N[211653]={lv={30,30},n="Grizzby",p={[1413]={618394}},ra=1,rh=1}
-N[212252]={elite=1,lv={9999,9999},n="Harvest Golem V000-A",p={[1420]={514646,516638,522568,532564,532578,532588,532602,532630,538558,540586,540672,546572,548552,556578,558592,562546,566562,566602,568566,570532,578570,578578,582626,588566,590512,594518,596594,602550,604520,604600,608586,616610,618546,618626,618648,826710},[1436]={332224,382438,432488,454430,456598,488502,496166,500360,502432,514492,522392,522570,526336,532384,532466,538352,544442,546516,546544,572604,576440,576500,578268,586396,590630,612420,616278}},ra=-1,rh=-1}
-N[212694]={elite=1,lv={25,25},n="Hirzek",p={[1413]={432784,432786,458768}},ra=-1,rh=-1}
 N[212699]={elite=1,lv={25,25},n="Silverwing Archer",p={[1440]={282274,282288,284282,286282,286288,512558,512566,514544,514548,516548,516556,518544,590726,594722,598718,598726,600714,606714,726724,728732,730748,734736,736736,740732}},ra=1,rh=-1}
 N[212703]={elite=1,lv={25,25},n="Silverwing Dryad",p={[1440]={284270,284282,284286,286280,288288,512544,512556,514554,516548,518556,594730,598724,600714,600726,606714,730730,734736,736738,740734}},ra=1,rh=-1}
 N[212706]={elite=1,lv={25,25},n="Silverwing Druid",p={[1440]={282270,284284,284286,286282,286286,512550,512560,514544,516544,516546,594720,600704,600714,600716,600726,728724,730732,732736}},ra=1,rh=-1}
@@ -10218,42 +10197,25 @@ N[212803]={elite=3,lv={9999,9999},n="Ceredwyn",p={[1440]={724722,724726,728724,7
 N[212804]={elite=3,lv={9999,9999},n="Centrius",p={[1440]={274278,280264,282274,284284,284286,284296,286280,286288}},ra=1,rh=-1}
 N[212969]={elite=3,lv={9999,9999},n="Kazragore",p={[1440]={378664,384668,384676,388664,390674,390686,392678,396664,396666,396676}},ra=-1,rh=1}
 N[212970]={elite=3,lv={9999,9999},n="Felore Moonray",p={[1440]={600704,600714,600718,600726}},ra=1,rh=-1}
-N[213077]={lv={30,30},n="Elaine Compton",p={[1453]={544602,544608,546604,546612,548620}},ra=1}
-N[213444]={lv={30,30},n="Mysterious Traveler",p={[1440]={790802}},ra=1,rh=1}
-N[213445]={lv={30,30},n="Raszel Ander",p={[1413]={492572}},ra=1,rh=1}
-N[214070]={lv={30,30},n="Jornah",p={[1454]={514638,514646,516638,516646}},rh=1}
-N[214096]={lv={30,30},n="Dokimi",p={[1456]={394534,394536,396534,396536}},rh=1}
-N[214098]={lv={30,30},n="Gishah",p={[1458]={644384,644386,646386,648382,656384,656386}},rh=1}
-N[214099]={lv={30,30},n="Tamelyn Aldridge",p={[1455]={244674,244676,246674,246676}},ra=1}
-N[214101]={lv={30,30},n="Marcy Baker",p={[1457]={592566,594560,598564,598566}},ra=1}
-N[214208]={lv={25,25},n="N'ora Anyheart",p={[1413]={620394}},ra=1,rh=1}
 N[214519]={elite=1,lv={23,23},n="Incinerator Gar'im",p={[1433]={762842,766842,774854,774858,778862,778866}},ra=-1,rh=-1}
-N[214529]={lv={50,50},n="Brave Stonetorch",p={[1424]={658196,660192,672144,674148,676144,676146}},ra=-1,rh=1}
-N[214876]={lv={25,25},n="Davius Voidstar",p={[1439]={368434,368436}},ra=1}
-N[214954]={lv={45,45},n="Rix Xizzix",p={[1434]={284758}},ra=1,rh=1}
 N[215643]={lv={35,35},n="Tokal",p={[1434]={270772}},ra=1,rh=1}
 N[215655]={lv={40,40},n="Illari Duskfeather",p={[1417]={938714,938716}},ra=1,rh=1}
-N[215849]={lv={40,40},n="Doan Karhan",p={[1443]={512824,512826}},ra=1,rh=1}
-N[215850]={lv={40,40},n="Raszel Ander",p={[1443]={512824,512826}},ra=1,rh=1}
-N[215974]={elite=1,lv={40,40},n="Des'Altek",p={[1443]={512824,512826,516830}},ra=0,rh=0}
-N[216289]={lv={62,62},n="Orokai",p={[1450]={412436,414434,416434,416436}},ra=1,rh=1}
 N[216474]={elite=1,lv={38,38},n="Ravaging Tempest",p={[1441]={534408,538404,540412,544418,546414,546418,558432}},rh=-1}
 N[216902]={lv={30,30},n="Wulmort Jinglepocket",p={[1455]={324674,330686,334654,334664,334670,334676,336660,336668,336678}},ra=1}
 N[216915]={lv={35,35},n="Strange Snowman",p={[1416]={354724,354726,356720,356726}},ra=1,rh=1}
 N[216924]={lv={30,30},n="Kaymard Copperpinch",p={[1454]={532664,532666}},rh=1}
 N[217300]={lv={40,40},n="Skonk",p={[1417]={574744,576744,576746}},ra=1,rh=1}
+N[217305]={lv={34,35},n="Ancient Fire Elemental",p={[1416]={594464,600454,600456,600466,614464}},ra=-1,rh=-1}
 N[217392]={elite=1,lv={35,35},n="Flameseer Dubelen",p={[1443]={564214,564218,566204,566214,566218,580226}},ra=-1,rh=-1}
-N[217689]={lv={40,40},n="Ziri \"The Wrench\" Littlesprocket",ra=1,rh=1}
+N[217412]={lv={35,35},n="Amaryllis Webb",p={[1435]={250534,250542,252546}},ra=1,rh=1}
 N[217706]={elite=3,lv={9999,9999},n="Kazragore",p={[1440]={740604,740606}},rh=1}
 N[217707]={elite=3,lv={9999,9999},n="Felore Moonray",p={[1440]={368496}},ra=1}
 N[217996]={lv={40,40},n="Aeonas",ra=1}
 N[218029]={lv={34,35},n="Witherbark Champion",p={[1417]={680794,680822,684806,694814,694816,696814,696816}},ra=-1,rh=-1}
-N[218115]={elite=1,lv={40,40},n="Mai'zin",p={[1434]={312484,312486}},ra=1,rh=1}
+N[218032]={elite=1,lv={35,35},n="Witherbark Goliath",p={[1417]={678794,684804,684806,692814,692826,694816,696814,696816}},ra=-1,rh=-1}
 N[218160]={lv={40,40},n="Aeonas the Vindicated",p={[1453]={374318,376316}},ra=1}
-N[218236]={lv={60,60},n="Red Bag",p={[1428]={530244}},ra=1,rh=1}
-N[218237]={lv={40,40},n="Wirdal Wondergear",p={[1444]={842438}},ra=1,rh=1}
-N[218920]={lv={45,45},n="Agent Keanna",p={[1430]={520342,520346}},ra=1,rh=1}
-N[220984]={lv={35,35},n="Fizbuz Mithril",p={[1446]={516274,516276}},ra=1,rh=1}
+N[218229]={lv={40,40},n="Captain Aransas",p={[1434]={274766,276764,276766}},ra=1,rh=1}
+N[218230]={lv={25,25},n="Wendel Mathers",p={[1434]={442080}},ra=1,rh=1}
 N[221168]={lv={26,26},n="Dire Wolf Alpha",p={[1431]={450584,450622,452626,454594,454596,456594,460576,464384,464390,464400,464408,464474,464478,464574,466384,466388,466398,466408,466416,466474,466476,466576,468572,470564,474628,488650}},ra=-1,rh=-1}
 N[221171]={lv={26,26},n="Nightmare Runner",p={[1431]={554724,560720,562712,572714,580710,592718,596724,598728,604700,606710,606736,610754,612718,618750,624682,630760,632692,634698,640674,640676,640730,642716,644688,650730,652684,652696,652706,652722,654674,654744,654750,656694,658684,658700,660736,660764,662722,662732,664668,668708}},ra=-1,rh=-1}
 N[221172]={lv={26,26},n="Nightmare Weaver",p={[1431]={610754,610756,626654,628714,628716,638674,638730,640676,640754,640756,642712,644658,646740,650706,650724,650730,652688,654674,654676,654696,656674,656676,656694,658754,660702,660708,660758}},ra=-1,rh=-1}
@@ -10269,101 +10231,36 @@ N[221215]={lv={25,25},n="Alara Grovemender",p={[1431]={490774,490776,656674}},ra
 N[221216]={lv={25,25},n="Elenora Marshwalker",p={[1431]={324694,324696,326694,326696}},ra=1,rh=1}
 N[221223]={lv={26,26},n="Duskblaze Shadowstalker",p={[1431]={446408,454432,456512,464364,464366,464382,464386,464404,464406,464418,464426,466364,466366,466380,466390,466398,466412,466422,466428,468438,474468,478374,486406}},ra=-1,rh=-1}
 N[221227]={lv={25,25},n="Nightmare Hound",p={[1431]={442400,444394,448408,450424,452516,454394,454400,458432,460504,464360,464372,464382,464388,464402,464406,464420,464436,466364,466374,466382,466386,466402,466412,466416,466430,466500,470446,472442,472456,472468,474476,474490,476426,478380,478390,480404,482408,484418,488416}},ra=-1,rh=-1}
-N[221259]={elite=1,lv={41,41},n="Wyrmkin Nightstalker",p={[1440]={834482,836480,838454,848460,854444,854446,860460,862430,862448,864444,866446,868430,868464,874438,876434,876436,882416}},ra=-1,rh=-1}
-N[221260]={lv={41,41},n="Terror Whelp",p={[1440]={838472,848462,854452,856450,862444,864414,864416,864430,864480,866480,866492,868420,868434,868462,868466,870404,870406,870438,870446,870504,870506,882414,882416,882426,888430,892442,892446}},ra=-1,rh=-1}
-N[221261]={lv={41,41},n="Dreamfire Betrayer",p={[1440]={782444,782446,784458,786458,790502,794510,798472,800478,800492,804504,804506,806488,808466,808498,808508,814484,814516,816484,816486,816518,820526,824500,824536,826500,826544,828550}},ra=-1,rh=-1}
-N[221262]={lv={41,41},n="Dreamfire Hellcaller",p={[1440]={782432,782454,782464,790462,800506,802472,802488,802498,804464,806466,810492,810498,810506,814484,816484,818500}},ra=-1,rh=-1}
-N[221263]={elite=1,lv={41,41},n="Vengeful Ancient",p={[1440]={820524,822546,824614,830558,834584,834602,844622,848564,852504,852648,854594,854660,856640,858538,864574,864608,866600,870526,872506,878534,880588,880616,884554,884564,892496,894484,894514,896524,902494,916538}},ra=-1,rh=-1}
 N[221264]={elite=1,lv={41,41},n="Dreamharvester",p={[1440]={836580,842560,884554,884556,884578,886556,892544,892546,894534,894580,898580,906574,910576}},ra=-1,rh=-1}
-N[221265]={elite=1,lv={9999,9999},n="Larsera",p={[1440]={844454,854454,854456,860460,862444,862448,866442,866446,894404,894406}},ra=-1,rh=-1}
-N[221266]={elite=1,lv={9999,9999},n="Zalius",p={[1440]={808494,808496,810506}},ra=-1,rh=-1}
 N[221267]={elite=1,lv={9999,9999},n="Shredder 9000",p={[1440]={864604,864612,864616,864628,866604,866612,868624,868626,876622,876626}},ra=-1,rh=-1}
-N[221268]={lv={40,40},n="Doran Dreambough",p={[1440]={872434,872436,894406,896404,938384,938386}},ra=1,rh=1}
 N[221269]={lv={40,40},n="Maseara Autumnmoon",p={[1440]={810502,896404,896406,934388,938384,938386}},ra=1,rh=1}
-N[221270]={lv={40,40},n="Alyssian Windcaller",p={[1440]={896404,896406,920542,938384,938386}},ra=1,rh=1}
 N[221292]={lv={40,40},n="Dreamhunter Hound",p={[1440]={894404,894406,896406,904394,904398,906396,914388,916388,922378,924374,924398,926384,926396,934370,934388,936388,938376,938402,940364,940374,942352}},ra=-1,rh=-1}
 N[221312]={lv={51,51},n="Dreadfeather Hippogryph",p={[1425]={436528,450476,470480,482410,504498,520336,536342,540328,546522,558438,564478,570314,572356,572406,584298,598256,608270,608396,610368,610432,614252,614324,648290,652468,660366,662316,666408,666436,670224,674498,682244,688286,690440,692256,692372,696526,702464,714542,716572,736506}},ra=-1,rh=-1}
 N[221324]={lv={51,51},n="Grief-Crazed Gryphon",p={[1425]={534372,540376,594344,596336,622230,622306,624280,624292,626246,630260,630286,634460,638310,642450,642466,662382,664434,664476,670456,672446,678434,678440,694454,694494,694510,700458,712470,716474,722540,724502,724512,730538}},ra=-1,rh=-1}
-N[221325]={elite=1,lv={51,51},n="Wyrmkin Starhunter",p={[1425]={450426,454388,458394,460396,460426,462424,464406,466404,466444,470372,470376,470414,470416,478434,480410,480436,492414,492416,498394,498396,512400,524394,528388,530400}},ra=-1,rh=-1}
-N[221326]={lv={51,51},n="Wrath Whelp",p={[1425]={450410,450428,454388,454404,458394,460426,464404,464406,466404,466426,468344,468350,468356,468366,470414,470416,476410,484402,484416,486404,486406,488416,494380,496382,498392}},ra=-1,rh=-1}
-N[221328]={lv={51,51},n="Dreamwater Vicejaw",p={[1425]={574384,600382,608388,614396,622408,630414,632426,644404,644412,644422,650448,650470,660466,662432,664404,664406,668454,676404,678434,680406,680442,680458,682474,694492,702472,704510,714474,714502,716518,722540}},ra=-1,rh=0}
-N[221330]={lv={51,51},n="Fallen Moonkin",p={[1425]={500462,538408,540390,548396,558412,558440,562402,562424,564446,566422,566432,570436,572462,574384,574402,574412,576394,576448,578426,578436,580464,580468,582412,586382,586388,586402,590468,592454,594462,598468,600454,602442,604430}},ra=-1,rh=-1}
 N[221331]={elite=1,lv={9999,9999},n="Florius",p={[1425]={454386,458394,460398,464360,464374,464380,464406,466402,466406}},ra=-1,rh=-1}
-N[221333]={elite=4,lv={9999,9999},n="Doomkin",p={[1425]={562446,564424,564432,564436,566422,566434,566436,566446,574392,576426,580408,580422}},ra=-1,rh=-1}
-N[221334]={elite=1,lv={9999,9999},n="Ghamoo-Raja",p={[1425]={630260,632276,634274,712536,714534,718524,720534,724536,726536,728534,730514,730520}},ra=-1,rh=-1}
-N[221335]={lv={50,50},n="Elianar Shadowdrinker",p={[1425]={534390,536390,632274,632276}},ra=1,rh=1}
-N[221336]={lv={50,50},n="Serlina Starbright",p={[1425]={632274,632276,710480}},ra=1,rh=1}
-N[221337]={lv={50,50},n="Veanna Cloudsleeper",p={[1425]={574428,632274,632276}},ra=1,rh=1}
-N[221367]={elite=1,lv={51,51},n="Wyrmkin Berserker",p={[1444]={472168,484114,484116,486116,494150,496156,500144,500146,506056,506172,510154,512158,516148,518060,524160,528162,534122,536124,536134,536136,536152,536156}},ra=-1,rh=-1}
-N[221369]={lv={51,51},n="Frenzied Whelp",p={[1444]={458142,464128,472146,474144,482134,482136,488108,502162,504170,504224,504226,506172,506210,506222,506248,508196,510114,510116,510184,510188,514164,516160,516166,516196,518154,528162,530166,534144,534146}},ra=-1,rh=-1}
-N[221370]={lv={51,51},n="Dreamspring Roguefeather",p={[1444]={380146,382104,384114,384116,384130,384144,384158,384166,386114,386156,386166,390120,390134,392100,392148,394136,396138,396158,398102,398122,398126,398152,400092,404108,406082,406150,408098,410132,414086,414114,414124,414142,416084,416086,416114,416124,416126,416140}},ra=-1,rh=-1}
-N[221371]={lv={49,50},n="Dreamspring Stormcaller",p={[1444]={368138,372126,374124,376154,376156,378118,378126,380114,380144,386140,390100,390134,392164,394092,394108,396108,396128,398096,400092,402080,402124,402136,406096,408082,410108,412130,414094,420090,422112,428094,428096,432110,436110,438100,450094,450106}},ra=-1,rh=-1}
 N[221373]={elite=1,lv={49,50},n="Enraged Mountain Giant",p={[1444]={380142,382158,390102,392186,402094,406106,406144,408154,410092,420186,424070,424206,432110,440214,450080,450142,450200,454174,456218,458152,462100,462144,462244,482246,484082,490154,500072,500254,504210,506198,508180,508208,508236,508254,510070,512086,522160,534132,542100,542110}},ra=-1,rh=-1}
-N[221375]={lv={51,51},n="Lost Daughter",p={[1444]={414150,414156,416154,416184,422208,424198,432134,432136,440214,442216,442230,450124,450126,450224,450250,452214,454198,456198,456222,458166,460164,460244,460246,462188,464144,464148,464176,464210,496150,502162,504170,506170,508114}},ra=-1,rh=-1}
-N[221377]={lv={51,51},n="Vengeful Son",p={[1444]={414154,414156,416154,416158,418172,424198,426200,430132,434250,436250,444124,444126,444222,446124,446128,450198,452252,454192,454206,454222,454226,456188,456198,456208,458232,458236,460162,460166,460220,460254,460256,462154,462176,464144,466144,466146,466216,466248,470176}},ra=-1,rh=-1}
-N[221389]={elite=1,lv={9999,9999},n="Alondrius",p={[1444]={426132,438122,438132,450120,454142,454148,454174,454194,456106,458218,460132,462142,462154,462164,462182,462202,464206,466134,466214,468118,468246,476156,476166,480228,482124,482240,486140,492112,492118,492126,496108,500134,504122,504140,510114,512126,518140}},ra=-1,rh=-1}
-N[221391]={elite=1,lv={9999,9999},n="Slirena",p={[1444]={384130,388146,390134,392136,396138}},ra=-1,rh=-1}
-N[221393]={elite=1,lv={9999,9999},n="Tyrannikus",p={[1444]={510114,510116,524144,524148,524162,526150,530164,532166,536170}},ra=-1,rh=-1}
-N[221395]={lv={50,50},n="Mellias Earthtender",p={[1444]={496154,496156,500134,500136,506128,510114,510116}},ra=1,rh=1}
-N[221398]={lv={50,50},n="Nerene Brooksinger",p={[1444]={458164,458166,510116}},ra=1,rh=1}
-N[221399]={lv={50,50},n="Jamniss Treemender",p={[1444]={404080,406080,494122,498122,510116}},ra=1,rh=1}
-N[221400]={lv={50,50},n="Kajind",p={[1447]={254662}},ra=1,rh=1}
+N[221407]={lv={50,50},n="Dreamshadow Imp",p={[1444]={486122,502104,502108,502124,502126,504074,504092,506074,506076,508104,508106,508116,510126,516080,516112,516118,526086,532102}},ra=-1,rh=-1}
 N[221408]={lv={50,50},n="Night Hunter",p={[1444]={498122,500112,502126,504098,506100,508116,510128,512108,516124,516126}},ra=-1,rh=-1}
 N[221471]={lv={25,25},n="Field Captain Palandar",p={[1431]={454512,456512,464476,466476}},ra=1,rh=1}
-N[221477]={lv={40,40},n="Field Captain Hannalah",p={[1440]={894406,896406}},ra=1,rh=1}
-N[221479]={lv={50,50},n="Field Captain Korlian",p={[1425]={614344,614346}},ra=1,rh=1}
-N[221480]={lv={50,50},n="Field Captain Arunnel",p={[1444]={484124,486124}},ra=1,rh=1}
 N[221575]={lv={45,45},n="Elrick",p={[1445]={664454,666452}},ra=1}
 N[221587]={lv={40,40},n="Aeonas the Vindicated",p={[1448]={450520}},ra=1}
-N[221636]={elite=1,lv={45,45},n="Gregory",p={[1448]={446520}},ra=1}
-N[221651]={lv={50,50},n="Ceruleos",p={[1447]={360688,362700,364718,364730,370710,370716,370726,374700,376712,382724,384730,384736,388730,390724,396712,396752,400718,414714,414724,414732,418712,418720,418726,426716,440672,454678}},ra=-1,rh=-1}
 N[221740]={elite=1,lv={50,50},n="Calefactus the Unleashed",p={[1419]={440354,440382,442300,442314,444362,444438,446468,450410,450492,454520,454542,456422,456514,462334,462372,462540,464472,464494,482390,484368,490502,492524,512392,514364,518332,532304,534282,536488}},ra=-1,rh=-1}
+N[221832]={lv={50,50},n="Silver Hand Charger",p={[1448]={510818}},ra=1}
 N[221928]={lv={50,50},n="Hippogryph Avatar",p={[1447]={344488,346490}},ra=-1,rh=-1}
 N[221933]={lv={50,50},n="Moonkin Avatar",p={[1425]={662530}},ra=-1,rh=-1}
 N[221935]={lv={50,50},n="Treant Avatar",p={[1444]={580528,584520,586522,590528}},ra=-1,rh=-1}
 N[221985]={lv={40,40},n="Tyrisius",p={[1444]={572690}},ra=1,rh=1}
-N[222004]={lv={44,45},n="Corrupt Moderate Manifestation of Water",p={[1447]={150498}},rh=0}
-N[222005]={lv={44,45},n="Moderate Manifestation of Water",p={[1444]={358324,360326},[1447]={148494,148496}},rh=1}
-N[222052]={n="Explorer Imp"}
-N[222188]={lv={63,63},n="Shadowy Figure",p={[1450]={520404,520406}},ra=1,rh=1}
-N[222198]={elite=1,lv={9999,9999},n="Nightmare Amalgamation",p={[1440]={878684,882674,882686,884650,886662,886670,886682,886686}},ra=-1,rh=-1}
-N[222232]={lv={46,47},n="Corrupt Moderate Manifestation of Air",p={[1425]={510464,512470}},rh=0}
 N[222233]={elite=1,lv={43,43},n="Ohk'zi",p={[1444]={750250}},ra=-1,rh=-1}
 N[222243]={elite=2,lv={43,43},n="Zopilote",p={[1446]={384318,412312,412346,428282,428356,442356,444314,450346,456322,458284,460360,466246,466352,484328,488374,494256,496340,508286,510334,514214,514362,534380,538362,546338,558406,570330,582368}},ra=0,rh=0}
-N[222261]={lv={36,36},n="Maximillian \"The Greaser\"",p={[1441]={798772}},ra=1,rh=1}
-N[222289]={lv={46,47},n="Moderate Manifestation of Air",p={[1425]={510464,510468},[1444]={358324,358326}},rh=1}
-N[222316]={lv={36,36},n="Fizzbizz Coppercoil",p={[1441]={770772}},ra=1,rh=1}
-N[222408]={lv={60,60},n="Shadowtooth Emissary",p={[1448]={514820,516820}},ra=1,rh=1}
-N[222413]={elite=1,lv={60,60},n="Zalgo the Explorer",p={[1434]={152156}},ra=1,rh=1}
-N[222444]={lv={25,25},n="Injured Gnome",p={[1434]={268772}},ra=1,rh=1}
-N[222451]={lv={25,25},n="Itty Bitty Murloc",p={[1434]={408856}},ra=1,rh=1}
-N[222522]={elite=1,lv={61,61},n="Spirit of Agamaggan",ra=1,rh=1}
-N[222530]={elite=1,lv={51,51},n="Rugged Traveler",p={[1428]={358198,360192}},ra=1,rh=1}
-N[222617]={lv={47,48},n="Moderate Manifestation of Fire",p={[1427]={238730},[1444]={356324,356326}},rh=1}
-N[222620]={lv={47,48},n="Corrupt Moderate Manifestation of Fire",p={[1427]={232736,234728,236726,240724}},rh=0}
-N[222623]={lv={45,46},n="Moderate Manifestation of Earth",p={[1444]={360324,360326},[1446]={620622}},rh=1}
-N[222625]={lv={45,46},n="Corrupt Moderate Manifestation of Earth",p={[1446]={620624,620626}},rh=0}
+N[222286]={elite=1,lv={43,43},n="Namida Grimtotem",p={[1444]={664384,664388,666382,668386}},ra=-1,rh=-1}
 N[222699]={lv={45,45},n="Enraged Stormcrow",p={[1427]={354228,378296,380280,474550,490556,512554,520570,522594,524578,528562,532586,534574,536626,540596,542508,546564,550528,550540,552576,552612,554548,554588,556558,556572,560508,568580,572600,574592,582568,582578,590598,594590,596560,600584,654544,708550}},ra=-1,rh=-1}
-N[222763]={lv={50,50},n="Mixmaster Blix",p={[1446]={670224}},ra=1,rh=1}
-N[222772]={lv={50,50},n="Crimeon Lablade",p={[1446]={670224}},ra=1,rh=1}
-N[222789]={elite=1,lv={52,52},n="The Giant",p={[1444]={454170,456222,458146,462144,462168,464182,464188,464196,464210,466120,466184,466190,466196,468126,468160,468214,470114,470216,472142,478228,482126,482244,484122,488124,490250}},ra=0,rh=0}
 N[223068]={lv={46,48},n="Thunderhead Hippogryph",p={[1447]={150498,152546,154518,154538,156682,164654,170532,172598,174562,174578,174624,174636,176504,180656,182512,184670,186544,186578,186616,186640,188604,192502,192520,192672,194682,196530,202654,204500,204564,204676,206518,206638,206650,206666,212540,212586,216616,222550,226578}},ra=-1,rh=-1}
 N[223340]={lv={15,18},n="Fel Interloper",p={[1413]={374166,402184,408144,416482,418142,434442,442500,444548,458512,464526,476494,516534,530508,540526,544486,556256,558512,560248,576234,576236,582498,588256,590290,590320,592364,592366,598274,598276,602360,608290,618320},[1421]={388234,442252,456316,498132,502570,544360,554572,556568,568160,610066},[1436]={286438,288586,290432,290582,296340,296694,300696,314392,314650,314660,316392,316396,322290,322762,322802,340824,348610,358324,358326,376854,412156,414154,444466,446468,466124,468394,474218,474674,474794,474796,476218,476674,476676,476794,478140,508322,516714,530802,626264,626268}},ra=-1,rh=-1}
 N[223542]={lv={25,28},n="Fel Interloper",p={[1413]={428818,438840,460856,476834,484812,502806},[1433]={288280,292304,298300,304220,308218,322208,424170,426170,710848,714582,714840,788656,788728,818608,832446,864524},[1440]={242634,276626,302300,336284,446642,508470,524628,556402,670460,672512,772732,804710,844694,848702}},ra=-1}
 N[223543]={lv={35,38},n="Fel Interloper",p={[1435]={104600,106600,124298,160632,168622,170630,226646,228644,270498,342284,342286,362500,492388,498386,566654,604278,606270,608432,612436,694784,694792,722104,722108,728108,772896,774894,776900,812340,812348,836662,870262,906658,910654,912566,914560},[1443]={474220,488814,488820,494748,496750,520854,522722,522726,522856,528810,542192,560748,714188,716188,722222,726218,734246,736244,736246,746104,762192,804172,804176}},ra=-1,rh=-1}
 N[223544]={lv={45,48},n="Fel Interloper",p={[1419]={348562,350550,412334,412336,436252,462394,466392,488482,492486,562364,562366,566366,588412,592402,598424,602466,604464,606390,606448,618384,622390},[1444]={682588,706626,724636,726638,732542,742506,742568,742600,762564,762566,766638},[1447]={164510,176588,212540,248474,248476,250814,250816,302798,330814}},ra=-1,rh=-1}
-N[223590]={lv={1,1},n="Shrine of the Watcher",p={[1447]={898334,898336}},ra=1,rh=1}
-N[224965]={elite=2,lv={60,60},n="Khonsu",p={[1451]={118950}},ra=0,rh=0}
 N[226982]={elite=1,lv={60,60},n="Frijidar",p={[1452]={698380}},ra=1,rh=1}
-N[227464]={n="Squire Cuthbert"}
-N[227672]={lv={52,52},n="Squire Cuthbert",p={[1422]={444466,446466,478504,478506}},ra=1,rh=-1}
-N[227673]={n="Squire Cuthbert"}
-N[227674]={n="Squire Cuthbert"}
-N[227755]={lv={60,60},n="Estelenn",p={[1428]={170462}},ra=1,rh=1}
 N[227853]={lv={60,60},n="Pix Xizzix",p={[1434]={284758}},ra=1,rh=1}
-N[227985]={elite=1,lv={60,60},n="Arkonos the Cursed",p={[1423]={864400,866398,868394}},ra=1,rh=1}
-N[228176]={lv={12,60},n="Banteazo",p={[1450]={562324}},ra=1,rh=1}
-N[228216]={lv={60,60},n="Nami",p={[1452]={612370}},ra=1,rh=1}
 N[228230]={lv={58,60},n="Harrigen",p={[1428]={464354,466350,466368,468340,474356,482366,484348,494382,498334,498390,500352,504274,506282,508274,508302,508394,510264,510362,512252,518258,520266,526268,528252,528256,534240,540234}},ra=-1,rh=-1}
 N[228231]={lv={58,60},n="Montrose",p={[1428]={450348,462386,466352,466374,468344,474360,476360,482366,488352,488366,494380,498334,498366,498392,500352,502278,504274,504382,504416,506250,506282,508266,508302,508396,512260,512370,514392,516260,520268,528254,528256,532242,538238}},ra=-1,rh=-1}
 N[228233]={lv={58,60},n="Abel",p={[1428]={450380,454352,458384,462362,464350,466372,468340,474362,484348,484364,488356,492272,492378,498324,498334,498392,500270,500352,504382,506250,508288,508302,508394,508410,512260,512370,518254,520266,520380,530244,532234}},ra=-1,rh=-1}
@@ -10376,106 +10273,42 @@ N[228722]={elite=1,lv={60,60},n="Infernus Siege Giant",p={[1427]={252484,252534,
 N[228723]={lv={56,60},n="Obsidian Reaver",p={[1427]={212766,220742,238768,258752,260778,272714,274698,274810,278806,280772,282658,284554,284624,288752,290798,292734,296662,306552,308722,310620,310708,312636,314670,316764,324584,324740,330722,330764,334612,334792,340634,344606,354674,360700,364732,366628,412742}},ra=-1,rh=-1}
 N[228724]={lv={55,57},n="Obsidian Surger",p={[1427]={292730,292736,294724,296736,304724,308712,316724,324760,324768,330764,330768,334794,334806,336784,336812,340730,340824,344838,364692,364712,414668,424746,434668,454674,454676,458720,484662,498706,504648,532656}},ra=-1,rh=-1}
 N[228725]={elite=1,lv={60,61},n="Firesworn",p={[1428]={144330,148302,152310,154386,156504,164536,268424,314668,314688,402452,412348,426404,454360,460412,462350,520336,522360,558312,566570,586572,590620,594550,598314,606290,610544,610610,612308,614344,618592,622298,648272,652234,680348,830562,834600,842660,846530,846542,872490}},ra=-1,rh=-1}
-N[228726]={elite=1,lv={55,56},n="Flamebringer Elementalist",p={[1427]={154350,156350,162418,166416,194374,194378,196384,196386,212290,216290,222346,224342,226342,226346,230264,232268,244280,248284,250286,260364,260366,262294,262300,266300}},ra=-1,rh=-1}
-N[228727]={elite=1,lv={55,56},n="Flamebringer Defender",p={[1427]={134402,136384,142432,152350,162360,162418,172346,178380,184360,188416,194382,194404,196356,214292,214314,224254,224274,224370,224380,236394,240402,240408,244324,244356,246338,248286,252308,254258,256330,260366,262300,262344,270248,274342}},ra=-1,rh=-1}
 N[228729]={elite=1,lv={59,60},n="Duke Tectonis",p={[1427]={274804,274810,274816,276808,276816,278802,280782,280794,282768,284764}},ra=-1,rh=-1}
-N[228747]={elite=1,lv={55,56},n="Flamebringer Stalker",p={[1427]={334284,334288,334296,336284,336286,336300,338274,338312,338320,354264,354270,354282,354286,356270,362254,364260,364280,366264,368268,372286,374276,376274,378282,378286,378296,384252,384256,386280,390250,390258,394274,396264,396268}},ra=-1,rh=-1}
-N[228818]={n="Shrine of Cooperation"}
-N[228822]={lv={53,53},n="Calyx Greenglow",p={[1448]={614130,616130}},ra=1,rh=1}
-N[228902]={lv={53,53},n="Calyx Greenglow",p={[1452]={298356}},ra=1,rh=1}
-N[228928]={lv={50,50},n="Maethra Slagheart",p={[1430]={408784,408786}}}
-N[228956]={elite=1,lv={61,61},n="Sebastian Jurgens",ra=1,rh=1}
-N[229018]={lv={56,57},n="Rotting Dwarf Corpse",p={[1423]={274854,274858}},ra=1,rh=1}
-N[229156]={lv={60,60},n="Air Elemental Fragment",p={[1450]={398680}},ra=-1,rh=-1}
 N[230146]={lv={55,58},n="Fel Interloper",p={[1423]={248200,288440,316304,318306,380164,820364,824368,826370,828404,828406,834460,834466,836462,842432,870424,872428},[1428]={206432,224524,224526,242642,242646,294436,360600,360616,366618,374418,376420,576452,576456,600650,608646,690266,692262,716312,720302,720320,854436,934590,936592}},ra=-1,rh=-1}
 N[230317]={lv={60,60},n="Mokvar",p={[1454]={344374,344378,348386,350380,352374}},rh=1}
 N[230319]={lv={60,60},n="Deliana",p={[1455]={424522,424526,432526,434510,434522,436508,436520}},ra=1,rh=-1}
-N[230481]={lv={60,60},n="Earth Elemental Fragment",p={[1450]={760640}},ra=-1,rh=-1}
-N[231050]={lv={60,60},n="Syndicate Infiltrator",ra=-1,rh=-1}
-N[231485]={elite=3,lv={9999,9999},n="Procrastimond",ra=1,rh=1}
-N[231498]={lv={60,60},n="Aeonas",p={[1422]={520834}},ra=1}
-N[231499]={lv={55,55},n="Ada Darkhardt",p={[1453]={280756,282754}},ra=1}
-N[231500]={elite=1,lv={60,60},n="Gregory",p={[1422]={694796,696796}},ra=1}
-N[231984]={lv={60,60},n="Silithid Darter",p={[1451]={384274,386246,390284,394326,406272,406292,408314,412252,412356,414330,430382,444284,444374,448332,454316,476270,476326,482288,482344,484308,494260,504246,508282,512200,512234,512254,512314,516218,534314,538238,538254,540284,562262,566302}},ra=-1,rh=-1}
-N[232309]={elite=1,lv={62,62},n="Highlord Demitrian",ra=1,rh=1}
-N[232381]={lv={60,60},n="Valxx Cracklequil",p={[1452]={606380}},ra=1,rh=1}
-N[232398]={lv={60,60},n="Primordial Flame",p={[1428]={150554,150568,152564,154544,154576,156566,156580,156588,158538,166574,166582,174554}},ra=-1,rh=-1}
-N[232399]={lv={60,60},n="Outcast Cryomancer",p={[1452]={632682,632686}},ra=-1,rh=-1}
-N[232429]={lv={60,60},n="Magical Stone",p={[1428]={150570}},ra=-1,rh=-1}
-N[232466]={lv={60,60},n="Magical Stone",p={[1452]={632684,634686}},ra=-1,rh=-1}
-N[232532]={lv={60,60},n="Fel Interloper",p={[1452]={522550,528562,532568,534536,536540,536560,542500,544552,546552,554492,556492,556500,564508,566502,566506}},ra=-1,rh=-1}
-N[232596]={lv={63,63},n="Riosus",p={[1437]={742700}},ra=1,rh=1}
-N[232624]={lv={9999,9999},n="Krasus",p={[1437]={744700}},ra=1}
-N[232625]={elite=3,lv={9999,9999},n="Riosustrasz",p={[1437]={708684,736656,736712,738668,738682,738686,742700}},ra=-1}
-N[232731]={lv={58,58},n="Xirath",p={[1423]={696320}},ra=1,rh=1}
-N[232755]={lv={60,60},n="Van Amburgh",p={[1449]={224332,226334,236330}},ra=-1}
-N[232802]={lv={40,40},n="Doan Karhan",p={[1423]={812590}},ra=1,rh=1}
-N[232855]={elite=1,lv={62,62},n="Prismatic Elemental",p={[1428]={374308,380294,380310,382326,384304,384316,386316,388302,388306,396300,398308,400294}},rh=-1}
-N[232900]={lv={55,56},n="Cursed Mage",p={[1423]={318306}},ra=-1,rh=-1}
-N[232903]={lv={59,60},n="Shadowmage",p={[1423]={520526,530510,530518,532504,534526,536492,540514,540522,540526,544504,548510,550524,554536,556520}},ra=-1,rh=-1}
-N[232924]={lv={40,40},n="Doan Karhan",p={[1440]={848704,848706}},ra=1,rh=1}
-N[232929]={elite=1,lv={60,60},n="Gregory",p={[1452]={534836}},ra=1}
-N[232932]={elite=1,lv={60,60},n="Gregory",p={[1422]={394672,396672}},ra=1}
-N[232960]={lv={60,60},n="Aeonas",ra=1}
-N[232998]={lv={60,60},n="Aeonas",ra=1}
-N[233084]={lv={60,60},n="Estelenn",p={[1449]={234332,236332}},ra=1,rh=1}
-N[233138]={lv={60,60},n="Aeonas",ra=1}
-N[233249]={lv={60,60},n="Estelenn",p={[1449]={214368,222354,222356,234334,234336,236332}},ra=1,rh=1}
-N[233776]={elite=1,lv={60,60},n="Gregory",ra=1}
-N[234539]={elite=1,lv={60,60},n="Selestrasza",ra=1,rh=1}
-N[237818]={lv={55,55},n="Harrison Jones",p={[1430]={522342,522346}},ra=1,rh=1}
-N[237819]={lv={55,55},n="Injured Adventurer",p={[1430]={652784,652786}},ra=1,rh=1}
-N[237820]={lv={60,60},n="Deceased Adventurer",p={[1430]={400742,400746}},ra=1,rh=1}
 N[238376]={lv={58,58},n="Brother Luctus",p={[1423]={804654,804656,806654}},ra=1,rh=1}
-N[238382]={lv={58,58},n="Kug Softjaw",ra=1,rh=1}
-N[238415]={elite=1,lv={60,60},n="Grok'lo Mok'lo",p={[1423]={804654,806652},[1428]={654552,656552},[1435]={344654,344658,344666,346654,346658,348632},[1446]={544284,544286,546282},[1447]={322544,322546}},ra=1,rh=1}
-N[239031]={elite=1,lv={9999,9999},n="Scarlet Inquisitor Caldoran",p={[1423]={682824,682826}},ra=0,rh=0}
-N[239032]={elite=1,lv={9999,9999},n="Commander Beatrix",p={[1423]={678832}},ra=0,rh=0}
 N[239047]={elite=1,lv={59,60},n="Scarlet Siege Commander",p={[1423]={780764,782806,784816,784828,786846,790816,792804,794834,796808,796834,802816,812810,828854,830856,842812,842820,844858,844868,854874,864814,872828,874836,904828,904848,928782,930786,944782,954778,974764,974766,976764,976766}},ra=-1,rh=-1}
-N[239054]={lv={55,55},n="Argent Emissary",p={[1423]={678832}},ra=1,rh=1}
-N[239337]={lv={62,62},n="Lord Maxwell Tyrosus",ra=1,rh=1}
-N[240248]={lv={60,60},n="Bryon Steelblade",p={[1423]={984840,986840}},ra=1,rh=1}
-N[240604]={lv={60,60},n="Carrie Hearthfire",p={[1423]={952784,952786}},ra=1,rh=1}
-N[240607]={lv={60,60},n="Devon Woods",p={[1423]={952802,952806}},ra=1,rh=1}
-N[240631]={lv={60,60},n="Taylor Stitchings",p={[1423]={946834,946836}},ra=1,rh=1}
-N[240654]={lv={60,60},n="Fizzlefuse",p={[1415]={628242}},ra=1,rh=1}
+N[239831]={n="Saria Fairmoon",p={[1447]={504426}}}
 N[240998]={lv={60,61},n="New Avalon Orchardist",p={[1423]={902926,906938,912916,914930,916948,920920,922902,922938,924926,926922,928934,930902,930948,930956,938928,938942,938946,940886,944884,946938,950860,952894,952932,954882,954898,954908,954924,960874,960920,960928,964900,966898,966910,968884,970860,970894,974866,978874,980888}},ra=-1,rh=-1}
-N[241019]={lv={60,60},n="Johnny",p={[1423]={948912}},ra=1,rh=1}
-N[241119]={elite=1,lv={61,62},n="New Avalon Watchman",p={[1423]={892814,982832,984840,986824,988838,990828}},ra=-1,rh=-1}
 N[241120]={elite=1,lv={61,62},n="Scarlet Footman",p={[1423]={890818,900796,904942,912964,914944,916784,916794,916856,916912,918828,918870,920888,944862,946818,948794,948840,950928,956784,962868,964770,964796,968888,972844,974812}},ra=-1,rh=-1}
-N[241121]={elite=1,lv={61,62},n="Scarlet Archer",p={[1423]={900836,900948,908792,910844,914822,914862,914912,918804,920886,920902,920930,924782,924844,930822,932880,934790,934800,934852,936868,936942,938842,938946,946804,946864,946888,948840,952810,952928,954786,954848,962774,964848,966826,968886,974896,982854,984872,986814,992836}},ra=-1,rh=-1}
-N[241122]={elite=1,lv={61,62},n="Scarlet Confessor",p={[1423]={900836,900950,902846,904944,908792,914822,914856,914910,914916,918806,918870,918946,920888,922838,924782,932800,932820,932884,934790,934852,936870,936942,938842,946806,946886,948840,952926,954786,954846,958820,962776,964864,968824,968884,984870,986816,994858}},ra=-1,rh=-1}
-N[241123]={elite=1,lv={61,62},n="Scarlet Priest",p={[1423]={902834,902846,904944,908792,910954,914806,914824,914856,914912,918872,918904,918946,920886,922836,924782,930888,932798,932820,932850,934870,936942,938842,946818,946888,948840,952926,954786,954846,962778,964864,968822,970886,984818,984870,994860}},ra=-1,rh=-1}
-N[241334]={elite=3,n="The Will of the Ashbringer"}
-N[241437]={lv={56,56},n="Scarlet Courier",p={[1423]={972926,974914,974922,976922,978906,980878,982890,984898,990890,990908,992884,994900,994918}},ra=-1,rh=-1}
-N[241613]={lv={60,60},n="Kyndra Swiftarrow",p={[1423]={938902}},ra=1,rh=1}
 N[241659]={lv={60,60},n="Markus Hearthfire",p={[1423]={954790}},ra=1,rh=1}
-N[241834]={lv={60,60},n="Istaria",p={[1450]={522430}},ra=1,rh=1}
 N[241877]={lv={60,61},n="Mayor Quimby",p={[1423]={908856,910854,910866,916856,918852}},ra=1,rh=1}
-N[242019]={lv={60,60},n="Leonid Barthalomew the Revered",p={[1423]={334274,334276,336274,336276}},ra=1,rh=1}
-N[242125]={elite=1,lv={60,60},n="Master Craftsman Omarion",ra=1,rh=1}
-N[242174]={lv={60,60},n="Thisalee Crow",p={[1452]={604380,608380}},ra=1,rh=1}
 N[242183]={lv={60,60},n="Abatha Rainwater",p={[1423]={934794}},ra=1,rh=1}
 N[242367]={lv={60,61},n="New Avalon Citizen",p={[1423]={904844,904942,906828,910934,912864,914844,916844,918870,920852,920888,922860,924798,926854,928844,930868,932890,932900,934794,934824,934834,936796,938892,938896,940928,942814,942818,944834,944918,946820,946834,946916,948912,952814,952926,956824,974794,976794,976798,988840,992834}},ra=-1,rh=-1}
-N[242439]={lv={60,60},n="Thisalee Crow",ra=1,rh=1}
-N[242499]={elite=3,lv={9999,9999},n="Highlord Mograine",ra=1,rh=1}
-N[242501]={elite=3,lv={9999,9999},n="The Will of the Ashbringer",p={[1423]={816580}},ra=1,rh=1}
 N[242757]={elite=1,lv={61,62},n="New Avalon Councilman",p={[1423]={908858,912866,914850,916856,918854,926852,932878}},ra=-1,rh=-1}
-N[242863]={lv={60,60},n="Hyjal Bonfire",ra=1,rh=1}
-N[243023]={lv={60,60},n="Inquisitor Jociphine",p={[1423]={682824,682826}},ra=0,rh=0}
-N[243386]={lv={60,60},n="Leonid Barthalomew the Revered",p={[1423]={164312,166312}},ra=1,rh=1}
-N[243393]={lv={60,60},n="Leonid Barthalomew the Revered",p={[1423]={478220}},ra=1,rh=1}
 N[243815]={n="Sebelia",p={[2482]={708514}}}
 N[244808]={lv={5,5},n="Aramis Hammerhand",p={[1420]={310662}},rh=1}
+N[246016]={elite=1,n="Arcanic Enigma",p={[1416]={205643,210619,210632,211633,212635,215635,217633,218622}}}
+N[246020]={elite=1,n="Shade of the Archmage",p={[1416]={150554,152559,154565}}}
 N[246143]={lv={3,3},n="Frightened Paladin",p={[1420]={276638}},rh=1}
 N[246152]={lv={16,16},n="Shari Stilwell",p={[1420]={602524,602526}},rh=1}
+N[246344]={lv={30,30},n="Alodan the Hopeful",p={[1456]={254144,254146}}}
 N[246349]={lv={55,55},n="Breton Samuels",p={[1420]={218452}},rh=1}
 N[246378]={elite=1,lv={61,61},n="Danitha Morr",p={[1420]={220448}},rh=1}
 N[246389]={lv={55,55},n="Hilda the Breaker",p={[1420]={220472}},rh=1}
 N[246393]={lv={55,55},n="Jorin Croge",p={[1420]={226448}},rh=1}
 N[246394]={lv={20,20},n="Ander Solliden",p={[1420]={222494,224496,226496,236498,246506,254504}},rh=1}
+N[246600]={elite=1,n="Mana Echo",p={[1416]={143675,144673,144688,145675,145686,147647,151733,152642,154733,156733,157737,164632,166636,167632,170627,173637,176639,186639,188643,190630,190647,200691,205694,207697,207712,211684}}}
+N[246664]={elite=1,n="Fragmented Sentry",p={[1416]={130694,132700,136683,136700,140677,146612,147660,148619,151632,153644,156737,157624,159638,159723,160719,161637,162671,166639,166672,171628,173634,174620,184710,184716,186646,187728,188608,190630,191640,192619,192666,193624,195623,196643,196661,196733,197654,205649}}}
+N[246797]={n="Jessa Weaver",p={[1416]={176694,176696}}}
+N[247001]={elite=1,n="Saturated Remnant",p={[1416]={144575,145672,145675,146686,148645,151644,161736,166636,167741,170740,174638,182645,183641,185639,190654,191634,191657,191667,193644,194645,196645,197736,201738,207773}}}
+N[247003]={elite=1,n="Seeking Remnant",p={[1416]={144669,144684,144694,145672,145678,145692,145695,148648,149644,149646,154632,154668,155668,155739,157732,157737,159624,159625,165635,167634,171628,181643,181647,188645,188652,188774,188777,189638,190633,190672,192622,193743,194748,195743,195752,196733,200734,201750}}}
+N[247126]={elite=1,n="Atrexis the Grave Knight",p={[1416]={153672,162678,163700,164689,166676,166700,167692,168670,170677,173692}}}
 N[247226]={lv={60,60},n="Kelsey Fargo",p={[1429]={472322,472326}},ra=1}
 N[247229]={lv={60,60},n="Daniel",p={[1429]={494404,494406}},ra=1}
+N[247264]={n="Emissary Jacques",p={[1424]={483601}}}
+N[248041]={n="Hyjal Stag",p={[2482]={428500,834372}}}
 N[248242]={lv={35,35},n="Hamish Bergwort",p={[1429]={650698}},ra=1}
 N[248248]={lv={35,35},n="Blixie Fitzwink",p={[1429]={632724,632726}},ra=1}
 N[248265]={lv={35,35},n="Ormin Pelford",p={[1429]={764720,766720}},ra=1}
@@ -10484,15 +10317,26 @@ N[248277]={lv={35,35},n="Merell Ross",p={[1429]={844792,846792}},ra=1}
 N[248278]={elite=1,lv={11,11},n="Croaky",p={[1429]={744860,752806,754862,762844,764848,764858,766852,766862,766868,774838,778826},[1431]={728158}},ra=-1}
 N[248299]={elite=1,lv={12,12},n="Elmpaw",p={[1429]={736360,746400,768376,768390,776378,818842,820824,820874,860810}},ra=-1}
 N[248362]={elite=1,lv={3,3},n="Shinyfinder Narf",p={[1429]={484280,484292,484298,486298,490278,490290,496280}},ra=-1}
+N[248366]={elite=1,n="Fraxinus",p={[2482]={536844}}}
 N[248415]={lv={5,5},n="Tordrin Sternblade",p={[1429]={510404,512408}},ra=1}
 N[248464]={elite=1,lv={6,6},n="Nimsy",p={[1429]={398798,410776,410806,414792,414802,416800}},ra=-1}
 N[248474]={elite=1,lv={7,7},n="Geosculptor Yip",p={[1429]={604498,606498,612490,612514,612516,614482}},ra=-1}
 N[248755]={lv={20,20},n="Lumina Windsinger",p={[1421]={640340,642334,652330,656232,656296,656324,658254,658256,658274,658276,658286,660238}},rh=1}
 N[248840]={lv={20,20},n="Trevan Rol",p={[1421]={434410}},rh=1}
+N[249053]={n="Hyjal Owl",p={[2482]={244668,272768,276772,340770,652686,850732,856702}}}
+N[249226]={elite=4,n="Death Wailer",p={[2482]={236548}}}
+N[249228]={n="Fleshflay Ravener",p={[2482]={236566,244552,252550}}}
+N[249229]={n="Felguard Sentinel",p={[2482]={486334}}}
+N[249230]={n="Defiling Hound",p={[2482]={474354}}}
+N[249237]={n="Eternal Sentry",p={[2482]={262536}}}
+N[249247]={n="Forgotten Soldier",p={[2482]={204592,220570}}}
 N[249363]={lv={5,5},n="Yala Windwatcher",p={[2521]={472218}},ra=1,rh=1}
+N[249490]={n="Wildbreath Chimaerok",p={[2482]={264426,372526,694452,784372}}}
+N[249551]={n="Blackthorne Cultist",p={[2482]={754452,764452,772450,776402,798350}}}
 N[249713]={lv={1,1},n="Odd Child",p={[1415]={412790}},ra=1}
 N[250282]={lv={9,10},n="Vile Fin Seer",p={[1420]={130556,132580,134572,134592,138566,140532,140556,142580,144524,144542,148548,152542,154514,158524,160528,166522,170510,172582,174550,174556,174586,176582,176616,178566,178596,178606,184594,188598,188606,188618,254448,258454,260458,262434,262436,266438,266454,274456,278454}},rh=-1}
 N[250283]={lv={9,11},n="Vile Fin Attacker",p={[1420]={124548,134552,134564,134592,136554,138534,138556,140566,142524,146522,146562,148530,152542,152548,152568,158616,160550,162580,164570,164588,166572,170590,172584,174604,178576,180570,180612,182592,184602,186598,188620,260474,264478,266482,268442,272456}},rh=-1}
+N[250448]={lv={20,20},n="Evin Schmidtt",p={[1420]={220444,220448}},rh=1}
 N[250686]={lv={25,25},n="Tabitha Heartweaver",p={[1421]={444430,446428}},rh=1}
 N[250873]={lv={1,1},n="Juvenile Vuldren",p={[2521]={420280,424260,424272,432226,432254,432256,432266,432282,434224,434286,438214,438254,438286,440258,442266,442278,444218,444232,446214,446220,446256,446270,446276,448244,452230,452250,452286,456242,456266,456282,458216,458228,458264,458288,460254,466222,466242,466256,466278,468254}},ra=0,rh=0}
 N[250926]={lv={3,4},n="Scrawny Ursera",p={[2521]={370246,370298,372264,374294,376252,376292,376298,378268,380264,380284,386276,394274,400266,400288,402278,404264,412262,412268,414254,414276,416254,416258,416270}},ra=-1,rh=-1}
@@ -10524,6 +10368,7 @@ N[251389]={lv={5,5},n="Akeri Duskblade",p={[2521]={436242}},ra=1,rh=1}
 N[251404]={lv={3,3},n="Cirrusfly Queen",p={[2521]={464280,472282,474266,474288,480274,480286,484282,486282,486294}},ra=-1,rh=-1}
 N[251448]={lv={4,4},n="Al'Aketh Neophyte",p={[2521]={350336,354318,354334,362334,364314,364316,366314,366346,368330,374324,374338,376310,376334,376338}},ra=0,rh=0}
 N[251487]={lv={5,5},n="Ventaari Brightwish",p={[2521]={426244}},ra=-1,rh=1}
+N[251493]={elite=1,n="Captain McManus",p={[1424]={464502,466502}}}
 N[251507]={lv={25,25},n="Josephine Carson",p={[1429]={412662}},ra=1}
 N[251523]={lv={20,20},n="Constable Aonda",p={[2521]={454454,456454}},ra=1,rh=1}
 N[251661]={lv={5,6},n="Galestrider",p={[2521]={360464,364558,374430,388414,390570,392436,394462,394518,394552,408624,418360,418562,422484,430644,442422,442680,446702,454396,458376,458582,458656,462408,464684,466442,474522,478630,508504,514648,516538,524624,540622}},ra=0,rh=0}
@@ -10533,8 +10378,6 @@ N[251684]={lv={10,10},n="Strange Hermit",p={[2521]={540390}},ra=1,rh=1}
 N[251707]={lv={8,9},n="Ornery Galestrider",p={[2521]={454812,472798,474748,474810,476732,482762,482796,482844,488830,492742,508776,508798,510816,510840,514750,520696,522718,532696,532722,534754,544764,550682,558708,562670,562724,566750,578610,584652,592624,594734,600688,608674,614694,622718,634674,634716}},ra=-1,rh=-1}
 N[251902]={lv={20,20},n="Illaya Amberwind",p={[2521]={434448,436448}},ra=-1,rh=1}
 N[251903]={lv={20,20},n="Rathiril Sunlance",p={[2521]={450464}},ra=1,rh=-1}
-end)()
-;(function()
 N[251904]={lv={7,7},n="Sania Silverstream",p={[2521]={448454}},ra=0,rh=0}
 N[251905]={lv={20,20},n="Zerril Softbreeze",p={[2521]={438438}},ra=1,rh=1}
 N[251906]={lv={20,20},n="Teeri Wellwind",p={[2521]={444450}},ra=1,rh=1}
@@ -10546,14 +10389,18 @@ N[251968]={elite=1,lv={9999,9999},n="Ayessa Dawnsinger",p={[2521]={590794,590796
 N[251991]={lv={20,20},n="Taleen Shimmerthread",p={[2521]={448442}},ra=1,rh=1}
 N[251992]={lv={5,5},n="Fenn Fairweather",p={[2521]={450484}},ra=1,rh=1}
 N[251993]={lv={5,5},n="Indari Sunseam",p={[2521]={446444,446446}},ra=1,rh=1}
+N[252063]={n="Deadwood Den Guardian",p={[2482]={240668}}}
 N[252068]={lv={7,8},n="Al'Aketh Stormcaller",p={[2521]={472544,474534,474550,474558,474578,476524,476542,476554,478564,478578,480532,482566,482586,486524,490538,490558,490586,492548,492568,492580,496542,498564,498566,504546}},ra=0,rh=0}
+N[252085]={lv={40,40},n="Archmage Celindra",p={[1416]={142600}},ra=1}
 N[252095]={lv={10,10},n="Hanaa Nightwind",p={[2521]={382302}},ra=1,rh=1}
+N[252116]={n="Deadwood Totemic",p={[2482]={228642}}}
 N[252155]={lv={5,5},n="Peacekeeper Vaaniel",p={[2521]={424620}},ra=1,rh=1}
 N[252172]={lv={10,10},n="Danarii Bellowveil",p={[2521]={452452}},ra=1,rh=1}
 N[252359]={lv={10,10},n="Lotheluum Starbreeze",p={[2521]={640750}},ra=1,rh=1}
 N[252373]={lv={10,10},n="Anathamaas Aetherwind",p={[2521]={658804,658806}},ra=1}
 N[252377]={lv={10,10},n="Seena Skybreaker",p={[2521]={598728}},ra=1,rh=1}
 N[252378]={lv={10,10},n="Yorana Windyreed",p={[2521]={696670}},ra=1,rh=1}
+N[252379]={lv={10,10},n="Eltheen Nightbreeze",p={[2521]={598724,598726}},ra=1,rh=1}
 N[252382]={lv={10,10},n="Sessaria Skystride",p={[2521]={582784,582786}},rh=1}
 N[252383]={lv={20,20},n="Valennia Stormfist",p={[2521]={662766}},ra=1,rh=1}
 N[252389]={lv={10,10},n="Quel'ana Quickgale",p={[2521]={596726}},ra=1,rh=1}
@@ -10574,51 +10421,108 @@ N[252820]={lv={8,9},n="Bandit Highwayman",p={[2521]={434744,440742,440758,448746
 N[252863]={lv={8,8},n="Ferauu the Bludgeon",p={[2521]={476778}},ra=-1,rh=-1}
 N[253002]={lv={10,10},n="Fillion Flamebreeze",p={[2521]={504654,506654}},ra=1}
 N[253004]={lv={10,10},n="Iaadaria Bitterwind",p={[2521]={662794,662796}},ra=1}
+N[253066]={elite=1,n="Umarak",p={[1443]={434788}}}
 N[253092]={lv={24,24},n="Alba Fairmoon",p={[1436]={524530,526532}},ra=1}
+N[253096]={n="Halea",p={[1443]={354920,356922}}}
+N[253136]={n="Orgrul",p={[2652]={356120}}}
+N[253139]={n="Gorhak",p={[1443]={662794}}}
+N[253140]={n="Molkar",p={[1443]={356920}}}
+N[253163]={n="Grolkar",p={[1443]={696780}}}
+N[253177]={n="Nerlokh",p={[1443]={584886},[2652]={208226,210220}}}
 N[253195]={lv={8,9},n="Al'Aketh Preacher",p={[2521]={604654,604684,608686,612642,612658,614668,618634,620608,620646,620668,622604,622680,624638,630626,632660,634650,636604,636608,642660,644580,648626,654644,656580,656626,662572,664624}},ra=0,rh=0}
 N[253204]={lv={10,10},n="Dondallion Whisperwind",p={[2521]={662798}},ra=1}
 N[253279]={lv={24,24},n="Alba Fairmoon",p={[1436]={386832,386836}},ra=1,rh=-1}
 N[253281]={lv={10,10},n="Fillion Flamebreeze",p={[2521]={498668,504656,506654,512662,512668,512680,514692,516664,520666,520694}},ra=1}
+end)()
+;(function()
 N[253283]={lv={9,9},n="Shriekling Matriarch",p={[2521]={520654,520658,522666,526662,526666,528654}},ra=-1,rh=-1}
 N[253284]={lv={10,10},n="Fillion Flamebreeze",p={[2521]={520694}},ra=1}
+N[253285]={n="Fillion Flamebreeze",p={[2521]={662798}}}
 N[253306]={lv={10,10},n="Index Esoteria",p={[2521]={480690}},ra=1}
+N[253360]={n="Nascent Undead Ravager",p={[1443]={682832,684846}}}
 N[253372]={lv={10,10},n="Dead Cultist",p={[2521]={560588}},ra=1,rh=1}
 N[253395]={lv={15,15},n="Ozwin Ironsprocket",p={[1436]={514322,516322}},ra=1}
+N[253431]={n="Gelkis Captive",p={[2652]={608268}}}
+N[253446]={n="Haggard Bones",p={[2652]={386298,472344,472360,484292,492240,498232}}}
 N[253511]={lv={8,9},n="Al'Aketh Pillager",p={[2521]={602666,604654,606690,608656,608682,610624,612642,614610,614666,618604,620614,620634,620650,620666,624662,626606,630602,630666,632628,632656,634588,636610,636646,638582,642640,642660,644588,648624,650584,652644,654614,656626,656646,660578,662570,666622,668634}},ra=0,rh=0}
+N[253524]={n="Bristleback Nomad",p={[2652]={584202,688308,716284,724344}}}
+N[253525]={n="Bristleback Thornweaver",p={[2652]={692284,716236,716264}}}
+N[253526]={n="Bristleback Skullcrusher",p={[2652]={570154,584184,594144,596348,712258,714292}}}
 N[253576]={lv={13,13},n="Hyusaa Quickbreeze",p={[2521]={638504,638506}},ra=1,rh=1}
 N[253590]={lv={13,13},n="Valennia Stormfist",p={[2521]={652504,652506}},ra=1,rh=1}
 N[253622]={lv={10,10},n="Commander Haalien",p={[2521]={634362,636368,644376,654362,654366,656354,656362,656366}},ra=0,rh=0}
 N[253844]={lv={13,13},n="Valennia Stormfist",p={[2521]={612710}},ra=1,rh=1}
+N[253851]={n="Hagiak",p={[2652]={588538,590534,596538}}}
 N[254078]={lv={31,31},n="Tom \"Half-fish\" Wilson",p={[1424]={510666,512664}},ra=1}
+N[254081]={lv={10,10},n="Naeluna Swiftmend",p={[2521]={452442}},ra=1,rh=1}
 N[254082]={lv={10,10},n="Aarnor Galestrike",p={[2521]={434448,436448}},ra=-1,rh=1}
 N[254084]={lv={10,10},n="Elayaa Easewind",p={[2521]={452442}},ra=1,rh=1}
+N[254086]={lv={10,10},n="Shenaan Spellwind",p={[2521]={450458}},ra=1,rh=1}
+N[254087]={lv={10,10},n="Miriaan Mistblade",p={[2521]={432432}},ra=1,rh=1}
+N[254088]={lv={10,10},n="Corsan Earthrazer",p={[2521]={448452}},ra=1,rh=1}
 N[254089]={lv={10,10},n="Coriella Calmbreeze",p={[2521]={430432}},ra=1,rh=1}
 N[254151]={lv={10,10},n="Vayn Moongaze",p={[2521]={638360}},ra=0,rh=0}
+N[254283]={n="Outcast Scout",p={[2652]={374746,378674,392640}}}
+N[254284]={n="Outcast Marauder",p={[2652]={296726,318736,328708,338730,394628,394635,394648,396588,402643,404650,412642,412648,470634,474680}}}
 N[254344]={lv={10,10},n="Endaria Mistgaze",p={[2521]={582782}},rh=1}
 N[254345]={lv={10,10},n="Syriel Nightrain",p={[2521]={578754}},ra=1,rh=1}
 N[254411]={lv={10,10},n="Quel'dora Quickgale",p={[2521]={596724,596726}},ra=1,rh=1}
+N[254560]={n="Twilight Shadowmancer",p={[2548]={444504,454528,454554,458460,460484,464486,466488,468500,470454,472510,478474,480484,482438,488482,496458,498470}}}
+N[254572]={n="Malevolent Marigold",p={[2652]={632687,650708}}}
 N[254588]={lv={8,9},n="Windsong Crawler",p={[2521]={422668,444640,450500,454480,456614,462472,464494,476454,492594,494666,498492,498612,504760,510444,510504,510712,512566,512588,522746,532442,532562,534778,542706,548514,550490,566730,582454,590742,622566,622596,624616,680614,688606}},ra=0,rh=0}
 N[254589]={elite=1,lv={8,8},n="Vulgara the Insatiable",p={[2521]={424508,424522,424526,426520,426526,430506}},ra=-1,rh=-1}
 N[254596]={lv={9,10},n="Al'Aketh Healer",p={[2521]={644646,644662,644680,644690,650652,650666,654644,654658,654684,654688,654696,656656,656686,658644,658654,658670,664676,666682,668672,668686,676684,684668}},ra=0,rh=0}
 N[254626]={lv={9,10},n="Al'Aketh Assassin",p={[2521]={544602,544614,550616,552612,554590,554602,556598,558594,560580,560606,560618,566614,570604}},ra=0,rh=0}
+N[254770]={n="Pelluk",p={[1435]={264304,264306}}}
+N[254775]={n="Karana",p={[1435]={248324,256314,260320,264326}}}
+N[255003]={n="Gimashi",p={[1443]={808766}}}
+N[255174]={n="Blind Screecher",p={[2652]={461612,465608,469620,499513,552594,556601,561613,563616,568620}}}
+N[255183]={elite=4,n="Jezerelle the Swaying",p={[2482]={476324}}}
+N[255207]={n="Prowler",p={[2652]={398676,516592}}}
 N[255534]={lv={7,7},n="\"Badwind\" Bennic",p={[2521]={504334,506334,508340}},ra=-1,rh=-1}
+N[255597]={n="Father Tuttle",p={[1435]={220506}}}
+N[255769]={n="Redridge Brute",p={[2548]={164680,178704,182692,186706,194674,200662,204654,204702,206654,210696,210714,218642,226640,226668,234662,254634,254646,266616,274612,300662,306604,312568}}}
+N[255770]={n="Redridge Mystic",p={[2548]={180702,184706,186700,190678,194686,198684,200656,200706,202652,202698,206658,206686,214630,222642,282594}}}
+N[255772]={n="Redridge Trapper",p={[2548]={172680,184694,184698,186704,196714,202667,203662,204652,206690,206698,206706,212642,212646,212664,214671,220640,224670,226668,300662,320594}}}
+N[255773]={n="Brie",p={[2482]={414362,416366,420348,420364}}}
+N[255774]={n="Redridge Scout",p={[2548]={222672}}}
+N[255851]={n="Mature Paletusk",p={[2548]={742516}}}
 N[255853]={lv={10,10},n="Urs'endris",p={[2521]={698616}},ra=1,rh=1}
 N[255894]={n="Innkeeper Zizplink",p={[2548]={788540}}}
+N[255897]={n="Friz Frazzlespark",p={[2548]={772528}}}
+N[255898]={n="Murloc Oracle",p={[2548]={664746,686736,710642,722630,724618,728608,736614,740748,742676,746624,746654,746700,748660,750778,752674,758714,772710,772730}}}
+N[255899]={n="Murloc Tideskimmer",p={[2548]={628724,666708,670702,688794,690742,692690,708642,736614,736706,746712,750612,751689,752628,754636,758626,762702,764658,780698}}}
+N[255901]={n="Sand Crawler",p={[2548]={612762,620746,638772,640740,648736,650868,656868,668852,668870,678838,682810,682846,686810,688800,690788,730714,736616,736710,738604,740776,754628,758634,766622,774634,778610,780602}}}
 N[255940]={lv={10,10},n="Donaal Downbreeze",p={[2521]={622726}},ra=1,rh=1}
 N[255993]={elite=1,n="Grakna",p={[2548]={596452}}}
 N[256083]={lv={12,12},n="Riaani Nightwind",p={[2521]={590730}},ra=-1,rh=1}
 N[256092]={lv={10,11},n="Shadowgale Shriekling",p={[2521]={536406,540444,542392,544430,552380,554370,554414,558424,564372,564394,570406,574372,578356,578398,592402,594408,594432,598340,600364,604378,608396,610370,610376,636366,642410}},ra=0,rh=0}
 N[256247]={lv={10,10},n="Belathaan Brightwish",p={[2521]={598570}},rh=-1}
+N[256383]={n="Meadowsbrook Farmhand",p={[2548]={428822,430810,436814,450790,454780,456784,456796,460806,462820,468834,472810}}}
 N[256384]={lv={30,30},n="Gishah",p={[1413]={494294}},rh=0}
 N[256386]={lv={30,30},n="Dokimi",p={[1413]={500292}},rh=0}
 N[256389]={lv={30,30},n="Tamelyn Aldridge",p={[1433]={104714,106714}},ra=0}
 N[256390]={lv={30,30},n="Marcy Baker",p={[1433]={94712,96710}},ra=0}
+N[256418]={n="Krom'rosh",p={[2548]={594456}}}
+N[256434]={n="Turner's Mill Lumberjack",p={[2548]={422582}}}
+N[256438]={n="Halligan Turner",p={[2548]={410628}}}
 N[256507]={lv={30,30},n="Belann Windwood",p={[2521]={628774}},ra=1,rh=1}
+N[256627]={n="Elder Mistpaw",p={[2482]={214790}}}
+N[256657]={n="Kreza Darkthorn",p={[2548]={598460}}}
 N[256675]={n="Innkeeper Toka",p={[2548]={580450}}}
+N[256749]={n="Rog'mar Trainee",p={[2548]={590355,591354,596349}}}
+N[256795]={n="Twilight Fanatic",p={[2548]={304484,306472,310464,312445,313444,324372}}}
+N[256798]={n="Twilight Neophyte",p={[2548]={460454}}}
+N[256799]={n="Twilight Champion",p={[2548]={296474,298498,308476,310452,313444,317469}}}
+N[256801]={n="Murloc Warrior",p={[2548]={784694}}}
+N[256807]={n="Shore Crawler",p={[2548]={778546,784496,794490,820482,832220,832232,836474,842456,852296,852450,858426,860310,880308,882338,886314,896372}}}
+N[256809]={n="Predatory Hyjal Stag",p={[2482]={290460}}}
+N[256831]={n="Apprentice Claire",p={[2548]={476472}}}
+N[256899]={elite=1,n="Chogg'Zac",p={[2548]={448510,450504}}}
 N[256935]={lv={5,5},n="Malduko Cloudcrush",p={[2521]={360336,364332,366332}},ra=0,rh=0}
+N[256952]={n="Twilight Raider",p={[2548]={426504,434478,436478,440544,444474,452556,454508,456476,460528,464452,464472,464506,466498,470586,474460,474546,478484,480442,480460,486556,492604,502578,510570,522594,524448,524596,536448}}}
 N[256966]={lv={8,8},n="Skypriest Aanders",p={[2521]={410640}},ra=0,rh=0}
 N[256996]={lv={7,8},n="Al'Aketh Warrior",p={[2521]={410640,412634}},ra=0,rh=0}
-N[257004]={lv={10,10},n="Eaysaa Brightgust",p={[2521]={592762}},ra=1,rh=1}
 N[257006]={lv={10,10},n="Nyalah Brightfire",p={[2521]={606726}},ra=1,rh=1}
 N[257018]={lv={10,10},n="Naleeia Tattermend",p={[2521]={430462}},ra=1,rh=1}
 N[257019]={lv={10,10},n="Nyassa Swiftdraught",p={[2521]={436434,438436}},ra=1,rh=1}
@@ -10633,13 +10537,21 @@ N[257521]={lv={5,6},n="High Order Apprentice",p={[2521]={450376,450422,454392,45
 N[257532]={lv={5,6},n="Windshaper Novice Seer",p={[2521]={374470,380470,380478,382464,384488,388476,388488,394470,398466,400464}},ra=-1,rh=1}
 N[257551]={lv={10,10},n="Valreaa Valewind",p={[2521]={424250}},ra=1,rh=1}
 N[257554]={lv={10,10},n="Halaan Hawk-Eye",p={[2521]={438240}},ra=1,rh=1}
+N[257558]={lv={55,55},n="Demar Brant",p={[2548]={666810}}}
+N[257591]={n="Ashe Amberhall",p={[2548]={666810}}}
 N[257595]={n="Barracks Master Harlan",p={[2548]={646838}}}
 N[257597]={lv={15,15},n="Bruegs Kindleborn",p={[1426]={876436}},ra=1}
 N[257648]={lv={10,10},n="Tanis Alderwood",p={[1458]={654378,656378}},rh=1}
 N[257655]={lv={10,10},n="Deathguard Billmuth",p={[1420]={220444,220446}},rh=1}
 N[257663]={lv={10,10},n="Deathguard Falgan",p={[1420]={864478,866476}},rh=1}
 N[257808]={lv={35,35},n="Braldir Ashmantle",p={[1432]={320660}},ra=1}
+N[257901]={n="Eastsea Buccaneer",p={[2548]={784218,824438,846306,858360,868324,876390,878336,878354,888364,892376}}}
+N[257910]={n="Eastsea Musketeer",p={[2548]={836424,840394,842304,848290,856310,856384,870322,872410,874396,876318,878354}}}
+N[257915]={n="Eastsea Raider",p={[2548]={786276,904392}}}
+N[257916]={n="Eastsea Bombardier",p={[2548]={802292,904392}}}
+N[257926]={n="Farholde Scout Trainee",p={[2548]={658792}}}
 N[257944]={lv={10,10},n="Elegael Thornpaw",p={[2521]={616392}},ra=0,rh=0}
+N[258031]={n="Neza Bloodsnout",p={[2548]={604478,606478}}}
 N[258043]={lv={32,32},n="Norric Lochthane",p={[1432]={418190}},ra=1}
 N[258098]={lv={5,5},n="Eldrun Stormbreaker",p={[1455]={462132,464124,472124,472134,474136,476134,476136,476148,478124}},ra=1}
 N[258113]={lv={5,5},n="Ingrid Dunwald",p={[1426]={474520,476520}},ra=1}
@@ -10652,16 +10564,30 @@ N[258275]={lv={10,10},n="Neyasteel Mossmender",p={[2521]={640320}},ra=0,rh=0}
 N[258277]={lv={10,10},n="Bryaes Galechaser",p={[2521]={644318}},ra=0,rh=0}
 N[258288]={lv={10,10},n="Mithraless Sterngale",p={[2521]={658328}},ra=0,rh=0}
 N[258289]={lv={10,10},n="Baeo Sharpstrike",p={[2521]={658334}},ra=0,rh=0}
+N[258317]={n="Benjy Wheeler",p={[2548]={546728}}}
+N[258331]={n="Young Paletusk",p={[2548]={266628,318376}}}
 N[258380]={n="Caitir Flinthew",p={[2482]={156504}}}
 N[258443]={lv={10,10},n="Ur'endra",p={[2521]={540654}},ra=-1,rh=-1}
+N[258522]={n="Sootfur",p={[2548]={542856,546850}}}
+N[258573]={n="Mudfin Oracle",p={[2548]={434582,442592,444562,444574,444576,488782,492772,494786,496798,500820,502810,508810,512804}}}
+N[258574]={n="Mudfin Warrior",p={[2548]={410624,422600,430528,430594,434576,436574,436600,440586,442578,448566,486760,488808,494788,494800,500774,500802,502810,508780,512800}}}
+N[258588]={n="Jumbo Crawfish",p={[2548]={414502,428510,428518,436536,436600,438532,440558,452576,474560,504750,512516,522528,534684,536520,554474,554480,554814,562434,564440,598418,602296,632378}}}
+N[258697]={n="Farmer Elbrim",p={[2548]={528424}}}
 N[258785]={lv={60,60},n="High Priestess Mims",p={[1455]={248100}},ra=1}
 N[258930]={lv={40,40},n="Isaac Chan",p={[1429]={418664,418666}},ra=1}
 N[259012]={lv={10,10},n="Ealaane Nimbuswalker",p={[2521]={658744}},ra=1,rh=1}
 N[259013]={lv={10,10},n="Resaan Nimbuswalker",p={[2521]={570294,570296}},ra=1,rh=1}
+N[259023]={n="Veyric Thunderhame",p={[1417]={598274,598276}}}
+N[259052]={n="Rog'mar Poacher",p={[2548]={648490}}}
+N[259054]={n="Wildplains Patriarch",p={[2548]={562540,574552,580520,586562,596532,596538,612542}}}
+N[259055]={n="Wildplains Huntress",p={[2548]={580552,586488,586544,596470,596538,602550,602560,606516,612526,612544,624534}}}
 N[259084]={lv={10,10},n="Denaaris Stargale",p={[1416]={124562,126560}},ra=1}
 N[259118]={lv={9999,9999},n="Muln Earthfury",p={[1412]={334224,334226}},rh=0}
 N[259119]={lv={20,20},n="Alaana Stormwalker",p={[1412]={334224}},rh=1}
+N[259158]={n="Fuzzle",p={[2548]={456478,470500,472512}}}
 N[259190]={lv={55,55},n="Ephram Barbaro",p={[1420]={202464,202466}},rh=1}
+N[259254]={n="Lost Horse",p={[2548]={534664,536664}}}
+N[259267]={n="Plains Coyote",p={[2548]={442784,484830,490836,494828,518824,518827,520814,524804,526844,528920,530846,538830,538862,544836,546852,546888,548843,548860,548868,556868,558832,558843}}}
 N[259377]={lv={1,1},n="Injured Deathguard",p={[1420]={300638,308632,308636,314648,314660,314666,316644,316648,316658,320622,324634,326634,326648,328620,334636,338634,338636,338650}},rh=1}
 N[259398]={elite=4,n="Galemender Delanea",p={[2521]={624620}}}
 N[259431]={lv={10,10},n="Rudolph Gelhardt",p={[1420]={114640,116642}},rh=0}
@@ -10671,28 +10597,88 @@ N[259611]={lv={25,25},n="Deathguard Baldren",p={[1421]={458418}},rh=1}
 N[259620]={lv={20,20},n="Lumina Windsinger",p={[1421]={432408}},rh=1}
 N[259649]={n="Ulric Frostveil",p={[1440]={118344}}}
 N[259897]={elite=1,lv={25,25},n="Old Fire-Eye",p={[1421]={496872,504876}},rh=-1}
+N[259961]={n="Wharfmaster Whizzbuzz",p={[2548]={794528}}}
+N[259962]={n="Fimbo Greasemitz",p={[2548]={788542}}}
+N[260070]={n="Bertrand Ironbrow",p={[2548]={634804,634806,636804}}}
+N[260080]={n="Ember Bladewhisper",p={[2548]={660796}}}
+N[260093]={lv={20,20},n="Garen Largo",p={[1458]={474150,476148}},rh=1}
+N[260146]={n="Sully McCleary",p={[1445]={662452}}}
 N[260157]={lv={9,10},n="Elder Snow Leopard",p={[1426]={704534,710524,712614,722594,724552,726602,730548,730618,734526,744512,744556,746524,752618,754564,760626,764580,766614,776606,778616,780594,782552,782564,782578,802564,804554,810550,810576}},ra=-1}
+N[260211]={elite=1,n="Scoutmaster Vargas",p={[2548]={752344,756342}}}
+N[260235]={n="Trapclaw",p={[2548]={793533,794536,795533,800542,850520,854470}}}
+N[260383]={elite=1,n="Sergeant Ulka",p={[1445]={704190}}}
+N[260390]={n="Captain Bentcoin",p={[2548]={912398}}}
 N[260396]={elite=1,lv={11,11},n="Whispering Horror",p={[1420]={84594,86602,92610,96598}},rh=-1}
+N[260422]={n="Ashen Acolyte",p={[2482]={428718,434710}}}
 N[260428]={lv={9,10},n="Shadowvale Lurcher",p={[1420]={84656,84670,86656,86670,92642,94650,94680,94688,96644,96686,98680,102662,102668,104654,106652,106668,110660,116652,118658,118666,126658}},rh=-1}
+N[260429]={n="Venture Co. Agent",p={[1434]={433205,434203,434216}}}
 N[260430]={lv={9,10},n="Shadowvale Mystic",p={[1420]={84656,84670,86656,88670,94644,94648,94682,96644,96650,98682,102662,102666,106652,106666,112658,118658}},rh=-1}
 N[260432]={lv={8,9},n="Shadowvale Mystic",p={[1420]={90614,90616,92590,92648,94604,94634,96630,96646}},rh=-1}
+N[260487]={n="Gritta Chumwater",p={[2548]={784550}}}
+N[260540]={n="Jasper Geartoggle",p={[2548]={758526}}}
+N[260560]={n="Krikshank",p={[2548]={768510}}}
+N[260565]={n="Kor'gar",p={[2548]={776508}}}
 N[260809]={n="Highland Tortoise",p={[1437]={484562,494558}}}
+N[260818]={n="Frezzlie Popwhiz",p={[2482]={424726}}}
+N[260857]={n="Tazzik",p={[1446]={674238}}}
+N[260931]={n="Clubtoe",p={[2548]={498466}}}
+N[260968]={n="Twilight Mauler",p={[2548]={686306,736246,750258,758264,758304,770284}}}
+N[260969]={n="Twilight Instigator",p={[2548]={688308,752258}}}
+N[260995]={n="Ogre Miner",p={[2548]={264356}}}
+N[260996]={n="Twilight Subjugator",p={[2548]={272368}}}
 N[261366]={lv={20,20},n="Walton",p={[1413]={420114}},rh=1}
 N[261367]={lv={19,19},n="Terry Longdrink",p={[1413]={418114}},rh=-1}
+N[261497]={n="Twilight Firecaller",p={[2548]={768272}}}
+N[261529]={n="Riding Striped Frostsaber",p={[1457]={386158}}}
+N[261578]={n="Riding Striped Nightsaber",p={[1457]={384154,384164,386152,386166,388158}}}
+N[261579]={n="Riding Spotted Frostsaber",p={[1457]={386158}}}
+N[261711]={n="Empowered Brute",p={[2548]={450506,460510,472494,472500,472510,484486,486510,492498}}}
+N[262031]={n="Sister Rowland",p={[2548]={618830}}}
+N[262037]={n="Roosting Duskbat",p={[2548]={602854,604844,608850,626844}}}
 N[262119]={lv={17,17},n="Corporal Adamore",p={[1413]={406160,414148,420148,424160}},rh=-1}
+N[262169]={n="Twilight Ritualist",p={[2548]={452504,458506,470520,472494,472500,474512,476478,484490,484496,488484,494506,502492}}}
+N[262397]={n="Brinescale Skirmisher",p={[1434]={230218}}}
+N[262473]={n="Cinderscale Whelp",p={[2548]={292722,292726,292752,296708,300700,304716,306716,306736}}}
+N[262477]={n="Cinderscale Warrior",p={[2548]={294744,296716,298728,304746}}}
+N[262558]={lv={55,55},n="Palah Thunderhoof",p={[1412]={336224}},rh=0}
+N[262560]={lv={55,55},n="Hana Lighthoof",p={[1412]={334222}},rh=0}
+N[263071]={elite=1,n="Blademaster Kaijo",p={[2548]={584398}}}
+N[263089]={n="Tessa Dawnbright",p={[2548]={638822}}}
 N[263113]={lv={10,10},n="Myriaal Mistwake",p={[2521]={436240}},ra=1,rh=1}
+N[263190]={n="Tan'jani",p={[2548]={582452}}}
+N[263307]={n="Glade Viper",p={[2548]={602588,604618,608602,610620,618572,626546,630576,630610,638594}}}
+N[263315]={elite=1,n="Ombassa",p={[2548]={596532}}}
+N[263343]={n="Low Plains Buzzard",p={[2548]={554566,556528,556596,566604,574586,576584,596570,616580,616586,642624,646620,652654,654606,654632,656634,658484,658654,662686,670566,670576,672642,674618,676492,676642,680498,700500,706502}}}
+N[263348]={n="Roving Tallstrider",p={[2548]={654682}}}
+N[263380]={elite=1,n="Ghostmaw",p={[2548]={588434,599465}}}
 N[263399]={lv={20,20},n="Sam Sarsaparilla",p={[1429]={448632}},ra=1}
+N[263614]={n="Wounded Soldier",p={[2548]={654794}}}
+N[263615]={elite=1,n="Krek the Noxious",p={[2548]={592290}}}
 N[263664]={lv={12,12},n="Raan Wildwind",p={[2521]={416448}},ra=1,rh=1}
+N[263681]={n="Bear",p={[2652]={464426,467616,468636,470626,470666,472614,472680,498596,499513,502562,526566,580552,586542,598396,650710}}}
+N[263749]={n="Gronok the Butcher",p={[2548]={676192}}}
+N[264072]={n="Yorn Grimtotem",p={[1412]={324200,326200}}}
+N[264074]={n="Mazu'kon",p={[1412]={324206}}}
+N[264078]={lv={30,30},n="Sutara Plainstalker",p={[1412]={344228,346228}},rh=0}
+N[264079]={n="Gloomrise Hatchling",p={[1412]={324092,329108,329115,330085,332074,332081,333102,335119,339099,340127,341106,345098,346118,352110}}}
+N[264081]={n="Gloomrise Spinner",p={[1412]={314107,314116,324093,324098,324115,326094,328114,328121,329125,330099,333080,334074,335081,336094,341096,346101,349107}}}
+N[264082]={elite=1,n="Broodmother Valraxx",p={[1412]={331077,332108,334074,334095,337067}}}
+N[264083]={n="Gloomrise Soldier",p={[1412]={314116,318107,320124,323104,327093,328118,330129,331084,331114,332101,335094,336116,337083,339096,340130,341106,346103,346106,347093,347120,349084}}}
+N[264096]={n="Gnawed Corpse",p={[1412]={327079,327087,330096,330115,332074,334106,335081,335096,335114,336115,347103}}}
+N[264265]={n="Magus Olvek",p={[1416]={94626,96624,96626,100638}}}
 N[264936]={lv={13,13},n="Earthseer Farsen",p={[1426]={648584}},ra=1}
 N[264943]={lv={13,13},n="Afadra Dunwall",p={[1455]={324478,328486,332474,332476,336480,340458,340488}},ra=1}
 N[265003]={lv={13,13},n="Thom Filch",p={[1455]={314454,314458,316456,324444,324448,326444,326446,328428}},ra=0}
+N[265472]={n="Riding Striped Dawnsaber",p={[1457]={384154,384156,386158,386166}}}
 N[265809]={lv={12,12},n="Brakk",p={[1411]={520474}},rh=1}
 N[265810]={lv={12,12},n="Kaga Wildhoof",p={[1412]={462672}},rh=1}
 N[265811]={lv={12,12},n="Lyreena Duskblade",p={[1438]={574566,576566}},ra=1}
 N[265812]={lv={12,12},n="Eleanor Shackleton",p={[1420]={572554,572556}},rh=1}
 N[265813]={lv={12,12},n="Eric Brighthammer",p={[1426]={466538}},ra=1}
 N[265944]={lv={9,9},n="William Pickman",p={[1420]={618514,618516}},rh=1}
+N[266216]={n="Lord Tomas",p={[1424]={772439,782444,784450,785452,790464,792466,796428,797467,799463,800454,806462,810476}}}
 N[266484]={lv={30,30},n="Morbin Lightbane",p={[1458]={574888,574904,574906,576882,576906,578892,578898}},rh=0}
+N[266847]={n="Anastasia Miller",p={[1417]={268644,268646}}}
 N[266849]={lv={5,6},n="Ridgeshade Lurker",p={[1411]={498546,500566,504512,504518,504526,504564,506538,510492,510546,512558,512640,514498,514586,514610,514620,514626,514646,516506,516538,516598,516630,518478,518492,518570,518594,520554,520650,522578,522620,522660,524608,526588,526600,526630,526638,534618}},rh=-1}
 N[266850]={lv={5,6},n="Ridgeshade Creeper",p={[1411]={498566,502534,504506,504518,504546,506530,508516,508536,508550,510558,510630,512504,512638,514494,514510,514572,514578,514608,514616,516538,516586,518578,518604,518614,518636,520530,520620,522554,526514,526580,528602,528612,528616,530590,536608}},rh=-1}
 N[266851]={elite=1,lv={8,8},n="Ukorsbane",p={[1411]={492566,496564,496566,508544}},rh=-1}
@@ -10703,9 +10689,41 @@ N[267006]={lv={11,12},n="Dark Neophyte",p={[1420]={662634,662636,666654,666656,6
 N[267008]={lv={60,60},n="Leonid Barthalomew the Revered",p={[1420]={220448}},rh=1}
 N[267009]={lv={60,60},n="Hadric Harlson",p={[1420]={658610}},rh=1}
 N[267118]={lv={10,10},n="Gilbert Gray",p={[1453]={262470,266472}},ra=1}
+N[267125]={n="Fleshflayer Ravener",p={[2482]={272504}}}
+N[267216]={n="White Riding Kodo",p={[1412]={470622}}}
+N[267226]={n="Grey Riding Kodo",p={[1412]={468618}}}
+N[267227]={n="Brown Riding Kodo",p={[1412]={468620}}}
+N[267291]={n="Emerald Riding Raptor",p={[1411]={552756}}}
+N[267297]={n="Turquoise Riding Raptor",p={[1411]={550752}}}
+N[267298]={n="Violet Riding Raptor",p={[1411]={552756}}}
+N[267299]={n="Brown Riding Wolf",p={[1454]={694126,696124,698126}}}
+N[267300]={n="Dire Riding Wolf",p={[1454]={694118,696124}}}
+N[267301]={n="Timber Riding Wolf",p={[1454]={692130,696126}}}
+N[267302]={n="Black Riding Wolf",p={[1454]={694120}}}
+N[267304]={n="Empyrean Galestrider",p={[2521]={536814}}}
+N[267305]={n="Stormy Galestrider",p={[2521]={536812,536816}}}
+N[267306]={lv={1,1},n="Umber Galestrider",p={[2521]={538812}}}
 N[267307]={elite=1,lv={20,20},n="Chol'aruk",p={[1413]={574272,576274}},rh=-1}
 N[267309]={lv={40,40},n="Bainham",p={[1413]={618394}},rh=-1}
 N[267310]={lv={40,40},n="Gur'ak",p={[1413]={526290}},rh=1}
+N[267354]={lv={1,1},n="Black Skeletal Horse",p={[1420]={600524}},rh=1}
+N[267357]={n="Red Skeletal Horse",p={[1420]={598526,600524}}}
+N[267358]={n="Blue Skeletal Horse",p={[1420]={598526}}}
+N[267364]={n="Brown Skeletal Horse",p={[1420]={598526}}}
+N[267473]={n="Brown Ram",p={[1426]={640502}}}
+N[267474]={n="White Ram",p={[1426]={642502}}}
+N[267475]={n="Gray Ram",p={[1426]={640504}}}
+N[267674]={n="Brown Horse",p={[1429]={842648}}}
+N[267677]={n="Chestnut Mare",p={[1429]={848648}}}
+N[267678]={n="Pinto",p={[1429]={840652}}}
+N[267683]={n="Red Mechanostrider",p={[1426]={492482}}}
+N[267684]={n="Green Mechanostrider",p={[1426]={490480}}}
+N[267687]={n="Blue Mechanostrider",p={[1426]={490480}}}
+N[267688]={n="Unpainted Mechanostrider",p={[1426]={492482}}}
+N[268313]={n="Black Stallion",p={[1437]={80540}}}
+N[268314]={n="Brown Horse",p={[1437]={80540}}}
+N[268316]={n="Chestnut Mare",p={[1437]={80542}}}
+N[268318]={n="Pinto",p={[1437]={78546,82544}}}
 N[268511]={lv={50,50},n="Manifest Clerk Philmor",p={[1453]={304290}},ra=1}
 N[268530]={lv={9,9},n="Bloodtalon Matriarch",p={[1411]={682718,684710,684726,684736,686716,686726,688714}},rh=-1}
 N[268558]={lv={5,6},n="Chakuyak",p={[1412]={390632,394624,394644,394652,394660,396668,398644,398652,398664}},rh=-1}
@@ -10720,10 +10738,22 @@ N[268679]={lv={1,1},n="Brazier of Eternal Flame",p={[2521]={584788}},rh=1}
 N[268682]={lv={1,1},n="Migi",p={[1454]={364288,368290}},rh=1}
 N[268684]={lv={1,1},n="Thra",p={[1454]={348288,360282,364288,370284,370294,370296,376282,378290,386280,386292}},rh=1}
 N[268701]={lv={25,25},n="Thatog",p={[1454]={554720,556720}},rh=1}
+N[268705]={n="Aka'rai",p={[1443]={252672}}}
+N[268992]={n="Zimmix Sputterspark",p={[1434]={234124,234126,236123,244132,248132,250122,252106,256112,268114}}}
 N[269068]={lv={55,55},n="Eylah Sunhorn",p={[1456]={370562,382562,382566,386554,386564,386568}},rh=1}
 N[269075]={lv={6,6},n="Snow Leopard Prowler",p={[1426]={272624,274628,274636,276618,276630,276636}},ra=-1}
+N[269127]={lv={60,60},n="Image of Archmage Modera",p={[1421]={686452}},rh=1}
+N[269138]={n="White Riding Kodo",p={[1442]={460600}}}
+N[269139]={n="Grey Riding Kodo",p={[1442]={462598}}}
+N[269140]={n="Brown Riding Kodo",p={[1442]={462598}}}
+N[269141]={n="Lavender Riding Kodo",p={[1442]={462598}}}
 N[269153]={lv={11,17},n="Mountaineer Ylva",p={[1432]={318862}},ra=1}
+N[269166]={n="Gemmil",p={[1434]={328284}}}
+N[269175]={n="Carnivorous Weed",p={[1434]={331306,334254,336277,343309,344271,347298,348288,348316,352305,357290}}}
 N[269185]={lv={15,17},n="Headsplitter",p={[1432]={308850,318862,318868,328876}},ra=-1}
+N[269647]={n="Mus'hale",p={[1418]={42462,42468}}}
+N[270038]={lv={50,50},n="Calder Gray",p={[1458]={490686,490714,492698,500704}},rh=1}
+N[270094]={elite=1,n="Stormheart",p={[1441]={504463,514483,515484,515485,545456,569562,579563,591566,642534}}}
 N[270196]={lv={12,12},n="Jai'vhanel",p={[1439]={444580,448586,450582}},ra=-1}
 N[270201]={lv={8,10},n="Al'Aketh Brawler",p={[2521]={604732,614734,630692,634640,636646,644662,644670,644676,650654,650676,652664,652672,654644,654694,654696,656644,656646,656662,656686,656698,660672,662676,666678,668674,678680,684670,686674,690676,696670}},ra=0,rh=0}
 N[270269]={lv={55,55},n="Arbal",p={[1439]={436764}},ra=1}
@@ -10732,11 +10762,33 @@ N[270298]={lv={10,12},n="Child of Jai'vhanel",p={[1439]={440590,446592,452584}},
 N[270418]={n="Credit",p={[1457]={332160,338158}}}
 N[270419]={lv={60,60},n="Credit",p={[1457]={406446,410440,414432,416430}},ra=1}
 N[270420]={n="Credit",p={[1457]={664154}}}
+N[270459]={lv={28,28},n="Alfina Nightgaze",p={[1416]={118566}},ra=1}
+N[270542]={n="Brown Horse",p={[1445]={652514}}}
+N[270543]={n="Chestnut Mare",p={[1445]={652518}}}
+N[270544]={n="Pinto",p={[1445]={652518}}}
+N[270637]={n="Howin Kindfeather",p={[1437]={494420}}}
+N[270667]={n="Farholde Priest Initiate",p={[2548]={458652,458658,512708}}}
 N[270693]={lv={15,15},n="Daggerfang",p={[1432]={594372,608416,614432,632494,634478,634514,636480,638488,640464}},ra=-1}
+N[270844]={n="Sylessa Duskwhisper",p={[1437]={80558}}}
+N[270892]={elite=1,n="Goaz Warder",p={[1437]={342467,342522,347464,350525,351524,353470,364416}}}
 N[271080]={elite=4,lv={10,10},n="Blightsculler",p={[1420]={154558,160550,168578,172538,174566,176524,176570,180528,180536,180558,184548,186538,188548,190522}},rh=-1}
+N[271167]={n="Guard Jameson",p={[1445]={656454,656456}}}
+N[271322]={n="Essene Villard",p={[1437]={514090,516090}}}
+N[271334]={n="Maddened Rotclaw",p={[1437]={542242,568432,569439,572311,573289,574324,575440,590400,591282,591410,592293,592324,593266,595344,603304,606364,608366,613412,614375,618400,622354,634414,638491,638531,642522,643501,648390,648413,651368,668435,682441,690493,700503,700511,702432}}}
+N[271336]={elite=1,n="Carnage",p={[1437]={689288,690283,696290}}}
+N[271338]={elite=1,n="Ados",p={[1437]={774468}}}
+N[271346]={elite=1,n="Dragonmaw Infiltrator",p={[1437]={720486,774472}}}
+N[271348]={elite=1,n="Dragonmaw Soulbinder",p={[1437]={712470}}}
+N[271351]={elite=1,n="Dragonmaw Reclaimer",p={[1437]={576429,580458,580466,582478,584454,586452,592431,598464,601449,606454,614455,618454,623439,634447,646466,647462,655460,658466,664453,667458,672472,682476,683471,693485,705477,712499,718492,722483,723473,728476,732455,733485,737471,739477,752474,758474}}}
+N[271373]={elite=1,n="Subdued Dragonspawn",p={[1437]={768478,772466,773463}}}
+N[271458]={elite=1,n="Neru",p={[1437]={602221,609217}}}
+N[271460]={elite=1,lv={32,32},n="Modr",p={[1437]={506189,509184,512173,516172}},ra=-1}
+N[271462]={elite=1,n="Golm",p={[1437]={676722}}}
+N[271481]={elite=1,n="Captive Fire Elemental",p={[1437]={457166,471164,471166,479167}}}
 N[271546]={lv={7,7},n="Mountaineer Gretchen",p={[1426]={440570}},ra=1}
 N[271587]={lv={9,9},n="Frosthowl",p={[1426]={394488,398486,400484}},ra=-1}
 N[271613]={lv={35,35},n="Unfinished Abomination",p={[1458]={460622,462630}},rh=0}
+N[271866]={lv={25,25},n="Night Watch Guard",p={[1431]={170548,172544,234334,236332,454790,454796,456790,474598,476594,476596,660338,688694,688696}},ra=1,rh=1}
 N[271898]={n="Greater Tarantula",p={[1433]={446422,462402,462432,464418,466448,472408,472432,474392,476380,476448,488380,488442,506404}}}
 N[271903]={n="Stormscale Beastmistress",p={[1439]={492116,496114,500136}}}
 N[271961]={lv={2,3},n="Webbed Forsaken",p={[1420]={232602,234590,238606,244594,244604,246606,248594,254598,258594,262602,266594}},rh=0}
@@ -10753,6 +10805,10 @@ N[272450]={n="Ol' Sandy",p={[1431]={172538,178534}}}
 N[272526]={lv={55,55},n="Glix Xizzix",p={[1458]={698460,698470}},rh=1}
 N[273017]={lv={10,10},n="Fendaal Windstone",p={[2521]={568610}},ra=1,rh=1}
 N[275103]={lv={55,55},n="Deathguard Veteran",p={[1420]={382558,390552,392556}},rh=1}
+N[275173]={elite=1,n="Blackthorne Outrunner",p={[2482]={830348}}}
+N[275174]={elite=1,n="Blackthorne Priest",p={[2482]={732414,734420}}}
+N[275273]={elite=1,n="Brelinda McFarry",p={[1413]={634588}}}
+N[275276]={elite=1,n="Nizook Boof",p={[1413]={650350}}}
 N[275437]={lv={10,12},n="Dark Enforcer",p={[1420]={648646,654656,656598,660636,662622,662634,664646,666624,666654,670634,672644,674656,674668,676668,678634,678662,682610,682616,682642,684650,686628,688596,688624,688666,690656,692638,694648,696646,698642,702656,710658,714632}},rh=-1}
 N[275491]={lv={40,40},n="Randal Emerson",p={[1453]={790448,792442}},ra=1}
 N[275657]={lv={9,9},n="Heglan Shadeeye",p={[1411]={586456}},rh=1}
@@ -10773,9 +10829,18 @@ N[276020]={elite=1,lv={13,13},n="Riptear",p={[1420]={796462,808438,810450,814410
 N[276061]={elite=4,lv={8,8},n="Decrepit Harvester",p={[1420]={522556,528564,528570,530580,536580,538562,540574}},rh=-1}
 N[276099]={elite=4,n="Wrathvine",p={[1438]={534704,564676}}}
 N[276109]={elite=4,lv={10,10},n="Snarlsnout",p={[1412]={328654,332636}},rh=-1}
+N[276110]={lv={55,55},n="Knight of Mourning",p={[1420]={174674,174676,176674}},rh=1}
 N[276180]={elite=4,n="Elder Finseer",p={[1429]={786562,796468,796548,800542}}}
 N[276194]={elite=4,lv={12,12},n="Dustwind Eggtender",p={[1411]={512196,512206,514190,514238,516202,522240}}}
 N[276198]={elite=4,lv={9,9},n="Shal'ma",p={[1411]={598910,604896,608898,628968,630962,636956,686706}},rh=-1}
+N[276316]={lv={31,31},n="Raul Sweete",p={[1424]={504684,504686,506684,506686}},ra=1}
+N[276788]={lv={1,1},n="Brown Horse",p={[1424]={522554,522558}}}
+end)()
+;(function()
+N[276789]={n="Pinto",p={[1424]={522552}}}
+N[276790]={lv={1,1},n="Chestnut Mare",p={[1424]={522554}}}
+N[277154]={lv={12,12},n="Kyle the Frenzied",p={[1412]={462624,464614,464634,464636,466634,466636,468616,472614,474650,474656,476614,476650,478642,478656,480666,482624,482630,486624}},rh=1}
+N[277182]={lv={62,62},n="Ahab Wheathoof",p={[1412]={472576}},rh=1}
 end)()
 ;(function()
 O[31]={n="Old Lion Statue",p={[1433]={843469,845471}}}
@@ -10855,6 +10920,7 @@ O[1767]={n="Helcular's Grave",p={[1424]={527535,528533}}}
 O[2008]={n="Dangerous!",p={[1424]={624197,625197}}}
 O[2041]={n="Liferoot",p={[1416]={90553,134550,135550,168530,201502,237455,238453,266425,267424,297384,302058,310329,330293,338094,339097,358247,359244,371204,371207,372148,724693,725693,740653,763624,763625,771644,771645,789592,798614,798615,805555,806554,814572,815572,829517,838535,839534},[1417]={233527,234548,235548,241500,294550,295550,299537,443704,443705,450687,454757,455757,457783,457785,457813,457815,468717,660657,660670,662684,662686,672642,677701,688618,689673,693686,694657,695658,698626,713639},[1421]={694428},[1424]={566479,592461,617441,641392,662388,668359,674293,674295,675293,675295,681323,681325,687223,687225,688271},[1425]={302437,423592,473374,473375,527364,565564,565565,576375,632398,634607,635608,686410,748474,748475},[1434]={189114,211153,231513,233538,236082,242642,254589,271477,272674,273431,278684,280559,293219,293376,299248,308070,315789,326747,327362,330223,338237,339094,350723,355223,360324,366100,369651,382620,389273,393253,393315,396221,397160,400141},[1435]={111345,134351,140618,164554,248433,261359,291504,304407,325374,331524,343310,361434,408386,435312,486371,498422,522468,538314,562374,586484,627312,669672,684297,718200,722755,736262,754652,762831,764191,771106,794298,800713,808501,810644,811374,843747,881611,882406},[1437]={154311,159348,173273,191237,207281,220346,221254,227214,254363,259219,283212,290277,294318,308231,314272,316340,321189,328304,335251,377327,380261,394296,403329,438334,446292,449327,470343,476319,510314,511343,537313,543382,552361,554461,604499,606575,618534,634634,634734,638698},[1440]={600793,609755,629734,629735,641679,655804,657658,671831,674633,675633,699613,701564,727538,744511,745511,747464,747465,778502,783637,787540,788739,789596,790706,792623,796668,804716,805716,816642,848687,868687,913643,924600},[1443]={409817,411794,411795,424783,425783,435823,440783,454813,455813,494804,494805,495804,495805,507782,517768,528816,532781,536744,536745,571807,584828,585828,590812,592667,593706,614705,615704,615705,664779,665780,704786,705786,719700,723774,723775,746749,752710},[1444]={464532,465532,466202,479484,479485,482144,482463,484507,485507,487094,491249,500146,501232,509451,510065,531157,618496,624524,724524,736368,750493,751404,792489},[1445]={338416,350469,354581,357350,363437,370162,370704,376254,382550,399452,400140,401224,408326,412267,413631,421484,422549,431391,432721,441623,455742,459493,460540,467592,469750,479217,504279,513189,528711,533291,579237,587304}}}
 O[2045]={n="Stranglekelp",p={[1413]={632522,633389,634540,635378,636504,636530,638415,644555,645386,646400,646429,646504,649367,650416,652454,653473,657461,659409,659446,660431,663389,670486,675411,677487,679403,680502,688471,695473,696499},[1416]={119520,172485,173483,199112,231429,263169,264242,269318,303187},[1417]={234968,235968},[1421]={310152,310185,316206,333219,341242,347268,354291,355292,356408,357374,358317,358349,359432,390781,405779,411745,606248,613203,613283,613286,646371,671405},[1424]={179677,213655,236695,299759,319740,349764,350708,367776,375736,393709,400755,411735,434704,434705,435706,443784,461679,471727,525808,527724,557693,557695,577737,597774,631885,655947,661983},[1425]={778874,782730,794734,798669,800768,818649,821618,824418,824452,824714,825451,826482,827806,829394,829591,830532,831823,841430,842483,842505,843504,844529,845567,852404,852405,853627,861565,866629},[1434]={139132,158093,170154,188227,197159,200199,208532,211250,216604,220513,222457,229641,231294,232316,234211,234255,240585,242670,249485,260436,264699,266404,270423,272882,276340,280271,281839,308863,312314,316826,317363,343360,345759,354773,366702,384634,416603},[1435]={739986,760011,803074,803075,807982,838089,890794,890795,907947,913171,918736,919734,933754,934819,949274,954680,955680,957376,964393,979581,986451},[1436]={208352,235841,239552,242163,244639,246475,248721,252448,252601,253504,254393,260309,262378,264740,267334,267788,273171,276833,277292,287866,294248,297194,314219,321182,321906,326868,344879,366131,367965,382958,402093,430072,487074,522064,544070},[1437]={31491,37548,48603,49650,60704,61434,61559,75478,76668,80291,111241,111353,114302,121379,121410,130217,138627,150534,157251,159598,192556,193191,207151,229146,230184,287143},[1439]={307847,307878,312809,313376,316505,320428,329477,330536,337771,340415,342712,349465,352741,355702,357503,357573,358393,358641,363359,363552,363672,364610,371319,384280,398268,406300,411274,414211,461180,508104,508205,543120,547160,576093,597054},[1440]={41141,56163,74268,79160,84136,85256,87311,89196,89349,96293,127172,130207,131094,131248,139277,178112,199424,320677,330695,343660,462705,494711,655656,686628,702570,721541,741509,756457,769494,783616,789580,791654,793697,798621,799726,844654,860689},[1443]={178809,180697,181751,187774,204792,204843,205881,206691,209594,211624,216754,217654,220822,230807,233611,239780,244448,246563,251398,255469,268395,293142,294358,304114,307314,312349,314181,319243,322290,326058,352222,387183,390208,393122},[1444]={224637,244580,244614,245614,263613,273580,281623,292577,319574,319575,348358,350535,368370,387342,387376,410393,425493,432404,432405,433537,434694,437645,439434,439471,440435,440516,443679,444399,445399,449616,454638,455576,459549,462619},[1445]={458344,458345,467302,489423,540437,544142,545142,546632,557162,557616,564500,572113,583134,587453,595673,596524,596525,601600,606693,615181,619083,622170,628098,628268,642089,651261},[1446]={644650,659608,660629,680358,681579,682330,683255,683393,686307,688273,694376,701564,701565,702396,708387,714554,714555,715554,715555,717412,720542,728408,732434,732435,732519},[1447]={506454,506455,506517,507563,510628,534405,535405,544534,544535,558674,563543,567619,574387,575387,579458,602938,606379,610296,615688,621533,622602,628456,631343,635776,639405,650322,691360,706448,735510,737724,737725,738595,759914,760787}}}
+O[2046]={n="Goldthorn",p={[1416]={273489,277589,305447,339384,340536,344471,356336,372482,379268,379309,394179,394584,403387,423424,424221,424316,429273,441394,451214,454442,459562,460491,463305,477146,483587,486651,496296,504600,527186,528459,531524,532351,534219,546479,558382,564622,590498,601402,632404,632405},[1417]={147685,172474,174631,187716,191578,192331,208390,238296,245364,271191,307442,320227,331258,347620,381341,384430,403484,413406,422650,424752,461689,464364,464806,469764,532716,534504,548645,576471,608314,616436,650274,692274,735488,754280,768327,772442,789351},[1418]={81789,104841,105842,123814,124817,125817,150752,182434,182435,218455,219453,229544,229546,300444,300445,412621,413625,429564,429565,430683,432685,444510,445508,483694,484696,485694,485695,504584,504585,505584,505585,517334,517335,524404,524405,525404,525407},[1425]={273690,291584,291586,302731,310687,338638,341751,357578,373702,402673,451392,456643,458692,487487,509533,509605,510602,542555,543554,564394,616523,634437,635434,640633,654520,656417,671621,674531,675532,721524,721525,744661,744867,752576,773595,784532,785533},[1434]={204121,234102,254531,276818,286403,291080,293158,293582,295662,300197,306377,308544,321690,342517,346652,350587,355349,361694,362443,364243,369310,372200,410564,414494,416323,418148,419356,425403,431234,447083,458294,462172,463424,468349,478249},[1435]={92286,103659,104614,107283,111460,114403,115405,120562,148455,154422,162320,167647,213380,216564,221635,245288,262650,288634,299314,306319,358286,417284,487264,533264,536623,560649,574230,606674,609192,634706,652130,671771,673834,683980,694843,708084,721952,729891,760895},[1444]={233664,243684,375254,378154,422357,430258,460414,460500,461672,480563,481111,536648,540731,564502,568590,604486,605522,613659,624686,689419,697637,746305,758558,799351,806468},[1445]={330643,335250,335530,344193,362126,366544,376683,386761,420734,423668,432339,439113,452378,456662,457423,458289,462845,474691,490165,490463,516314,521494,524617,530151,530351,534654,551840,557259,557541,559183,582756,584109,587202,600308,603246,629064,631175,639266},[1447]={133722,142478,153548,160662,167784,168785,180584,214595,215596,233792,234472,235473,237581,262487}}}
 O[2054]={n="Tin Vein",p={[1433]={151188,172208,173172,175171,183250,188201,189150,193266,195267,202204,203129,203206,204224,204225,205129,205224,205225,207278,211144,212146,227166}}}
 O[2055]={n="Copper Vein",p={[1433]={153209,164158,165158,179224,179225,186139,187173,193219,194249,195250,202285,203284,216240,218141,220190}}}
 O[2059]={n="A Dwarven Corpse",p={[1426]={797362}}}
@@ -11177,9 +11243,9 @@ O[164660]={n="Red Power Crystal",p={[1449]={197389,219613,258539,264291,274701,2
 O[164661]={n="Yellow Power Crystal",p={[1449]={197389,219613,257538,264291,274701,277463,290770,302212,393144,405501,428659,428862,429529,513614,516134,518349,519874,558079,564736,581498,642539,666470,691289,694799,696694,699189,770284,799619,804497}}}
 O[164662]={n="Equipment Boxes",p={[1420]={313624,313625,317625,318620,324643,327613,328643,329646,331631,332618,332656,336659,337646,338640}}}
 O[164689]={n="Monument of Franclorn Forgewright"}
-O[164690]={n="Krom'zar's Banner",p={[1413]={444281,446281,450286,450297,455280,455287}}}
 end)()
 ;(function()
+O[164690]={n="Krom'zar's Banner",p={[1413]={444281,446281,450286,450297,455280,455287}}}
 O[164778]={n="Blue Power Crystal",p={[1449]={197389,219613,258538,264291,274701,277463,290770,301213,393144,405499,428659,428863,429529,513617,514135,517350,519875,558079,564736,581500,642540,666470,691289,694799,696694,699189,770284,799619,804497}}}
 O[164779]={n="Green Power Crystal",p={[1449]={197389,219613,259538,264291,274701,277463,290770,301213,393144,405500,428659,428862,429529,513614,515134,518349,519874,558079,563735,581500,642540,666470,691289,694799,696694,699189,770284,799619,804497}}}
 O[164780]={n="Red Power Crystal",p={[1449]={197389,219613,257538,264291,274701,277463,290770,301213,393144,406499,428862,429529,429661,513614,516136,518349,519874,558079,563736,581498,642540,666470,691289,694799,696694,699189,799619,804498}}}
@@ -11417,21 +11483,16 @@ O[404352]={n="Artifact Storage",p={[1412]={316494,316495}}}
 O[406918]={n="Messenger Bag",p={[1417]={224242,225242}}}
 O[409311]={n="Spear of Mannoroth",p={[1440]={894771,895770}}}
 O[409315]={n="Shattered Orb",p={[1440]={894770,895770}}}
-O[410158]={n="Altar of Reverence",p={[1428]={396280}}}
-O[410168]={n="Voodoo Pile",p={[1411]={687712}}}
 O[410369]={n="Dead Drop",p={[1421]={471711}}}
-O[411710]={n="Demonic Reliquary",p={[1433]={801495,802494}}}
-O[411715]={n="Bough of Altek",p={[1439]={562264,563265}}}
-O[412224]={n="Dark Ritual Stone",p={[1440]={790803}}}
 O[415106]={n="Burned-Out Remains",p={[1413]={464739},[1436]={374506,375507}}}
 O[415107]={n="Burned-Out Remains",p={[1436]={374506,375507}}}
 O[417072]={n="Nailed Plank",p={[1413]={464738}}}
 O[417353]={n="Extinguished Campfire",p={[1443]={474546,475546}}}
 O[418855]={n="Illari's Loot Cache",p={[1417]={941693}}}
-O[422483]={n="The Salvagematic 9000"}
 O[422911]={n="Sealed Barrel",p={[1417]={213840}}}
 O[422919]={n="Tapped Shadowforge Keg",p={[1418]={413279,415281}}}
 O[423703]={n="Broken Warhammer",p={[1443]={527848}}}
+O[424002]={n="Kurzen Supply Crate",p={[1434]={496077}}}
 O[424005]={n="Pocket Litter",p={[1442]={407524,408525}}}
 O[424006]={n="Hastily Rolled-Up Satchel",p={[1417]={224242,225242}}}
 O[424007]={n="Carved Figurine",p={[1432]={494129,495128}}}
@@ -11440,128 +11501,33 @@ O[424012]={n="Mound of Dirt",p={[1442]={396499}}}
 O[424082]={n="Firepit",p={[1442]={406524}}}
 O[439557]={n="Nightmare Moss",p={[1431]={322693,352718,373846,404670,405671,442366,463551,478429,488779,509766,539627,568713,616758,643728,657671,663764,663765}}}
 O[439558]={n="Cold Iron Deposit",p={[1431]={332679,337767,354681,355680,369847,380841,412754,425346,449639,468562,468565,502788,503464,503465,521721,558744,558745,632644,642650,676781}}}
-O[439627]={n="Dreamroot",p={[1440]={783433,807506,810448,827502,827550,843449,856600,859564,859565,862470,864546,865544,865545,873523,877626,895447,897580,898507,934383,935383}}}
-O[439628]={n="Fool's Gold Vein",p={[1440]={792499,816521,827458,848554,858467,860497,877649,881621,890456,898429,910563,913374,913376,926352,934424,934425,941366}}}
-O[439762]={n="Star Lotus",p={[1425]={451432,461384,461385,494380,495380,573419,589434,591437,617255,618253,661429,666329,684466,685466,704455,705454,705455,713484,713485,730532}}}
-O[439778]={n="Starsilver Vein",p={[1425]={454394,454395,469348,488455,566433,569436,579498,581410,589432,637434,638435,663507,722523,736537}}}
-O[439810]={n="Moonroot",p={[1444]={374173,375174,382111,391111,404115,405114,405115,416184,416185,419139,447231,454109,465183,508183,520121,535174}}}
-O[439815]={n="Greater Moonstone Formation",p={[1444]={376168,403197,408099,408125,428232,474219,475218,510198,512148,540134}}}
 O[441061]={n="Weathered Etching",p={[1427]={144363,145364,145365}}}
 O[441113]={n="Ogre Magi Text",p={[1431]={357801,379843}}}
 O[441114]={n="Mysterious Box",p={[1431]={657674,657675,665668}}}
 O[441119]={n="Unhatched Green Dragon Egg",p={[1431]={489728,490722,495724,495725}}}
-O[441124]={n="Dream-Touched Dragon Egg",p={[1440]={861459}}}
-O[441128]={n="Vibrating Crate",p={[1440]={884554,884555,885551,910581}}}
-O[441129]={n="Azsharan Prophecy",p={[1440]={807489}}}
-O[441133]={n="Star-Touched Dragon Egg",p={[1425]={454388,455387}}}
-O[441140]={n="Humming Box",p={[1425]={561441,566434,567435,575408,578433}}}
-O[441141]={n="Dreampearl",p={[1425]={723541,727542}}}
-O[441310]={n="Moonglow Dragon Egg",p={[1444]={507172}}}
-O[441312]={n="Mad Keeper's Notes",p={[1444]={450200,466190}}}
-O[441314]={n="Harpy Screed",p={[1444]={384159,386157,389133}}}
-O[442742]={n="Box of Scarlet Dye",p={[1422]={452152}}}
-O[448042]={n="Idol of Hakkar"}
-O[455812]={n="Squire Cuthbert's Sword",p={[1422]={457539}}}
-O[456682]={n="Half-Buried Mech",p={[1446]={592915}}}
-O[456685]={n="Access Hatch",p={[1446]={593915}}}
-O[456814]={n="Vertically Composited Patch Hampler",p={[1428]={523250,532262}}}
-O[456815]={n="Brass-fitted Flam-Tamp Flange",p={[1428]={523250,525251,530239}}}
+O[441912]={n="Giant Golem Foot",p={[1427]={439324,440329}}}
+O[441913]={n="Giant Golem Foot",p={[1427]={423304,425304,425305}}}
+O[441914]={n="Giant Golem Arm",p={[1427]={494373,496375,497374}}}
+O[441915]={n="Giant Golem Arm",p={[1427]={419443,419445}}}
 O[457387]={n="Heirloom Coffer",p={[1422]={548812}}}
-O[457389]={n="Family Records",p={[1422]={539803}}}
-O[457390]={n="Survivor Journal",p={[1422]={541806}}}
-O[457443]={n="Scarlet Ledger",p={[1422]={422181}}}
-O[459259]={n="Mech Arm",p={[1420]={524577,530558,532570,533575,537566,542575,542587,545567,545582,548564,579569},[1436]={523408,523489,525384,531400,532411,533371,533418,535387,535407,539398,541416,548400},[1453]={558620}}}
-O[459388]={n="Artifact Cache",p={[1423]={834795,835795}}}
 O[461639]={n="Orthas' Hammer",p={[1423]={613692}}}
-O[462233]={n="Shimmering Molten Crag",p={[1427]={487373,487375}}}
-O[462236]={n="Mysterious Chest",p={[1423]={274858,275858}}}
-O[467315]={n="Old Campsite",p={[1452]={579209}}}
-O[469796]={n="Campsite",p={[1452]={580210}}}
-O[489943]={n="Shallow Grave",p={[1449]={214368}}}
-end)()
-;(function()
-N[906]={lv={10,10},n="Maximillian Crowe",p={[1429]={444660}},ra=1}
-N[914]={lv={60,60},n="Ander Germaine",p={[1453]={782472,782476,786466}},ra=1}
-N[985]={lv={50,50},n="Malosh",p={[1435]={448574,448576}},rh=1}
-N[986]={lv={50,50},n="Haromm",p={[1435]={478574,480578}},rh=1}
-N[987]={lv={50,50},n="Ogromm",p={[1435]={472532,476532}},rh=1}
-N[988]={lv={50,50},n="Kartosh",p={[1435]={484554,484556,486554,486556}},rh=1}
-N[1404]={lv={40,40},n="Kragg",p={[1434]={312284,312286}},ra=-1,rh=1}
-N[1411]={lv={47,47},n="Ian Strom",p={[1434]={268772}},ra=1,rh=1}
-N[1901]={lv={45,45},n="Kelstrum Stonebreaker",p={[1455]={670894,670896,672884}},ra=1}
-N[2127]={lv={15,15},n="Rupert Boch",p={[1420]={616524,616526}},rh=1}
-N[3030]={lv={50,50},n="Siln Skychaser",p={[1456]={230204,230208,236204,236206}},rh=1}
-N[3031]={lv={40,40},n="Tigor Skychaser",p={[1456]={234192,234198,236192,238200}},rh=1}
-N[3034]={lv={60,60},n="Sheal Runetotem",p={[1456]={764274,764276,770274,770276,776280}},rh=1}
-N[3036]={lv={40,40},n="Kym Wildmane",p={[1456]={762298,764290,764306,768294,768298,776294,776296}},rh=1}
-N[3040]={lv={40,40},n="Urek Thunderhorn",p={[1456]={588864,588866}},rh=1}
-N[3042]={lv={60,60},n="Sark Ragetotem",p={[1456]={570896,572890,574884,576884,576886}},rh=1}
-N[3043]={lv={40,40},n="Ker Ragetotem",p={[1456]={578854,578856}},rh=1}
-N[3045]={lv={50,50},n="Malakai Cross",p={[1456]={240214,244222,246224,248226}},rh=1}
-N[3046]={lv={60,60},n="Father Cobb",p={[1456]={252204,254208,254216,256210,258220}},rh=1}
-N[3172]={lv={37,37},n="Dhugru Gorelust",p={[1411]={542412}},rh=1}
-N[3324]={lv={50,50},n="Grol'dar",p={[1454]={480462,480468}},rh=1}
-N[3325]={lv={50,50},n="Mirket",p={[1454]={482476,484470,486470}},rh=1}
-N[3327]={lv={40,40},n="Gest",p={[1454]={428504,428514,428516}},rh=1}
-N[3344]={lv={60,60},n="Kardris Dreamseeker",p={[1454]={384372,388364,388366}},ra=-1,rh=1}
-N[3353]={lv={60,60},n="Grezz Ragefist",p={[1454]={794312,794316,796312,796316}},rh=1}
-N[3403]={lv={40,40},n="Sian'tsu",p={[1454]={374372,378364,378366}},ra=-1,rh=1}
-N[3406]={lv={50,50},n="Xor'juul",p={[1454]={670192,670200}},rh=1}
-N[3963]={lv={35,35},n="Danlaar Nightstride",p={[1440]={500678}},ra=1,rh=-1}
-N[4087]={lv={60,60},n="Arias'ta Bladesinger",p={[1457]={578344,580356,584350,586344,586352,586356}},ra=1}
-N[4089]={lv={40,40},n="Sildanair",p={[1457]={618408,618418,618426,618436}},ra=1}
-N[4091]={lv={50,50},n="Jandria",p={[1457]={380824,380826,386820,386826}},ra=1}
-N[4138]={lv={60,60},n="Jeen'ra Nightrunner",p={[1457]={394058,394066,396054,396058}},ra=1}
-N[4215]={lv={50,50},n="Anishar",p={[1457]={378196,378212,378216,386204,386214}},ra=1}
-N[4219]={lv={40,40},n="Fylerian Nightwing",p={[1457]={334084,334086,336084,336086,338072}},ra=1}
-N[4564]={lv={50,50},n="Luther Pickman",p={[1458]={854154,854156,860156,862152}},rh=1}
-N[4565]={lv={40,40},n="Richard Kerwin",p={[1458]={882148,882168,884162,886154,886160}},rh=1}
-N[4566]={lv={60,60},n="Kaelystia Hatebringer",p={[1458]={850146,852142,852156,856148,858142}},rh=1}
-N[4582]={lv={40,40},n="Carolyn Ward",p={[1458]={830728,834708,834724,838714,838716,838726}},rh=1}
-N[4584]={lv={60,60},n="Gregory Charles",p={[1458]={842724,844734,844736,846732,846736,852722}},rh=1}
-N[4594]={lv={50,50},n="Angela Curthas",p={[1458]={482154,482156,484144}},rh=1}
-N[4608]={lv={50,50},n="Father Lazarus",p={[1458]={468198,474192,476192}},rh=1}
-N[5114]={lv={45,45},n="Bilban Tosslespanner",p={[1455]={662882,662886,668874,668876}},ra=1}
-N[5115]={lv={60,60},n="Daera Brightspear",p={[1455]={700906,702882,704894,704900,706906,708894,710900,716884}},ra=1}
-N[5117]={lv={40,40},n="Regnus Thundergranite",p={[1455]={694844,694846,696846,698834,698836}},ra=1}
-N[5141]={lv={60,60},n="Theodrus Frostbeard",p={[1455]={232084,234086,234100,238084,238090,240102}},ra=1}
-N[5143]={lv={40,40},n="Toldren Deepiron",p={[1455]={252102,252106,254092,256102,258092,258106}},ra=1}
-N[5145]={lv={50,50},n="Juli Stormkettle",p={[1455]={262072,262076,262086,266072,266084}},ra=1}
-N[5146]={lv={60,60},n="Nittlebur Sparkfizzle",p={[1455]={254044,254046,256044,258052,260058,260066,266064,266100,270068}},ra=1}
-N[5147]={lv={60,60},n="Valgar Highforge",p={[1455]={224056,226060,234050,236044,236050,246040}},ra=1}
-N[5148]={lv={50,50},n="Beldruk Doombrow",p={[1455]={244050,244060,246050,248044,248062}},ra=1}
-N[5166]={lv={50,50},n="Ormyr Flinteye",p={[1455]={522134,524150,526148,528132}},ra=1}
-N[5167]={lv={40,40},n="Fenthwick",p={[1455]={514150,516150,518156,520136}},ra=1}
-N[5171]={lv={40,40},n="Thistleheart",p={[1455]={504064,504066,506064,508066,510084}},ra=1}
-N[5173]={lv={60,60},n="Alexander Calder",p={[1455]={502062,502068,502076,506068,508064,508080}},ra=1}
-N[5484]={lv={40,40},n="Brother Benjamin",p={[1453]={402262,404268,404280,406272,408262,412284,414288,414296,416278,416292,418296}},ra=1}
-N[5491]={lv={40,40},n="Arthur the Faithful",p={[1453]={384324,384326,386324,386326}},ra=1}
-N[5496]={lv={50,50},n="Sandahl",p={[1453]={254784,258790,262784}},ra=1}
-N[5498]={lv={50,50},n="Elsharin",p={[1453]={370812,374816,376812}},ra=1,rh=-1}
-N[5501]={lv={57,57},n="Kaerbrus",p={[1448]={618234,618236}},ra=1,rh=-1}
-N[5506]={lv={40,40},n="Maldryn",p={[1453]={188526,188536,190524,196518,198526,344652,348648}},ra=1}
-N[5517]={lv={40,40},n="Thorfin Stoneshield",p={[1453]={624144,624146,626144}},ra=1}
-N[5612]={lv={15,15},n="Gimrizz Shadowcog",p={[1426]={472534,472536}},ra=1}
-N[5882]={lv={60,60},n="Pephredo",p={[1454]={384854,384856,386854,386856}},rh=1}
-N[5883]={lv={50,50},n="Enyo",p={[1454]={384858,386856,388854}},rh=1}
-N[6014]={lv={50,50},n="X'yera",p={[1454]={354874,354878,358874,358876}},rh=1}
-N[8140]={lv={45,45},n="Brother Karman",p={[1445]={672476,674474,676474}},ra=1}
-N[8141]={lv={45,45},n="Captain Evencane",p={[1445]={678484,680486}},ra=1}
-N[8142]={lv={50,50},n="Jannos Lighthoof",p={[1444]={760422}},rh=1}
-N[8308]={lv={27,27},n="Alenndaar Lapidaar",p={[1440]={180598}},ra=1}
-N[9465]={lv={60,60},n="Golhine the Hooded",p={[1448]={618246,620244}},ra=1,rh=-1}
-N[10930]={lv={25,25},n="Dargh Trueaim",p={[1432]={822624,824626}},ra=1}
-N[13283]={lv={60,60},n="Lord Tony Romano",p={[1453]={782572,782580}},ra=1}
-N[246344]={lv={30,30},n="Alodan the Hopeful",p={[1456]={254144,254146}}}
-N[246797]={n="Jessa Weaver",p={[1416]={176694,176696}}}
-N[252379]={lv={10,10},n="Eltheen Nightbreeze",p={[2521]={598724,598726}},ra=1,rh=1}
-N[254081]={lv={10,10},n="Naeluna Swiftmend",p={[2521]={452442}},ra=1,rh=1}
-N[254086]={lv={10,10},n="Shenaan Spellwind",p={[2521]={450458}},ra=1,rh=1}
-N[254087]={lv={10,10},n="Miriaan Mistblade",p={[2521]={432432}},ra=1,rh=1}
-N[254088]={lv={10,10},n="Corsan Earthrazer",p={[2521]={448452}},ra=1,rh=1}
-N[260093]={lv={20,20},n="Garen Largo",p={[1458]={474150,476148}},rh=1}
-N[262558]={lv={55,55},n="Palah Thunderhoof",p={[1412]={336224}},rh=0}
-N[262560]={lv={55,55},n="Hana Lighthoof",p={[1412]={334222}},rh=0}
-N[270459]={lv={28,28},n="Alfina Nightgaze",p={[1416]={118566}},ra=1}
+O[563442]={n="Kobold Tracks",p={[1429]={454507,455513,458562,460523,461528,465544,466545,477456,478519}}}
+O[621767]={n="Loamy Soil",p={[2548]={375633,400608}}}
+O[621813]={n="Loose Soil",p={[2548]={486438}}}
+O[628948]={n="WANTED!",p={[2548]={785539}}}
+O[642517]={n="Burned Memorial Candle",p={[2548]={617834}}}
+O[645164]={n="WANTED!",p={[2548]={595470}}}
+O[656157]={n="Syndicate Footlocker",p={[1417]={322264,324267,325264,325267}}}
+O[656789]={n="Lost Shipping Crate",p={[1443]={646103}}}
+O[658115]={n="Lost Shipping Crate",p={[1443]={234726,235725}}}
+O[658116]={n="Lost Shipping Crate",p={[1434]={380030}}}
+O[661516]={n="Thoroughly Scavenged Supplies",p={[1434]={316129}}}
+O[669176]={n="Gleaming Crescent Pendant",p={[1440]={630715}}}
+O[671481]={n="Attack Plan: Menethil Harbor",p={[1437]={454427,456424,456428}}}
+O[671483]={n="Attack Plan: Southshore",p={[1437]={453456,455456}}}
+O[671486]={n="Attack Plan: Thelsamar",p={[1437]={493468,495470}}}
+O[671487]={n="Attack Plan: Ironforge",p={[1437]={386462}}}
+O[671518]={n="Tattered Spellbook",p={[1437]={534545,535544,535545}}}
+O[707249]={n="Wanted",p={[2548]={596469}}}
 end)()
 ns.Registry.Register("forever", D)

@@ -151,7 +151,10 @@ end
 -- dump row tells them apart, and their ids are not enough alone: Forever kept some
 -- quests in that id range (the Delgren chain, 78088-78093). A quest in the range
 -- QuestieDB's Forever data does not know is one of them: never planned (unused).
-QD.SOD_IDS = { 76000, 93999 }
+-- The range ends below Forever's own new quests (86000 and up: "Accessories of the
+-- Lost", 88757), which Wowhead lists for Forever and QuestieDB does not know yet;
+-- Wowhead's Forever listing no longer has Season of Discovery quests above 85000.
+QD.SOD_IDS = { 76000, 85999 }
 function QD.InSodRange(qid)
   return qid >= QD.SOD_IDS[1] and qid <= QD.SOD_IDS[2]
 end
