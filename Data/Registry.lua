@@ -102,7 +102,21 @@ local function index(ds)
   end
   for _, list in pairs(groups) do addAlts(list) end
   for _, q in pairs(ds.quests) do if q.loop then addAlts(q.loop) end end
+  -- "Explore Zone" next to the quest's own explore objective ("Fully explore Frostmane
+  -- Hold") is not an objective of the client's: Wowhead lists both. o.dup: done with
+  -- the other one (Engine/Route plans only that one; 40 quests).
+  for _, q in pairs(ds.quests) do
+    local generic, events = nil, 0
+    for _, o in ipairs(q.obj or {}) do
+      if o.t == "event" then
+        events = events + 1
+        if o.text == R.GENERIC_EXPLORE then generic = o end
+      end
+    end
+    if generic and events > 1 then generic.dup = true end
+  end
 end
+R.GENERIC_EXPLORE = "Explore Zone"
 
 function R.Register(flavor, ds)
   local ok, errs = ns.Schema.Validate(ds)

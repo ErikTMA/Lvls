@@ -138,12 +138,27 @@ function Q.Waypoints(ds, qid, i)
   return out
 end
 
+-- The shipped waypoints overrule the data for this objective: the data (and
+-- QuestieDB) place it in another zone (the waypoint exporter, WRONG ZONE).
+function Q.WaypointsOver(ds, qid, i)
+  local w = ns.ObjectiveWaypoints
+  local over = w and w.over and w.over[qid]
+  return over and over[i] and Q.Waypoints(ds, qid, i) ~= nil or false
+end
+
 -- Spots of one objective: its sources from the dataset, else what the prerequisite
--- provider (QuestieDB) knows at runtime, else the shipped waypoints.
+-- provider (QuestieDB) knows at runtime, else the shipped waypoints. Waypoints marked
+-- over come first and alone.
 function Q.ObjectiveSpots(ds, q, i, onMap)
   local o = q.obj and q.obj[i]
   if not o then return {} end
   local out = {}
+  if Q.WaypointsOver(ds, q.id, i) then
+    for _, sp in ipairs(Q.Waypoints(ds, q.id, i)) do
+      if not onMap or sp.map == onMap then sp.waypoint = true; out[#out + 1] = sp end
+    end
+    return out
+  end
   for _, s in ipairs(o.src or {}) do
     local kind = s[1] == "o" and "o" or "n"
     for _, sp in ipairs(G.Spots(ds, kind, s[2], onMap)) do

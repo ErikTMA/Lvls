@@ -16,8 +16,8 @@
 --      accepted gets done anyway, and dividing by it sent the route across the map
 --      for one short, rewarding quest.
 --      Everything at the npc you stand at is done before walking off; zoneFirst
---      charges a destination on another map leaveSecs, and finished quests here are
---      handed in before leaving; quests in the log are always candidates, however
+--      finishes this map before leaving it, then chooses the next map as a whole
+--      (R.Choose); quests in the log are always candidates, however
 --      far, and count their experience once overdue; a hand-in counts part of what
 --      it opens; class quests count more and keep their order; a pick-up or
 --      hand-in within a small detour of the way to the chosen action is done in
@@ -32,7 +32,9 @@
 --      so it is taken when the route passes a trainer or goes to the city anyway,
 --      and a trip of its own once enough waits.
 -- With opts.travel (Engine/Travel), long walks are priced by the fastest trip:
--- a known flight path makes a far quest hub cheap.
+-- a known flight path makes a far quest hub cheap, and the boats, zeppelins and the
+-- tram make the other continent a destination like any other (without opts.travel
+-- it cannot be reached).
 -- The route therefore follows chains and stays in an area while it pays, and moves
 -- on when the quests that are left are worth less than the walk.
 local _, ns = ...
@@ -49,6 +51,7 @@ R.XP_TO_LEVEL = {
   167100, 173900, 180800, 187900, 195000, 202300, 209800,
 }
 R.MAX_LEVEL = 60
+R.EVENT_SORT = 9 -- quest sort (Wowhead category2) of world events
 
 R.DEFAULTS = {
   steps = 40,          -- route length
@@ -65,7 +68,7 @@ R.DEFAULTS = {
   localSecs = 60,      -- travel seconds: closer work is done in walking order
   hubYards = 300,      -- yards: farther work this close together is one destination
   onTheWay = 40,       -- yards: a pick-up / hand-in costing at most this detour is done in passing
-  zoneFirst = true,    -- prefer the current map (leaveSecs) and hand in here before leaving it
+  zoneFirst = true,    -- finish the current map before leaving it; then choose the next map as a whole
   skip = nil,          -- { [questId] = true }: quests the player does not want
   focus = nil,         -- { [questId] = true }: a guide: only these quests (any kind, any distance)
   grind = false,       -- suggest "grind to the next level" when quests here wait only on the margin
@@ -75,7 +78,8 @@ R.DEFAULTS = {
   groupMargin = 0,     -- group (elite) quests need this many levels more
   dungeon = nil,       -- AreaTable id: objectives of quests in this instance wait for the dungeon step
   -- what makes a destination worth more than the experience of its pick-ups:
-  leaveSecs = 240,     -- zoneFirst: seconds a destination on another map is charged for leaving this one
+  leaveSecs = 1200,    -- zoneFirst: seconds another map is charged for leaving this one (what it must offer)
+  continentSecs = 1800, -- zoneFirst: and more for another continent (a boat there and one back later)
   overdueBelow = 4,    -- a quest in the log this many levels below you is overdue: its work and hand-in
                        --   count their experience (it loses 20% a level from 6 below, then goes grey)
   unlockShare = 0.5,   -- a hand-in counts this share of the experience of what it opens (halved per step, 3 deep)
@@ -133,7 +137,7 @@ local function shape(ds, q, dungeon, bagStart, pos, opens)
   local objs = {}
   for i, o in ipairs(q.obj or {}) do
     if o.t == "faction" or o.t == "spell" then return nil, ("objective %d needs %s"):format(i, o.t == "faction" and "reputation" or "a spell") end
-    if o.from == "provided" then
+    if o.from == "provided" or o.dup then
       objs[i] = { free = true }
     elseif dungeon and q.inst and q.zone == dungeon then
       objs[i] = { dungeon = true } -- done inside: never planned as field work
@@ -163,10 +167,30 @@ local function nearestTarget(geo, from, targets)
   return best, d
 end
 
+-- The spot to go to and the seconds it takes: the nearest on this continent, else
+-- (all on another one) the fastest by opts.travel, which knows boats and zeppelins.
+-- Returns spot, yards (math.huge across continents), seconds (math.huge: unreachable).
+-- here: only this continent (the route stays on this map anyway).
+local CROSS_TRIES = 4 -- spots tried on another continent (targets are biggest first)
+local CROSS_AVAIL = 12 -- quests to pick up on another continent offered per step (the quickest)
+local function reachSpot(o, geo, from, spots, here)
+  local best, d = G.Nearest(geo, from, spots)
+  if best then return best, d, travelSecs(o, from, best, d) end
+  if here or not o.travel then return nil, math.huge, math.huge end
+  local secs
+  for k = 1, math.min(#spots, CROSS_TRIES) do
+    local ok, t = pcall(o.travel, from, spots[k])
+    if ok and t and t < math.huge and (not secs or t < secs) then best, secs = spots[k], t end
+  end
+  return best, math.huge, secs or math.huge
+end
+
 -- "Grind to the next level": when the only quests left here wait on the difficulty
--- margin (they would be planned without it) and one level more unlocks them, kill
--- easy mobs close by until then. Returns the action or nil. Only the next level:
--- more than that is the route's to solve by going elsewhere.
+-- margin (they would be planned without it) or on their required level, and one level
+-- more unlocks them, kill easy mobs close by until then. Returns the action or nil.
+-- Only the next level: more than that is the route's to solve by going elsewhere.
+-- (A level-7 dwarf left Dun Morogh for Elwynn Forest when three quests in Kharanos
+-- were a level away; a hand-written guide kills a few mobs and stays.)
 -- npcs a quest asks you to kill once (named ones: Old Murk-Eye), per dataset
 local namedTargets = setmetatable({}, { __mode = "k" })
 local function named(ds)
@@ -182,22 +206,45 @@ local function named(ds)
   return t
 end
 
-local function grindAction(ds, o, st, sim, pos, geo, pool, consider, shapes, nothingElse)
-  if not o.grind or o.maxAbove >= o.grindAbove or st.level >= R.MAX_LEVEL then return nil end
-  local A, Df = ns.Availability, ns.Difficulty
-  local unlock, held = nil, 0
+-- Quests held back one level: by the difficulty margin (grindAbove, the margin they
+-- would have without the difficulty model) or, "next level", by their required level
+-- or the margin itself (their level is one above level + maxAbove). Returns the level
+-- that opens them (or nil), how many have a giver within grindNear, and whether any
+-- of those is a next-level one.
+local function heldNext(o, st, sim, pos, geo, pool, consider, shapes, workSecs)
+  if st.level >= R.MAX_LEVEL then return nil, 0, false end
+  local A = ns.Availability
+  local unlock, held, byLevel = nil, 0, false
+  local nextL = st.level + 1
   for _, q in ipairs(pool) do
-    if q.l and q.l > st.level + o.maxAbove and q.l <= st.level + o.grindAbove and not sim.completed[q.id]
-      and not sim.active[q.id] and A.Status(q, sim) == "available" and consider(q) then
-      local _, d = G.Nearest(geo, pos, shapes[q.id].givers)
-      if d <= o.grindNear then
-        held = held + 1
-        local need = q.l - o.maxAbove
-        if not unlock or need < unlock then unlock = need end
+    if not sim.completed[q.id] and not sim.active[q.id] then
+      local need, nxt
+      if q.l and q.l > st.level + o.maxAbove and q.l <= st.level + o.grindAbove then
+        need = A.Status(q, sim) == "available" and q.l - o.maxAbove or nil
+      elseif q.r and q.r == nextL and (not q.l or q.l <= nextL + o.maxAbove) then
+        local stt, w = A.Status(q, sim)
+        if stt == "low" and tostring(w):match("^level") then need, nxt = nextL, true end
+      elseif q.l and q.l == nextL + o.maxAbove and A.Status(q, sim) == "available" then
+        need, nxt = nextL, true
+      end
+      if need == nextL and consider(q) and workSecs[q.id] <= o.maxWork then
+        local _, d = G.Nearest(geo, pos, shapes[q.id].givers)
+        if d <= o.grindNear then
+          held = held + 1
+          if nxt then byLevel = true end
+          unlock = need
+        end
       end
     end
   end
-  if not unlock or unlock ~= st.level + 1 then return nil end
+  return unlock, held, byLevel
+end
+
+local function grindAction(ds, o, st, sim, pos, geo, pool, consider, shapes, nothingElse, workSecs)
+  if not o.grind or st.level >= R.MAX_LEVEL then return nil end
+  local Df = ns.Difficulty
+  local unlock, held, byLevel = heldNext(o, st, sim, pos, geo, pool, consider, shapes, workSecs)
+  if not unlock then return nil end
   -- easy mobs close by: at most your level (the margin is below it), worth experience
   local best, bestScore
   local skipNamed = named(ds)
@@ -231,7 +278,7 @@ local function grindAction(ds, o, st, sim, pos, geo, pool, consider, shapes, not
   -- only when there is nothing else to do at all
   if not nothingElse and kills * o.killSeconds > o.grindMaxSecs then return nil end
   return { kind = "grind", level = st.level + 1, xp = need, npc = best.id, name = best.n.n, spot = best.spot,
-    kills = math.ceil(need / per), held = held }
+    kills = math.ceil(need / per), held = held, byLevel = byLevel or nil }
 end
 
 local function simLevel(st, xpGain)
@@ -259,12 +306,15 @@ end
 --   pick up anywhere, the cheapest action (accepted work in walking order).
 --   Worth beyond the pick-ups (c.worth, from R.Plan): an overdue quest in the log,
 --   a hand-in that opens a chain, a class quest. A plain hand-in still adds none.
---   zoneFirst: while the log has work on this map (objectives, hand-ins), the route
---   stays: nothing elsewhere counts, not even a chain, an overdue or a class quest
---   (each of them pulled it away with open work left behind, and back again later).
---   With only pick-ups left here, a destination on another map is charged leaveSecs,
---   so it wins only when it is clearly worth more; and before leaving, finished
---   quests handed in on this map come first.
+--   zoneFirst, zone by zone like a hand-written guide: while this map has anything
+--   left (pick-ups, objectives, hand-ins), the route stays; nothing elsewhere counts,
+--   not even a chain, an overdue or a class quest (each of them pulled it away with
+--   work left behind, and back again later). Leaving, the next map is chosen as a
+--   whole: everything there (pick-ups, the log's hand-ins with their experience, what
+--   they open, overdue work) per second of the trip, the pick-ups' work, leaveSecs,
+--   and continentSecs for another continent. So deliveries wait until the route goes
+--   there anyway, and the route does not cross an ocean for a quest or two. On that
+--   map: its best destination, else its nearest.
 -- point(spot) -> { continent, x, y } in yards; gain(questId) -> experience.
 function R.Choose(cands, pos, o, point, gain)
   local near, far = nil, {}
@@ -302,36 +352,87 @@ function R.Choose(cands, pos, o, point, gain)
       hub.worths[wk] = true
       hub.xp = hub.xp + c.worth
     end
-    if (c.action.kind == "do" or c.action.kind == "turnin") and c.action.spot.map == pos.map then workHere = true end
+    if c.action.spot.map == pos.map then workHere = true end
     if c.score < hub.first.score then hub.first = c end
   end
   local leave = o.zoneFirst and o.leaveSecs or 0
-  local best, bestRate, cheapest, cheapestScore
   for _, h in ipairs(hubs) do
     local adds
     for _, c in ipairs(h.members) do if not adds or c.adds < adds then adds = c.adds end end
+    h.adds = adds
     local away = h.map ~= pos.map and leave or 0
     h.cost = math.max(1, adds) + h.effort + away
     h.rate = h.xp / h.cost
-    -- work of the log left here: the route does not leave (it adds no worth of its
-    -- own, so anything worth something elsewhere would always win)
+  end
+  -- zoneFirst, leaving: another map is chosen as a whole, by everything there (its
+  -- pick-ups and the log's hand-ins and overdue work there) per second of the trip
+  -- and the pick-ups' work, the way a hand-written guide moves zone by zone. So a
+  -- delivery waits until the route goes there anyway, and then it adds its experience
+  -- to the trip; one quest alone does not pull the route to a zone with nothing else.
+  local maps, mapList, home = {}, {}, point(pos)
+  if o.zoneFirst then
+    for _, c in ipairs(far) do
+      local m = c.action.spot.map
+      if m ~= pos.map then
+        local e = maps[m]
+        if not e then
+          e = { map = m, p = point(c.action.spot), xp = 0, effort = 0, seen = {} }
+          maps[m] = e
+          mapList[#mapList + 1] = e
+        end
+        if not e.adds or c.adds < e.adds then e.adds = c.adds end
+        local k, q = c.action.kind, c.action.quest
+        local key = k .. ":" .. tostring(q)
+        if not e.seen[key] then
+          e.seen[key] = true
+          if k == "accept" or k == "turnin" then
+            e.xp = e.xp + (q and gain(q) or 0) + (c.worth or 0)
+            e.effort = e.effort + (c.effort or 0)
+          else
+            e.xp = e.xp + (c.worth or 0)
+          end
+        end
+      end
+    end
+    for _, e in ipairs(mapList) do
+      e.cost = math.max(1, e.adds) + e.effort + leave + (e.p[1] ~= home[1] and o.continentSecs or 0)
+      e.rate = e.xp / e.cost
+    end
+  end
+  local best, bestRate, cheapest, cheapestScore
+  for _, h in ipairs(hubs) do
+    -- zoneFirst: work left on this map, the route does not leave
     if not (o.zoneFirst and workHere and h.map ~= pos.map) then
-      if h.xp > 0 and (not bestRate or h.rate > bestRate) then best, bestRate = h, h.rate end
+      local away = h.map ~= pos.map and leave or 0
+      -- zoneFirst: another map competes as a whole (below), not hub by hub
+      if h.xp > 0 and (not bestRate or h.rate > bestRate) and not (o.zoneFirst and h.map ~= pos.map) then
+        best, bestRate = h, h.rate
+      end
       local score = h.first.score + away
       if not cheapest or score < cheapestScore then cheapest, cheapestScore = h, score end
     end
   end
-  R.lastHubs = hubs -- for debugging and tests
-  local pick = (best or cheapest).first
-  if o.zoneFirst and pick.action.spot.map ~= pos.map then
-    -- leaving: hand in what is finished here first
-    local tidy
-    for _, c in ipairs(far) do
-      if c.action.kind == "turnin" and c.action.spot.map == pos.map and (not tidy or c.secs < tidy.secs) then tidy = c end
+  if o.zoneFirst and not workHere then
+    local bestMap
+    for _, e in ipairs(mapList) do
+      if e.xp > 0 and (not bestRate or e.rate > bestRate) then bestMap, bestRate = e, e.rate end
     end
-    if tidy then pick = tidy end
+    if bestMap then
+      -- there: the best destination of that map (else its nearest)
+      best = nil
+      local r, near
+      for _, h in ipairs(hubs) do
+        if h.map == bestMap.map then
+          if h.xp > 0 and (not r or h.rate > r) then best, r = h, h.rate end
+          if not near or h.adds < near.adds then near = h end
+        end
+      end
+      best = best or near
+    end
   end
-  return pick.action
+  R.lastMaps = mapList -- for debugging and tests
+  R.lastHubs = hubs -- for debugging and tests
+  return (best or cheapest).first.action
 end
 
 -- What a quest opens: quest id -> the quests that need it (series, provider
@@ -363,7 +464,7 @@ function R.Plan(ds, char, geo, opts)
   for k, v in pairs(opts or {}) do o[k] = v end
   if o.focus then
     -- a guide: every quest of it as soon as the client allows, wherever it is
-    -- (a finite limit: what cannot be reached at all, another continent, stays out)
+    -- (a finite limit: what cannot be reached at all stays out)
     o.maxAbove, o.maxSecs, o.zoneFirst = math.huge, 1e9, false
   end
   local A = ns.Availability
@@ -480,8 +581,10 @@ function R.Plan(ds, char, geo, opts)
   local steps = {}
   local pool = {}
   for qid, q in pairs(ds.quests) do
+    -- sort 9: world events (Winter Veil, Hallow's End): only while the event runs, which
+    -- the data does not say; in the log they are still handed in
     local normal = not q.rep and not q.inst and q.kind ~= "dungeon" and q.kind ~= "raid"
-      and q.kind ~= "pvp" and (not q.r or q.r <= char.level + 10)
+      and q.kind ~= "pvp" and q.sort ~= R.EVENT_SORT and (not q.r or q.r <= char.level + 10)
     if (q.sn or q.so or bagStarts[qid]) and not (o.skip and o.skip[qid]) and (o.focus and o.focus[qid] or (not o.focus and normal)) then
       pool[#pool + 1] = q
     end
@@ -502,19 +605,33 @@ function R.Plan(ds, char, geo, opts)
       local s = q and consider(q)
       if s and progress[qid] then
         if allDone(q) then
-          pending[#pending + 1] = { quest = qid, spot = (G.Nearest(geo, pos, s.ends)) }
+          pending[#pending + 1] = { quest = qid, spot = G.Nearest(geo, pos, s.ends) or s.ends[1] }
         else
           for i in ipairs(q.obj or {}) do
             local so = s.objs[i]
             if so and not so.free and not so.dungeon and not progress[qid][i] then
-              pending[#pending + 1] = { quest = qid, index = i, spot = (nearestTarget(geo, pos, so.targets)) }
+              pending[#pending + 1] = { quest = qid, index = i, spot = nearestTarget(geo, pos, so.targets) or so.targets[1] }
             end
           end
         end
       end
     end
     -- quests that could be picked up count as open work too (the nearest few)
-    local avail = {}
+    local avail, overseas = {}, {}
+    local function limitOf(qid) return classOf[qid] and math.max(o.maxSecs, o.classMaxSecs) or o.maxSecs end
+    -- zoneFirst: this map has work left (the log's, or quests to pick up here), so the
+    -- route stays and nothing on another continent could be chosen
+    local busyNow
+    local function busy()
+      if busyNow == nil then
+        busyNow = false
+        if o.zoneFirst then
+          for _, p in ipairs(pending) do if p.spot and p.spot.map == pos.map then busyNow = true; break end end
+          for _, a in ipairs(avail) do if busyNow or a.spot.map == pos.map then busyNow = true; break end end
+        end
+      end
+      return busyNow
+    end
     if logCount() < o.logSize then
       for _, q in ipairs(pool) do
         yield()
@@ -522,13 +639,30 @@ function R.Plan(ds, char, geo, opts)
         if not sim.completed[q.id] and not sim.active[q.id] and (not q.l or q.l <= st.level + above)
           and (A.Status(q, sim) == "available" or (o.focus and A.Status(q, sim) == "trivial")) and consider(q) and (o.focus or workSecs[q.id] <= o.maxWork)
           and not (classOf[q.id] and classAfter(q.id) and not sim.completed[classAfter(q.id)]) then
-          local spot, d = G.Nearest(geo, pos, shapes[q.id].givers)
-          local secs = d < math.huge and travelSecs(o, pos, spot, d) or math.huge
-          local limit = classOf[q.id] and math.max(o.maxSecs, o.classMaxSecs) or o.maxSecs
-          if secs <= limit then avail[#avail + 1] = { quest = q.id, spot = spot, d = d, secs = secs } end
+          local givers = shapes[q.id].givers
+          local spot, d = G.Nearest(geo, pos, givers)
+          if spot then
+            local secs = travelSecs(o, pos, spot, d)
+            if secs <= limitOf(q.id) then avail[#avail + 1] = { quest = q.id, spot = spot, d = d, secs = secs } end
+          elseif o.travel then
+            overseas[#overseas + 1] = q
+          end
         end
       end
-      table.sort(avail, function(x, y) if x.d ~= y.d then return x.d < y.d end return x.quest < y.quest end)
+      -- on another continent: asked of opts.travel (the slow part of a step) only when
+      -- this map has nothing left (zoneFirst: while it has, the route stays), and only
+      -- the quickest few are offered, enough to judge the trip
+      if not busy() and #overseas > 0 then
+        local far = {}
+        for _, q in ipairs(overseas) do
+          local spot, d, secs = reachSpot(o, geo, pos, shapes[q.id].givers)
+          if spot and secs <= limitOf(q.id) then far[#far + 1] = { quest = q.id, spot = spot, d = d, secs = secs } end
+        end
+        table.sort(far, function(x, y) if x.secs ~= y.secs then return x.secs < y.secs end return x.quest < y.quest end)
+        for i = 1, math.min(#far, CROSS_AVAIL) do avail[#avail + 1] = far[i] end
+      end
+      table.sort(avail, function(x, y) if x.d ~= y.d then return x.d < y.d end
+        if x.secs ~= y.secs then return x.secs < y.secs end return x.quest < y.quest end)
       for i = 1, math.min(#avail, 15) do pending[#pending + 1] = avail[i] end
     end
     -- the walk through the open work of accepted quests (nearest first), in
@@ -622,8 +756,7 @@ function R.Plan(ds, char, geo, opts)
       local s = q and consider(q)
       if s and progress[qid] then
         if allDone(q) then
-          local spot, d = G.Nearest(geo, pos, s.ends)
-          local secs = d < math.huge and travelSecs(o, pos, spot, d) or math.huge
+          local spot, _, secs = reachSpot(o, geo, pos, s.ends, busy())
           -- in the log: always a candidate, however far (priced by the trip)
           if secs < math.huge then
             offer({ kind = "turnin", quest = qid, spot = spot }, secs + 5, 5)
@@ -635,8 +768,7 @@ function R.Plan(ds, char, geo, opts)
               if so and so.free then
                 progress[qid][i] = true
               elseif so and not so.dungeon then
-                local tgt, d = nearestTarget(geo, pos, so.targets)
-                local secs = d < math.huge and travelSecs(o, pos, tgt, d) or math.huge
+                local tgt, _, secs = reachSpot(o, geo, pos, so.targets, busy())
                 if secs < math.huge then
                   offer({ kind = "do", quest = qid, index = i, spot = tgt },
                     secs, workSeconds(ob, so.spots, o))
@@ -670,9 +802,13 @@ function R.Plan(ds, char, geo, opts)
       for _, c in ipairs(cands) do
         if c.secs <= o.localSecs and c.action.spot.map == pos.map then close = true; break end
       end
+      -- quests here a level away (byLevel): grind rather than leave the map, the way a
+      -- hand-written guide stays (a level-7 dwarf left Dun Morogh for Elwynn Forest
+      -- with three quests in Kharanos a level away); work elsewhere on the map first
+      local leaving = not best or best.spot.map ~= pos.map
       if not close then
-        local g = grindAction(ds, o, st, sim, pos, geo, pool, consider, shapes, best == nil)
-        if g then best = g end
+        local g = grindAction(ds, o, st, sim, pos, geo, pool, consider, shapes, best == nil, workSecs)
+        if g and (not g.byLevel or leaving) then best = g end
       end
     end
     -- a pick-up or hand-in close to the way there is done in passing
