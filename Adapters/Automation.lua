@@ -209,6 +209,54 @@ function A.OnBindConfirm(slot)
   if type(StaticPopup_Hide) == "function" then StaticPopup_Hide("EQUIP_BIND") end
 end
 
+-- talking to an npc ----------------------------------------------------------
+
+-- The npc or object whose dialog is open: "n" | "o", id; nil otherwise (an item, a
+-- player sharing a quest). UnitGUID("npc"): "Creature-0-server-instance-zone-id-spawn".
+local KINDS = { Creature = "n", Vehicle = "n", GameObject = "o" }
+function A.Npc()
+  if type(UnitGUID) ~= "function" then return nil end
+  local ok, guid = pcall(UnitGUID, "npc")
+  guid = ok and ns.Util.plain(guid) or nil
+  if type(guid) ~= "string" then return nil end
+  local what, id = guid:match("^(%a+)%-%d+%-%d+%-%d+%-%d+%-(%d+)")
+  if not KINDS[what] then return nil end
+  return KINDS[what], tonumber(id)
+end
+
+-- What the npc's quest list offers, { [questId] = true }; nil when it is not a list
+-- (a single quest's dialog) or an id is not known.
+local function offers(event)
+  local out = {}
+  if event == "GOSSIP_SHOW" then
+    if not (C_GossipInfo and has(C_GossipInfo, "GetAvailableQuests")) then return nil end
+    for _, q in ipairs(C_GossipInfo.GetAvailableQuests() or {}) do
+      if not q.questID then return nil end
+      out[q.questID] = true
+    end
+    return out
+  elseif event == "QUEST_GREETING" then
+    if type(GetNumAvailableQuests) ~= "function" or type(GetAvailableQuestInfo) ~= "function" then return nil end
+    for i = 1, GetNumAvailableQuests() or 0 do
+      local qid = select(5, GetAvailableQuestInfo(i))
+      if not qid then return nil end
+      out[qid] = true
+    end
+    return out
+  end
+  return nil
+end
+
+-- Tell the plan who you talk to (Core/Init ns.TalkedTo): a quest the step has you
+-- pick up there that the npc does not offer, or that you walk off without, is missed.
+local TALK = { GOSSIP_SHOW = true, QUEST_GREETING = true, QUEST_DETAIL = true, QUEST_PROGRESS = true,
+  QUEST_COMPLETE = true }
+function A.Talked(event)
+  if not TALK[event] or not ns.TalkedTo then return end
+  local kind, id = A.Npc()
+  if kind then ns.TalkedTo(kind, id, offers(event)) end
+end
+
 local HANDLERS = {
   QUEST_DETAIL = function() A.OnDetail() end,
   QUEST_ACCEPT_CONFIRM = function(...) A.OnAcceptConfirm(...) end,
@@ -227,6 +275,8 @@ if CreateFrame then
   local f = CreateFrame("Frame")
   for e in pairs(HANDLERS) do f:RegisterEvent(e) end
   f:SetScript("OnEvent", function(_, event, ...)
+    local seen, why = pcall(A.Talked, event)
+    if not seen then ns.Log("debug", event .. ": " .. tostring(why)) end
     local ok, err = pcall(HANDLERS[event], ...)
     if not ok then ns.Log("error", event .. ": " .. tostring(err)) end
   end)

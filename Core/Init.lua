@@ -182,6 +182,72 @@ local function finishPlan(ds, g, char, route)
   ns.Viewer.view = nil
 end
 
+-- Quests a step had you pick up that you did not: the npc does not offer them (its
+-- quest list showed without them), or you talked to it and walked off without them.
+-- Left out of the plan for this session (a quest you take after all is planned
+-- again); /lvls unskip all takes them back.
+ns.missed = {}
+ns.LEAVE_YARDS = 60 -- this far from the npc you talked to: you left it
+
+local function skipSet(char)
+  local out = {}
+  for qid in pairs(ns.cdb and ns.cdb.skip or {}) do out[qid] = true end
+  for qid in pairs(ns.missed) do
+    if not (char.active and char.active[qid]) and not char.completed[qid] then out[qid] = true end
+  end
+  return out
+end
+
+-- Mark quests missed (ns.missed) and say so; the caller plans again.
+local function miss(ds, qids, title, why)
+  for _, qid in ipairs(qids) do
+    ns.missed[qid] = true
+    local q = ds.quests[qid]
+    ns.Log("info", ("%s: %s %s, planning without it (/lvls unskip all takes it back)"):format(
+      title or "Talk", q and q.n or tostring(qid), why))
+  end
+  ns.visit = nil
+end
+
+-- You walked off from the npc you talked to (ns.TalkedTo) with quests of its step
+-- still not taken: missed. Not while a hand-in of the step is still open there (you
+-- went to finish it; it can be what opens the quest). True when quests were missed.
+local function leftBehind(ds)
+  local v, char = ns.visit, ns.char
+  if not v or not char.pos then return false end
+  if ns.Geo.Distance(ns.Game.geo, char.pos, v.spot) <= ns.LEAVE_YARDS then return false end
+  ns.visit = nil
+  for _, l in ipairs(v.step.lines) do
+    if l.kind == "turnin" and not ns.Steps.LineState(ds, char, l) then return false end
+  end
+  local gone = {}
+  for _, qid in ipairs(v.quests) do
+    if not (char.active and char.active[qid]) and not char.completed[qid] then gone[#gone + 1] = qid end
+  end
+  if #gone == 0 then return false end
+  miss(ds, gone, v.step.title, "not taken")
+  return true
+end
+
+-- You are talking to an npc / object (kind "n" or "o", id; Adapters/Automation, from
+-- its quest dialogs). At the current talk step's npc: a quest to pick up that its
+-- quest list (`offered`, { [questId] = true }; nil: not a list) does not have is
+-- missed now, and the step moves on; the rest are missed if you walk off without them.
+function ns.TalkedTo(kind, id, offered)
+  local ds = ns.ActiveDataset()
+  if not ds or not ns.db or not ns.steps or not id then return end
+  ns.Refresh() -- the log as it is now: a quest just taken is not missed
+  local st = ns.stepIndex and ns.steps[ns.stepIndex]
+  local open = ns.Steps.OpenAccepts(st, kind, id)
+  if not open or #open == 0 then return end
+  ns.visit = { spot = st.spot, step = st, quests = open }
+  local gone = offered and ns.Steps.NotOffered(st, kind, id, offered) or {}
+  if #gone > 0 then
+    miss(ds, gone, st.title, "is not offered here")
+    ns.Refresh(true)
+  end
+end
+
 -- Plan again. With steps to show meanwhile, the route is planned as a job, a slice
 -- per frame (ns.PLAN_SLICE_MS; Core/Util U.Job), and the old steps stay until it is
 -- done: a plan takes from a tenth of a second to more, the game must not stop for
@@ -218,7 +284,7 @@ local function plan(ds, forced)
     travel = ctx and function(a, b, usable) return ns.Travel.Time(a, b, ctx, usable) end,
     ports = ctx and ctx.ports, -- hearthstone, teleports: used once, on cooldown after (Engine/Route)
     zoneFirst = ns.db.settings.zoneFirst,
-    skip = ns.cdb and ns.cdb.skip,
+    skip = skipSet(char),
     focus = g and (g.focus or g.set),
     dungeon = g and g.area,
     -- what the fights say: how far above your level, how long a kill takes, grind steps
@@ -384,6 +450,11 @@ function ns.Refresh(replan)
   if ns.replanSoon then replan, ns.replanSoon = true, nil end
   if replan or not ns.steps then plan(ds, replan) end
   ns.stepIndex = ns.Steps.Refresh(ds, ns.char, ns.steps, ns.Game.geo)
+  -- you walked off from a talk step without its quests: planned without them
+  if not replan and leftBehind(ds) then
+    plan(ds, true)
+    ns.stepIndex = ns.Steps.Refresh(ds, ns.char, ns.steps, ns.Game.geo)
+  end
   -- a guide is short on purpose: it is re-planned when it runs out, not when it is short
   local short = not ns.guide and ns.Steps.Remaining(ns.steps, ns.stepIndex or 1) < ns.REPLAN_BELOW
   -- a plan just finished (PlanStep) is taken as it is, as when it was made here
@@ -548,6 +619,10 @@ commands.skip = function(arg)
       local q = ds.quests[qid]
       ns.Log("info", ("skipped: %s (%d)"):format(q and q.n or "?", qid)); n = n + 1
     end
+    for qid in pairs(ns.missed) do
+      local q = ds.quests[qid]
+      ns.Log("info", ("missed this session: %s (%d)"):format(q and q.n or "?", qid)); n = n + 1
+    end
     if n == 0 then ns.Log("info", "nothing skipped. Right-click a line in the viewer, or /lvls skip <quest name>") end
     return
   end
@@ -580,7 +655,11 @@ commands.unskip = function(arg)
   if not ds then return end
   local found = arg:lower() == "all" and matching(ds, ns.cdb.skip, "") or matching(ds, ns.cdb.skip, arg)
   for _, qid in ipairs(found) do ns.cdb.skip[qid] = nil end
-  ns.Log("info", ("no longer skipping %d quest%s"):format(#found, #found == 1 and "" or "s"))
+  local missed = 0
+  for qid in pairs(ns.missed) do
+    if arg:lower() == "all" or #matching(ds, { [qid] = true }, arg) > 0 then ns.missed[qid] = nil; missed = missed + 1 end
+  end
+  ns.Log("info", ("no longer skipping %d quest%s"):format(#found + missed, #found + missed == 1 and "" or "s"))
   ns.Refresh(true)
 end
 

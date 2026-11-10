@@ -396,6 +396,10 @@ function S.Valid(ds, char, steps, from)
         if l.kind == "accept" then
           accepting[l.quest] = true
           if q and ns.Availability.Status(q, char) == "wrong" then return false, "cannot accept " .. q.n end
+          -- "Use Odd Tome": the tome left your bags (sold, destroyed), nothing to use
+          if l.item and not (char.bag and char.bag[l.item]) then
+            return false, "no longer in your bags: the item that starts " .. (q and q.n or l.quest)
+          end
         elseif not accepting[l.quest] and not (char.active and char.active[l.quest]) and not char.completed[l.quest] then
           return false, "no longer in the log: " .. (q and q.n or l.quest)
         end
@@ -403,6 +407,31 @@ function S.Valid(ds, char, steps, from)
     end
   end
   return true
+end
+
+-- The quests a talk step still has you pick up from this npc / object (kind "n" or
+-- "o", id), or nil when the step is not at it.
+function S.OpenAccepts(st, kind, id)
+  if not st or st.kind ~= "talk" or not st.spot or st.spot.id ~= id or st.spot.kind ~= kind then return nil end
+  local out = {}
+  for _, l in ipairs(st.lines) do
+    if l.kind == "accept" and not l.done and not l.also and l.quest then out[#out + 1] = l.quest end
+  end
+  return out
+end
+
+-- What the npc's quest list says about the talk step at it: the quests to pick up
+-- that it does not offer (`offered`: { [questId] = true }). Nothing while a hand-in
+-- of the step is still open there: it can be what opens the next quest.
+function S.NotOffered(st, kind, id, offered)
+  local open = S.OpenAccepts(st, kind, id)
+  if not open then return {} end
+  for _, l in ipairs(st.lines) do
+    if l.kind == "turnin" and not l.done then return {} end
+  end
+  local out = {}
+  for _, qid in ipairs(open) do if not offered[qid] then out[#out + 1] = qid end end
+  return out
 end
 
 -- Steps still open from `from` on.
