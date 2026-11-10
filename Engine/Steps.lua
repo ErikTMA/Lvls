@@ -271,11 +271,15 @@ function S.Refresh(ds, char, steps, geo)
   return current
 end
 
--- Other open objectives of accepted quests whose area is near this step's spot.
+-- Other open objectives of accepted quests whose area is near this step's spot, and
+-- every open objective of a quest this step works on, however far: the quest is listed
+-- whole (From the Ashes: the Ironforge plan's step showed Menethil and Southshore close
+-- by, and Thelsamar, 450 yards off and planned after a hand-in, went missing).
 function S.AddAlso(ds, char, st, geo)
-  local have = {}
+  local have, working = {}, {}
   for _, l in ipairs(st.lines) do
     if l.index then have[l.quest .. ":" .. l.index] = true end
+    if l.index and not l.also then working[l.quest] = true end
   end
   local extra = {}
   for qid, entry in pairs(char.active or {}) do
@@ -283,9 +287,13 @@ function S.AddAlso(ds, char, st, geo)
     if q and not entry.complete then
       for i, o in ipairs(q.obj or {}) do
         if not have[qid .. ":" .. i] and not ns.Quests.ObjectiveDone(entry, o, i) then
-          local spots = ns.Quests.ObjectiveSpots(ds, q, i, st.spot.map)
-          local _, d = G.Nearest(geo, st.spot, spots)
-          if d <= S.ALSO_YARDS then
+          local near = working[qid]
+          if not near then
+            local spots = ns.Quests.ObjectiveSpots(ds, q, i, st.spot.map)
+            local _, d = G.Nearest(geo, st.spot, spots)
+            near = d <= S.ALSO_YARDS
+          end
+          if near then
             local l = { kind = objKind(o), quest = qid, index = i, text = S.ObjectiveText(o), also = true }
             l.done = S.LineState(ds, char, l) and true or false
             extra[#extra + 1] = l
