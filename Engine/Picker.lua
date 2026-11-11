@@ -1,7 +1,8 @@
 -- The Guides menu as a tree (UI/Viewer.lua shows it with Blizzard_Menu). Pure.
 --
--- Dungeons: the ones at your level first, then a submenu per ten levels, raids
--- apart. Class quests: the chains you can start now, the ones coming up within
+-- Zones: the ones that suit you best first (the most experience to be had there
+-- now), then every zone in a submenu per ten levels. Dungeons: the ones at your
+-- level first, then a submenu per ten levels, raids apart. Class quests: the chains you can start now, the ones coming up within
 -- SOON levels (shown, not startable yet), later ones per ten levels, raid quests
 -- apart. Every entry says level, quest count and where; its tooltip lists the
 -- quests with who gives them, where, and whether you can take them now.
@@ -16,6 +17,7 @@ P.SOON = 10      -- levels ahead that "coming up" shows
 P.NEAR_BELOW = 2 -- a dungeon still counts as yours this far below its range
 P.NEAR_ABOVE = 3 -- and this far above
 P.TIP_LINES = 14 -- quests listed in a tooltip at most
+P.ZONES_BEST = 8 -- zones in "Best for you"
 
 local GREY, WHITE, GREEN, DIM = { 0.5, 0.5, 0.5 }, { 1, 1, 1 }, { 0.25, 0.75, 0.25 }, { 0.65, 0.65, 0.65 }
 
@@ -104,6 +106,70 @@ local function addLines(t, ds, char, ids, after)
       t.lines[#t.lines + 1] = P.QuestLine(ds, char, q, after and after[id] and ds.quests[after[id]])
     end
   end
+end
+
+-- Zones -----------------------------------------------------------------------------
+
+-- env: { here = map | nil (where you are), current() -> map | nil, select(map), above,
+--        left(map) -> Zones.Left (the tooltip) }
+local function zoneItem(ds, char, z, env)
+  local now = z.ready > 0 and plural(z.ready, "quest") .. " now" or "none for you now"
+  if z.active > 0 then now = now .. (" · %d in your log"):format(z.active) end
+  local text = ("%s  %s · %s%s"):format(z.name, levels(z.minLevel, z.maxLevel, char.level or 1), now,
+    env.here == z.map and " · you are here" or "")
+  return {
+    kind = "radio", key = 100000 + z.map, text = text, disabled = z.ready == 0 and z.active == 0,
+    selected = function() return env.current and env.current() == z.map end,
+    select = function() if env.select then env.select(z.map) end end,
+    tip = function()
+      local t = { title = z.name, lines = {} }
+      local parts = {}
+      if z.minLevel then
+        parts[#parts + 1] = z.maxLevel ~= z.minLevel and ("levels " .. z.minLevel .. "-" .. z.maxLevel) or ("level " .. z.minLevel)
+      end
+      parts[#parts + 1] = plural(z.open, "quest") .. " not done yet"
+      t.lines[1] = { text = table.concat(parts, " · "), color = DIM }
+      local l = env.left and env.left(z.map) or ns.Zones.Left(ds, char, z.map, env.above)
+      if #l.ready > 0 then
+        t.lines[#t.lines + 1] = { text = "To take now:", color = WHITE }
+        addLines(t, ds, char, l.ready)
+      end
+      if #l.active > 0 then
+        t.lines[#t.lines + 1] = { text = "In your log:", color = WHITE }
+        addLines(t, ds, char, l.active)
+      end
+      t.lines[#t.lines + 1] = (z.ready > 0 or z.active > 0)
+        and { text = "Click: the route quests here until the zone has nothing left for you", color = GREEN }
+        or { text = "Nothing to take here at your level yet", color = DIM }
+      return t
+    end,
+  }
+end
+
+-- list: Zones.List (the best for you first).
+function P.Zones(ds, char, list, env)
+  local best, subs, order = {}, {}, {}
+  for _, z in ipairs(list) do
+    local item = zoneItem(ds, char, z, env)
+    if z.xp > 0 and #best < P.ZONES_BEST then best[#best + 1] = item end
+    local b, label = bracket(z.minLevel)
+    if not subs[b] then subs[b] = { kind = "sub", text = label, children = {} }; order[#order + 1] = b end
+    table.insert(subs[b].children, zoneItem(ds, char, z, env))
+  end
+  local out = { { kind = "title", text = ("Best for you (level %d)"):format(char.level or 1) } }
+  if #best == 0 then out[#out + 1] = { kind = "title", text = "|cff999999none right now|r" } end
+  for _, it in ipairs(best) do out[#out + 1] = it end
+  if #order > 0 then
+    out[#out + 1] = { kind = "divider" }
+    table.sort(order)
+    for _, b in ipairs(order) do
+      local s = subs[b]
+      table.sort(s.children, function(x, y) return x.text < y.text end)
+      s.text = ("%s (%d)"):format(s.text, #s.children)
+      out[#out + 1] = s
+    end
+  end
+  return out
 end
 
 -- Dungeons -------------------------------------------------------------------------

@@ -63,11 +63,12 @@ end
 -- you play; re-planned when it runs short, goes wrong (a quest became impossible or
 -- was abandoned), or you took a quest it does not know about.
 ns.REPLAN_BELOW = 5
--- The dungeon guide in use (LvlsCharDB.guide = its area): its quests, or nil.
--- The guide in use, or nil: a dungeon (LvlsCharDB.guide = its area) or a class
--- quest chain (LvlsCharDB.classGuide = its id).
+-- The guide in use, or nil: a dungeon (LvlsCharDB.guide = its area), a class
+-- quest chain (LvlsCharDB.classGuide = its id) or a zone (LvlsCharDB.zoneGuide =
+-- its map: the leveling route with only that zone's quests, Engine/Zones).
 local function guideSet(ds)
   local area, chainId = ns.cdb and ns.cdb.guide, ns.cdb and ns.cdb.classGuide
+  local zone = ns.cdb and ns.cdb.zoneGuide
   local before = ns.guideName -- the name it ran under (a chain's name moves on with its parts)
   ns.guide, ns.guideName = nil, nil
   local g, name
@@ -88,6 +89,17 @@ local function guideSet(ds)
       return guideSet(ds) -- back to the guide (or route) you had
     end
     ns.guide, ns.guideName = g, "Catching up with " .. sync.with
+    return g
+  end
+  if zone then
+    g = ns.Zones.Set(ds, ns.char, zone)
+    if ns.Zones.Done(ds, ns.char, zone, ns.DifficultyModel().above) then
+      ns.Log("info", ("%s: nothing left for you there now, back to the leveling route"):format(g.name))
+      ns.cdb.zoneGuide = nil
+      return nil
+    end
+    g.zone = zone
+    ns.guide, ns.guideName = g, g.name
     return g
   end
   if area then
@@ -167,7 +179,12 @@ local function finishPlan(ds, g, char, route)
   for qid, entry in pairs(char.active or {}) do ns.planLog[qid] = entry.complete and "complete" or true end
   ns.backlog = ns.Route.Backlog(ds, char, route) -- in the log, not handed in by this plan
   ns.steps = ns.Steps.Build(ds, char, route, ns.Game.geo)
-  if g then
+  if g and g.zone and #route == 0 then
+    -- quests left there, none the route can plan (too far up, too long, not on the map)
+    ns.Log("info", ("%s: nothing there the route can plan for you now, back to the leveling route"):format(g.name))
+    ns.cdb.zoneGuide = nil
+    ns.replanSoon = true
+  elseif g and not g.zone then
     local planned = {}
     for _, a in ipairs(route) do if a.kind == "accept" then planned[a.quest] = true end end
     local st
@@ -287,7 +304,8 @@ local function plan(ds, forced)
     ports = ctx and ctx.ports, -- hearthstone, teleports: used once, on cooldown after (Engine/Route)
     zoneFirst = ns.db.settings.zoneFirst,
     skip = skipSet(char),
-    focus = g and (g.focus or g.set),
+    focus = g and not g.zone and (g.focus or g.set) or nil,
+    within = g and g.zone and g.set or nil,
     dungeon = g and g.area,
     -- what the fights say: how far above your level, how long a kill takes, grind steps
     maxAbove = dm.above,
@@ -499,7 +517,7 @@ function ns.Refresh(replan)
     ns.stepIndex = refreshSteps(ds)
   end
   -- a guide is short on purpose: it is re-planned when it runs out, not when it is short
-  local short = not ns.guide and ns.Steps.Remaining(ns.steps, ns.stepIndex or 1) < ns.REPLAN_BELOW
+  local short = (not ns.guide or ns.guide.zone) and ns.Steps.Remaining(ns.steps, ns.stepIndex or 1) < ns.REPLAN_BELOW
   -- a plan just finished (PlanStep) is taken as it is, as when it was made here
   local fresh = ns.planFresh
   ns.planFresh = nil
@@ -720,7 +738,7 @@ end
 function ns.SetGuide(area)
   local ds = ns.ActiveDataset()
   if not ds or not ns.cdb then return end
-  ns.cdb.guide, ns.cdb.classGuide = area, nil
+  ns.cdb.guide, ns.cdb.classGuide, ns.cdb.zoneGuide = area, nil, nil
   if ns.sync and not area then ns.SetSync(nil) return end
   ns.Viewer.view = nil
   if area then
@@ -745,7 +763,7 @@ end
 function ns.SetClassGuide(id)
   local ds = ns.ActiveDataset()
   if not ds or not ns.cdb then return end
-  ns.cdb.guide, ns.cdb.classGuide = nil, id
+  ns.cdb.guide, ns.cdb.classGuide, ns.cdb.zoneGuide = nil, id, nil
   ns.Viewer.view = nil
   local chain = id and ns.ClassQuests.Find(ds, ns.char, id)
   if chain and #chain.reach == 0 then
@@ -763,11 +781,55 @@ function ns.SetClassGuide(id)
   ns.Refresh(true)
 end
 
+-- Zones with quests for this character, the best for you first (Engine/Zones.List).
+function ns.ZoneList()
+  local ds = ns.ActiveDataset()
+  if not ds or not ns.char then return {} end
+  return ns.Zones.List(ds, ns.char, ns.DifficultyModel().above)
+end
 
--- /lvls guide [<dungeon or class quest> | class [<name>] | off]: without a name, the list
+-- Start a zone guide (map id) or stop it (nil).
+function ns.SetZoneGuide(map)
+  local ds = ns.ActiveDataset()
+  if not ds or not ns.cdb then return end
+  ns.cdb.guide, ns.cdb.classGuide, ns.cdb.zoneGuide = nil, nil, map
+  ns.Viewer.view = nil
+  if map then
+    local l = ns.Zones.Left(ds, ns.char, map, ns.DifficultyModel().above)
+    ns.Log("info", ("%s guide: %d quest%s to take now, %d in your log"):format(ds.maps[map] or ("map " .. map),
+      #l.ready, #l.ready == 1 and "" or "s", #l.active))
+  else
+    ns.Log("info", "guide stopped: back to the leveling route")
+  end
+  ns.Refresh(true)
+end
+
+-- /lvls guide [<dungeon or class quest> | class [<name>] | zone [<name>] | off]: without a name, the list
 commands.guide = function(arg)
   arg = (arg or ""):lower()
   if arg == "off" or arg == "stop" then ns.SetGuide(nil) return end
+  local zoneArg = arg:match("^zone%s*(.*)$")
+  if zoneArg then
+    local zones = ns.ZoneList()
+    if zoneArg == "" then
+      if #zones == 0 then ns.Log("info", "no zone has quests for you") return end
+      for i, z in ipairs(zones) do
+        if i > 10 then break end
+        ns.Log("info", ("%s%s (%s-%s): %d quest%s now, %d in your log"):format(ns.cdb.zoneGuide == z.map and "> " or "",
+          z.name, z.minLevel or "?", z.maxLevel or "?", z.ready, z.ready == 1 and "" or "s", z.active))
+      end
+      ns.Log("info", "/lvls guide zone <name> quests there")
+      return
+    end
+    for _, z in ipairs(zones) do
+      if z.name:lower() == zoneArg then ns.SetZoneGuide(z.map) return end
+    end
+    for _, z in ipairs(zones) do
+      if z.name:lower():find(zoneArg, 1, true) then ns.SetZoneGuide(z.map) return end
+    end
+    ns.Log("info", "no zone with quests for you matches " .. zoneArg)
+    return
+  end
   local classArg = arg:match("^class%s*(.*)$")
   if classArg then
     local chains = ns.ClassChains()
@@ -796,7 +858,7 @@ commands.guide = function(arg)
           d.minLevel or "?", d.maxLevel or "?", d.open, d.open == 1 and "" or "s"))
       end
     end
-    ns.Log("info", "/lvls guide <dungeon> starts a guide, /lvls guide class lists class quests, /lvls guide off stops it")
+    ns.Log("info", "/lvls guide <dungeon> starts a guide, /lvls guide class lists class quests, /lvls guide zone lists zones, /lvls guide off stops it")
     return
   end
   for _, d in ipairs(list) do
@@ -1084,7 +1146,7 @@ commands.abandon = function(arg)
 end
 
 commands.help = function()
-  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|note [text|clear]|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|debug|help]")
+  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|zone [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|note [text|clear]|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|debug|help]")
 end
 
 local function slash(input)

@@ -431,6 +431,12 @@ function V.MenuTree()
   local function add(it) tree[#tree + 1] = it end
   local name = ns.guide and ns.guideName
   add({ kind = "title", text = name and ("Guide: " .. name) or "Following the leveling route" })
+  add({ kind = "sub", text = "Zones", children = ns.Picker.Zones(ds, ns.char, ns.ZoneList(), {
+    here = ns.char.pos and (ns.Game.geo.zone and ns.Game.geo.zone(ns.char.pos) or ns.char.pos).map,
+    above = ns.DifficultyModel().above,
+    current = function() return ns.cdb and ns.cdb.zoneGuide end,
+    select = function(map) ns.SetZoneGuide(map) end,
+  }) })
   add({ kind = "sub", text = "Dungeons", children = ns.Picker.Dungeons(ds, ns.char, ns.GuideList(), {
     info = function(area)
       local d = ns.DungeonInfo.Data(area)
@@ -461,7 +467,7 @@ function V.MenuTree()
   if #group > 0 then add({ kind = "sub", text = "Group", children = group }) end
   add({ kind = "divider" })
   add({ kind = "radio", key = 0, text = "Leveling route (no guide)",
-    selected = function() return not (ns.sync or (ns.cdb and (ns.cdb.guide or ns.cdb.classGuide))) end,
+    selected = function() return not (ns.sync or (ns.cdb and (ns.cdb.guide or ns.cdb.classGuide or ns.cdb.zoneGuide))) end,
     select = function() ns.SetGuide(nil) end })
   return tree
 end

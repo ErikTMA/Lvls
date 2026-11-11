@@ -22,7 +22,8 @@
 --      it opens; class quests count more and keep their order; a pick-up or
 --      hand-in within a small detour of the way to the chosen action is done in
 --      passing; objectives close to the one being worked are worked at the same
---      time (one step: kill these, collect that); opts.skip leaves quests out.
+--      time (one step: kill these, collect that); opts.skip leaves quests out,
+--      opts.within keeps to its quests (a zone guide, Engine/Zones).
 --      Turn-ins add experience (reduced for quests below the simulated level),
 --      level the simulation up, and complete the quest, which unlocks its
 --      follow-ups through the normal prerequisite rules.
@@ -78,6 +79,7 @@ R.DEFAULTS = {
   zoneFirst = true,    -- finish the current map before leaving it; then choose the next map as a whole
   skip = nil,          -- { [questId] = true }: quests the player does not want
   focus = nil,         -- { [questId] = true }: a guide: only these quests (any kind, any distance)
+  within = nil,        -- { [questId] = true }: a zone guide: the route as always, with only these quests
   grind = false,       -- suggest "grind to the next level" when quests here wait only on the margin
   grindAbove = 3,      -- the margin quests would have without the difficulty model
   grindNear = 700,     -- yards: quests and mobs this close count as "here"
@@ -757,6 +759,8 @@ local function planOnce(ds, char, geo, o)
 
   -- experience a quest gives now (reduced when it is low for the simulated level)
   local function gain(qid) return math.max(1, R.QuestXP(ds.quests[qid], st.level)) end
+  -- left out: skipped, or not one of a zone guide's quests
+  local function out(qid) return (o.skip and o.skip[qid]) or (o.within and not o.within[qid]) end
 
   -- class quests: the chain graph (Engine/ClassQuests), so their order is kept
   local classOf = o.classQuests and not o.focus and ns.ClassQuests and ns.ClassQuests.Graph(ds, char).of or {}
@@ -777,7 +781,7 @@ local function planOnce(ds, char, geo, o)
           seen[f] = true
           local fq = ds.quests[f]
           if fq and not sim.completed[f] and not sim.active[f] and not A.Fixed(fq, sim)
-            and (not fq.l or fq.l <= st.level + o.maxAbove + 2) and not (o.skip and o.skip[f]) and consider(fq) then
+            and (not fq.l or fq.l <= st.level + o.maxAbove + 2) and not out(f) and consider(fq) then
             total = total + share * gain(f)
             walk(f, depth + 1, share / 2)
           end
@@ -808,7 +812,7 @@ local function planOnce(ds, char, geo, o)
     -- the data does not say; in the log they are still handed in
     local normal = not q.rep and not q.inst and q.kind ~= "dungeon" and q.kind ~= "raid"
       and q.kind ~= "pvp" and q.sort ~= R.EVENT_SORT and (not q.r or q.r <= char.level + 10)
-    if (q.sn or q.so or bagStarts[qid] or (not q.inst and ns.Quests.StartItem(ds, q))) and not (o.skip and o.skip[qid]) and (o.focus and o.focus[qid] or (not o.focus and normal)) then
+    if (q.sn or q.so or bagStarts[qid] or (not q.inst and ns.Quests.StartItem(ds, q))) and not out(qid) and (o.focus and o.focus[qid] or (not o.focus and normal)) then
       pool[#pool + 1] = q
     end
   end
@@ -859,7 +863,7 @@ local function planOnce(ds, char, geo, o)
     -- away from it pays for the walk back (greedy steps otherwise wander off)
     local pending = {}
     for qid in pairs(sim.active) do
-      local q = not (o.skip and o.skip[qid]) and not (o.focus and not o.focus[qid]) and ds.quests[qid]
+      local q = not out(qid) and not (o.focus and not o.focus[qid]) and ds.quests[qid]
       local s = q and consider(q)
       if s and progress[qid] then
         if allDone(q) then
@@ -1011,7 +1015,7 @@ local function planOnce(ds, char, geo, o)
     -- hand in / work accepted quests
     for qid in pairs(sim.active) do
       yield()
-      local q = not (o.skip and o.skip[qid]) and not (o.focus and not o.focus[qid]) and ds.quests[qid]
+      local q = not out(qid) and not (o.focus and not o.focus[qid]) and ds.quests[qid]
       local s = q and consider(q)
       if s and progress[qid] then
         if allDone(q) then
