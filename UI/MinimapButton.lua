@@ -60,8 +60,8 @@ local function create()
   b:SetFrameLevel((Minimap:GetFrameLevel() or 1) + 8)
   b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
   b:RegisterForDrag("LeftButton")
-  -- its own round badge (Media/MinimapIcon: drawn for this size; the painted logo
-  -- blurs into a squiggle here), no border of the client's round it
+  -- its own round badge (Media/MinimapIcon: the logo's gold signpost redrawn big for
+  -- this size, where the painting's detail blurs), no border of the client's round it
   b.icon = b:CreateTexture(nil, "ARTWORK")
   b.icon:SetTexture("Interface\\AddOns\\Lvls\\Media\\MinimapIcon")
   b.icon:SetAllPoints(b)
