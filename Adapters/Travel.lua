@@ -130,14 +130,16 @@ function TR.LearnTaxi()
     local nodes = map and C_TaxiMap.GetAllTaxiNodes(map) or {}
     if #nodes == 0 then return false end
     for _, node in ipairs(nodes) do found[short(node.name)] = true end
-    -- the continent's other points of your faction: not yours yet
-    local pos = ns.Game.Position and ns.Game.Position()
-    local cont = pos and TR.Continent(pos.map)
-    local fac = FACTION[UnitFactionGroup and UnitFactionGroup("player") or ""]
-    for _, node in ipairs(cont and has(C_TaxiMap, "GetTaxiNodesForMap") and C_TaxiMap.GetTaxiNodesForMap(cont) or {}) do
-      local nf = node.faction or 0
-      if (nf == 0 or nf == fac) and found[short(node.name)] == nil then found[short(node.name)] = false end
-    end
+  end
+  if next(found) == nil then return false end
+  -- the continent's other points of your faction, missing from the map: not yours
+  -- yet (the TaxiFrame may leave out the ones you lack instead of calling them NONE)
+  local pos = ns.Game.Position and ns.Game.Position()
+  local cont = pos and TR.Continent(pos.map)
+  local fac = FACTION[UnitFactionGroup and UnitFactionGroup("player") or ""]
+  for _, node in ipairs(cont and has(C_TaxiMap, "GetTaxiNodesForMap") and C_TaxiMap.GetTaxiNodesForMap(cont) or {}) do
+    local nf = node.faction or 0
+    if (nf == 0 or nf == fac) and found[short(node.name)] == nil then found[short(node.name)] = false end
   end
   local t = ns.cdb.taxi or {}
   ns.cdb.taxi = t
