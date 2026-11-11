@@ -1,7 +1,8 @@
 # Upload each published release of Lvls! to CurseForge (project 1796463, X-Curse-Project-ID
-# in Lvls.toc). The GitHub release and its zip are made before this runs; this job only
-# packages the tagged tree with BigWigsMods/packager and uploads it to CurseForge, using
-# the release's own notes as the changelog. Rerun by hand with the tag to upload again.
+# in Lvls.toc). The file uploaded is the release's own Lvls-<version>.zip, the same bytes
+# as on GitHub, with the release notes as the changelog. The game version comes from the
+# zip's TOC Interface (16001 -> 1.60.1, CurseForge's WoW Forever versions). Rerun by hand
+# with the tag to upload again.
 name: curseforge
 on:
   release:
@@ -20,22 +21,45 @@ defaults:
 jobs:
   upload:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     env:
       TAG: ${{ github.event.release.tag_name || inputs.tag }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      CF_API_KEY: ${{ secrets.CF_API_KEY }}
+      CF_PROJECT: "1796463"
+      CF_FOREVER: "88568"
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.release.tag_name || inputs.tag }}
-          fetch-depth: 0
-      - name: The release notes become the CurseForge changelog
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Upload the release zip to CurseForge
         run: |
           set -eu
-          gh release view "$TAG" --json body -q .body > CHANGELOG.md
-          test -s CHANGELOG.md || echo "Lvls! ${TAG#v}" > CHANGELOG.md
-          cat CHANGELOG.md
-      - name: Package and upload to CurseForge
-        uses: BigWigsMods/packager@v2
-        env:
-          CF_API_KEY: ${{ secrets.CF_API_KEY }}
+          [ -n "$CF_API_KEY" ] || { echo "::error::CF_API_KEY is not set"; exit 1; }
+          version="${TAG#v}"
+          zip="Lvls-$version.zip"
+          mkdir -p dl && cd dl
+          gh release download "$TAG" -p "$zip" -p "$zip.sha256"
+          sha256sum -c "$zip.sha256"
+          gh release view "$TAG" --json body -q .body > notes.md
+          interface=$(unzip -p "$zip" Lvls/Lvls.toc | sed -n 's/^## Interface: *\([0-9]*\).*/\1/p' | head -1)
+          [ -n "$interface" ] || { echo "::error::no Interface in Lvls.toc"; exit 1; }
+          game="$((interface / 10000)).$((interface / 100 % 100)).$((interface % 100))"
+          curl -sSf --retry 3 -H "x-api-token: $CF_API_KEY" \
+            https://wow.curseforge.com/api/game/wow/versions > versions.json
+          id=$(jq -r --arg v "$game" --argjson t "$CF_FOREVER" \
+            'map(select(.gameVersionTypeID == $t and .name == $v)) | .[0].id // empty' versions.json)
+          if [ -z "$id" ]; then
+            id=$(jq -r --argjson t "$CF_FOREVER" 'map(select(.gameVersionTypeID == $t)) | max_by(.id) | .id // empty' versions.json)
+            echo "::warning::no CurseForge game version $game; using the newest Forever version ($id)"
+          fi
+          [ -n "$id" ] || { echo "::error::no CurseForge WoW Forever game version"; exit 1; }
+          type=release
+          case "$version" in *-*) type=beta;; esac
+          jq -n --arg name "Lvls! $version" --argjson id "$id" --arg type "$type" --rawfile notes notes.md \
+            '{displayName: $name, gameVersions: [$id], releaseType: $type, changelog: $notes, changelogType: "markdown"}' > metadata.json
+          echo "uploading $zip as game version $game (id $id), $type"
+          code=$(curl -sS --retry 3 --retry-delay 10 -o result.json -w '%{http_code}' \
+            -H "x-api-token: $CF_API_KEY" -F "metadata=<metadata.json" -F "file=@$zip" \
+            "https://wow.curseforge.com/api/projects/$CF_PROJECT/upload-file")
+          cat result.json; echo
+          [ "$code" = 200 ] || { echo "::error::CurseForge upload failed (HTTP $code)"; exit 1; }
+          echo "uploaded to https://www.curseforge.com/wow/addons/lvls"
