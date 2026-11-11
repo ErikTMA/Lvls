@@ -16,15 +16,7 @@ ns.TravelShipped = {
   },
   notes = {
     n = {
-      [234] = "At the top of the tower",
-      [313] = "At the top of the Tower of Azora",
-      [344] = "Upstairs in the town hall",
-      [773] = "On the top floor of the inn",
-      [2487] = "On the top floor of the inn",
-      [2496] = "On the top floor of the inn",
-      [3514] = "At the top of Aldrassil, up the ramp around the tree",
-      [4967] = "At the top of the citadel's tower",
-      [4968] = "At the top of the citadel's tower",
+      [234] = "At the top of the hill, at the foot of the tower",
     },
     o = {
     },
