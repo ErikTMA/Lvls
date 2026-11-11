@@ -94,6 +94,7 @@ A World of Warcraft addon for questing and leveling on **WoW Forever**.
 | `/lvls nearby` | List the nearest quests you can pick up |
 | `/lvls travel` | How the arrow gets you there, leg by leg |
 | `/lvls record <title>`, `/lvls record stop` | Record a path you walk (to share a way up a hill) |
+| `/lvls note <text>`, `/lvls note`, `/lvls note clear` | A note on where your target (or the current step's quest giver) stands, such as "At the top of the tower". It shows on the step and under the arrow. Without text: show it. `clear`: remove yours |
 | `/lvls map`, `/lvls minimap` | Quest pins on the world map / minimap on or off |
 | `/lvls objectives` | Objective areas on or off |
 | `/lvls low`, `/lvls trivial`, `/lvls dungeon`, `/lvls repeatable` | Also show quests you are too low for, grey quests, dungeon quests, dailies |

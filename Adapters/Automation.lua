@@ -211,12 +211,13 @@ end
 
 -- talking to an npc ----------------------------------------------------------
 
--- The npc or object whose dialog is open: "n" | "o", id; nil otherwise (an item, a
--- player sharing a quest). UnitGUID("npc"): "Creature-0-server-instance-zone-id-spawn".
+-- The npc or object whose dialog is open (or `unit`: "target"): "n" | "o", id; nil
+-- otherwise (an item, a player sharing a quest).
+-- UnitGUID("npc"): "Creature-0-server-instance-zone-id-spawn".
 local KINDS = { Creature = "n", Vehicle = "n", GameObject = "o" }
-function A.Npc()
+function A.Npc(unit)
   if type(UnitGUID) ~= "function" then return nil end
-  local ok, guid = pcall(UnitGUID, "npc")
+  local ok, guid = pcall(UnitGUID, unit or "npc")
   guid = ok and ns.Util.plain(guid) or nil
   if type(guid) ~= "string" then return nil end
   local what, id = guid:match("^(%a+)%-%d+%-%d+%-%d+%-%d+%-(%d+)")

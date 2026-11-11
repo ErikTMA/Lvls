@@ -998,6 +998,37 @@ end
 
 commands.record = function(arg) ns.TravelData.Record(arg) end
 
+-- /lvls note <text>: a note on where your target stands ("At the top of the tower"),
+-- else on the current step's npc / object; shown on its steps and under the arrow.
+-- /lvls note: show it; /lvls note clear: remove yours (the shipped one shows again).
+commands.note = function(arg)
+  local ds = ns.ActiveDataset and ns.ActiveDataset()
+  local kind, id = ns.Auto.Npc("target")
+  local name = kind and UnitName and ns.Util.plain(UnitName("target"))
+  if not kind then
+    local st = ns.steps and ns.stepIndex and ns.steps[ns.stepIndex]
+    local sp = st and st.spot
+    if sp and (sp.kind == "n" or sp.kind == "o") and sp.id then
+      kind, id = sp.kind, sp.id
+      local rec = ds and (kind == "o" and ds.objects or ds.npcs)[id]
+      name = rec and rec.n
+    end
+  end
+  if not kind then ns.Log("info", "target the npc (or stand at the step) the note is about"); return end
+  name = name or ((kind == "o" and "object " or "npc ") .. id)
+  if arg == "" then
+    local note = ns.Notes.Get(kind, id)
+    ns.Log("info", note and ("%s: %s"):format(name, note) or ("no note on %s; /lvls note <text> writes one"):format(name))
+    return
+  end
+  local note = ns.Notes.Set(ns.db, kind, id, arg:lower() ~= "clear" and arg or nil)
+  local shipped = ns.Notes.Get(kind, id)
+  ns.Log("info", note and ("note on %s: %s"):format(name, note)
+    or ("your note on %s removed%s"):format(name, shipped and (" (shipped: " .. shipped .. ")") or ""))
+  if ns.Viewer and ns.Viewer.Render then ns.Viewer.Render() end
+  if ns.Arrow and ns.Arrow.Redraw then ns.Arrow.Redraw() end
+end
+
 commands.travel = function()
   local trip = ns.trip
   if not trip or #trip.legs == 0 then
@@ -1037,7 +1068,7 @@ commands.abandon = function(arg)
 end
 
 commands.help = function()
-  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|debug|help]")
+  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|note [text|clear]|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|debug|help]")
 end
 
 local function slash(input)

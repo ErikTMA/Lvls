@@ -16,7 +16,7 @@ V.COLORS = {
   bar = { 0.23, 0.23, 0.23, 1 },          -- title / progress bar background
   accent = { 1, 0.48, 0.1, 1 },           -- orange
   text = { 0.92, 0.92, 0.92 }, done = { 0.45, 0.45, 0.45 }, also = { 0.7, 0.75, 0.85 },
-  title = { 1, 0.82, 0.25 }, travel = { 1, 0.6, 0.3 },
+  title = { 1, 0.82, 0.25 }, travel = { 1, 0.6, 0.3 }, note = { 0.55, 0.85, 1 },
 }
 local ICONS = "Interface\\AddOns\\Lvls\\Media\\Icons"
 local ICON_SLOT = { checkoff = 0, checkon = 1, accept = 2, turnin = 3, kill = 4, collect = 5, talk = 6, ["goto"] = 7,
@@ -33,7 +33,7 @@ function V.IconCoords(name)
   return i / ICON_SLOTS, (i + 1) / ICON_SLOTS, 0, 1
 end
 
--- What the viewer shows, as plain data. Pure: { header, sub, lines = { { icon,
+-- What the viewer shows, as plain data. Pure: { header, sub, note, lines = { { icon,
 -- check, text, progress, color, line } }, next, offset }. offset: how far the step
 -- browsed to is from the current one (nil on the current step).
 function V.Model(ds, char, steps, current, view)
@@ -66,6 +66,13 @@ function V.Model(ds, char, steps, current, view)
       m.lines[#m.lines + 1] = { icon = t.kind, check = "checkoff", text = t.text, color = V.COLORS.travel,
         line = { kind = t.kind, spot = t.spot, text = t.text }, travel = true }
     end
+  end
+  -- a word on where it stands that the map cannot show ("At the top of the tower")
+  local note = ns.Notes and ns.Notes.ForSpot(st.spot)
+  if note then
+    m.note = note
+    m.lines[#m.lines + 1] = { note = true, text = note, color = V.COLORS.note,
+      line = { kind = "note", spot = st.spot, text = st.title } }
   end
   -- a part that is done leaves the list: only what is still to do shows. A step that
   -- is all done (browsed to) shows its lines ticked off, not an empty box.
@@ -555,13 +562,14 @@ function V.Render()
     r:SetPoint("TOPLEFT", frame.step, "TOPLEFT", 6, -(top + (i - 1) * V.LINE))
     r:SetPoint("RIGHT", frame.step, "RIGHT", -6, 0)
     r.line = l.line
-    -- a quest's name: no box, no icon; its objectives under it, indented
+    -- a quest's name and a note: no box, no icon; a quest's objectives under it, indented
+    local bare = l.quest or l.note
     r.check:ClearAllPoints()
     r.check:SetPoint("LEFT", r, "LEFT", l.indent and 12 or 0, 0)
     r.text:ClearAllPoints()
-    r.text:SetPoint("LEFT", l.quest and r or r.icon, l.quest and "LEFT" or "RIGHT", l.quest and 0 or 5, 0)
+    r.text:SetPoint("LEFT", bare and r or r.icon, bare and "LEFT" or "RIGHT", bare and 0 or 5, 0)
     r.text:SetPoint("RIGHT", r.progress, "LEFT", -4, 0)
-    if l.quest then r.check:Hide(); r.icon:Hide() else r.check:Show(); r.icon:Show() end
+    if bare then r.check:Hide(); r.icon:Hide() else r.check:Show(); r.icon:Show() end
     if l.check then r.check:SetTexCoord(V.IconCoords(l.check)) end
     if l.icon then r.icon:SetTexCoord(V.IconCoords(l.icon)) end
     r.text:SetText(l.text)

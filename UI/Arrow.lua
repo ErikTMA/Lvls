@@ -55,6 +55,16 @@ function AR.GoalTitle(g)
   return g.title
 end
 
+-- The title under the arrow at the goal itself: a note on where it stands goes on a
+-- second line ("At the top of the tower"); legs on the way keep their own title.
+AR.NOTE_COLOR = "|cff8cd9ff"
+function AR.GoalText(g)
+  local title = AR.GoalTitle(g)
+  local note = g and ns.Notes and ns.Notes.ForSpot(g.spot)
+  if note then title = (title or "") .. "\n" .. AR.NOTE_COLOR .. note .. "|r" end
+  return title
+end
+
 -- Is the player inside the game's own objective area (the blue shape on the map and
 -- the minimap) of one of these quests? The client draws that shape and can say
 -- which quest's shape covers a point, but does not hand out the shape itself.
@@ -243,7 +253,7 @@ local hooks = {
         local lines = AR.Primary(g.lines, g.spot)
         AR.inArea = not (not g.manual and AR.CheckPickup(pos, lines, now)) and AR.CheckArea(pos, lines)
       end
-      if AR.inArea then return { text = "|cff40ff40In the quest area|r", title = AR.GoalTitle(g) } end
+      if AR.inArea then return { text = "|cff40ff40In the quest area|r", title = AR.GoalText(g) } end
     end
     if t.leg and d <= AR.LEG_YARDS and ns.RefreshTravel then
       local now = GetTime and GetTime() or 0
@@ -262,7 +272,7 @@ function push(fresh)
   end
   local t = AR.target
   if not t then return WA.Clear(AR.OWNER) end
-  local gt = AR.GoalTitle(AR.goal)
+  local gt = AR.GoalText(AR.goal)
   WA.Set(AR.OWNER, { map = t.map, x = t.x, y = t.y, title = t == AR.goal and gt or t.title, leg = t.leg,
     goalTitle = gt }, { manual = AR.goal and AR.goal.manual or false,
     fresh = fresh, hooks = hooks })
@@ -282,6 +292,9 @@ function AR.SetTarget(spot, title, manual, lines)
     if ns.RefreshTravel then ns.RefreshTravel() end
   end
 end
+
+-- Say the goal's title again (its note changed).
+function AR.Redraw() if AR.goal then push(false) end end
 
 -- The goal's title changed (a work step's progress): not for a place you picked.
 function AR.SetTitle(title)
