@@ -112,6 +112,40 @@ function R.QuestXP(q, level)
   return math.floor(xp * math.max(0.1, 1 - 0.2 * over) + 0.5)
 end
 
+-- Experience the kills of one objective give at a level: a kill objective its count,
+-- an item from mobs its count over the drop chance (30% when unknown, as
+-- workSeconds), by Engine/Difficulty's mob experience. Objects give none. Questing
+-- earns much of a level this way; counted only on hand-ins, the route planned grind
+-- steps for experience the quests' own kills had given.
+function R.ObjectiveXP(ds, q, i, level)
+  local o = q.obj and q.obj[i]
+  if not o then return 0 end
+  local Df = ns.Difficulty
+  local function mobXP(id)
+    local n = ds.npcs[id]
+    local lv = n and n.lv
+    if not lv then return 0 end
+    local ml = math.floor(((lv[1] or 1) + (lv[2] or lv[1] or 1)) / 2)
+    return Df.MobXP(ml, level) * (n.elite and 2 or 1)
+  end
+  local qty = o.qty or 1
+  if o.t == "kill" and o.id then return qty * mobXP(o.id) end
+  if o.t == "item" then
+    local best
+    for _, s in ipairs(o.src or {}) do
+      if s[1] == "n" then
+        local pct = (s[3] and s[3] > 0) and s[3] or 30
+        local xp = qty * 100 / pct * mobXP(s[2])
+        if xp > 0 and (not best or xp < best) then best = xp end
+      elseif s[1] == "o" then
+        return 0
+      end
+    end
+    return math.floor(best or 0)
+  end
+  return 0
+end
+
 -- Work seconds for one objective (qty / drop chance kills, objects, purchases).
 local function workSeconds(o, spots, opts)
   local qty = o.qty or 1
@@ -157,6 +191,42 @@ local function objectiveTargets(o, spots)
   return targets
 end
 
+-- A quest started by an item that drops in the open world: where to loot it and the
+-- seconds it takes ({ item, spots, secs }), or nil. An object gives it at once; a mob
+-- by its drop chance (LOOT_MIN_PCT at least); one mob of unknown chance (Cortello's Riddle, a named mob) is
+-- taken as one kill; several of unknown chance are a rare random drop: not planned.
+-- Elites and dungeons are left out. Without these the route had nothing left from
+-- level 30 (Message in a Bottle, Sully Balloo's Letter) and ground half of 40-60.
+local LOOT_MIN_PCT = 10 -- a rarer drop is not gone for (it is looted on the way, Engine/Steps)
+local function lootStart(ds, q, opts)
+  local it = ns.Quests.StartItem(ds, q)
+  if not it or #it.spots == 0 then return nil end
+  local npcs = {}
+  for _, s in ipairs(it.src or {}) do if s[1] ~= "o" then npcs[s[2]] = true end end
+  local nNpcs = 0
+  for _ in pairs(npcs) do nNpcs = nNpcs + 1 end
+  local best, spots = math.huge, {}
+  for _, sp in ipairs(it.spots) do
+    local secs
+    if sp.kind == "o" then
+      secs = opts.objectSeconds * 100 / ((sp.pct and sp.pct > 0) and sp.pct or 100)
+    else
+      local n = ds.npcs[sp.id]
+      if not (n and n.elite) then
+        if sp.pct and sp.pct > 0 then
+          if sp.pct >= LOOT_MIN_PCT then secs = opts.killSeconds * 100 / sp.pct end
+        elseif nNpcs <= 1 then secs = opts.killSeconds end
+      end
+    end
+    if secs then
+      spots[#spots + 1] = { map = sp.map, x = sp.x, y = sp.y, kind = sp.kind, id = sp.id, loot = it.id }
+      if secs < best then best = secs end
+    end
+  end
+  if #spots == 0 then return nil end
+  return { item = it.id, name = it.n, spots = spots, secs = best }
+end
+
 -- Plannable shape of a quest: giver spots, per-objective target clusters, turn-in
 -- spots. nil and why when any part cannot be located.
 -- entry: the quest log's entry when the quest is in the log. Then the log decides:
@@ -164,13 +234,19 @@ end
 -- cannot plan (no location, reputation, a spell, inside a dungeon) is left to you,
 -- and the quest is handed in once the client says it is complete. No experience
 -- or giver needed: it is yours already.
-local function shape(ds, q, dungeon, bagStart, pos, opens, entry)
+local function shape(ds, q, dungeon, bagStart, pos, opens, entry, opts)
   -- no experience: only a link that opens others (a delivery, a breadcrumb chain)
   if not entry and (not q.xp or q.xp <= 0) and not opens then return nil, "no experience and opens nothing" end
   local givers = ns.Quests.Givers(ds, q)
   -- started by an item in your bags: picked up where you stand (use the item)
   if #givers == 0 and bagStart and pos then
     givers = { { map = pos.map, x = pos.x, y = pos.y, kind = "item", id = bagStart } }
+  end
+  -- started by an item that drops: the route goes and loots it (lootStart)
+  local loot
+  if #givers == 0 and not entry and not q.inst then
+    loot = lootStart(ds, q, opts or R.DEFAULTS)
+    if loot then givers = loot.spots end
   end
   local ends = ns.Quests.TurnIns(ds, q)
   -- no known giver (it starts inside a dungeon): plannable once in the log
@@ -197,7 +273,7 @@ local function shape(ds, q, dungeon, bagStart, pos, opens, entry)
       objs[i] = { blocked = true } -- in the log: yours to do; handed in once complete
     end
   end
-  return { givers = givers, ends = ends, objs = objs }
+  return { givers = givers, ends = ends, objs = objs, loot = loot }
 end
 
 -- Travel seconds between two spots: walking, or opts.travel (Engine/Travel: flight
@@ -322,11 +398,15 @@ local function grindAction(ds, o, st, sim, pos, geo, pool, consider, shapes, not
   -- easy mobs close by: at most your level (the margin is below it), worth experience
   local best, bestScore
   local skipNamed = named(ds)
+  -- friendly npcs are not mobs (a level-56 dwarf was sent to kill Argent
+  -- Quartermasters in Darnassus): the reaction to your side must not be 1
+  local side = st.char.faction == "Horde" and "rh" or "ra"
+  local function friendly(n) return n[side] == 1 end
   for id, n in pairs(ds.npcs) do
     local lv = n.lv
     local top = lv and lv[2] or (lv and lv[1])
     -- normal mobs only: no elites, rares or bosses, no named quest targets
-    if top and not n.elite and not skipNamed[id] and top <= st.level + math.min(0, o.maxAbove + 1)
+    if top and not n.elite and not skipNamed[id] and not friendly(n) and top <= st.level + math.min(0, o.maxAbove + 1)
       and top >= st.level - 2 and n.p and n.p[pos.map] then
       local near, nearest, nd = 0, nil, math.huge
       for _, packed in ipairs(n.p[pos.map]) do
@@ -352,7 +432,7 @@ local function grindAction(ds, o, st, sim, pos, geo, pool, consider, shapes, not
     for id, n in pairs(ds.npcs) do
       local lv = n.lv
       local top = lv and lv[2] or (lv and lv[1])
-      if top and not n.elite and not skipNamed[id] and top <= st.level + math.min(0, o.maxAbove + 1)
+      if top and not n.elite and not skipNamed[id] and not friendly(n) and top <= st.level + math.min(0, o.maxAbove + 1)
         and top >= st.level - 2 and n.p then
         for m, list in pairs(n.p) do
           if m ~= pos.map and #list >= 4 then
@@ -397,8 +477,10 @@ local function grindAction(ds, o, st, sim, pos, geo, pool, consider, shapes, not
   local per = math.max(1, Df.MobXP(best.level, st.level))
   local kills = math.ceil(need / per)
   -- only the rest of a level, and only when it is short; a whole level of killing
-  -- only when there is nothing else to do at all
-  if not nothingElse and kills * o.killSeconds > o.grindMaxSecs then return nil end
+  -- only when there is nothing else to do at all, not even farther or longer quests
+  -- (R.Plan's last try, o.dry: a level-48 dwarf ground a whole level in Felwood for
+  -- the next quest of a chain while quests waited farther off)
+  if not (nothingElse and o.dry) and kills * o.killSeconds > o.grindMaxSecs then return nil end
   return { kind = "grind", level = st.level + 1, xp = need, npc = best.id, name = best.n.n, spot = best.spot,
     kills = math.ceil(need / per), held = held, byLevel = byLevel or nil }
 end
@@ -613,7 +695,7 @@ local function planOnce(ds, char, geo, o)
     -- (Unrequited Love: given in Darkshore, handed in at Menethil Harbor), each
     -- objective and the turn-in are reached on their own, across the sea by opts.travel
     local entry = char.active and char.active[q.id]
-    local s = shape(ds, q, o.dungeon, bagStarts[q.id], pos, opens[q.id] ~= nil, entry)
+    local s = shape(ds, q, o.dungeon, bagStarts[q.id], pos, opens[q.id] ~= nil, entry, o)
     shapes[q.id] = s or false
     if s then
       -- not in the log: giver -> objectives -> turn-in must be walkable (one continent),
@@ -622,7 +704,7 @@ local function planOnce(ds, char, geo, o)
       -- to Stranglethorn, and nothing else: the route ran dry)
       local across = o.travel ~= nil
       local here = s.givers[1] or s.ends[1]
-      workSecs[q.id] = 0
+      workSecs[q.id] = s.loot and s.loot.secs or 0
       for i in ipairs(q.obj or {}) do
         local ob = s.objs[i]
         if ob and ob.targets then
@@ -726,7 +808,7 @@ local function planOnce(ds, char, geo, o)
     -- the data does not say; in the log they are still handed in
     local normal = not q.rep and not q.inst and q.kind ~= "dungeon" and q.kind ~= "raid"
       and q.kind ~= "pvp" and q.sort ~= R.EVENT_SORT and (not q.r or q.r <= char.level + 10)
-    if (q.sn or q.so or bagStarts[qid]) and not (o.skip and o.skip[qid]) and (o.focus and o.focus[qid] or (not o.focus and normal)) then
+    if (q.sn or q.so or bagStarts[qid] or (not q.inst and ns.Quests.StartItem(ds, q))) and not (o.skip and o.skip[qid]) and (o.focus and o.focus[qid] or (not o.focus and normal)) then
       pool[#pool + 1] = q
     end
   end
@@ -959,7 +1041,7 @@ local function planOnce(ds, char, geo, o)
     -- accept
     for _, a in ipairs(avail) do
       yield()
-      offer({ kind = "accept", quest = a.quest, spot = a.spot }, a.secs + 3, 3 + workSecs[a.quest])
+      offer({ kind = "accept", quest = a.quest, spot = a.spot, loot = a.spot.loot }, a.secs + 3, 3 + workSecs[a.quest])
     end
     if trainAt and not trained then
       local spot, d = G.Nearest(geo, pos, trainAt)
@@ -1030,6 +1112,8 @@ local function planOnce(ds, char, geo, o)
       markFree(q)
     elseif best.kind == "do" then
       progress[q.id][best.index] = true
+      simLevel(st, R.ObjectiveXP(ds, q, best.index, st.level))
+      sim.level = st.level
       -- everything else open close by is done in the same go
       local also = {}
       for qid in pairs(sim.active) do
@@ -1048,7 +1132,11 @@ local function planOnce(ds, char, geo, o)
       end
       table.sort(also, function(x, y) if x.quest ~= y.quest then return x.quest < y.quest end return x.index < y.index end)
       best.also = also
-      for _, a in ipairs(also) do progress[a.quest][a.index] = true end
+      for _, a in ipairs(also) do
+        progress[a.quest][a.index] = true
+        simLevel(st, R.ObjectiveXP(ds, ds.quests[a.quest], a.index, st.level))
+      end
+      sim.level = st.level
     elseif best.kind == "turnin" then
       sim.active[q.id] = nil
       sim.completed[q.id] = true
@@ -1101,8 +1189,12 @@ function R.Why(ds, char, qid)
   local st, why = ns.Availability.Status(q, char)
   if st == "done" then return "already done" end
   if st == "wrong" then return "never for you: " .. tostring(why) end
-  if not (q.sn or q.so) then
-    if not (char.active and char.active[qid]) then return "starts from an item or inside a dungeon: plannable once in your log" end
+  if not (q.sn or q.so) and not (char.active and char.active[qid]) then
+    local it = not q.inst and ns.Quests.StartItem(ds, q)
+    if not it then return "starts inside a dungeon or from nothing known: plannable once in your log" end
+    if not lootStart(ds, q, R.DEFAULTS) then
+      return ("starts from %s, a rare drop: plannable once it is in your bags"):format(it.n or ("item " .. it.id))
+    end
   end
   local opens = R.Opens(ds, char)[qid] ~= nil
   local entry = char.active and char.active[qid]

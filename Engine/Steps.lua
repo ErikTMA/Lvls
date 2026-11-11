@@ -219,6 +219,19 @@ function S.Build(ds, char, route, geo)
           text = t and t.count > 0 and ns.Training.StepText(t) or "Learn your new spells" } } }
       steps[#steps + 1] = cur
       cur = nil
+    elseif q and a.kind == "accept" and a.loot then
+      -- started by an item that drops (Engine/Route lootStart): loot it, then use it
+      local it = ns.Quests.StartItem(ds, q)
+      local item = it and it.n or "the item"
+      local rec = a.spot and (a.spot.kind == "o" and ds.objects or ds.npcs)[a.spot.id]
+      local from = rec and rec.n or "them"
+      local l = { kind = "collect", quest = a.quest, starter = a.loot,
+        text = ("Loot %s from %s (%s)"):format(item, from, item == q.n and "it starts a quest" or ("it starts " .. q.n)) }
+      l.done = S.LineState(ds, char, l) and true or false
+      cur = { kind = "work", spot = a.spot, title = "Loot " .. item, level = a.level, lines = { l } }
+      if char.bag and char.bag[a.loot] then S.AddUse(ds, char, cur, a.quest, a.loot) end
+      steps[#steps + 1] = cur
+      cur = nil
     elseif q and a.kind == "accept" and a.spot and a.spot.kind == "item" then
       -- started by an item in your bags: its own step, right where you are
       local it = ns.Quests.StartItem(ds, q)
@@ -477,7 +490,9 @@ function S.Valid(ds, char, steps, from)
     for _, l in ipairs(steps[i].lines) do
       if not l.done and not l.also and l.quest then
         local q = ds.quests[l.quest]
-        if l.kind == "accept" then
+        if l.starter then
+          accepting[l.quest] = true -- "Loot Odd Tome": the quest it starts comes next
+        elseif l.kind == "accept" then
           accepting[l.quest] = true
           if q and ns.Availability.Status(q, char) == "wrong" then return false, "cannot accept " .. q.n end
           -- "Use Odd Tome": the tome left your bags (sold, destroyed), nothing to use
