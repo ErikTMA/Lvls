@@ -79,11 +79,14 @@ function TR.FlyNodes(ds, map, faction)
   if not cont or not has(C_TaxiMap, "GetTaxiNodesForMap") then return {}, {}, {} end
   local key = cont .. ":" .. tostring(faction)
   if flyCache[key] then return flyCache[key][1], flyCache[key][2], flyCache[key][3] end
-  local known, unknown, unsure = {}, {}, {}
+  local known, unknown, unsure, all = {}, {}, {}, {}
   local masters = travelNpcs(ds, "fly")
+  local byNpc = {} -- [flight master id] = the points standing at it
   for _, n in ipairs(C_TaxiMap.GetTaxiNodesForMap(cont) or {}) do
     local fac = n.faction or 0
-    if fac == 0 or fac == FACTION[faction] then
+    -- "zz" in front of a name: a record the game retired ("zzOLDRiverglades" at the
+    -- Southshore flight master), listed still but on no flight master's map
+    if (fac == 0 or fac == FACTION[faction]) and not tostring(n.name or ""):find("^zz") then
       local x, y = n.position.x, n.position.y
       if n.position.GetXY then x, y = n.position:GetXY() end
       local spot = { map = cont, x = x * 100, y = y * 100 }
@@ -94,10 +97,27 @@ function TR.FlyNodes(ds, map, faction)
         f.spot = { map = npc.map, x = npc.x, y = npc.y }
       end
       local seen = TR.Seen(f.name)
-      if seen == true then known[#known + 1] = f
-      elseif seen == false or n.isUndiscovered then unknown[#unknown + 1] = f
-      else unsure[#unsure + 1] = f end
+      f.state = seen == true and "known" or (seen == false or n.isUndiscovered) and "unknown" or "unsure"
+      if f.npc then
+        byNpc[f.npc.id] = byNpc[f.npc.id] or {}
+        table.insert(byNpc[f.npc.id], f)
+      end
+      all[#all + 1] = f
     end
+  end
+  -- one flight master is one flight point: of several points at one, the one you
+  -- have stands for it (the others are leftovers you can never get), else the first
+  local drop = {}
+  for _, group in pairs(byNpc) do
+    if #group > 1 then
+      local keep = group[1]
+      for _, f in ipairs(group) do if f.state == "known" then keep = f break end end
+      for _, f in ipairs(group) do if f ~= keep then drop[f] = true end end
+    end
+  end
+  local lists = { known = known, unknown = unknown, unsure = unsure }
+  for _, f in ipairs(all) do
+    if not drop[f] then table.insert(lists[f.state], f) end
   end
   flyCache[key] = { known, unknown, unsure }
   return known, unknown, unsure
