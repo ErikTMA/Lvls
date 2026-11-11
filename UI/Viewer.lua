@@ -265,6 +265,9 @@ local function create()
   local C = V.COLORS
   frame = CreateFrame("Frame", "LvlsViewerFrame", UIParent)
   frame:SetSize(V.WIDTH, 120)
+  -- LOW, not UIParent's MEDIUM: the friend-online toast (BNToastFrame, LOW and
+  -- toplevel) then shows in front of the guide instead of behind it
+  frame:SetFrameStrata("LOW")
   ns.Style.Place(frame, "viewer", "RIGHT", "RIGHT", -40, 80)
   frame:SetMovable(true)
   frame:EnableMouse(true)
