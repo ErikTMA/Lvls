@@ -149,7 +149,7 @@ function V.TrashTip()
     local entry = ns.char and ns.char.active and ns.char.active[qid]
     out[#out + 1] = { (q and q.n) or (entry and entry.title) or ("quest " .. qid), 0.6, 0.6, 0.6 }
   end
-  out[#out + 1] = { "Asks first. Shift-click: at once", 0.7, 0.7, 0.7 }
+  out[#out + 1] = { "Asks first, naming any items it destroys. Shift-click: at once when none", 0.7, 0.7, 0.7 }
   return out
 end
 
@@ -177,8 +177,6 @@ local function row(i)
   if rows[i] then return rows[i] end
   local r = CreateFrame("Button", nil, frame.step)
   r:SetHeight(V.LINE)
-  r:SetPoint("TOPLEFT", frame.step, "TOPLEFT", 6, -(40 + (i - 1) * V.LINE))
-  r:SetPoint("RIGHT", frame.step, "RIGHT", -6, 0)
   r.check = r:CreateTexture(nil, "ARTWORK")
   r.check:SetSize(14, 14)
   r.check:SetPoint("LEFT", r, "LEFT", 0, 0)
@@ -520,8 +518,17 @@ function V.Render()
   frame.sub:SetText(m.sub or "")
   frame.stepNo:SetText(m.offset and ("%+d"):format(m.offset) or "")
   frame.stepNo:SetTextColor(C.accent[1], C.accent[2], C.accent[3])
+  -- the lines start under the title, which wraps when long, and its sub-line
+  local function h(fs, min)
+    local v = fs.GetStringHeight and fs:GetStringHeight() or 0
+    return math.max(min, v or 0)
+  end
+  local top = math.max(40, 6 + h(frame.header, 14) + 2 + ((m.sub or "") ~= "" and h(frame.sub, 12) or 0) + 6)
   for i, l in ipairs(m.lines) do
     local r = row(i)
+    r:ClearAllPoints()
+    r:SetPoint("TOPLEFT", frame.step, "TOPLEFT", 6, -(top + (i - 1) * V.LINE))
+    r:SetPoint("RIGHT", frame.step, "RIGHT", -6, 0)
     r.line = l.line
     -- a quest's name: no box, no icon; its objectives under it, indented
     r.check:ClearAllPoints()
@@ -538,7 +545,7 @@ function V.Render()
     r:Show()
   end
   for i = #m.lines + 1, #rows do rows[i]:Hide() end
-  local stepH = 44 + math.max(1, #m.lines) * V.LINE
+  local stepH = top + 4 + math.max(1, #m.lines) * V.LINE
   frame.step:SetHeight(stepH)
   local preview = m.next and ("Next: " .. m.next) or ""
   if m.backlog then preview = preview ~= "" and (preview .. "  ·  " .. m.backlog) or m.backlog end

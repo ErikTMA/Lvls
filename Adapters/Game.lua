@@ -98,6 +98,26 @@ function G.AbandonQuest(id)
   return true
 end
 
+-- The items abandoning a quest destroys (the server's list, as the quest log's own
+-- "Abandoning this quest will destroy: ..." warning reads it): { name, ... }.
+-- Marking a quest to abandon does nothing until AbandonQuest; the selection is put back.
+function G.AbandonItems(id)
+  local Q = C_QuestLog
+  if not (has(Q, "SetSelectedQuest") and has(Q, "SetAbandonQuest") and has(Q, "GetAbandonQuestItems")) then return {} end
+  local old = has(Q, "GetSelectedQuest") and Q.GetSelectedQuest() or nil
+  Q.SetSelectedQuest(id)
+  Q.SetAbandonQuest()
+  local items = Q.GetAbandonQuestItems() or {}
+  if old and old ~= id then Q.SetSelectedQuest(old) end
+  local out = {}
+  for _, item in ipairs(items) do
+    local name = has(C_Item, "GetItemNameByID") and C_Item.GetItemNameByID(item)
+      or (type(GetItemInfo) == "function" and (GetItemInfo(item))) or nil
+    out[#out + 1] = ns.Util.plain(name) or ("item " .. item)
+  end
+  return out
+end
+
 function G.Skills()
   if not GetProfessions or not GetProfessionInfo then return nil end
   local out = {}

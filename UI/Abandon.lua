@@ -1,5 +1,6 @@
 -- Abandoning grey quests (Engine/Grey.lua):
---   the viewer's trash can   "Abandon 3 grey quests? ..."  Abandon / Cancel (Shift-click: no question)
+--   the viewer's trash can   "Abandon 3 grey quests? ..."  Abandon / Cancel (Shift-click: no question,
+--                            unless items would be destroyed). Both name the items it destroys.
 --   farGrey (setting)        "2 grey quests are more than 10 minutes away: ... Abandon them?"
 --                            Abandon / Keep. Kept ones are not asked about again this session.
 local _, ns = ...
@@ -40,6 +41,19 @@ function A.Abandon(ids)
   return done
 end
 
+-- "\n\nThis destroys: Sealed Letter, Wolf Fang" for the items abandoning these quests
+-- destroys (Game.AbandonItems), "" when none.
+function A.Destroys(ids)
+  local names, seen = {}, {}
+  for _, qid in ipairs(ids) do
+    for _, n in ipairs(ns.Game.AbandonItems(qid)) do
+      if not seen[n] then seen[n] = true; names[#names + 1] = n end
+    end
+  end
+  if #names == 0 then return "" end
+  return "\n\nThis destroys: " .. table.concat(names, ", ")
+end
+
 local function define()
   if not StaticPopupDialogs or type(StaticPopup_Show) ~= "function" then return false end
   StaticPopupDialogs[A.ALL] = StaticPopupDialogs[A.ALL] or {
@@ -69,15 +83,20 @@ function A.Grey()
   return ns.Grey.List(ds, char)
 end
 
--- The trash can: abandon every grey quest, after asking (Shift: at once).
+-- The trash can: abandon every grey quest, after asking (Shift: at once, unless it
+-- destroys items: then it always asks, naming them).
 function A.Trash()
   local ids = A.Grey()
   if #ids == 0 then ns.Log("info", "no grey quests in your log"); return end
-  if (type(IsShiftKeyDown) == "function" and IsShiftKeyDown()) or not define() then
+  local destroys = A.Destroys(ids)
+  local shift = type(IsShiftKeyDown) == "function" and IsShiftKeyDown()
+  if not define() then
+    if destroys ~= "" then ns.Log("info", "abandoning them destroys items: use the quest log"); return end
     A.Abandon(ids)
     return
   end
-  StaticPopup_Show(A.ALL, quests(#ids), A.Names(ns.ActiveDataset(), ids), ids)
+  if shift and destroys == "" then A.Abandon(ids); return end
+  StaticPopup_Show(A.ALL, quests(#ids), A.Names(ns.ActiveDataset(), ids) .. destroys, ids)
 end
 
 -- The grey quests further than the setting's minutes, not kept: { questId, ... }.
@@ -108,6 +127,7 @@ function A.Check(now)
   A.asking = true
   local text = ("%s %s more than %d minute%s away: %s"):format(quests(#ids), #ids == 1 and "is" or "are",
     s.farGreyMinutes or 10, (s.farGreyMinutes or 10) == 1 and "" or "s", A.Names(ns.ActiveDataset(), ids))
+    .. A.Destroys(ids)
   StaticPopup_Show(A.FAR, text, nil, ids)
   return true
 end
