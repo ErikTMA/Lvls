@@ -45,6 +45,16 @@ function AR.Primary(lines, spot)
   return first and { first } or {}
 end
 
+-- What the arrow says for its goal: a work step's primary objective with its
+-- progress ("Kill 12 Kobold Laborer (3/12)"), not the whole step; else the title
+-- it was given.
+function AR.GoalTitle(g)
+  if not g then return nil end
+  local p = g.lines and AR.Primary(g.lines, g.spot)
+  if p and #p > 0 and ns.Steps and ns.Steps.WorkTitle then return ns.Steps.WorkTitle({ lines = p }) end
+  return g.title
+end
+
 -- Is the player inside the game's own objective area (the blue shape on the map and
 -- the minimap) of one of these quests? The client draws that shape and can say
 -- which quest's shape covers a point, but does not hand out the shape itself.
@@ -175,7 +185,7 @@ local push
 local function setPickup(sp)
   AR.pickup, AR.pickupHere = sp, false
   if sp then
-    AR.target = { map = sp.map, x = sp.x, y = sp.y, title = sp.name or (AR.goal and AR.goal.title), pickup = true }
+    AR.target = { map = sp.map, x = sp.x, y = sp.y, title = sp.name or AR.GoalTitle(AR.goal), pickup = true }
     push(false)
     if ns.Ground then pcall(ns.Ground.Want, sp) end
   else
@@ -233,7 +243,7 @@ local hooks = {
         local lines = AR.Primary(g.lines, g.spot)
         AR.inArea = not (not g.manual and AR.CheckPickup(pos, lines, now)) and AR.CheckArea(pos, lines)
       end
-      if AR.inArea then return { text = "|cff40ff40In the quest area|r", title = g.title } end
+      if AR.inArea then return { text = "|cff40ff40In the quest area|r", title = AR.GoalTitle(g) } end
     end
     if t.leg and d <= AR.LEG_YARDS and ns.RefreshTravel then
       local now = GetTime and GetTime() or 0
@@ -252,8 +262,9 @@ function push(fresh)
   end
   local t = AR.target
   if not t then return WA.Clear(AR.OWNER) end
-  WA.Set(AR.OWNER, { map = t.map, x = t.x, y = t.y, title = t.title, leg = t.leg,
-    goalTitle = AR.goal and AR.goal.title }, { manual = AR.goal and AR.goal.manual or false,
+  local gt = AR.GoalTitle(AR.goal)
+  WA.Set(AR.OWNER, { map = t.map, x = t.x, y = t.y, title = t == AR.goal and gt or t.title, leg = t.leg,
+    goalTitle = gt }, { manual = AR.goal and AR.goal.manual or false,
     fresh = fresh, hooks = hooks })
 end
 
@@ -283,7 +294,7 @@ end
 function AR.SetLeg(spot, title)
   if not AR.goal or AR.pickup then return end
   if not spot then AR.target = AR.goal
-  else AR.target = { map = spot.map, x = spot.x, y = spot.y, title = title or AR.goal.title, leg = true } end
+  else AR.target = { map = spot.map, x = spot.x, y = spot.y, title = title or AR.GoalTitle(AR.goal), leg = true } end
   push(false)
 end
 
