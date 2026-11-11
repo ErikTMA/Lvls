@@ -20,7 +20,7 @@ V.COLORS = {
 }
 local ICONS = "Interface\\AddOns\\Lvls\\Media\\Icons"
 local ICON_SLOT = { checkoff = 0, checkon = 1, accept = 2, turnin = 3, kill = 4, collect = 5, talk = 6, ["goto"] = 7,
-  fly = 8, transit = 9, hearth = 10, enter = 11, path = 12, settings = 13, trash = 14 }
+  fly = 8, transit = 9, hearth = 10, enter = 11, path = 12, settings = 13, trash = 14, replan = 15 }
 local ICON_SLOTS = 16
 
 V.view = nil -- index of the step being shown (nil: follow the current step)
@@ -320,8 +320,25 @@ local function create()
     GameTooltip:Show()
   end)
   frame.trash:SetScript("OnLeave", function() if GameTooltip then GameTooltip:Hide() end end)
+  -- plan the route again from here (/lvls route without the list): nothing changed,
+  -- the same route
+  frame.replan = button(frame.bar, "", 20, function() V.Replan() end)
+  frame.replan:SetPoint("RIGHT", frame.trash, "LEFT", -2, 0)
+  frame.replan.icon = frame.replan:CreateTexture(nil, "ARTWORK")
+  frame.replan.icon:SetSize(14, 14)
+  frame.replan.icon:SetPoint("CENTER", frame.replan, "CENTER", 0, 0)
+  frame.replan.icon:SetTexture(ICONS)
+  frame.replan.icon:SetTexCoord(V.IconCoords("replan"))
+  frame.replan:SetScript("OnEnter", function(self)
+    if not GameTooltip then return end
+    GameTooltip:SetOwner(self, "ANCHOR_TOP")
+    GameTooltip:AddLine("Plan again")
+    GameTooltip:AddLine("The route from where you are now", 1, 1, 1, true)
+    GameTooltip:Show()
+  end)
+  frame.replan:SetScript("OnLeave", function() if GameTooltip then GameTooltip:Hide() end end)
   frame.nextBtn = button(frame.bar, ">", 20, function() V.Browse(1) end)
-  frame.nextBtn:SetPoint("RIGHT", frame.trash, "LEFT", -2, 0)
+  frame.nextBtn:SetPoint("RIGHT", frame.replan, "LEFT", -2, 0)
   frame.stepNo = frame.bar:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
   frame.stepNo:SetPoint("RIGHT", frame.nextBtn, "LEFT", -4, 0)
   frame.prevBtn = button(frame.bar, "<", 20, function() V.Browse(-1) end)
@@ -364,6 +381,11 @@ local function create()
   frame.xp.text = frame.xp:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
   frame.xp.text:SetPoint("CENTER", frame.xp, "CENTER", 0, 0)
 end
+
+-- The circling arrow on the title bar: plan the route again now. The plan is made from
+-- the same things as any other (the log, where you are, settings, skips), so with
+-- nothing changed it is the same route.
+function V.Replan() ns.Refresh(true) end
 
 -- The gear on the title bar: the settings page, as /lvls settings.
 function V.OpenSettings() ns.Slash("settings") end
