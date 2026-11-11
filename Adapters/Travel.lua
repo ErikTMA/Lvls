@@ -114,24 +114,27 @@ function TR.Seen(name)
   if t then return t[short(name)] end
 end
 
--- A flight master's map is open: learn which points you know. The TaxiFrame lists
--- every point of the continent, "NONE" for the ones you have not found; the
--- FlightMapFrame's C_TaxiMap.GetAllTaxiNodes only the ones you have. Returns true
--- when something changed.
+-- A flight master's map is open: learn which points you know. Only CURRENT and
+-- REACHABLE are yours: TaxiNodeGetType says "NONE" or "DISTANT" for the others, and
+-- C_TaxiMap.GetAllTaxiNodes state Unreachable (2), the points the client's own
+-- flight map hides (Blizzard_FlightMap, forever: Refuge Pointe at level 30 was
+-- "DISTANT" and taken for yours). Returns true when something changed.
+local UNREACHABLE = 2 -- Enum.FlightPathState
 function TR.LearnTaxi()
   if not ns.cdb then return false end
   local found = {}
+  local map = has(C_TaxiMap, "GetAllTaxiNodes") and type(GetTaxiMapID) == "function" and GetTaxiMapID()
+  local nodes = map and C_TaxiMap.GetAllTaxiNodes(map) or {}
   local n = type(NumTaxiNodes) == "function" and NumTaxiNodes() or 0
-  if n > 0 and type(TaxiNodeName) == "function" and type(TaxiNodeGetType) == "function" then
+  if #nodes > 0 then
+    for _, node in ipairs(nodes) do
+      if node.name then found[short(node.name)] = node.state ~= UNREACHABLE end
+    end
+  elseif n > 0 and type(TaxiNodeName) == "function" and type(TaxiNodeGetType) == "function" then
     for i = 1, n do
       local name, kind = TaxiNodeName(i), TaxiNodeGetType(i)
-      if name and kind then found[short(name)] = kind ~= "NONE" end
+      if name and kind then found[short(name)] = kind == "CURRENT" or kind == "REACHABLE" end
     end
-  elseif has(C_TaxiMap, "GetAllTaxiNodes") and type(GetTaxiMapID) == "function" then
-    local map = GetTaxiMapID()
-    local nodes = map and C_TaxiMap.GetAllTaxiNodes(map) or {}
-    if #nodes == 0 then return false end
-    for _, node in ipairs(nodes) do found[short(node.name)] = true end
   end
   if next(found) == nil then return false end
   -- the continent's other points of your faction, missing from the map: not yours
