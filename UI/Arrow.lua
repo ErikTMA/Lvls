@@ -31,6 +31,20 @@ function AR.AreaQuests(lines)
   return out
 end
 
+-- The step's primary objective: the open line the step stands at (S.Place in
+-- Engine/Steps.lua), else its first open objective. The others were grouped in
+-- because they are close by; the arrow only leads to this one. Pure.
+function AR.Primary(lines, spot)
+  local first
+  for _, l in ipairs(lines or {}) do
+    if l.index and l.quest and not l.done and not l.also then
+      if spot and l.at == spot then return { l } end
+      first = first or l
+    end
+  end
+  return first and { first } or {}
+end
+
 -- Is the player inside the game's own objective area (the blue shape on the map and
 -- the minimap) of one of these quests? The client draws that shape and can say
 -- which quest's shape covers a point, but does not hand out the shape itself.
@@ -214,8 +228,10 @@ local hooks = {
       local now = GetTime and GetTime() or 0
       if not AR.areaAt or now - AR.areaAt >= AR.AREA_CHECK then
         AR.areaAt = now
-        -- near a pickup: the arrow leads to it, the area does not count
-        AR.inArea = not (not g.manual and AR.CheckPickup(pos, g.lines, now)) and AR.CheckArea(pos, g.lines)
+        -- only the primary objective; near a pickup: the arrow leads to it, the
+        -- area does not count
+        local lines = AR.Primary(g.lines, g.spot)
+        AR.inArea = not (not g.manual and AR.CheckPickup(pos, lines, now)) and AR.CheckArea(pos, lines)
       end
       if AR.inArea then return { text = "|cff40ff40In the quest area|r", title = g.title } end
     end
@@ -249,7 +265,7 @@ function AR.SetTarget(spot, title, manual, lines)
     if ns.Ground then ns.Ground.Want(nil) end
     push(true)
   else
-    AR.goal = { map = spot.map, x = spot.x, y = spot.y, title = title, manual = manual, lines = lines }
+    AR.goal = { map = spot.map, x = spot.x, y = spot.y, title = title, manual = manual, lines = lines, spot = spot }
     AR.target = AR.goal
     push(true)
     if ns.RefreshTravel then ns.RefreshTravel() end

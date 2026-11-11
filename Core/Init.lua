@@ -582,9 +582,10 @@ commands.area = function()
   local pos = ns.Game.Position()
   if not g or not g.lines then ns.Log("info", "the arrow's goal is not a work step"); return end
   if not pos then ns.Log("info", "no position"); return end
-  local any, near, inside = ns.Arrow.CheckArea(pos, g.lines)
+  local lines = ns.Arrow.Primary(g.lines, g.spot)
+  local any, near, inside = ns.Arrow.CheckArea(pos, lines)
   local d = ns.Arrow.areaNearest
-  ns.Log("info", ("quests %s on map %d at %.1f, %.1f"):format(table.concat(ns.Arrow.AreaQuests(g.lines), ","),
+  ns.Log("info", ("quests %s on map %d at %.1f, %.1f"):format(table.concat(ns.Arrow.AreaQuests(lines), ","),
     pos.map, pos.x, pos.y))
   ns.Log("info", ("nearest objective spawn: %s (%s)"):format(d < math.huge and ns.Util.yards(d) or "none",
     near and "near" or "not near"))
