@@ -66,16 +66,20 @@ local function travelNpcs(ds, kind)
   return out
 end
 
--- Flight points of the continent you are on: discovered ones (for travel) and
--- undiscovered ones of your faction (to pick up on the way). Each gets the flight
--- master standing there, from the dataset.
+-- Flight points of the continent you are on, of your faction: the ones you have (for
+-- travel), the ones you lack (to pick up on the way), and the ones nobody confirmed
+-- either way. Each gets the flight master standing there, from the dataset.
+-- Only a confirmed point is flown to: the client's isUndiscovered calls points
+-- discovered that you never got (Darkshire at level 28, Refuge Pointe at 30), so
+-- it counts only when it says you lack one. A point is confirmed yours by a flight
+-- master's map (TR.LearnTaxi) or by taking off or landing there (TR.Sample).
 local flyCache = {}
 function TR.FlyNodes(ds, map, faction)
   local cont = TR.Continent(map)
-  if not cont or not has(C_TaxiMap, "GetTaxiNodesForMap") then return {}, {} end
+  if not cont or not has(C_TaxiMap, "GetTaxiNodesForMap") then return {}, {}, {} end
   local key = cont .. ":" .. tostring(faction)
-  if flyCache[key] then return flyCache[key][1], flyCache[key][2] end
-  local known, unknown = {}, {}
+  if flyCache[key] then return flyCache[key][1], flyCache[key][2], flyCache[key][3] end
+  local known, unknown, unsure = {}, {}, {}
   local masters = travelNpcs(ds, "fly")
   for _, n in ipairs(C_TaxiMap.GetTaxiNodesForMap(cont) or {}) do
     local fac = n.faction or 0
@@ -89,16 +93,14 @@ function TR.FlyNodes(ds, map, faction)
         f.npc = { kind = "n", id = npc.id, name = npc.name }
         f.spot = { map = npc.map, x = npc.x, y = npc.y }
       end
-      -- what a flight master's map showed beats the client's isUndiscovered, which
-      -- calls flight points discovered that you never got (Darkshire at level 28)
       local seen = TR.Seen(f.name)
-      local undiscovered = n.isUndiscovered
-      if seen ~= nil then undiscovered = not seen end
-      if undiscovered then unknown[#unknown + 1] = f else known[#known + 1] = f end
+      if seen == true then known[#known + 1] = f
+      elseif seen == false or n.isUndiscovered then unknown[#unknown + 1] = f
+      else unsure[#unsure + 1] = f end
     end
   end
-  flyCache[key] = { known, unknown }
-  return known, unknown
+  flyCache[key] = { known, unknown, unsure }
+  return known, unknown, unsure
 end
 
 function TR.Forget() flyCache = {} end
@@ -148,6 +150,18 @@ function TR.LearnTaxi()
     if t[name] ~= v then t[name] = v; changed = true end
   end
   return changed
+end
+
+-- You stood at this flight point and flew (took off or landed): it is yours.
+function TR.Confirm(f)
+  if not (f and ns.cdb) then return end
+  ns.cdb.taxi = ns.cdb.taxi or {}
+  local name = short(f.name)
+  if ns.cdb.taxi[name] ~= true then
+    ns.cdb.taxi[name] = true
+    TR.Forget()
+    return true
+  end
 end
 
 function TR.FlyTime(a, b)
@@ -336,12 +350,15 @@ local portCast    -- { id, t }: a teleport cast, its landing spot not yet seen
 
 local function now() return GetTime and GetTime() or os.time() end
 
+-- The flight point you stand at, of all of the continent's (you take off and land
+-- only at ones you have, whatever we thought of them)
 local function nearestKnown(ds, spot)
-  local known = TR.FlyNodes(ds, spot.map, UnitFactionGroup and UnitFactionGroup("player"))
   local best, bestD
-  for _, f in ipairs(known) do
-    local d = G.Distance(ns.Game.geo, spot, f.spot)
-    if d <= 120 and (not bestD or d < bestD) then best, bestD = f, d end
+  for _, list in ipairs({ TR.FlyNodes(ds, spot.map, UnitFactionGroup and UnitFactionGroup("player")) }) do
+    for _, f in ipairs(list) do
+      local d = G.Distance(ns.Game.geo, spot, f.spot)
+      if d <= 120 and (not bestD or d < bestD) then best, bestD = f, d end
+    end
   end
   return best
 end
@@ -375,8 +392,10 @@ function TR.Sample()
   if onTaxi and not flight and last.spot and ds then
     local f = nearestKnown(ds, last.spot)
     flight = { from = f and f.id, t = t }
+    if TR.Confirm(f) and ns.Refresh then ns.Refresh(true) end
   elseif not onTaxi and flight and pos and ds then
     local f = nearestKnown(ds, pos)
+    if TR.Confirm(f) and ns.Refresh then ns.Refresh(true) end
     if flight.from and f and f.id ~= flight.from and ns.db then
       ns.db.flights = ns.db.flights or {}
       ns.db.flights[flight.from .. ">" .. f.id] = math.floor(t - flight.t + 0.5)
