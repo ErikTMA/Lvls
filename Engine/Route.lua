@@ -343,6 +343,54 @@ local function grindAction(ds, o, st, sim, pos, geo, pool, consider, shapes, not
       end
     end
   end
+  -- o.dry, nothing to kill here: the best camp elsewhere (most spawns together, per
+  -- second of the trip, up to dryMaxSecs). A level-36 dwarf had no quest left within
+  -- the margin and nothing of his level in Loch Modan.
+  if not best and o.dry then
+    local camps = {}
+    local r2 = o.grindNear
+    for id, n in pairs(ds.npcs) do
+      local lv = n.lv
+      local top = lv and lv[2] or (lv and lv[1])
+      if top and not n.elite and not skipNamed[id] and top <= st.level + math.min(0, o.maxAbove + 1)
+        and top >= st.level - 2 and n.p then
+        for m, list in pairs(n.p) do
+          if m ~= pos.map and #list >= 4 then
+            local step = math.max(1, math.floor(#list / 40)) -- big lists: a sample of centres
+            local top1, topSpot = 0, nil
+            for i = 1, #list, step do
+              local x, y = G.Unpack(list[i])
+              local c = { map = m, x = x, y = y }
+              local k = 0
+              for _, packed in ipairs(list) do
+                local x2, y2 = G.Unpack(packed)
+                if G.Distance(geo, c, { map = m, x = x2, y = y2 }) <= r2 then k = k + 1 end
+              end
+              if k > top1 then top1, topSpot = k, c end
+            end
+            if top1 >= 4 then camps[#camps + 1] = { id = id, n = n, level = top, spot = topSpot, count = top1 } end
+          end
+        end
+      end
+    end
+    table.sort(camps, function(a, b) if a.count ~= b.count then return a.count > b.count end return a.id < b.id end)
+    local tried = 0
+    for _, c in ipairs(camps) do
+      local d = G.Distance(geo, pos, c.spot)
+      local secs
+      if d < math.huge then
+        secs = travelSecs(o, pos, c.spot, d)
+      elseif o.travel and tried < CROSS_TRIES then
+        tried = tried + 1
+        local ok, t = pcall(o.travel, pos, c.spot, o.usable)
+        secs = ok and t or nil
+      end
+      if secs and secs <= o.dryMaxSecs then
+        local score = c.count / (1 + secs / 300)
+        if not bestScore or score > bestScore then best, bestScore = c, score end
+      end
+    end
+  end
   if not best then return nil end
   local need = ((st.level == st.char.level and st.char.xpMax) or R.XP_TO_LEVEL[st.level] or 0) - st.xp
   if need <= 0 then return nil end
@@ -568,7 +616,11 @@ local function planOnce(ds, char, geo, o)
     local s = shape(ds, q, o.dungeon, bagStarts[q.id], pos, opens[q.id] ~= nil, entry)
     shapes[q.id] = s or false
     if s then
-      -- not in the log: giver -> objectives -> turn-in must be walkable (one continent)
+      -- not in the log: giver -> objectives -> turn-in must be walkable (one continent),
+      -- or, with opts.travel, reached across the sea the way the log's quests are (a
+      -- level-38 dwarf had nine such quests left, Badlands to Silithus, Thousand Needles
+      -- to Stranglethorn, and nothing else: the route ran dry)
+      local across = o.travel ~= nil
       local here = s.givers[1] or s.ends[1]
       workSecs[q.id] = 0
       for i in ipairs(q.obj or {}) do
@@ -576,12 +628,12 @@ local function planOnce(ds, char, geo, o)
         if ob and ob.targets then
           workSecs[q.id] = workSecs[q.id] + workSeconds(q.obj[i], ob.spots, o)
           local tgt, d = bestTarget(o, geo, here, ob.targets)
-          if not entry and d == math.huge then shapes[q.id] = false; return false end
+          if not entry and not across and d == math.huge then shapes[q.id] = false; return false end
           here = tgt or here
         end
       end
       local _, d = G.Nearest(geo, here, s.ends)
-      if not entry and d == math.huge then shapes[q.id] = false; return false end
+      if not entry and not across and d == math.huge then shapes[q.id] = false; return false end
     end
     return shapes[q.id]
   end
