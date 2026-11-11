@@ -82,11 +82,13 @@ R.DEFAULTS = {
   grindAbove = 3,      -- the margin quests would have without the difficulty model
   grindNear = 700,     -- yards: quests and mobs this close count as "here"
   grindMaxSecs = 600,  -- a grind step is at most this long (else: quests elsewhere first)
+  dryMaxSecs = 3600,   -- nothing within maxSecs / maxWork: the route plans again with travel up to this
   groupMargin = 0,     -- group (elite) quests need this many levels more
   dungeon = nil,       -- AreaTable id: objectives of quests in this instance wait for the dungeon step
   -- what makes a destination worth more than the experience of its pick-ups:
   leaveSecs = 1200,    -- zoneFirst: seconds another map is charged for leaving this one (what it must offer)
   continentSecs = 1800, -- zoneFirst: and more for another continent (a boat there and one back later)
+  deliveryShare = 0.5, -- zoneFirst: a map with only hand-ins (nothing to pick up) counts this share of its worth
   overdueBelow = 4,    -- a quest in the log this many levels below you is overdue: its work and hand-in
                        --   count their experience (it loses 20% a level from 6 below, then goes grey)
   unlockShare = 0.5,   -- a hand-in counts this share of the experience of what it opens (halved per step, 3 deep)
@@ -315,7 +317,8 @@ local function grindAction(ds, o, st, sim, pos, geo, pool, consider, shapes, not
   if not o.grind or st.level >= maxLevel(st) then return nil end
   local Df = ns.Difficulty
   local unlock, held, byLevel = heldNext(o, st, sim, pos, geo, pool, consider, shapes, workSecs)
-  if not unlock then return nil end
+  -- o.dry (R.Plan, nothing else planned even with the limits lifted): grind anyway
+  if not unlock and not (o.dry and nothingElse) then return nil end
   -- easy mobs close by: at most your level (the margin is below it), worth experience
   local best, bestScore
   local skipNamed = named(ds)
@@ -440,6 +443,9 @@ function R.Choose(cands, pos, o, point, gain)
   -- and the pick-ups' work, the way a hand-written guide moves zone by zone. So a
   -- delivery waits until the route goes there anyway, and then it adds its experience
   -- to the trip; one quest alone does not pull the route to a zone with nothing else.
+  -- A map with only hand-ins counts deliveryShare of its worth: from level 22 a lone
+  -- hand-in next door (Elwynn, Stormwind) outran a zone of new quests farther off,
+  -- and courier chains made a trip of their own for each leg.
   local maps, mapList, home = {}, {}, point(pos)
   if o.zoneFirst then
     for _, c in ipairs(far) do
@@ -456,6 +462,7 @@ function R.Choose(cands, pos, o, point, gain)
         local key = k .. ":" .. tostring(q)
         if not e.seen[key] then
           e.seen[key] = true
+          if k == "accept" then e.picks = true end
           if k == "accept" or k == "turnin" then
             e.xp = e.xp + (q and gain(q) or 0) + (c.worth or 0)
             e.effort = e.effort + (c.effort or 0)
@@ -467,7 +474,7 @@ function R.Choose(cands, pos, o, point, gain)
     end
     for _, e in ipairs(mapList) do
       e.cost = math.max(1, e.adds) + e.effort + leave + (e.p[1] ~= home[1] and o.continentSecs or 0)
-      e.rate = e.xp / e.cost
+      e.rate = e.xp / e.cost * (e.picks and 1 or o.deliveryShare)
     end
   end
   local best, bestRate, cheapest, cheapestScore
@@ -529,10 +536,7 @@ local function buildOpens(ds)
 end
 function R.Opens(ds, char) return ns.GuideCache.Get(ds, char, "opens", buildOpens) end
 
-function R.Plan(ds, char, geo, opts)
-  local o = {}
-  for k, v in pairs(R.DEFAULTS) do o[k] = v end
-  for k, v in pairs(opts or {}) do o[k] = v end
+local function planOnce(ds, char, geo, o)
   if o.focus then
     -- a guide: every quest of it as soon as the client allows, wherever it is
     -- (a finite limit: what cannot be reached at all stays out)
@@ -1012,6 +1016,32 @@ function R.Plan(ds, char, geo, opts)
   return steps
 end
 
+-- The route. Empty with the usual limits (what is left around your level is farther
+-- than maxSecs or more work than maxWork: a level-28 dwarf with Thousand Needles a
+-- boat and a long walk away), it plans again with travel up to dryMaxSecs, then with
+-- maxWork lifted too, and last (grind on) a grind step where you are, rather than nothing.
+-- steps.dry says which of these it took ("far", "work", "grind").
+function R.Plan(ds, char, geo, opts)
+  local o = {}
+  for k, v in pairs(R.DEFAULTS) do o[k] = v end
+  for k, v in pairs(opts or {}) do o[k] = v end
+  local steps, why = planOnce(ds, char, geo, o)
+  if #steps > 0 or why or o.focus then return steps, why end
+  local tries = {
+    { "far", { maxSecs = math.max(o.maxSecs, o.dryMaxSecs) } },
+    { "work", { maxSecs = math.max(o.maxSecs, o.dryMaxSecs), maxWork = 1e9 } },
+    { "grind", { dry = true } }, -- only when grind steps are on (o.grind)
+  }
+  for _, t in ipairs(tries) do
+    local o2 = {}
+    for k, v in pairs(o) do o2[k] = v end
+    for k, v in pairs(t[2]) do o2[k] = v end
+    steps, why = planOnce(ds, char, geo, o2)
+    if #steps > 0 then steps.dry = t[1]; return steps, why end
+  end
+  return steps, why
+end
+
 -- Why the route does or does not plan a quest for this character (one line).
 function R.Why(ds, char, qid)
   local q = ds.quests[qid]
@@ -1043,6 +1073,16 @@ function R.Why(ds, char, qid)
     local es = eq and ns.Availability.Status(eq, char)
     if es == "available" or es == "active" then
       return ("plannable after %s (%d), earlier in its chain, if that one is worth doing: taking this one first shuts it off"):format(eq.n, e)
+    end
+  end
+  if st ~= "active" then
+    local work = 0
+    for i, ob in ipairs(q.obj or {}) do
+      local so = s.objs[i]
+      if so and so.spots then work = work + workSeconds(ob, so.spots, R.DEFAULTS) end
+    end
+    if work > R.DEFAULTS.maxWork then
+      return ("plannable, but about %d minutes of killing or looting: picked up only when nothing else is left (maxWork)"):format(math.floor(work / 60 + 0.5))
     end
   end
   return "plannable" .. (st == "active" and " (in your log)" or "")
