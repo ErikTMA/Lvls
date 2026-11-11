@@ -369,6 +369,9 @@ local function create()
   frame.header:SetTextColor(C.title[1], C.title[2], C.title[3])
   frame.sub = frame.step:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
   frame.sub:SetPoint("TOPLEFT", frame.header, "BOTTOMLEFT", 0, -2)
+  frame.sub:SetPoint("RIGHT", frame.step, "RIGHT", -8, 0)
+  if frame.sub.SetJustifyH then frame.sub:SetJustifyH("LEFT") end
+  if frame.sub.SetWordWrap then frame.sub:SetWordWrap(true) end
   frame.step:SetScript("OnClick", function() V.PointAt(nil) end)
   -- next step preview and experience bar
   frame.next = frame:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
