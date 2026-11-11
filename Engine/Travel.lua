@@ -15,11 +15,19 @@
 --                  a cave / building whose way in is known, else nil
 --   ctx.path       function(spot) -> { title, points = { spot, ... } } a recorded path
 --                  that ends at the spot (up a hill, through a mine), else nil
+--   ctx.walk       function(a, b) -> yards on foot around walls and mountains
+--                  (Engine/Nav), nil when not known: the straight line stands in
 --
 -- Method: Dijkstra over start, goal, flight points, transit ends and the ports'
--- spots. Walking connects any two of them on the same continent (straight line);
--- flights connect discovered flight points on one continent (all of a faction's
--- points are linked there); transit links connect their two ends.
+-- spots. Walking connects any two of them on the same continent; flights connect
+-- discovered flight points on one continent (all of a faction's points are linked
+-- there); transit links connect their two ends.
+-- A walk is first priced as the straight line, which is never longer than the way
+-- on foot. The walks of the best trip are then measured on foot (ctx.walk) and the
+-- search runs again, until the best trip has only measured walks: then it is the
+-- best by the real ways too (Ironforge to the Wetlands is 2200 yards straight,
+-- 3800 around the mountains: the flight to Menethil wins). Only a few walks are
+-- measured, not every pair.
 local _, ns = ...
 local T = ns:NewModule("Travel")
 local G = ns.Geo
@@ -34,6 +42,7 @@ T.COOLDOWN_SHARE = 0.1 -- of the cooldown: a 60-minute hearthstone must win 6 mi
 T.REAGENT_SECS = 60    -- a port that uses up a reagent (a Rune of Teleportation: money, bags)
 T.TRANSIT_SECS = 150 -- waiting and riding when a link has no measured time
 T.MIN_SAVING = 30    -- seconds a trip must save over walking to be suggested
+T.MEASURE_ROUNDS = 8 -- searches at most, measuring the best trip's walks on foot
 
 -- What using a port costs, in seconds on top of its own.
 function T.PortCost(p)
@@ -66,9 +75,9 @@ function T.Plan(from, to, ctx)
     flyNodes[#flyNodes + 1] = add({ kind = "fly", fly = f, spot = f.spot })
   end
   local edges = {} -- [i] = { { j, secs, leg }, ... }
-  local function edge(a, b, secs, leg)
+  local function edge(a, b, secs, leg, yards)
     edges[a.i] = edges[a.i] or {}
-    table.insert(edges[a.i], { b.i, secs, leg })
+    table.insert(edges[a.i], { b.i, secs, leg, yards })
   end
   for _, l in ipairs(ctx.transit or {}) do
     local a, b = add({ kind = "transit", spot = l.a }), add({ kind = "transit", spot = l.b })
@@ -99,28 +108,58 @@ function T.Plan(from, to, ctx)
       for _, b in ipairs(nodes) do
         if a ~= b and b ~= start and a.cont == b.cont then
           local d = G.Distance(geo, a.spot, b.spot)
-          if d < math.huge then edge(a, b, d / speed, { mode = "walk" }) end
+          if d < math.huge then edge(a, b, d / speed, { mode = "walk" }, d) end -- yards: not measured yet
         end
       end
     end
   end
+  -- the way on foot between two nodes, measured once
+  local function measure(e, a)
+    e[4] = nil
+    local y = ctx.walk and ctx.walk(nodes[a].spot, nodes[e[1]].spot)
+    if y and y > 0 and y < math.huge then e[2] = y / speed end
+  end
   -- Dijkstra (few dozen nodes: a linear scan is enough)
-  local dist, prev, prevLeg, done = {}, {}, {}, {}
-  dist[start.i] = 0
-  while true do
-    local u, best
-    for i = 1, #nodes do
-      if not done[i] and dist[i] and (not best or dist[i] < best) then u, best = i, dist[i] end
-    end
-    if not u or u == goal.i then break end
-    done[u] = true
-    for _, e in ipairs(edges[u] or {}) do
-      local v, w = e[1], e[2]
-      local nd = best + w
-      if not dist[v] or nd < dist[v] then dist[v], prev[v], prevLeg[v] = nd, u, e[3] end
+  local dist, prev, prevLeg, prevEdge
+  local function search()
+    local done = {}
+    dist, prev, prevLeg, prevEdge = {}, {}, {}, {}
+    dist[start.i] = 0
+    while true do
+      local u, best
+      for i = 1, #nodes do
+        if not done[i] and dist[i] and (not best or dist[i] < best) then u, best = i, dist[i] end
+      end
+      if not u or u == goal.i then break end
+      done[u] = true
+      for _, e in ipairs(edges[u] or {}) do
+        local v, w = e[1], e[2]
+        local nd = best + w
+        if not dist[v] or nd < dist[v] then dist[v], prev[v], prevLeg[v], prevEdge[v] = nd, u, e[3], e end
+      end
     end
   end
+  local measured = true
+  for _ = 1, T.MEASURE_ROUNDS do
+    if not measured then break end
+    search()
+    measured = false
+    local v = goal.i
+    while ctx.walk and dist[goal.i] and prev[v] do
+      local e = prevEdge[v]
+      if e[4] then measure(e, prev[v]); measured = true end
+      v = prev[v]
+    end
+  end
+  if measured then search() end -- the last round's measures counted
+  -- walking all the way, on foot (the straight line when the way is not known)
   local walk = G.Distance(geo, from, to) / speed
+  local direct
+  for _, e in ipairs(edges[start.i] or {}) do if e[1] == goal.i then direct = e end end
+  if direct then
+    if direct[4] then measure(direct, start.i) end
+    walk = direct[2]
+  end
   if not dist[goal.i] then return { legs = {}, secs = math.huge, walk = walk } end
   local legs = {}
   local v = goal.i

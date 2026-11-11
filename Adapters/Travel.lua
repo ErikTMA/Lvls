@@ -354,13 +354,36 @@ function TR.PathTo(to)
   return best
 end
 
+-- Yards on foot from a to b (Engine/Nav: around walls and mountains), nil when the
+-- map data does not know a way (off it, another continent, no data). For
+-- Engine/Travel's ctx.walk; kept by spot (to 20 yards: the plan is made again as you move), a few hundred at most.
+TR.WALK_CACHE = 400
+local walkCache, walkCount = {}, 0
+local function spotKey(cont, x, y) return cont .. ":" .. math.floor(x / 20 + 0.5) .. ":" .. math.floor(y / 20 + 0.5) end
+function TR.Walk(a, b)
+  local geo = ns.Game.geo
+  if not (ns.Nav and geo and geo.world and a and b) then return nil end
+  local ca, ax, ay = geo.world(a.map, a.x, a.y)
+  local cb, bx, by = geo.world(b.map, b.x, b.y)
+  if not ca or ca ~= cb then return nil end
+  local key = spotKey(ca, ax, ay) .. ">" .. spotKey(cb, bx, by)
+  local c = walkCache[key]
+  if c == nil then
+    local ok, pts, length = pcall(ns.Nav.Route, ca, ax, ay, bx, by)
+    c = ok and pts and length or false
+    if walkCount >= TR.WALK_CACHE then walkCache, walkCount = {}, 0 end
+    walkCache[key], walkCount = c, walkCount + 1
+  end
+  return c or nil
+end
+
 function TR.Context(ds, char)
   local pos = char.pos
   local known = pos and TR.FlyNodes(ds, pos.map, char.faction) or {}
   return {
     geo = ns.Game.geo, speed = ns.Game.RunSpeed and ns.Game.RunSpeed() or 7,
     fly = known, flyTime = TR.FlyTime, transit = TR.Transit(char.faction), ports = TR.Ports(),
-    entrance = TR.Entrance, path = TR.PathTo,
+    entrance = TR.Entrance, path = TR.PathTo, walk = TR.Walk,
   }
 end
 
