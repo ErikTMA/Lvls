@@ -1058,7 +1058,7 @@ commands.travel = function()
   for _, p in ipairs(ns.travelCtx and ns.travelCtx.ports or {}) do
     local ready = (p.ready or 0) > 0 and ("ready in %d min"):format(math.ceil(p.ready / 60)) or "ready"
     ns.Log("info", ("%s: %s, cooldown %d min, used when it wins %ds%s"):format(p.title, ready, math.floor((p.cd or 0) / 60 + 0.5),
-      math.floor(ns.Travel.PortCost(p) + 0.5), p.guess and " (lands somewhere on the map until used once)" or ""))
+      math.floor(ns.Travel.PortCost(p) + 0.5), p.guess and " (where it lands is a guess until used once)" or ""))
   end
 end
 

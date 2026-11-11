@@ -17,7 +17,8 @@
 --   recordings[name]   paths recorded with /lvls record (to author "follow the path")
 --   ports[spellId]     where a teleport landed you (the first spot on its map after the cast)
 --   cooldowns[spellId] a port's full cooldown, as the client reported it right after a use
--- and in LvlsCharDB: hearth = { name, spot } where you set your hearthstone.
+-- and in LvlsCharDB: hearth = { name, spot } where you set your hearthstone, or where
+-- a hearth landed you (bound before Lvls! saw it; TR.Hearth guesses until then).
 local _, ns = ...
 local TR = ns:NewModule("TravelData")
 local G = ns.Geo
@@ -274,11 +275,52 @@ function TR.Cooldown(p)
   return ready, full or p.cd or 0
 end
 
--- The bind spot: where you set your hearthstone, or nil.
+-- The bind spot by its name, when Lvls! never saw you set it (you bound before it
+-- was installed, or with it off): the client names the place (GetBindLocation,
+-- "Menethil Harbor") and a flight point of that name, on any continent, is in that
+-- town. Its nearest innkeeper (the dataset's) stands for the inn, else the flight
+-- point does. nil when no flight point has the name (Goldshire): then the first
+-- hearth that lands you there teaches it (TR.Sample).
+local INN_NEAR_POINT = 400 -- yards from the flight point to the town's inn
+local bindCache = {}
+local function bindByName(name)
+  if type(name) ~= "string" or name == "" or not has(C_TaxiMap, "GetTaxiNodesForMap") then return nil end
+  if bindCache[name] then return bindCache[name] end
+  local ds = ns.ActiveDataset and ns.ActiveDataset()
+  local found
+  local conts = {}
+  for map in pairs((ds and ds.maps) or {}) do
+    local cont = TR.Continent(map)
+    if cont then conts[cont] = true end
+  end
+  for map in pairs(conts) do
+    for _, n in ipairs(C_TaxiMap.GetTaxiNodesForMap(map) or {}) do
+      if not found and short(n.name) == name then
+        local x, y = n.position.x, n.position.y
+        if n.position.GetXY then x, y = n.position:GetXY() end
+        found = { map = map, x = x * 100, y = y * 100 }
+      end
+    end
+  end
+  if found then
+    local inn, d = G.Nearest(ns.Game.geo, found, travelNpcs(ds, "inn"))
+    if inn and d <= INN_NEAR_POINT then found = { map = inn.map, x = inn.x, y = inn.y } end
+  end
+  bindCache[name] = found -- not a miss: the client may list no points yet at login
+  return found
+end
+
+-- The bind spot: where you set your hearthstone (or a hearth landed you), else where
+-- the bind location's name puts it (guess = true), or nil.
 function TR.Hearth()
+  local name = plain(GetBindLocation and GetBindLocation())
   local h = ns.cdb and ns.cdb.hearth
-  if not h or not h.spot then return nil end
-  return { spot = h.spot, name = (GetBindLocation and GetBindLocation()) or h.name }
+  -- bound elsewhere since (unseen): the kept spot is not the hearth's any more
+  if h and h.spot and (type(name) ~= "string" or not h.name or h.name == name) then
+    return { spot = h.spot, name = name or h.name }
+  end
+  local spot = bindByName(name)
+  if spot then return { spot = spot, name = name, guess = true } end
 end
 
 -- The ports you have (Engine/Travel ctx.ports), with their cooldowns now.
@@ -291,7 +333,7 @@ function TR.Ports()
     if have and p.reagent and itemCount(p.reagent) == 0 then have = false end
     local spot, title, guess
     if have and p.bind then
-      if bind then spot, title = bind.spot, p.title:format(bind.name or "your inn") end
+      if bind then spot, title, guess = bind.spot, p.title:format(bind.name or "your inn"), bind.guess end
     elseif have then
       local l = ns.db and ns.db.ports and ns.db.ports[p.id]
       if l then spot = { map = l.map, x = l.x, y = l.y } else spot, guess = { map = p.map, x = 50, y = 50 }, true end
@@ -393,6 +435,8 @@ local last = {}   -- last outdoor sample: { spot, cont, t, mapType }
 local flight      -- { from = nodeId, t }
 local hearthCast  -- time of the last port's cast (hearthstone, teleport)
 local portCast    -- { id, t }: a teleport cast, its landing spot not yet seen
+local bindCast    -- { t, from }: a hearth cast (hearthstone, Astral Recall), not landed yet
+local BIND_JUMP = 200 -- yards: a hearth that lands you this far away took you home
 
 local function now() return GetTime and GetTime() or os.time() end
 
@@ -468,6 +512,21 @@ function TR.Sample()
     and not (UnitIsDeadOrGhost and UnitIsDeadOrGhost("player")) and t - last.t < 600 then
     learnTransit(last.spot, pos, t - last.t)
   end
+  -- where a hearth lands: your bind spot, learned (bound before Lvls! saw it)
+  if bindCast then
+    if t - bindCast.t > 60 then
+      bindCast = nil
+    elseif not onTaxi and G.Distance(ns.Game.geo, bindCast.from, pos) >= BIND_JUMP and ns.cdb then
+      local name = plain(GetBindLocation and GetBindLocation())
+      local h = ns.cdb.hearth
+      if not (h and h.spot and h.name == name and G.Distance(ns.Game.geo, h.spot, pos) < BIND_JUMP) then
+        ns.cdb.hearth = { name = type(name) == "string" and name or nil,
+          spot = { map = pos.map, x = math.floor(pos.x * 10 + 0.5) / 10, y = math.floor(pos.y * 10 + 0.5) / 10 } }
+        ns.Log("debug", "learned where your hearth is")
+      end
+      bindCast = nil
+    end
+  end
   -- where a teleport lands: the first spot on its map after the cast
   if portCast then
     local p = portById[portCast.id]
@@ -499,6 +558,8 @@ function TR.OnEvent(event, unit, _, spell)
   elseif event == "UNIT_SPELLCAST_SUCCEEDED" and unit == "player" and portById[spell] then
     hearthCast = now() -- no boat link learned from it
     if portById[spell].map then portCast = { id = spell, t = hearthCast } end
+    local pos = portById[spell].bind and ns.Game.Position()
+    if pos then bindCast = { t = hearthCast, from = pos } end
   elseif event == "TAXIMAP_OPENED" then
     TR.Forget()
     if TR.LearnTaxi() and ns.Refresh and ns.db then
