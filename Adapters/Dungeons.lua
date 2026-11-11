@@ -4,6 +4,8 @@
 --   entrance: the shipped one (where a ghost revives, from the client's Map table),
 --         else the spot you last stood outside before entering it (learned)
 --   inside: GetInstanceInfo() -> name, instanceType, ..., instanceID (8th)
+--   bosses: the shipped list, in the order you meet them (the client's
+--         DungeonEncounter table)
 local _, ns = ...
 local DI = ns:NewModule("DungeonInfo")
 
@@ -40,6 +42,27 @@ function DI.Inside(area)
   local d = DI.Data(area)
   local id = DI.Instance()
   return id ~= nil and d ~= nil and d.inst == id
+end
+
+function DI.Bosses(area)
+  local d = DI.Data(area)
+  return d and d.b
+end
+
+-- The dungeon you are in: its main quest area (the lowest), every quest area of
+-- that instance ({ [area] = true }: City of Dalaran has two), or nil outside.
+function DI.InsideAreas()
+  local id = DI.Instance()
+  if not id then return nil end
+  local main, areas = nil, {}
+  for area, d in pairs(ns.DungeonData or {}) do
+    if d.inst == id then
+      areas[area] = true
+      if not main or area < main then main = area end
+    end
+  end
+  if not main then return nil end
+  return main, areas
 end
 
 -- Called with the character's position on every refresh: outside, remember it;

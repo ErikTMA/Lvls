@@ -268,6 +268,46 @@ function QD.Name(kind, id)
   return type(n) == "string" and n ~= "" and n or nil
 end
 
+-- Who an objective comes from, wherever they stand: { {kind, id}, ... } ("n" npc,
+-- "o" object). Unlike ObjectiveSpots this keeps sources without a position (inside
+-- a dungeon QuestieDB knows the area, not the spot): Head of VanCleef -> Edwin
+-- VanCleef. nil without the lib.
+function QD.ObjectiveSources(qid, i, o)
+  if not lib or not o then return nil end
+  local key = "src:" .. qid .. ":" .. i
+  if spotCache[key] then return spotCache[key] end
+  local out = {}
+  if o.t == "kill" and o.id then
+    out[1] = { "n", o.id }
+  elseif o.t == "object" and o.id then
+    out[1] = { "o", o.id }
+  elseif o.t == "item" and o.id and lib.Item then
+    for _, n in ipairs(list(get(lib.Item, o.id, "npcDrops")) or {}) do out[#out + 1] = { "n", n } end
+    for _, b in ipairs(list(get(lib.Item, o.id, "objectDrops")) or {}) do out[#out + 1] = { "o", b } end
+  end
+  spotCache[key] = out
+  return out
+end
+
+-- The areas an npc ("n") or object ("o") spawns in: { [areaId] = true }, from its
+-- spawns (keyed by area; inside an instance the area is the dungeon's) and its
+-- zoneID. Empty when QuestieDB does not know it.
+function QD.Areas(kind, id)
+  if not lib or not id then return {} end
+  local key = "area:" .. kind .. id
+  if spotCache[key] then return spotCache[key] end
+  local e = kind == "o" and lib.Object or lib.Npc
+  local out = {}
+  local spawns = get(e, id, "spawns")
+  if type(spawns) == "table" then
+    for area in pairs(spawns) do if type(area) == "number" then out[area] = true end end
+  end
+  local z = nz(get(e, id, "zoneID"))
+  if z then out[z] = true end
+  spotCache[key] = out
+  return out
+end
+
 -- Runtime fallback for an objective the dataset cannot locate.
 function QD.ObjectiveSpots(qid, i, o)
   if not lib or not o then return nil end

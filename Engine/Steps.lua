@@ -54,8 +54,9 @@ S.SOURCE_NAMES = 2 -- up to this many sources are named in a line; more: the bes
 
 -- Where an item objective comes from: verb, names (best source first). "Loot" from
 -- creatures, "Collect" from objects only, "Buy" from vendors when nothing drops it.
--- The dataset's sources, else what the provider (QuestieDB) places at runtime; nil
--- when neither knows (Forever's new quests are often not in either yet).
+-- The dataset's sources, else what the provider (QuestieDB) places at runtime, else
+-- who the provider says it comes from without a place (inside dungeons); nil when
+-- none knows (Forever's new quests are often not in either yet).
 function S.ItemSources(ds, o, qid, i)
   local list = {}
   for _, s in ipairs(o.src or {}) do list[#list + 1] = { s[1], s[2] } end
@@ -66,6 +67,13 @@ function S.ItemSources(ds, o, qid, i)
       for _, sp in ipairs(spots) do
         if sp.id then list[#list + 1] = { sp.vendor and "v" or sp.kind, sp.id } end
       end
+    end
+  end
+  -- who drops it without standing anywhere known: inside a dungeon (Head of VanCleef)
+  if #list == 0 and qid and i and p and p.ObjectiveSources then
+    local ok, src = pcall(p.ObjectiveSources, qid, i, o)
+    if ok and type(src) == "table" then
+      for _, s in ipairs(src) do list[#list + 1] = { s[1], s[2] } end
     end
   end
   local drops, vendors, seen, npc = {}, {}, {}, false

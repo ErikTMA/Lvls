@@ -164,16 +164,102 @@ function D.Done(ds, char, guide)
   return true
 end
 
+-- Who an objective comes from, wherever they stand: the dataset's sources (not
+-- vendors), else the provider's (it knows who drops what inside a dungeon, though
+-- not where), else the kill target itself. { {kind, id}, ... }
+local function sources(qid, i, o)
+  local out = {}
+  for _, s in ipairs(o.src or {}) do
+    if s[1] ~= "v" then out[#out + 1] = { s[1], s[2] } end
+  end
+  local p = P.Provider()
+  if #out == 0 and p and p.ObjectiveSources then
+    local ok, src = pcall(p.ObjectiveSources, qid, i, o)
+    if ok and type(src) == "table" then
+      for _, s in ipairs(src) do out[#out + 1] = { s[1], s[2] } end
+    end
+  end
+  if #out == 0 and o.t == "kill" and o.id then out[1] = { "n", o.id } end
+  return out
+end
+D.Sources = sources
+
+local function nameOf(ds, kind, id)
+  local rec = (kind == "o" and ds.objects or ds.npcs)[id]
+  if rec and rec.n then return rec.n end
+  local p = P.Provider()
+  if p and p.Name then
+    local ok, n = pcall(p.Name, kind, id)
+    if ok and type(n) == "string" then return n end
+  end
+end
+
+-- Does the npc / object ("n" / "o", id) stand in one of `areas` ({ [area] = true })?
+-- The provider says (QuestieDB files instance spawns under the dungeon's area).
+local function within(kind, id, areas)
+  local p = P.Provider()
+  if not (p and p.Areas and id) then return false end
+  local ok, a = pcall(p.Areas, kind, id)
+  if not ok or type(a) ~= "table" then return false end
+  for area in pairs(areas) do if a[area] then return true end end
+  return false
+end
+D.Within = within
+
+-- The first npc / object of a giver or ender list (sn/so, en/eo): kind, id
+local function first(ns_, os_)
+  if ns_ and ns_[1] then return "n", ns_[1] end
+  if os_ and os_[1] then return "o", os_[1] end
+end
+
+-- Which boss a creature's name is, in `order` ({ [lowercase boss name] = n }): the
+-- boss itself, or what the encounter is named after ("Sneed's Shredder": Sneed).
+local function bossNamed(n, order)
+  n = n:lower()
+  if order[n] then return order[n] end
+  local owner = n:match("^(.-)'s ")
+  return owner and order[owner]
+end
+
+-- An objective's place in the boss order: n when a source, or the kill target by
+-- name, is one of the bosses; else nil.
+local function bossOf(ds, qid, i, o, order)
+  if not order then return nil end
+  local best
+  for _, s in ipairs(sources(qid, i, o)) do
+    local n = nameOf(ds, s[1], s[2])
+    local at = n and bossNamed(n, order)
+    if at and (not best or at < best) then best = at end
+  end
+  if not best and o.t == "kill" and o.text then
+    best = bossNamed((o.text:gsub("%s+[Ss]lain$", "")), order)
+  end
+  return best
+end
+
 -- The dungeon step: go in and do the objectives of the guide's dungeon quests.
 -- `planned`: quests the route picks up before it. Lines, in order:
 --   "Also needed first: X"  quests of the set the route could not place (no
 --                           locatable objective, e.g. an escort) and not in the log
---   "Pick up X"             dungeon quests the route does not pick up (they start
+--   "Pick up X from Y"      dungeon quests the route does not pick up (they start
 --                           inside, or wait for such a quest)
---   the objectives of every dungeon quest, ticking off from the quest log
--- spot: the entrance (nil when unknown).
-function D.Step(ds, char, guide, name, entrance, planned)
-  planned = planned or {}
+--   the objectives of every dungeon quest, ticking off from the quest log, with who
+--                           drops them; in the order of the dungeon's bosses (those
+--                           not at a boss first: they are done on the way), "(boss
+--                           3 of 8)" on the ones a boss gives
+--   "Turn in X to Y"        quests whose ender stands inside the dungeon
+-- spot: the entrance (nil when unknown). opts: { bosses = { name, ... } in the order
+-- you meet them, areas = { [area] = true } the dungeon (default guide.area), title }.
+function D.Step(ds, char, guide, name, entrance, planned, opts)
+  planned, opts = planned or {}, opts or {}
+  local areas = opts.areas or (guide.area and { [guide.area] = true }) or {}
+  local order
+  if opts.bosses and #opts.bosses > 0 then
+    order = {}
+    for k, b in ipairs(opts.bosses) do
+      if not order[b:lower()] then order[b:lower()] = k end
+    end
+  end
   local lines, isRoot = {}, {}
   for _, id in ipairs(guide.roots) do isRoot[id] = true end
   local function open(id) return not char.completed[id] and not (char.active and char.active[id]) and not planned[id] end
@@ -186,21 +272,100 @@ function D.Step(ds, char, guide, name, entrance, planned)
   for _, id in ipairs(guide.roots) do
     local q = ds.quests[id]
     if q and open(id) then
-      lines[#lines + 1] = { kind = "accept", quest = id, text = "Pick up " .. q.n, dungeon = true }
+      local kind, who = first(q.sn, q.so)
+      local giver = who and nameOf(ds, kind, who)
+      lines[#lines + 1] = { kind = "accept", quest = id, dungeon = true,
+        text = "Pick up " .. q.n .. (giver and (" from " .. giver) or "") }
     end
   end
+  local objectives = {}
   for _, id in ipairs(guide.roots) do
     local q = ds.quests[id]
     if q and not char.completed[id] then
       for i, o in ipairs(q.obj or {}) do
         if o.from ~= "provided" then
-          lines[#lines + 1] = { kind = ns.Steps.ObjectiveKind(o), quest = id, index = i,
-            text = ns.Steps.ObjectiveText(o, ds, id, i), dungeon = true }
+          local boss = bossOf(ds, id, i, o, order)
+          local text = ns.Steps.ObjectiveText(o, ds, id, i)
+          if boss then text = ("%s (boss %d of %d)"):format(text, boss, #opts.bosses) end
+          objectives[#objectives + 1] = { kind = ns.Steps.ObjectiveKind(o), quest = id, index = i,
+            text = text, dungeon = true, boss = boss, at = #objectives }
         end
       end
     end
   end
+  table.sort(objectives, function(a, b)
+    if (a.boss or 0) ~= (b.boss or 0) then return (a.boss or 0) < (b.boss or 0) end
+    return a.at < b.at
+  end)
+  for _, l in ipairs(objectives) do
+    l.at = nil
+    lines[#lines + 1] = l
+  end
+  for _, id in ipairs(guide.roots) do
+    local q = ds.quests[id]
+    local kind, who = first(q and q.en, q and q.eo)
+    if q and not char.completed[id] and who and within(kind, who, areas) then
+      local ender = nameOf(ds, kind, who)
+      lines[#lines + 1] = { kind = "turnin", quest = id, dungeon = true,
+        text = "Turn in " .. q.n .. (ender and (" to " .. ender) or "") }
+    end
+  end
   if #lines == 0 then return nil end
-  return { kind = "dungeon", title = "Enter " .. (name or "the dungeon"), spot = entrance,
+  return { kind = "dungeon", title = opts.title or ("Enter " .. (name or "the dungeon")), spot = entrance,
     lines = lines, area = guide.area }
+end
+
+-- In a dungeon (`areas`: its quest areas, { [area] = true }; `area` the main one):
+-- the step for what you can do in there now, with or without a guide. Its quests:
+--   in your log and filed under the dungeon;
+--   in your log, filed elsewhere, with an objective from someone inside (Red Silk
+--     Bandanas, a Westfall quest, drop in The Deadmines);
+--   not taken yet, filed under the dungeon, given by someone inside, and yours to
+--     take now (available, or grey).
+-- nil when there is nothing. opts as D.Step (bosses).
+function D.Inside(ds, char, area, areas, name, opts)
+  local roots, seen, named = {}, {}, {}
+  local function add(id) if not seen[id] then seen[id] = true; roots[#roots + 1] = id end end
+  local index = areaIndex(ds, char)
+  local offered = {}
+  for a in pairs(areas) do
+    for _, id in ipairs(index[a] and index[a].ids or {}) do
+      local q = ds.quests[id]
+      local st = A.Status(q, char)
+      if st == "active" then
+        add(id)
+        named[q.n] = true
+      elseif st == "available" or st == "trivial" then
+        local kind, who = first(q.sn, q.so)
+        if who and within(kind, who, areas) then offered[#offered + 1] = id end
+      end
+    end
+  end
+  -- one of a kind: Gnomeregan's three Sparklematic 5200s each give "The Sparklematic
+  -- 5200!" under its own id; once one is in the log, none
+  table.sort(offered)
+  for _, id in ipairs(offered) do
+    local n = ds.quests[id].n
+    if not named[n] then named[n] = true; add(id) end
+  end
+  for id, entry in pairs(char.active or {}) do
+    local q = ds.quests[id]
+    if q and not seen[id] and not entry.simulated and not entry.complete then
+      for i, o in ipairs(q.obj or {}) do
+        local hit = false
+        for _, s in ipairs(sources(id, i, o)) do
+          if within(s[1], s[2], areas) then hit = true break end
+        end
+        if hit then add(id) break end
+      end
+    end
+  end
+  if #roots == 0 then return nil end
+  table.sort(roots)
+  local guide = { roots = roots, order = roots, set = seen, area = area }
+  opts = opts or {}
+  local st = D.Step(ds, char, guide, name, nil, nil,
+    { bosses = opts.bosses, areas = areas, title = name or "In the dungeon" })
+  if st then st.inside = true end
+  return st
 end

@@ -49,6 +49,8 @@ function V.Model(ds, char, steps, current, view)
   m.header = st.title
   if st.spot then
     m.sub = ("%s  %.1f, %.1f"):format(ds.maps[st.spot.map] or "", st.spot.x, st.spot.y)
+  elseif st.inside then
+    m.sub = "In here: in the order of the bosses (no map position inside)"
   elseif st.kind == "dungeon" then
     m.sub = "Entrance not known yet: Lvls! learns it when you walk in"
   elseif st.kind == "use" then

@@ -413,6 +413,31 @@ local function try(what, fn, ...)
   return nil
 end
 
+-- In a dungeon, what you can do in there comes first, guide or not: a step made
+-- again on every refresh (Dungeons.Inside), put in before the first open step.
+local function insideStep(ds)
+  local area, areas = ns.DungeonInfo.InsideAreas()
+  if not area then return nil end
+  return ns.Dungeons.Inside(ds, ns.char, area, areas, ns.DungeonInfo.Name(area),
+    { bosses = ns.DungeonInfo.Bosses(area) })
+end
+
+-- The steps' state from the quest log (Steps.Refresh), the step inside a dungeon in
+-- place: the current step's index.
+local function refreshSteps(ds)
+  local steps = ns.steps
+  for k = #steps, 1, -1 do if steps[k].inside then table.remove(steps, k) end end
+  local st = try("dungeon step", insideStep, ds)
+  local at = ns.Steps.Refresh(ds, ns.char, steps, ns.Game.geo)
+  local open = false
+  for _, l in ipairs(st and st.lines or {}) do
+    if not ns.Steps.LineState(ds, ns.char, l) then open = true break end
+  end
+  if not open then return at end
+  table.insert(steps, at or (#steps + 1), st)
+  return ns.Steps.Refresh(ds, ns.char, steps, ns.Game.geo)
+end
+
 function ns.Refresh(replan)
   local ds = ns.ActiveDataset()
   if not ds then return end
@@ -451,11 +476,11 @@ function ns.Refresh(replan)
   end
   if ns.replanSoon then replan, ns.replanSoon = true, nil end
   if replan or not ns.steps then plan(ds, replan) end
-  ns.stepIndex = ns.Steps.Refresh(ds, ns.char, ns.steps, ns.Game.geo)
+  ns.stepIndex = refreshSteps(ds)
   -- you walked off from a talk step without its quests: planned without them
   if not replan and leftBehind(ds) then
     plan(ds, true)
-    ns.stepIndex = ns.Steps.Refresh(ds, ns.char, ns.steps, ns.Game.geo)
+    ns.stepIndex = refreshSteps(ds)
   end
   -- a guide is short on purpose: it is re-planned when it runs out, not when it is short
   local short = not ns.guide and ns.Steps.Remaining(ns.steps, ns.stepIndex or 1) < ns.REPLAN_BELOW
@@ -465,7 +490,7 @@ function ns.Refresh(replan)
   if not replan and not fresh and not ns.planJob and (not ns.stepIndex or short
       or not ns.Steps.Valid(ds, ns.char, ns.steps, ns.stepIndex) or unplanned(ds) or offRoute()) then
     plan(ds)
-    ns.stepIndex = ns.Steps.Refresh(ds, ns.char, ns.steps, ns.Game.geo)
+    ns.stepIndex = refreshSteps(ds)
   end
   -- the arrow follows the current step unless you pointed it somewhere yourself
   -- (a manual target stays until the step changes; browsing steps keeps its own)
