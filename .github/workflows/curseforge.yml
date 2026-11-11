@@ -1,0 +1,41 @@
+# Upload each published release of Lvls! to CurseForge (project 1796463, X-Curse-Project-ID
+# in Lvls.toc). The GitHub release and its zip are made before this runs; this job only
+# packages the tagged tree with BigWigsMods/packager and uploads it to CurseForge, using
+# the release's own notes as the changelog. Rerun by hand with the tag to upload again.
+name: curseforge
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to upload, e.g. v0.1.76"
+        required: true
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.release.tag_name || inputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name || inputs.tag }}
+          fetch-depth: 0
+      - name: The release notes become the CurseForge changelog
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          gh release view "$TAG" --json body -q .body > CHANGELOG.md
+          test -s CHANGELOG.md || echo "Lvls! ${TAG#v}" > CHANGELOG.md
+          cat CHANGELOG.md
+      - name: Package and upload to CurseForge
+        uses: BigWigsMods/packager@v2
+        env:
+          CF_API_KEY: ${{ secrets.CF_API_KEY }}
