@@ -41,7 +41,6 @@ T.COOLDOWN_SHARE = 0.1 -- of the cooldown: a 60-minute hearthstone must win 6 mi
                        --   Astral Recall's 15 minutes 90 s (it is not there for the next trip)
 T.REAGENT_SECS = 60    -- a port that uses up a reagent (a Rune of Teleportation: money, bags)
 T.TRANSIT_SECS = 150 -- waiting and riding when a link has no measured time
-T.MIN_SAVING = 30    -- seconds a trip must save over walking to be suggested
 T.MEASURE_ROUNDS = 8 -- searches at most, measuring the best trip's walks on foot
 
 -- What using a port costs, in seconds on top of its own.
@@ -173,8 +172,11 @@ function T.Plan(from, to, ctx)
     v = u
   end
   local trip = { legs = legs, secs = dist[goal.i], walk = walk }
-  -- a trip that saves too little is not worth the hassle: walk
-  if #legs > 1 and walk - trip.secs < T.MIN_SAVING then
+  -- a flight, boat or port only when it is faster than walking there; a trip of
+  -- walks only (past a flight point) is the walk straight there
+  local travels = false
+  for _, l in ipairs(legs) do if l.mode ~= "walk" then travels = true end end
+  if #legs > 1 and (not travels or trip.secs >= walk) then
     trip = { legs = { { mode = "walk", from = from, to = to, secs = walk } }, secs = walk, walk = walk }
   end
   -- the last walk ends inside a cave whose entrance is known: go to the entrance first
@@ -339,8 +341,6 @@ function T.Time(from, to, ctx, usable)
       end
     end
   end
-  -- as T.Plan: a trip that saves too little is not worth the hassle
-  if best < walk and walk - best < T.MIN_SAVING then return walk, nil end
   return best, via
 end
 
