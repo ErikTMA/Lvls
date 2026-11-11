@@ -546,13 +546,14 @@ end
 -- step, just before the first such step: a short detour to the flight master.
 S.FLIGHT_PATH_YARDS = 150
 S.FLIGHT_PATH_DETOUR = 400
+local function fpLine(f)
+  local who = f.npc and f.npc.name
+  return { kind = "fpath", node = f.id, spot = f.spot,
+    text = "Get the " .. (f.name or "?") .. " flight path" .. (who and (" from " .. who) or "") }
+end
 function S.AddFlightPaths(steps, undiscovered, geo)
   local taken = {}
-  local function line(f)
-    local who = f.npc and f.npc.name
-    return { kind = "fpath", node = f.id, spot = f.spot,
-      text = "Get the " .. (f.name or "?") .. " flight path" .. (who and (" from " .. who) or "") }
-  end
+  local line = fpLine
   for _, st in ipairs(steps) do
     if st.kind == "talk" and not st.done then
       for _, f in ipairs(undiscovered or {}) do
@@ -580,4 +581,35 @@ function S.AddFlightPaths(steps, undiscovered, geo)
   for i = #steps, 1, -1 do
     for k = #(before[i] or {}), 1, -1 do table.insert(steps, i, before[i][k]) end
   end
+end
+
+-- A flight point you lack close to where you stand, wherever the route goes next:
+-- a step of its own before the current one (a short walk to the flight master), made
+-- again on every refresh like the dungeon step. Picked within FLIGHT_PATH_NEAR yards
+-- of you, kept until you are FLIGHT_PATH_KEEP yards off (`held`: the node shown last
+-- time), so walking along its edge does not make it come and go. None when an open
+-- step already gets that flight path. Returns the step and the node it is for.
+S.FLIGHT_PATH_NEAR = 400
+S.FLIGHT_PATH_KEEP = 800
+function S.NearFlightPath(steps, lacking, pos, geo, held)
+  if not pos then return nil end
+  local planned = {}
+  for _, st in ipairs(steps or {}) do
+    if not st.done then
+      for _, l in ipairs(st.lines or {}) do
+        if l.kind == "fpath" and not l.done then planned[l.node] = true end
+      end
+    end
+  end
+  local best, bestD
+  for _, f in ipairs(lacking or {}) do
+    if not planned[f.id] then
+      local d = G.Distance(geo, pos, f.spot)
+      local reach = f.id == held and S.FLIGHT_PATH_KEEP or S.FLIGHT_PATH_NEAR
+      if d <= reach and (not bestD or d < bestD) then best, bestD = f, d end
+    end
+  end
+  if not best then return nil end
+  local l = fpLine(best)
+  return { kind = "fpath", near = true, spot = best.spot, title = l.text, lines = { l } }, best.id
 end

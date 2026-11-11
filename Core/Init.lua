@@ -406,8 +406,8 @@ function ns.Invalidate() ns.dirty = true end
 -- must not stop the steps from following the quest log: logged once, skipped.
 local failed = {}
 local function try(what, fn, ...)
-  local ok, a, b = pcall(fn, ...)
-  if ok then return a, b end
+  local ok, a, b, c = pcall(fn, ...)
+  if ok then return a, b, c end
   local msg = what .. ": " .. tostring(a)
   if not failed[msg] then failed[msg] = true; ns.Log("debug", msg) end
   return nil
@@ -426,9 +426,19 @@ end
 -- place: the current step's index.
 local function refreshSteps(ds)
   local steps = ns.steps
-  for k = #steps, 1, -1 do if steps[k].inside then table.remove(steps, k) end end
+  for k = #steps, 1, -1 do if steps[k].inside or steps[k].near then table.remove(steps, k) end end
   local st = try("dungeon step", insideStep, ds)
   local at = ns.Steps.Refresh(ds, ns.char, steps, ns.Game.geo)
+  -- a flight point you lack close by: get it now, wherever the route goes next
+  -- (not while following a member's steps)
+  local follow = steps[1] and steps[1].kind == "follow"
+  local fp, node
+  if not follow then fp, node = ns.Steps.NearFlightPath(steps, ns.flyUnknown, ns.char.pos, ns.Game.geo, ns.nearFlight) end
+  ns.nearFlight = node
+  if fp and not ns.Steps.LineState(ds, ns.char, fp.lines[1]) then
+    table.insert(steps, at or (#steps + 1), fp)
+    at = ns.Steps.Refresh(ds, ns.char, steps, ns.Game.geo)
+  end
   local open = false
   for _, l in ipairs(st and st.lines or {}) do
     if not ns.Steps.LineState(ds, ns.char, l) then open = true break end
@@ -448,12 +458,18 @@ function ns.Refresh(replan)
   ns.char.trainedAt = ns.cdb and ns.cdb.trainer and ns.cdb.trainer.time or nil
   try("dungeon tracking", ns.DungeonInfo.Track, ns.char.pos)
   ns.travelCtx = try("travel", ns.TravelData.Context, ds, ns.char) or ns.travelCtx
-  local known, unknown
-  if ns.char.pos then known, unknown = try("flight points", ns.TravelData.FlyNodes, ds, ns.char.pos.map, ns.char.faction) end
+  local known, unknown, unsure
+  if ns.char.pos then known, unknown, unsure = try("flight points", ns.TravelData.FlyNodes, ds, ns.char.pos.map, ns.char.faction) end
   known, unknown = known or {}, unknown or {}
   ns.char.flyKnown = {}
   for _, f in ipairs(known) do ns.char.flyKnown[f.id] = true end
-  ns.flyUnknown = unknown
+  -- to pick up: the points you lack, and the ones no flight master's map confirmed
+  -- yet (the client's isUndiscovered calls points you never got discovered, so before
+  -- your first flight map on a continent every point you lack is one of these). Its
+  -- flight master's map settles it either way.
+  ns.flyUnknown = {}
+  for _, f in ipairs(unknown) do ns.flyUnknown[#ns.flyUnknown + 1] = f end
+  for _, f in ipairs(unsure or {}) do ns.flyUnknown[#ns.flyUnknown + 1] = f end
   local s = ns.db.settings
   local lv, done, active, sum, fly = stateOf(ns.char)
   -- an item in your bags that starts a quest is a line of the current step (Steps:
