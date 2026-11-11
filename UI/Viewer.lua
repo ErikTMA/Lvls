@@ -215,7 +215,7 @@ local function row(i)
     local tip = GameTooltip and V.LineTip(self.line)
     if not tip then return end
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText(tip[1][1], tip[1][2], tip[1][3], tip[1][4], true)
+    GameTooltip:SetText(tip[1][1], tip[1][2], tip[1][3], tip[1][4], 1, true)
     for k = 2, #tip do GameTooltip:AddLine(tip[k][1], tip[k][2], tip[k][3], tip[k][4], true) end
     GameTooltip:Show()
   end)
