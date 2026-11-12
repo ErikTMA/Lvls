@@ -124,12 +124,12 @@ local function create()
   box.count:SetTextColor(C.accent[1], C.accent[2], C.accent[3])
   box.title = box:CreateFontString(nil, "OVERLAY", "GameFontNormal")
   box.title:SetPoint("TOPLEFT", box.count, "BOTTOMLEFT", 0, -4)
-  box.title:SetPoint("RIGHT", box, "RIGHT", -10, 0)
+  box.title:SetWidth(T.WIDTH - 22) -- a width of its own: it wraps (and measures) before the box is laid out
   if box.title.SetJustifyH then box.title:SetJustifyH("LEFT") end
   box.title:SetTextColor(C.title[1], C.title[2], C.title[3])
   box.body = box:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
   box.body:SetPoint("TOPLEFT", box.title, "BOTTOMLEFT", 0, -6)
-  box.body:SetPoint("RIGHT", box, "RIGHT", -10, 0)
+  box.body:SetWidth(T.WIDTH - 22)
   if box.body.SetJustifyH then box.body:SetJustifyH("LEFT") end
   if box.body.SetWordWrap then box.body:SetWordWrap(true) end
   if box.body.SetSpacing then box.body:SetSpacing(2) end
@@ -204,6 +204,14 @@ local function place(target, to)
   end
 end
 
+-- The box as tall as its text: the buttons under the last line, never over it. It
+-- grows down from its top (beside a frame) or both ways (in the middle).
+function T.Fit()
+  if not box then return end
+  local function h(fs, min) return math.max(min, (fs.GetStringHeight and fs:GetStringHeight()) or 0) end
+  box:SetHeight(8 + h(box.count, 12) + 4 + h(box.title, 14) + 6 + h(box.body, 14) + 12 + 20 + 8)
+end
+
 function T.Render()
   if not (box and T.steps) then return end
   local st = T.steps[T.index]
@@ -217,12 +225,13 @@ function T.Render()
   if T.index > 1 then box.back:Show() else box.back:Hide() end
   box.skip.check:SetTexCoord(ns.Viewer.IconCoords("checkoff"))
   if T.index == n then box.skip:Hide() else box.skip:Show() end
-  local function h(fs) return (fs.GetStringHeight and fs:GetStringHeight()) or 0 end
-  box:SetHeight(8 + 12 + 4 + math.max(14, h(box.title)) + 6 + math.max(14, h(box.body)) + 12 + 20 + 8)
+  T.Fit()
   local target = T.Target(st)
   local to = target and st.to and st.to()
   place(target, to)
   box:Show()
+  -- measured again once drawn: the client wraps the text only then
+  if C_Timer and C_Timer.After then C_Timer.After(0, T.Fit) end
   seen()[st.id] = true -- seen once shown: a tour left halfway goes on from here next time
 end
 
