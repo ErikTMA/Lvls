@@ -1,7 +1,8 @@
 -- GENERATED transports for Lvls!. Do not edit.
 -- From the forever client's TaxiPathNode, AreaTrigger, UiMapAssignment and UiMap
--- tables (build 1.60.1.70862) and the quest dataset: boats, zeppelins (side H) and the
--- Deeprun Tram as Engine/Travel transit links.
+-- tables (build 1.60.1.70862) and the quest dataset: boats, zeppelins (side H), the
+-- Deeprun Tram and walk-in portals (where they lead: a server's areatrigger_teleport)
+-- as Engine/Travel transit links.
 local _, ns = ...
 ns.TravelTransports = {
   {kind="boat",a={map=1413,x=63.8,y=38.8},b={map=1434,x=25.7,y=73.1},title_ab="Take the boat to Stranglethorn Vale",title_ba="Take the boat to The Barrens"},
@@ -17,4 +18,5 @@ ns.TravelTransports = {
   {kind="boat",a={map=1446,x=68.6,y=23.0},b={map=2548,x=80.6,y=54.6},title_ab="Take the boat to Riverglades",title_ba="Take the boat to Tanaris"},
   {kind="boat",a={map=1439,x=30.5,y=40.9},b={map=1453,x=21.8,y=56.9},title_ab="Take the boat to Stormwind City",title_ba="Take the boat to Darkshore"},
   {kind="tram",a={map=1453,x=69.6,y=30.3},b={map=1455,x=78.0,y=51.4},title_ab="Take the Deeprun Tram to Ironforge",title_ba="Take the Deeprun Tram to Stormwind City"},
+  {kind="portal",a={map=1457,x=29.1,y=41.2},b={map=1438,x=55.9,y=89.3},secs=5,title_ab="Take the portal to Teldrassil",title_ba="Take the portal to Darnassus"},
 }

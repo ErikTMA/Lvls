@@ -17,6 +17,12 @@
 --                  that ends at the spot (up a hill, through a mine), else nil
 --   ctx.walk       function(a, b) -> yards on foot around walls and mountains
 --                  (Engine/Nav), nil when not known: the straight line stands in
+--   ctx.pieces     function(spot) -> { [land] = true } the lands of the map data the
+--                  spot is on (Engine/Nav N.Pieces), nil when not known. Spots on
+--                  lands that do not meet have no way on foot between them: no walk
+--                  from Darkshore across the sea to Teldrassil, take the boat. Only
+--                  lands a flight point or a transit end is on count: a land with
+--                  neither (an islet) you swam to, and can swim from.
 --
 -- Method: Dijkstra over start, goal, flight points, transit ends and the ports'
 -- spots. Walking connects any two of them on the same continent; flights connect
@@ -62,11 +68,50 @@ local function continent(geo, spot)
   return c or spot.map
 end
 
+-- The lands that count (see ctx.pieces): { [land] = true } of the nodes' pieces.
+local function linkedLands(nodes)
+  local out = {}
+  for _, n in ipairs(nodes) do
+    if (n.kind == "fly" or n.kind == "transit") and n.pieces then
+      for k in pairs(n.pieces) do out[k] = true end
+    end
+  end
+  return out
+end
+
+local function counts(p, linked)
+  for k in pairs(p) do if linked[k] then return true end end
+  return false
+end
+
+-- True when the map data says there is no way on foot between the two spots: both
+-- are on it, their lands do not meet (ctx.pieces) and both lands count (`linked`).
+-- pa / pb: the lands when already looked up.
+local function apart(ctx, linked, a, b, pa, pb)
+  if not ctx.pieces then return false end
+  pa = pa or ctx.pieces(a)
+  if not pa or not counts(pa, linked) then return false end
+  pb = pb or ctx.pieces(b)
+  if not pb or not counts(pb, linked) then return false end
+  for k in pairs(pa) do if pb[k] then return false end end
+  return true
+end
+
+-- Straight-line yards on foot, math.huge when there is no way on foot at all.
+local function footDistance(geo, ctx, linked, a, b, pa, pb)
+  if apart(ctx, linked, a, b, pa, pb) then return math.huge end
+  return G.Distance(geo, a, b)
+end
+
 -- Fastest trip. Returns { legs = { { mode, from, to, title, secs } }, secs, walk }.
 function T.Plan(from, to, ctx)
   local geo, speed = ctx.geo, ctx.speed or 7
   local nodes = {}
-  local function add(n) nodes[#nodes + 1] = n; n.i = #nodes; n.cont = continent(geo, n.spot); return n end
+  local function add(n)
+    nodes[#nodes + 1] = n; n.i = #nodes; n.cont = continent(geo, n.spot)
+    n.pieces = ctx.pieces and ctx.pieces(n.spot)
+    return n
+  end
   local start = add({ kind = "start", spot = from })
   local goal = add({ kind = "goal", spot = to })
   local flyNodes = {}
@@ -102,11 +147,12 @@ function T.Plan(from, to, ctx)
     end
   end
   -- walking between everything on the same continent (never out of the goal)
+  local linked = linkedLands(nodes)
   for _, a in ipairs(nodes) do
     if a ~= goal then
       for _, b in ipairs(nodes) do
         if a ~= b and b ~= start and a.cont == b.cont then
-          local d = G.Distance(geo, a.spot, b.spot)
+          local d = footDistance(geo, ctx, linked, a.spot, b.spot, a.pieces, b.pieces)
           if d < math.huge then edge(a, b, d / speed, { mode = "walk" }, d) end -- yards: not measured yet
         end
       end
@@ -151,15 +197,22 @@ function T.Plan(from, to, ctx)
     end
   end
   if measured then search() end -- the last round's measures counted
-  -- walking all the way, on foot (the straight line when the way is not known)
-  local walk = G.Distance(geo, from, to) / speed
+  -- walking all the way, on foot (the straight line when the way is not known;
+  -- math.huge when there is no way on foot)
+  local walk = footDistance(geo, ctx, linked, from, to, start.pieces, goal.pieces) / speed
   local direct
   for _, e in ipairs(edges[start.i] or {}) do if e[1] == goal.i then direct = e end end
   if direct then
     if direct[4] then measure(direct, start.i) end
     walk = direct[2]
   end
-  if not dist[goal.i] then return { legs = {}, secs = math.huge, walk = walk } end
+  if not dist[goal.i] then
+    -- no way at all that we know of (no boat, no flight point you have) on one
+    -- continent: the straight line, as before the map data knew better
+    local straight = G.Distance(geo, from, to) / speed
+    if walk < math.huge or straight == math.huge then return { legs = {}, secs = math.huge, walk = walk } end
+    return { legs = { { mode = "walk", from = from, to = to, secs = straight } }, secs = straight, walk = straight }
+  end
   local legs = {}
   local v = goal.i
   while prev[v] do
@@ -236,11 +289,15 @@ local function network(ctx)
   if net then return net end
   local geo = ctx.geo
   local nodes = {}
-  local function add(n) nodes[#nodes + 1] = n; n.cont = continent(geo, n.spot); return n end
+  local function add(n)
+    nodes[#nodes + 1] = n; n.cont = continent(geo, n.spot)
+    n.pieces = ctx.pieces and ctx.pieces(n.spot)
+    return n
+  end
   for _, f in ipairs(ctx.fly or {}) do add({ kind = "fly", fly = f, spot = f.spot }) end
   local links = {}
   for _, l in ipairs(ctx.transit or {}) do
-    local a, b = add({ spot = l.a }), add({ spot = l.b })
+    local a, b = add({ kind = "transit", spot = l.a }), add({ kind = "transit", spot = l.b })
     links[#links + 1] = { a, b, l.secs or T.TRANSIT_SECS, l.oneway }
   end
   local ports = {}
@@ -248,6 +305,7 @@ local function network(ctx)
     if p.spot then ports[#ports + 1] = { node = add({ kind = "port", spot = p.spot }), port = p } end
   end
   for i, n in ipairs(nodes) do n.i = i end
+  local linked = linkedLands(nodes)
   local n, speed, D = #nodes, ctx.speed or 7, {}
   for i = 1, n do
     D[i] = {}
@@ -258,7 +316,7 @@ local function network(ctx)
         d = math.huge
         if a.cont == b.cont then
           local w = G.Distance(geo, a.spot, b.spot)
-          if w < math.huge then d = w / speed end
+          if w < math.huge and not apart(ctx, linked, a.spot, b.spot, a.pieces, b.pieces) then d = w / speed end
           if a.kind == "fly" and b.kind == "fly" then
             local secs = ctx.flyTime and ctx.flyTime(a.fly.id, b.fly.id)
             if not secs then secs = w / T.FLY_SPEED + T.FLY_OVERHEAD end
@@ -287,7 +345,7 @@ local function network(ctx)
       end
     end
   end
-  net = { nodes = nodes, D = D, ports = ports, speed = speed, from = {} }
+  net = { nodes = nodes, D = D, ports = ports, speed = speed, from = {}, ctx = ctx, linked = linked }
   nets[ctx] = net
   return net
 end
@@ -304,8 +362,9 @@ local function reach(net, from, geo, usable)
   if r then return r end
   local nodes, D, n = net.nodes, net.D, #net.nodes
   local first, firstVia = {}, {}
+  local pf = net.ctx.pieces and net.ctx.pieces(from)
   for i = 1, n do
-    local w = G.Distance(geo, from, nodes[i].spot)
+    local w = footDistance(geo, net.ctx, net.linked, from, nodes[i].spot, pf, nodes[i].pieces)
     first[i] = w < math.huge and w / net.speed or math.huge
   end
   for _, pp in ipairs(use) do
@@ -329,19 +388,27 @@ end
 function T.Time(from, to, ctx, usable)
   local geo = ctx.geo
   local net = network(ctx)
-  local walk = G.Distance(geo, from, to) / (ctx.speed or 7)
+  local pt = ctx.pieces and ctx.pieces(to)
+  local walk = footDistance(geo, ctx, net.linked, from, to, nil, pt) / (ctx.speed or 7)
   local r = reach(net, from, geo, usable)
   local best, via = walk, nil
   for j, node in ipairs(net.nodes) do
     if r[j] < best then
-      local w = G.Distance(geo, node.spot, to)
+      local w = footDistance(geo, ctx, net.linked, node.spot, to, node.pieces, pt)
       if w < math.huge then
         local v = r[j] + w / net.speed
         if v < best then best, via = v, r.via[j] end
       end
     end
   end
+  -- no way at all that we know of: the straight line, as T.Plan walks it
+  if best == math.huge then return G.Distance(geo, from, to) / (ctx.speed or 7), nil end
   return best, via
+end
+
+-- No way on foot between the two spots (the map data's lands, as T.Plan sees them)?
+function T.Apart(ctx, a, b)
+  return apart(ctx, network(ctx).linked, a, b)
 end
 
 -- What the arrow and the viewer show for a trip: the legs that are not plain walks

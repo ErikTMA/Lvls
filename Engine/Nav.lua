@@ -36,7 +36,7 @@ function N.Graph(cont)
   local d = ns.NavData and ns.NavData[cont]
   if not d or not d.nodes then graphs[cont] = false; return nil end
   local nodes, off, adj, w, aw = d.nodes, d.off, d.adj, d.w, d.aw or 3
-  g = { n = d.n, cell = d.cell }
+  g = { n = d.n, cell = d.cell, lands = d.lands or {} }
   function g.X(i)
     local p = (i - 1) * 8 + 1
     local a, b, c = byte(nodes, p, p + 2)
@@ -81,12 +81,13 @@ function N.Reset() graphs = {} end
 
 -- Nodes near (x, y): the nearest, and the others up to SNAP_SLACK yards farther,
 -- nearest first, at most SNAP_MAX. Each { node, yards }. Only nodes of `comps`
--- (a set of components) when given.
-function N.Near(g, x, y, comps)
+-- (a set of components) when given. `snap`: instead of N.SNAP_YARDS.
+function N.Near(g, x, y, comps, snap)
+  snap = snap or N.SNAP_YARDS
   local found = {}
   local best = math.huge
   local cx, cy = floor(x / CELL), floor(y / CELL)
-  local rings = math.ceil((N.SNAP_YARDS + N.SNAP_SLACK) / CELL) + 1
+  local rings = math.ceil((snap + N.SNAP_SLACK) / CELL) + 1
   for r = 0, rings do
     for dx = -r, r do
       for dy = -r, r do
@@ -98,7 +99,7 @@ function N.Near(g, x, y, comps)
             if not comps or comps[g.Comp(i)] then
               local ex, ey = nx - x, ny - y
               local d = sqrt(ex * ex + ey * ey)
-              if d <= N.SNAP_YARDS + N.SNAP_SLACK then
+              if d <= snap + N.SNAP_SLACK then
                 found[#found + 1] = { i, d }
                 if d < best then best = d end
               end
@@ -109,9 +110,9 @@ function N.Near(g, x, y, comps)
       end
     end
     -- everything within reach of the nearest is inside the rings searched so far
-    if best <= N.SNAP_YARDS and r * CELL >= best + N.SNAP_SLACK then break end
+    if best <= snap and r * CELL >= best + N.SNAP_SLACK then break end
   end
-  if best > N.SNAP_YARDS then return {} end
+  if best > snap then return {} end
   table.sort(found, function(a, b) return a[2] < b[2] end)
   local out = {}
   for _, f in ipairs(found) do
@@ -119,6 +120,28 @@ function N.Near(g, x, y, comps)
     out[#out + 1] = f
   end
   return out
+end
+
+-- The lands of the graph a spot at (x, y) on continent `cont` can be on:
+-- { [land] = true }. A land is a component, or several that come within a cell of
+-- each other (the data's `lands`: Orgrimmar and Durotar meet at the gate, Thunder
+-- Bluff's mesas at the elevators). From the nodes the spot
+-- is near (several on two floors, as N.Route snaps), up to N.PIECE_YARDS away: a
+-- dock at the end of its pier is on its shore's land. nil when there is no graph or
+-- the spot is farther off: then nothing is known. Two spots whose lands do not meet
+-- have no way on foot between them (Darkshore and Teldrassil: the sea is not a way).
+N.PIECE_YARDS = 150
+function N.Pieces(cont, x, y)
+  local g = N.Graph(cont)
+  if not g then return nil end
+  local near = N.Near(g, x, y, nil, N.PIECE_YARDS)
+  if #near == 0 then return nil end
+  local set = {}
+  for _, t in ipairs(near) do
+    local c = g.Comp(t[1])
+    set[g.lands[c] or c] = true
+  end
+  return set
 end
 
 -- The way from (ax, ay) to (bx, by) on continent `cont`: { { x, y }, ... } from the

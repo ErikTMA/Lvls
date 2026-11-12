@@ -449,6 +449,27 @@ function TR.Walk(a, b)
   return type(c) == "number" and c or nil
 end
 
+-- The pieces of the map data a spot is on (Engine/Nav N.Pieces), for Engine/Travel's
+-- ctx.pieces: spots on pieces that do not meet have no way on foot between them
+-- (an island across the sea), which the straight line would hide. nil off the map
+-- data. Kept by spot to 20 yards: the route asks thousands of times per plan.
+TR.PIECE_CACHE = 2000
+local pieceCache, pieceCount = {}, 0
+function TR.Pieces(spot)
+  local geo = ns.Game.geo
+  if not (ns.Nav and ns.Nav.Pieces and geo and geo.world and spot) then return nil end
+  local c, x, y = geo.world(spot.map, spot.x, spot.y)
+  if not c then return nil end
+  local key = spotKey(c, x, y, 20)
+  local set = pieceCache[key]
+  if set == nil then
+    set = ns.Nav.Pieces(c, x, y) or false
+    if pieceCount >= TR.PIECE_CACHE then pieceCache, pieceCount = {}, 0 end
+    pieceCache[key], pieceCount = set, pieceCount + 1
+  end
+  return set or nil
+end
+
 -- The way on foot from a to b as world points, and its continent: for the route's
 -- "in passing" (Engine/Route opts.way), so a quest round the mountain the way goes
 -- counts as on the way. nil off the map data or across continents. Asked from the
@@ -518,7 +539,7 @@ function TR.Context(ds, char)
   return {
     geo = ns.Game.geo, speed = ns.Game.RunSpeed and ns.Game.RunSpeed() or 7,
     fly = known, flyTime = TR.FlyTime, transit = TR.Transit(char.faction), ports = TR.Ports(),
-    entrance = TR.Entrance, path = TR.PathTo, walk = TR.Walk,
+    entrance = TR.Entrance, path = TR.PathTo, walk = TR.Walk, pieces = TR.Pieces,
   }
 end
 

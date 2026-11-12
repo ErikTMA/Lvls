@@ -1147,7 +1147,11 @@ commands.travel = function()
     for i, l in ipairs(trip.legs) do
       ns.Log("info", ("%d. %s %s (%ds)"):format(i, l.mode, l.title or "", math.floor(l.secs or 0)))
     end
-    ns.Log("info", ("%ds, walking would take %ds"):format(math.floor(trip.secs), math.floor(trip.walk)))
+    if trip.walk < math.huge then
+      ns.Log("info", ("%ds, walking would take %ds"):format(math.floor(trip.secs), math.floor(trip.walk)))
+    else
+      ns.Log("info", ("%ds, no way there on foot"):format(math.floor(trip.secs)))
+    end
   end
   for _, p in ipairs(ns.travelCtx and ns.travelCtx.ports or {}) do
     local ready = (p.ready or 0) > 0 and ("ready in %d min"):format(math.ceil(p.ready / 60)) or "ready"
