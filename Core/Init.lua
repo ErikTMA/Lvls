@@ -272,6 +272,22 @@ function ns.TalkedTo(kind, id, offered)
   end
 end
 
+-- The quest log is the one the last plan was made for: no quest taken, handed in,
+-- abandoned or finished since. Only then does a plan made again keep the step you
+-- are walking to (opts.commit); a changed log is a new situation, planned afresh
+-- (a quest taken next to its giver may be the thing to do first now).
+local function sameLog(char)
+  local was = ns.planLog
+  if not was then return false end
+  local n = 0
+  for qid, entry in pairs(char and char.active or {}) do
+    if was[qid] ~= (entry.complete and "complete" or true) then return false end
+    n = n + 1
+  end
+  for _ in pairs(was) do n = n - 1 end
+  return n == 0
+end
+
 -- Plan again. With steps to show meanwhile, the route is planned as a job, a slice
 -- per frame (ns.PLAN_SLICE_MS; Core/Util U.Job), and the old steps stay until it is
 -- done: a plan takes from a tenth of a second to more, the game must not stop for
@@ -303,7 +319,7 @@ local function plan(ds, forced)
   end
   local char = ns.char
   local opts = {
-    commit = not offRoute() and ns.Steps.Commit(ns.steps and ns.stepIndex and ns.steps[ns.stepIndex]) or nil,
+    commit = not offRoute() and sameLog(ns.char) and ns.Steps.Commit(ns.steps and ns.stepIndex and ns.steps[ns.stepIndex]) or nil,
     speed = ctx and ctx.speed or 7,
     logSize = ns.Game.LogSize(), -- nil: the route's default
     travel = ctx and function(a, b, usable) return ns.Travel.Time(a, b, ctx, usable) end,
