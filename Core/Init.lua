@@ -1083,8 +1083,8 @@ commands.walk = function(arg)
   local v = tonumber(inside and arg:sub(#inside + 1) or arg)
   if v and v >= 0 and v <= ns.Nav.HELP_MAX then ns.Settings.Set(key, math.floor(v)) end
   local S = ns.Settings
-  ns.Log("info", "lead the way on foot: outside " .. S.HelpLabel(ns.db.settings.groundHelp)
-    .. ", inside " .. S.HelpLabel(ns.db.settings.groundHelpIndoors))
+  ns.Log("info", "turn-by-turn: outdoors " .. S.HelpLabel(ns.db.settings.groundHelp)
+    .. ", buildings and caves " .. S.HelpLabel(ns.db.settings.groundHelpIndoors))
 end
 
 commands.record = function(arg) ns.TravelData.Record(arg) end

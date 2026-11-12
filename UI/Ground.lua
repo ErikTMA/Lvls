@@ -2,7 +2,7 @@
 -- building or up a cliff. This finds the way there (Engine/Nav over the client's
 -- own map data, Data/forever/Nav*.lua) and leads along it, but only where the
 -- straight line would not do (Nav.Worth: a cave, a mountain path, a walled city;
--- how readily is the "Lead the way on foot" sliders: one for out in the world, one
+-- how readily is the "Turn-by-turn" sliders: one for out in the world, one
 -- for inside buildings and caves; the one for where you stand, looked at again as
 -- you go in or out):
 --   * the arrow points at the next turn and counts the yards left along the way

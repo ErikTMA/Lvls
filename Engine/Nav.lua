@@ -304,7 +304,8 @@ N.DETOUR = 1.3        -- the way is at least this many times the straight line
 N.DETOUR_YARDS = 30   -- and at least this many yards longer
 N.HOLE = 3            -- but a way over this many times the straight line
 N.HOLE_YARDS = 800    -- and this many yards longer is a hole in the graph
--- How much help (the "Lead the way on foot" slider, LvlsDB.settings.groundHelp):
+-- How much help (the "Turn-by-turn" sliders, LvlsDB.settings.groundHelp outdoors and
+-- groundHelpIndoors in buildings and caves):
 -- 0 the straight line always, 1 only big detours, 2 around walls (N.DETOUR and
 -- N.DETOUR_YARDS), 3 small detours too, 4 every turn of the way.
 N.HELP_MAX = 4

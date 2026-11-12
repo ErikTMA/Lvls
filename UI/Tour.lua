@@ -46,7 +46,7 @@ T.STEPS = {
   { id = "hide", target = viewer("close"), title = "Hide the guide",
     text = "x hides the viewer, the arrow and the route lines. Right-click the minimap button, or type /lvls, to bring them back." },
   { id = "arrow", target = named("WaypointArrowFrame"), title = "The arrow",
-    text = "Points at the next goal, and leads the way on foot round walls, buildings and cliffs (Settings: \"Lead the way on foot\"). Drag it to move it." },
+    text = "Points at the next goal, and leads the way on foot round walls, buildings and cliffs (Settings: \"Turn-by-turn\"). Drag it to move it." },
   { id = "shift", title = "Hold Shift to do it yourself",
     text = "At an npc, Lvls! accepts the quests the route picks, hands in finished ones and takes the best reward.\n\nHold Shift while you talk to the npc and it leaves that to you." },
   { id = "itemBar", target = named("LvlsItemBar"), title = "Buttons for quest items",
