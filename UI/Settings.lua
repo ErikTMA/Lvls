@@ -165,12 +165,24 @@ function S.Register()
   S.category = category
 end
 
+-- The game will not let an addon open the settings panel in combat (ADDON_ACTION_BLOCKED
+-- on OpenSettingsPanel), so in combat it opens when the fight is over.
 function S.Open()
-  if S.category and Settings.OpenToCategory then
-    Settings.OpenToCategory(S.category:GetID())
+  if not (S.category and Settings and Settings.OpenToCategory) then return false end
+  if type(InCombatLockdown) == "function" and InCombatLockdown() then
+    if not S.afterCombat then ns.Log("info", "the settings page opens when combat ends") end
+    S.afterCombat = true
     return true
   end
-  return false
+  S.afterCombat = nil
+  Settings.OpenToCategory(S.category:GetID())
+  return true
+end
+
+local combatFrame = CreateFrame and CreateFrame("Frame")
+if combatFrame then
+  combatFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+  combatFrame:SetScript("OnEvent", function() if S.afterCombat then S.Open() end end)
 end
 
 ns.Events.On("LVLS_LOADED", function() S.Register() end)
