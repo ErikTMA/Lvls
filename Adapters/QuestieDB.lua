@@ -200,6 +200,17 @@ end
 -- Imprisonment 19901) also stood at the circle in Satyrnaar, the other objective's.
 -- Not objects an item comes from (herbs, crates): there the dump knows more spawns.
 -- Returns how many npcs / objects moved.
+local zoneMapCache = setmetatable({}, { __mode = "k" })
+local function zoneMaps(ds)
+  local z = zoneMapCache[ds]
+  if not z then
+    z = {}
+    for _, m in pairs(ds.zones or {}) do z[m] = true end
+    zoneMapCache[ds] = z
+  end
+  return z
+end
+
 function QD.PlaceQuestNpcs(ds)
   if not lib then return 0 end
   local seen, moved = {}, 0
@@ -213,10 +224,19 @@ function QD.PlaceQuestNpcs(ds)
     local e = kind == "o" and lib.Object or lib.Npc
     local spots = spawnSpots(get(e, id, "spawns"), {})
     if #spots == 0 then return end
+    -- a zone the dataset has the npc in: QuestieDB moves it within its maps, adds no
+    -- map. Its traces carry where an npc showed up for a moment: Veyric Thunderhame,
+    -- who takes Elemental Aid in Arathi Highlands, also stood beside Eldrun in
+    -- Ironforge (for Call of Air), and the hand-in went there. An npc the dataset
+    -- only has on a continent map (Odd Child) takes QuestieDB's zones.
+    local inZone = false
+    for m in pairs(rec.p) do if zoneMaps(ds)[m] then inZone = true; break end end
     local by = {}
     for _, sp in ipairs(spots) do
-      by[sp.map] = by[sp.map] or {}
-      table.insert(by[sp.map], pack(sp.x, sp.y))
+      if not inZone or rec.p[sp.map] then
+        by[sp.map] = by[sp.map] or {}
+        table.insert(by[sp.map], pack(sp.x, sp.y))
+      end
     end
     local changed = false
     for map, pts in pairs(by) do
