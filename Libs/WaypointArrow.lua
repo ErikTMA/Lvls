@@ -31,7 +31,7 @@
 -- GetPlayerMapPosition, GetWorldPosFromMapPos, CreateVector2D, GetPlayerFacing,
 -- GetUnitSpeed (secret in combat: issecretvalue), UnitOnTaxi, Texture:SetRotation.
 local addonName = ...
-local MINOR = 1
+local MINOR = 2
 
 local WA = _G.WaypointArrow
 if WA and (WA.MINOR or 0) >= MINOR then return end
@@ -163,7 +163,9 @@ function WA.Set(owner, target, opts)
   if opts.clearOnLeave ~= nil or not old then s.clearOnLeave = opts.clearOnLeave and true or false end
   if opts.clearable ~= nil or not old then s.clearable = opts.clearable and true or false end
   WA.slots[owner] = s
-  if WA.frame then WA.frame:Show() end
+  -- only when there is something to show: an owner switched off (or every one) must
+  -- not flash it up until the next redraw hides it again
+  if WA.frame and WA.Active() then WA.frame:Show() end
   return s
 end
 
