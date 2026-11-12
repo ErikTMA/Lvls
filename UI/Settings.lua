@@ -1,8 +1,9 @@
--- The Lvls! page in the game's Settings (Options -> AddOns -> Lvls!), and the
--- matching /lvls commands. Values live in LvlsDB.settings (account) and
+-- The Lvls! pages in the game's Settings (Options -> AddOns -> Lvls!, with a
+-- subpage per topic under it), and the matching /lvls commands. Values live in LvlsDB.settings (account) and
 -- LvlsCharDB.spec (this character's spec override).
 -- API (wow-ui-source branch forever, Blizzard_Settings_Shared):
 --   Settings.RegisterVerticalLayoutCategory(name) -> category, layout
+--   Settings.RegisterVerticalLayoutSubcategory(parent, name) -> category, layout
 --   Settings.RegisterProxySetting(category, variable, varType, name, default, get, set)
 --   Settings.CreateCheckbox(category, setting, tooltip)
 --   Settings.CreateDropdown(category, setting, optionsFn, tooltip), optionsFn ->
@@ -21,49 +22,60 @@ function S.HelpLabel(v) return S.HELP[v] or tostring(v) end
 function S.MinutesLabel(v) return ("%d min"):format(v) end
 S.WEIGHTS = { { "auto", "Pawn when it has a scale for my spec, else Lvls" }, { "pawn", "Pawn" }, { "lvls", "Lvls' own weights" } }
 
--- Everything on the page, in order. key: LvlsDB.settings key; refresh: re-plan.
+-- Everything on the pages, in order. { page = name } starts a subpage under Lvls!
+-- (items before the first one are on Lvls! itself); { header = name } a section.
+-- key: LvlsDB.settings key; refresh: re-plan.
 S.ITEMS = {
-  { header = "Quests" },
+  { header = "Route" },
+  { guide = true, name = "Guide", tip = "A dungeon: every quest for it and the chains leading to them, ending at its entrance. A class quest chain: its quests in reach. Also in the viewer's Guides menu and /lvls guide." },
+  { key = "trainSteps", name = "Train in the route", tip = "When spells, forms or new ranks wait at your class trainer, the route goes there: on the way when you pass one, a trip of its own once enough waits. Lvls! learns what your trainer teaches the first time you open its window.", refresh = true },
+  { key = "classQuests", name = "Class quests in the route", tip = "The leveling route takes your class quests (spells, forms, pets, weapons) as they become possible, in their order, marked with your class. The Guides menu does a whole chain at once.", refresh = true },
+  { key = "zoneFirst", name = "Finish the zone first", tip = "Zone by zone: everything left in this zone (quests to pick up, work, hand-ins) comes first. Then the next zone is chosen by everything there, deliveries in your log included, so they are made when the route goes there anyway. Off: the route goes wherever the next quest is worth the most.", refresh = true },
+  { page = "Quests" },
+  { header = "At the npc" },
   { key = "autoAccept", name = "Accept the quests the guide picks", tip = "Accept a quest when an npc offers it and the plan (route, guide, catch-up) tells you to pick it up. Other quests are left to you. Hold Shift to pause." },
   { key = "autoDeliver", name = "Hand in quests", tip = "Hand in finished quests when you talk to the npc." },
   { key = "autoReward", name = "Choose the best reward", tip = "Take the reward that is the biggest upgrade you can use, judged for your class and spec." },
   { key = "rewardGold", name = "Otherwise the most gold", tip = "When no reward is a usable upgrade, take the one that sells for most." },
+  { header = "Grey quests" },
   { key = "farGrey", name = "Offer to abandon far grey quests", grey = true, tip = "When grey quests in your log (no experience left in them) are further away than the time below, ask whether to abandon them. One you are close to is left alone; ones you keep are not asked about again until you log in. The trash can next to the viewer's gear abandons every grey quest. /lvls abandon" },
   { key = "farGreyMinutes", name = "Further than", grey = true, slider = { 1, 30, 1 }, label = S.MinutesLabel, tip = "Travel time to where you would go next for the quest: its hand-in when it is finished, else its objectives. Flights, boats and your hearthstone count." },
-  { header = "Gear" },
+  { page = "Gear" },
   { key = "autoEquip", name = "Put on upgrades (out of combat)", tip = "Equip new items in your bags that are upgrades for your spec." },
   { key = "autoEquipBind", name = "Also items that bind when equipped", tip = "Equip upgrades that bind when you put them on, up to the quality below. Better ones stay in your bags to sell or decide." },
   { key = "equipMaxQuality", name = "Highest quality to bind", choices = S.QUALITIES, number = true },
   { key = "gearWeights", name = "Stat weights", choices = S.WEIGHTS, tip = "Which weights judge gear. Your spec always comes from your talents (most points spent) or the choice below, never from Pawn." },
   { spec = true, name = "Spec", tip = "Detected: the talent tree with most points; below level 10 the class's leveling weights." },
+  { page = "Arrow" },
+  { key = "arrow", name = "Arrow" },
+  { key = "groundHelp", name = "Turn-by-turn: outdoors", travel = true, slider = { 0, 4, 1 }, label = S.HelpLabel, tip = "Out in the world: how much the arrow leads you turn by turn on foot, with the way drawn on the world map and the minimap. Straight line: it always points at the goal. Only big detours: walled cities and long caves. Around walls: also mountain paths and buildings. Small detours too: also round smaller things in the way. Every turn: it follows the whole way. Worked out from the game's own map data. /lvls walk 0-4" },
+  { key = "groundHelpIndoors", name = "Turn-by-turn: buildings and caves", travel = true, slider = { 0, 4, 1 }, label = S.HelpLabel, tip = "The same inside buildings and caves (where you cannot mount). It switches as you go in and out. /lvls walk in 0-4" },
+  { key = "nativeArrow", name = "Also the game's waypoint marker", travel = true, tip = "Also set the game's own map waypoint: its marker shows in the world with the distance. It stays on the goal, also while the arrow leads the way on foot." },
+  { page = "Map and minimap" },
+  { header = "World map" },
+  { key = "worldMap", name = "Quest pins on the world map" },
+  { key = "mapRoute", name = "Route on the world map", tip = "The next steps as numbered waypoints joined by a line, starting where you stand; at a flight master, the flight point to fly to is ringed and its route drawn. /lvls mapline" },
+  { key = "objectives", name = "Objective areas" },
+  { header = "Minimap" },
+  { key = "minimap", name = "Quest pins on the minimap", tip = "Givers, turn-ins and objective areas of the quests the guide's steps ahead name. /lvls minimap" },
+  { key = "minimapRoute", name = "Route on the minimap", tip = "The next steps as numbered waypoints on the minimap, joined by a dotted line from where you stand; on foot around walls it follows the way the arrow leads. Hover a waypoint for its steps. /lvls miniroute" },
+  { key = "minimapButton", name = "Minimap button", tip = "Left-click: settings. Right-click: hide or show the guide (the step viewer, the arrow and the route lines). Drag it round the minimap. /lvls button" },
+  { header = "Which quests get pins" },
+  { key = "showLow", name = "Show quests you are too low for" },
+  { key = "showTrivial", name = "Show grey quests" },
+  { key = "showDungeon", name = "Show dungeon quests" },
+  { key = "showRepeatable", name = "Show repeatable quests" },
+  { page = "Viewer and buttons" },
+  { key = "viewerGrowUp", name = "Step viewer grows upwards", viewer = true, tip = "The step viewer keeps its bottom edge where you put it and grows upwards as a step gets more lines. Off: it keeps its top edge and grows downwards. /lvls growup" },
+  { key = "itemBar", name = "Buttons for quest items", tip = "A movable row of buttons for the items to use now: items that start a quest, and the items quests give you to use on someone or somewhere. Key bindings: Key Bindings -> AddOns -> Lvls!. Drag a button to move them." },
+  { key = "lockItemBar", name = "Lock the item buttons", tip = "They cannot be dragged. /lvls items reset puts them back in their place." },
+  { page = "Fights and group" },
   { header = "Learning" },
   { key = "learnFights", name = "Learn from my fights", tip = "Record how long fights take, how much health they cost and the rest after them (solo only). Lvls! plans quests you can handle from it. /lvls fights shows what it learned." },
   { key = "suggestGrind", name = "Suggest grinding a level", tip = "When the only quests left close by are ones your fights say are too hard, kill easy mobs nearby until the next level instead of leaving." },
   { header = "Group" },
   { key = "groupSync", name = "Share quest progress with my group", tip = "Group members who run Lvls! exchange which quests they have done, to catch up with each other." },
   { key = "askSync", name = "Ask to catch up / to help", tip = "When a member has done quests you have not, ask whether to catch up; when one wants to catch up with you, ask whether to follow their route." },
-  { header = "Route and map" },
-  { guide = true, name = "Guide", tip = "A dungeon: every quest for it and the chains leading to them, ending at its entrance. A class quest chain: its quests in reach. Also in the viewer's Guides menu and /lvls guide." },
-  { key = "trainSteps", name = "Train in the route", tip = "When spells, forms or new ranks wait at your class trainer, the route goes there: on the way when you pass one, a trip of its own once enough waits. Lvls! learns what your trainer teaches the first time you open its window.", refresh = true },
-  { key = "classQuests", name = "Class quests in the route", tip = "The leveling route takes your class quests (spells, forms, pets, weapons) as they become possible, in their order, marked with your class. The Guides menu does a whole chain at once.", refresh = true },
-  { key = "zoneFirst", name = "Finish the zone first", tip = "Zone by zone: everything left in this zone (quests to pick up, work, hand-ins) comes first. Then the next zone is chosen by everything there, deliveries in your log included, so they are made when the route goes there anyway. Off: the route goes wherever the next quest is worth the most.", refresh = true },
-  { key = "arrow", name = "Arrow" },
-  { key = "groundHelp", name = "Turn-by-turn: outdoors", travel = true, slider = { 0, 4, 1 }, label = S.HelpLabel, tip = "Out in the world: how much the arrow leads you turn by turn on foot, with the way drawn on the world map and the minimap. Straight line: it always points at the goal. Only big detours: walled cities and long caves. Around walls: also mountain paths and buildings. Small detours too: also round smaller things in the way. Every turn: it follows the whole way. Worked out from the game's own map data. /lvls walk 0-4" },
-  { key = "groundHelpIndoors", name = "Turn-by-turn: buildings and caves", travel = true, slider = { 0, 4, 1 }, label = S.HelpLabel, tip = "The same inside buildings and caves (where you cannot mount). It switches as you go in and out. /lvls walk in 0-4" },
-  { key = "nativeArrow", name = "Also the game's waypoint marker", travel = true, tip = "Also set the game's own map waypoint: its marker shows in the world with the distance. It stays on the goal, also while the arrow leads the way on foot." },
-  { key = "itemBar", name = "Buttons for quest items", tip = "A movable row of buttons for the items to use now: items that start a quest, and the items quests give you to use on someone or somewhere. Key bindings: Key Bindings -> AddOns -> Lvls!. Drag a button to move them." },
-  { key = "lockItemBar", name = "Lock the item buttons", tip = "They cannot be dragged. /lvls items reset puts them back in their place." },
-  { key = "viewerGrowUp", name = "Step viewer grows upwards", viewer = true, tip = "The step viewer keeps its bottom edge where you put it and grows upwards as a step gets more lines. Off: it keeps its top edge and grows downwards. /lvls growup" },
-  { key = "worldMap", name = "Quest pins on the world map" },
-  { key = "mapRoute", name = "Route on the world map", tip = "The next steps as numbered waypoints joined by a line, starting where you stand; at a flight master, the flight point to fly to is ringed and its route drawn. /lvls mapline" },
-  { key = "minimap", name = "Quest pins on the minimap", tip = "Givers, turn-ins and objective areas of the quests the guide's steps ahead name. /lvls minimap" },
-  { key = "minimapButton", name = "Minimap button", tip = "Left-click: settings. Right-click: hide or show the guide (the step viewer, the arrow and the route lines). Drag it round the minimap. /lvls button" },
-  { key = "minimapRoute", name = "Route on the minimap", tip = "The next steps as numbered waypoints on the minimap, joined by a dotted line from where you stand; on foot around walls it follows the way the arrow leads. Hover a waypoint for its steps. /lvls miniroute" },
-  { key = "objectives", name = "Objective areas" },
-  { key = "showLow", name = "Show quests you are too low for" },
-  { key = "showTrivial", name = "Show grey quests" },
-  { key = "showDungeon", name = "Show dungeon quests" },
-  { key = "showRepeatable", name = "Show repeatable quests" },
 }
 
 function S.Get(key) return ns.db.settings[key] end
@@ -92,13 +104,26 @@ end
 
 function S.Register()
   if S.category or not (Settings and Settings.RegisterVerticalLayoutCategory) then return end
-  local category, layout = Settings.RegisterVerticalLayoutCategory("Lvls!")
+  local main, mainLayout = Settings.RegisterVerticalLayoutCategory("Lvls!")
+  local category, layout = main, mainLayout
   local Var = Settings.VarType or {}
+  local function header(name)
+    if layout and CreateSettingsListSectionHeaderInitializer then
+      layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(name))
+    end
+  end
+  S.pages = {}
   for _, it in ipairs(S.ITEMS) do
-    if it.header then
-      if layout and CreateSettingsListSectionHeaderInitializer then
-        layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(it.header))
+    if it.page then
+      if Settings.RegisterVerticalLayoutSubcategory then
+        category, layout = Settings.RegisterVerticalLayoutSubcategory(main, it.page)
+        S.pages[it.page] = category
+      else
+        -- no subpages on this client: everything on one page, a section per page
+        header(it.page)
       end
+    elseif it.header then
+      header(it.header)
     else
       local get, setv, default, kind, choices
       if it.guide then
@@ -162,8 +187,8 @@ function S.Register()
       end
     end
   end
-  Settings.RegisterAddOnCategory(category)
-  S.category = category
+  Settings.RegisterAddOnCategory(main)
+  S.category = main
 end
 
 -- The game will not let an addon open the settings panel in combat (ADDON_ACTION_BLOCKED
