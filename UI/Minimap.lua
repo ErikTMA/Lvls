@@ -1,4 +1,5 @@
--- Minimap: givers, turn-ins and objective area centres of the zone you are in, and
+-- Minimap: givers, turn-ins and objective area centres of the zone you are in, of
+-- the quests the guide's steps ahead name (not every quest there is), and
 -- the route: the steps ahead as numbered waypoints (UI/MapRoute.lua's) joined by a
 -- dotted line from where you stand, along the way on foot when it leads
 -- (UI/Ground.lua). Dots, not lines: the minimap is round and a line would run past
@@ -8,7 +9,8 @@
 local _, ns = ...
 local MM = ns:NewModule("Minimap")
 
-MM.pins = {}       -- current pin data (zone of the player)
+MM.pins = {}       -- the pins shown: the zone's pins of the quests the guide wants
+MM.all = {}        -- every pin of the player's zone (built on LVLS_PINS)
 local buttons = {} -- pooled frames
 local holder
 local here = {}    -- the player's position, refilled every update
@@ -63,6 +65,33 @@ local function build(ds, char, map)
     end
   end
   return out
+end
+
+-- The quests the steps from `from` on name (accept, objective, turn-in, also lines).
+function MM.Wanted(steps, from)
+  local out = {}
+  for i = from or 1, #(steps or NONE) do
+    for _, l in ipairs(steps[i].lines or NONE) do
+      if l.quest then out[l.quest] = true end
+    end
+  end
+  return out
+end
+
+-- The pins of the quests the guide wants. Pure.
+function MM.Filter(all, steps, from)
+  local want, out = MM.Wanted(steps, from), {}
+  for _, p in ipairs(all) do
+    if p.quest and want[p.quest] then out[#out + 1] = p end
+  end
+  return out
+end
+
+local filtered = {}
+local function refilter()
+  if filtered.all == MM.all and filtered.steps == ns.steps and filtered.from == ns.stepIndex then return end
+  filtered.all, filtered.steps, filtered.from = MM.all, ns.steps, ns.stepIndex
+  MM.pins = MM.Filter(MM.all, ns.steps, ns.stepIndex)
 end
 
 local function button(i)
@@ -283,6 +312,7 @@ end
 
 function MM.Update()
   if not holder then return end
+  refilter()
   local pos = ns.Game.Position(here)
   local on = ns.db and ns.db.settings.minimap and pos and pos.map == MM.map and true or false
   local ron = routeOn() and true or false
@@ -332,8 +362,8 @@ end
 function MM.Rebuild()
   local ds, char = ns.ActiveDataset(), ns.char
   local pos = char and char.pos
-  MM.pins, MM.map = {}, pos and pos.map
-  if ds and pos then MM.pins = build(ds, char, pos.map) end
+  MM.all, MM.map = {}, pos and pos.map
+  if ds and pos then MM.all = build(ds, char, pos.map) end
   MM.Update()
 end
 

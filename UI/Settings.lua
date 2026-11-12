@@ -55,7 +55,7 @@ S.ITEMS = {
   { key = "viewerGrowUp", name = "Step viewer grows upwards", viewer = true, tip = "The step viewer keeps its bottom edge where you put it and grows upwards as a step gets more lines. Off: it keeps its top edge and grows downwards. /lvls growup" },
   { key = "worldMap", name = "Quest pins on the world map" },
   { key = "mapRoute", name = "Route on the world map", tip = "The next steps as numbered waypoints joined by a line, starting where you stand; at a flight master, the flight point to fly to is ringed and its route drawn. /lvls mapline" },
-  { key = "minimap", name = "Quest pins on the minimap" },
+  { key = "minimap", name = "Quest pins on the minimap", tip = "Givers, turn-ins and objective areas of the quests the guide's steps ahead name. /lvls minimap" },
   { key = "minimapButton", name = "Minimap button", tip = "Left-click: settings. Right-click: hide or show the guide (the step viewer, the arrow and the route lines). Drag it round the minimap. /lvls button" },
   { key = "minimapRoute", name = "Route on the minimap", tip = "The next steps as numbered waypoints on the minimap, joined by a dotted line from where you stand; on foot around walls it follows the way the arrow leads. Hover a waypoint for its steps. /lvls miniroute" },
   { key = "objectives", name = "Objective areas" },
