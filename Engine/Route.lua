@@ -19,10 +19,11 @@
 --      finishes this map before leaving it, then chooses the next map as a whole
 --      (R.Choose); quests in the log are always candidates, however
 --      far, and count their experience once overdue; a hand-in counts part of what
---      it opens; class quests count more and keep their order; a pick-up or
---      hand-in within a small detour of the way to the chosen action is done in
---      passing; objectives close to the one being worked are worked at the same
---      time (one step: kill these, collect that); opts.skip leaves quests out,
+--      it opens; class quests count more and keep their order; a pick-up,
+--      hand-in or objective of the log within a small detour of the way to the
+--      chosen action is done in passing; an objective of the log counts its share
+--      of the quest's experience; objectives close to the one being worked are
+--      worked at the same time (one step: kill these, collect that); opts.skip leaves quests out,
 --      opts.within keeps to its quests (a zone guide, Engine/Zones).
 --      Turn-ins add experience (reduced for quests below the simulated level),
 --      level the simulation up, and complete the quest, which unlocks its
@@ -75,7 +76,8 @@ R.DEFAULTS = {
   together = 250,      -- yards: open objectives this close are worked at the same time
   localSecs = 60,      -- travel seconds: closer work is done in walking order
   hubYards = 300,      -- yards: farther work this close together is one destination
-  onTheWay = 40,       -- yards: a pick-up / hand-in costing at most this detour is done in passing
+  onTheWay = 40,       -- yards: a pick-up / hand-in / open objective costing at most this detour is done in passing
+  way = nil,           -- function(a, b) -> world points of the way on foot, continent (or nil): "in passing" along it
   zoneFirst = true,    -- finish the current map before leaving it; then choose the next map as a whole
   skip = nil,          -- { [questId] = true }: quests the player does not want
   focus = nil,         -- { [questId] = true }: a guide: only these quests (any kind, any distance)
@@ -553,10 +555,11 @@ function R.Choose(cands, pos, o, point, gain)
       hub.xp = hub.xp + gain(q)
       hub.effort = hub.effort + c.effort
     end
-    local wk = c.action.kind .. ":" .. tostring(q)
+    local wk = c.action.kind .. ":" .. tostring(q) .. (c.action.kind == "do" and (":" .. tostring(c.action.index)) or "")
     if (c.worth or 0) > 0 and not hub.worths[wk] then
       hub.worths[wk] = true
       hub.xp = hub.xp + c.worth
+      if c.action.kind == "do" then hub.effort = hub.effort + c.effort end
     end
     if c.action.spot.map == pos.map then workHere = true end
     if c.score < hub.first.score then hub.first = c end
@@ -591,7 +594,7 @@ function R.Choose(cands, pos, o, point, gain)
         end
         if not e.adds or c.adds < e.adds then e.adds = c.adds end
         local k, q = c.action.kind, c.action.quest
-        local key = k .. ":" .. tostring(q)
+        local key = k .. ":" .. tostring(q) .. (k == "do" and (":" .. tostring(c.action.index)) or "")
         if not e.seen[key] then
           e.seen[key] = true
           if k == "accept" then e.picks = true end
@@ -600,6 +603,7 @@ function R.Choose(cands, pos, o, point, gain)
             e.effort = e.effort + (c.effort or 0)
           else
             e.xp = e.xp + (c.worth or 0)
+            if k == "do" and (c.worth or 0) > 0 then e.effort = e.effort + (c.effort or 0) end
           end
         end
       end
@@ -791,10 +795,17 @@ local function planOnce(ds, char, geo, o)
     walk(qid, 1, o.unlockShare)
     return total
   end
-  -- what an action is worth beyond the experience of a pick-up (R.Choose)
+  -- What an action is worth beyond the experience of a pick-up (R.Choose).
+  -- An objective of a quest in the log counts its share of the quest's experience
+  -- (against its own work, R.Choose), the way a pick-up counts the whole quest against
+  -- all of it: with nothing, far work of the log never won a destination over a
+  -- pick-up. The Tower of Althalaxx: Night Run on the way from Satyrnaar to the
+  -- next quest giver, left for twenty actions later and a walk back across the zone.
   local function worth(kind, qid)
     local q, w = ds.quests[qid], 0
-    if kind ~= "accept" and q.l and st.level >= q.l + o.overdueBelow then w = w + gain(qid) end
+    local overdue = q.l and st.level >= q.l + o.overdueBelow
+    if kind ~= "accept" and overdue then w = w + gain(qid) end
+    if kind == "do" and not overdue then w = w + gain(qid) / math.max(1, #(q.obj or {})) end
     if kind == "turnin" then w = w + unlockWorth(qid) end
     if classOf[qid] then w = w + o.classWeight * gain(qid) end
     return w
@@ -994,7 +1005,7 @@ local function planOnce(ds, char, geo, o)
     -- hand-ins and pick-ups at the npc you stand at always come first
     local here, hereScore
     local cands = {}      -- { action, score } of everything that is not "here"
-    local talks = {}      -- pick-ups and hand-ins, for "on the way"
+    local talks = {}      -- pick-ups, hand-ins and the log's work, for "on the way"
     -- at the npc you stand at: the most experience per second first; elsewhere: the
     -- seconds the action adds (see the method above)
     local function offer(action, secs, effort)
@@ -1006,7 +1017,7 @@ local function planOnce(ds, char, geo, o)
         if not hereScore or score < hereScore then here, hereScore = action, score end
         return
       end
-      if action.kind ~= "do" then talks[#talks + 1] = action end
+      talks[#talks + 1] = action
       -- adds: the trip plus how much longer it makes the way through accepted work
       local adds = secs + (#work > 0 and (tour(action.spot, action) - tourNow) or 0)
       cands[#cands + 1] = { action = action, score = secs + back(action), secs = secs, adds = adds,
@@ -1075,16 +1086,36 @@ local function planOnce(ds, char, geo, o)
         if g and (not g.byLevel or leaving) then best = g end
       end
     end
-    -- a pick-up or hand-in close to the way there is done in passing
+    -- a pick-up, hand-in or open objective close to the way there is done in passing:
+    -- close to the straight line, or (opts.way) to the way on foot, which goes round
+    -- a mountain or a lake where the straight line does not
     if best and not here then
       local direct = G.Distance(geo, pos, best.spot)
       local pick, pickD
+      local way -- the way on foot there: asked once, when the straight line misses
+      local function onWay(spot)
+        if not o.way or direct <= o.onTheWay then return false end
+        if way == nil then
+          -- no pcall: the way's search yields in the plan job (Lua 5.1 cannot yield across one)
+          local pts, cont = o.way(pos, best.spot)
+          way = type(pts) == "table" and #pts >= 2 and { pts = pts, cont = cont } or false
+        end
+        if not way or not (geo and geo.world) then return false end
+        local c, x, y = geo.world(spot.map, spot.x, spot.y)
+        if not c or (way.cont and c ~= way.cont) then return false end
+        local pts = way.pts
+        for k = 2, #pts do
+          -- there and back: twice the way off it
+          if 2 * ns.Nav.SegmentDistance(x, y, pts[k - 1], pts[k]) <= o.onTheWay then return true end
+        end
+        return false
+      end
       for _, t in ipairs(talks) do
         if t ~= best and t.spot.map == best.spot.map then
           local d1 = G.Distance(geo, pos, t.spot)
-          if d1 < direct and d1 + G.Distance(geo, t.spot, best.spot) - direct <= o.onTheWay
-            and (not pickD or d1 < pickD) then
-            pick, pickD = t, d1
+          if not pickD or d1 < pickD then
+            local near = d1 < direct and d1 + G.Distance(geo, t.spot, best.spot) - direct <= o.onTheWay
+            if near or onWay(t.spot) then pick, pickD = t, d1 end
           end
         end
       end

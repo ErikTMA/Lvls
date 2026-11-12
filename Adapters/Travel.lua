@@ -449,6 +449,32 @@ function TR.Walk(a, b)
   return type(c) == "number" and c or nil
 end
 
+-- The way on foot from a to b as world points, and its continent: for the route's
+-- "in passing" (Engine/Route opts.way), so a quest round the mountain the way goes
+-- counts as on the way. nil off the map data or across continents. Asked from the
+-- plan job: the search yields there (ns.Util.Yield); past TR.WAY_NODES nodes it
+-- gives up (nil: the straight line). Kept by spot like TR.Walk.
+TR.WAY_CACHE = 100
+TR.WAY_NODES = 30000
+local wayCache, wayCount = {}, 0
+function TR.Way(a, b)
+  local geo = ns.Game.geo
+  if not (ns.Nav and geo and geo.world and a and b) then return nil end
+  local ca, ax, ay = geo.world(a.map, a.x, a.y)
+  local cb, bx, by = geo.world(b.map, b.x, b.y)
+  if not ca or ca ~= cb then return nil end
+  local key = spotKey(ca, ax, ay, 20) .. ">" .. spotKey(cb, bx, by, 20)
+  local c = wayCache[key]
+  if c == nil then
+    -- no pcall: Lua 5.1 cannot yield across it (Nav.Route returns nil, not errors)
+    c = ns.Nav.Route(ca, ax, ay, bx, by, ns.Util.Yield, TR.WAY_NODES) or false
+    if wayCount >= TR.WAY_CACHE then wayCache, wayCount = {}, 0 end
+    wayCache[key], wayCount = c, wayCount + 1
+  end
+  if c then return c, ca end
+  return nil
+end
+
 -- Measure the waiting ways for up to `budget` ms; plans the trip again when one is
 -- known. True while there is more to do.
 function TR.WalkStep(budget)

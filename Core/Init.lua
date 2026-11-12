@@ -301,6 +301,7 @@ local function plan(ds, forced)
     speed = ctx and ctx.speed or 7,
     logSize = ns.Game.LogSize(), -- nil: the route's default
     travel = ctx and function(a, b, usable) return ns.Travel.Time(a, b, ctx, usable) end,
+    way = ns.TravelData and ns.TravelData.Way, -- "in passing" along the way on foot
     ports = ctx and ctx.ports, -- hearthstone, teleports: used once, on cooldown after (Engine/Route)
     zoneFirst = ns.db.settings.zoneFirst,
     skip = skipSet(char),
