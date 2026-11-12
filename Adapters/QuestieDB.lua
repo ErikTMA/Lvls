@@ -194,8 +194,12 @@ end
 
 -- Where the quest givers and takers stand: QuestieDB's Forever spawns over the
 -- dataset's, map by map (a map QuestieDB has no spot on keeps the dataset's). The
--- dump put Daniel, who takes Book Inventory, on Brother Paxton's spot. Returns how
--- many npcs / objects moved.
+-- dump put Daniel, who takes Book Inventory, on Brother Paxton's spot. The same for
+-- the objects an objective has you use: the dump gives an object the spawns of
+-- others of its name, so "Free the Highborne soul in Night Run" (Circle of
+-- Imprisonment 19901) also stood at the circle in Satyrnaar, the other objective's.
+-- Not objects an item comes from (herbs, crates): there the dump knows more spawns.
+-- Returns how many npcs / objects moved.
 function QD.PlaceQuestNpcs(ds)
   if not lib then return 0 end
   local seen, moved = {}, 0
@@ -231,6 +235,11 @@ function QD.PlaceQuestNpcs(ds)
     for _, id in ipairs(q.en or {}) do place("n", id) end
     for _, id in ipairs(q.so or {}) do place("o", id) end
     for _, id in ipairs(q.eo or {}) do place("o", id) end
+    for _, o in ipairs(q.obj or {}) do
+      if o.t == "object" then
+        for _, src in ipairs(o.src or {}) do if src[1] == "o" then place("o", src[2]) end end
+      end
+    end
   end
   return moved
 end
