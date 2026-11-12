@@ -267,7 +267,9 @@ function push(fresh)
   local c = AR.corpse
   if c then
     -- picked "by hand" so it beats every other target (Profs!'s too)
-    return WA.Set(AR.OWNER, { map = c.map, x = c.x, y = c.y, title = AR.CORPSE_TITLE },
+    local title = AR.CORPSE_TITLE
+    if c.quip then title = title .. "\n" .. AR.NOTE_COLOR .. c.quip .. "|r" end
+    return WA.Set(AR.OWNER, { map = c.map, x = c.x, y = c.y, title = title },
       { manual = true, fresh = fresh, hooks = hooks })
   end
   local t = AR.target
@@ -317,6 +319,40 @@ end
 -- where you died (inside a dungeon: its door, the last spot outside).
 AR.CORPSE_TITLE = "Your corpse"
 
+-- A line of ribbing under it, a new one each death (never the same twice running).
+AR.CORPSE_QUIPS = {
+  "Did you know? Leveling is faster if you don't die.",
+  "Dying is not a shortcut. We checked.",
+  "Your corpse misses you. Go say hi.",
+  "Fun fact: ghosts earn no experience.",
+  "The Spirit Healer wants to know if you come here often.",
+  "Pro tip: the mobs are supposed to fall over, not you.",
+  "Speedrun strats: step 1, stay alive.",
+  "That went well.",
+  "Have you tried hitting them harder?",
+  "Your gear is taking this harder than you are.",
+  "Repair bills are a lifestyle, apparently.",
+  "Walking back counts as cardio. For your ghost.",
+  "Bold strategy. Let's see if it pays off this time.",
+  "Remember: health bar green good, health bar empty bad.",
+  "You were winning right up until you weren't.",
+  "Somewhere a mob is telling its friends about you.",
+  "Again? Really?",
+  "No experience for this run, just experience.",
+  "Running is free. Dying costs durability.",
+  "Eat. Drink. Then pull. In that order.",
+}
+
+function AR.CorpseQuip()
+  local q = AR.CORPSE_QUIPS
+  local n = #q
+  if n == 0 then return nil end
+  local i = math.random(n)
+  if n > 1 and i == AR.quipAt then i = i % n + 1 end
+  AR.quipAt = i
+  return q[i]
+end
+
 local function isDead()
   return UnitIsDeadOrGhost and UnitIsDeadOrGhost("player") and true or false
 end
@@ -362,6 +398,8 @@ function AR.CheckDead()
   if not c then return end
   local old = AR.corpse
   if old and old.map == c.map and old.x == c.x and old.y == c.y then return end
+  -- the same death keeps its line; a fresh one gets a new line
+  c = { map = c.map, x = c.x, y = c.y, quip = old and old.quip or AR.CorpseQuip() }
   AR.corpse = c
   push(not old)
 end
