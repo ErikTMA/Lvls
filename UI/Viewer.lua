@@ -71,9 +71,13 @@ function V.Model(ds, char, steps, current, view)
   -- the written note, then what the players' comments say (Engine/Notes.lua)
   local notes = ns.Notes and ns.Notes.ForStep(ds, st) or {}
   m.note = notes[1]
+  -- a note that gives a position ("the entrance is at about 76,75"): click it and
+  -- the arrow points there, on the step's map
   for _, note in ipairs(notes) do
+    local x, y = ns.Notes.Coord(note)
+    local at = x and st.spot and { map = st.spot.map, x = x, y = y } or nil
     m.lines[#m.lines + 1] = { note = true, text = note, color = V.COLORS.note,
-      line = { kind = "note", spot = st.spot, text = st.title } }
+      line = { kind = "note", spot = at or st.spot, at = at, text = st.title } }
   end
   -- a part that is done leaves the list: only what is still to do shows. A step that
   -- is all done (browsed to) shows its lines ticked off, not an empty box.
@@ -225,10 +229,16 @@ local function row(i)
   return r
 end
 
+-- "76" / "79.2": a map coordinate as the guides write it.
+function V.Num(v) return (("%.1f"):format(v):gsub("%.0$", "")) end
+
 -- A quest line's tooltip: { {text, r, g, b}, ... } (nil: not a quest line). WoW
 -- Forever's own quests (Prereqs.FOREVER_FROM and up) come without prerequisites
 -- (Wowhead has none yet): the guide can send you to one the giver does not offer.
 function V.LineTip(line)
+  if line and line.at then
+    return { { ("Click: point the arrow at %s, %s"):format(V.Num(line.at.x), V.Num(line.at.y)), 0.6, 0.8, 1 } }
+  end
   if not (line and line.quest) then return nil end
   local ds = ns.ActiveDataset()
   local q = ds and ds.quests[line.quest]

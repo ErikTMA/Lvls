@@ -64,6 +64,32 @@ function N.ForArrow(spot)
   return nil
 end
 
+-- The first map position a note gives ("at about 76,75", "79.21, 69.03", a range
+-- "53-56, 58-59" is its middle): x, y in 0..100, or nil. Numbers of three digits
+-- ("1,000 gold") or past 100 are not a position.
+local function num(p)
+  return tonumber(p:match("^%d%d?$") or p:match("^%d%d?%.%d+$") or "")
+end
+local function part(p)
+  p = p:gsub("%.+$", "")
+  local lo, hi = p:match("^([%d%.]+)%-([%d%.]+)$")
+  local v
+  if lo then
+    lo, hi = num(lo), num(hi)
+    v = lo and hi and (lo + hi) / 2
+  else
+    v = num(p)
+  end
+  return v and v <= 100 and v or nil
+end
+function N.Coord(text)
+  for a, b in tostring(text or ""):gmatch("(%d[%d%.%-]*)%s*,%s*(%d[%d%.%-]*)") do
+    local x, y = part(a), part(b)
+    if x and y then return x, y end
+  end
+  return nil
+end
+
 -- What a step line names: the entities whose comment notes belong to it.
 local OBJ_KIND = { kill = "n", object = "o", item = "i" }
 local function named(ds, l, out)
