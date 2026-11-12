@@ -282,6 +282,7 @@ end
 local function create()
   local C = V.COLORS
   frame = CreateFrame("Frame", "LvlsViewerFrame", UIParent)
+  V.frame = frame -- its parts: the tour (UI/Tour.lua) points at them
   frame:SetSize(V.WIDTH, 120)
   -- LOW, not UIParent's MEDIUM: the friend-online toast (BNToastFrame, LOW and
   -- toplevel) then shows in front of the guide instead of behind it

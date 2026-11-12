@@ -1150,8 +1150,11 @@ commands.abandon = function(arg)
   if s.farGrey then ns.Abandon.Check() end
 end
 
+-- the tour of the viewer and the rest, every tip again (UI/Tour.lua)
+commands.tour = function() ns.Tour.Start(true) end
+
 commands.help = function()
-  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|zone [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|note [text|clear]|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|debug|help]")
+  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|zone [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|note [text|clear]|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|tour|debug|help]")
 end
 
 local function slash(input)
