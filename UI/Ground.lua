@@ -225,15 +225,17 @@ GR.COLOR = { 1, 0.48, 0.1, 0.9 }  -- the route's accent (UI/MapRoute.lua): it is
 
 local Provider = {}
 local layer, lines = nil, {}
-local projected = { key = nil }   -- the corners projected on the shown map
+-- the corners projected on the shown map, for the route and map they were made for
+-- (the tables themselves, not tostring(route): a new route often gets the address of
+-- one freed before it, and drew that old route's corners)
+local projected = {}
 
 function GR.MapPoints(map, px, py)
   -- the way left, as map fractions on `map`: player first. nil entries break the line
   local r = GR.route
   if not r or not map then return {} end
-  local key = tostring(r) .. ":" .. map
-  if projected.key ~= key then
-    projected = { key = key }
+  if projected.route ~= r or projected.map ~= map then
+    projected = { route = r, map = map }
     for k, p in ipairs(r.pts) do
       local x, y = ns.Game.geo.mapPos(r.cont, p.x, p.y, map)
       if x and x >= 0 and x <= 100 and y >= 0 and y <= 100 then projected[k] = { x / 100, y / 100 } else projected[k] = false end

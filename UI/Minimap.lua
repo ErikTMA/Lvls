@@ -162,8 +162,8 @@ end
 local lineLayer, markLayer
 local dots, marks = {}, {}
 local verts, flat, spotBuf = {}, {}, {}
-local proj = { key = nil }   -- the route's spots on the player's map, as fractions
-local wayProj = { key = nil } -- the way on foot's corners, as fractions
+local proj = {}   -- the route's spots on the player's map, as fractions
+local wayProj = {} -- the way on foot's corners, as fractions
 
 local function routeOn()
   return ns.db and ns.db.settings.minimapRoute and ns.MapRoute and (not ns.Viewer or ns.Viewer.Shown())
@@ -188,17 +188,16 @@ local function onMap(spot, map)
 end
 
 local function routePoints(map)
-  local key = tostring(ns.steps) .. ":" .. tostring(ns.stepIndex) .. ":" .. tostring(ns.trip) .. ":" .. map
-  if proj.key ~= key then
-    proj = { key = key, pts = ns.MapRoute.Points(ns.steps, ns.stepIndex, function(spot) return onMap(spot, map) end, lead()) }
+  -- keyed on the tables themselves: a new one can reuse a freed one's address
+  if proj.steps ~= ns.steps or proj.from ~= ns.stepIndex or proj.trip ~= ns.trip or proj.map ~= map then
+    proj = { steps = ns.steps, from = ns.stepIndex, trip = ns.trip, map = map, pts = ns.MapRoute.Points(ns.steps, ns.stepIndex, function(spot) return onMap(spot, map) end, lead()) }
   end
   return proj.pts
 end
 
 local function wayPoints(r, map)
-  local key = tostring(r) .. ":" .. map
-  if wayProj.key ~= key then
-    wayProj = { key = key }
+  if wayProj.route ~= r or wayProj.map ~= map then
+    wayProj = { route = r, map = map }
     for k, p in ipairs(r.pts) do
       local x, y = ns.Game.geo.mapPos(r.cont, p.x, p.y, map)
       wayProj[k] = x and { x = x, y = y } or false
