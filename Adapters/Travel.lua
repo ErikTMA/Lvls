@@ -276,15 +276,34 @@ function TR.Cooldown(p)
 end
 
 -- The bind spot by its name, when Lvls! never saw you set it (you bound before it
--- was installed, or with it off): the client names the place (GetBindLocation,
--- "Menethil Harbor") and a flight point of that name, on any continent, is in that
--- town. Its nearest innkeeper (the dataset's) stands for the inn, else the flight
--- point does. nil when no flight point has the name (Goldshire): then the first
+-- was installed, or with it off): the client names the place (GetBindLocation).
+-- A town ("Menethil Harbor"): a flight point of that name, on any continent, is in
+-- it; its nearest innkeeper (the dataset's) stands for the inn, else the flight
+-- point does. The inn itself ("Deepwater Tavern", most binds): the client's area
+-- table puts it in a zone (Data/forever/Areas.lua), and that zone's innkeeper for
+-- your faction is it, when the zone has one inn. nil otherwise: then the first
 -- hearth that lands you there teaches it (TR.Sample).
 local INN_NEAR_POINT = 400 -- yards from the flight point to the town's inn
 local bindCache = {}
+local function innOfZone(ds, map)
+  local side = UnitFactionGroup and UnitFactionGroup("player")
+  local found
+  for _, s in ipairs(travelNpcs(ds, "inn")) do
+    local rec = ds.npcs[s.id] or {}
+    local friendly = (not rec.ra and not rec.rh) or (side == "Alliance" and rec.ra) or (side == "Horde" and rec.rh)
+      or (side ~= "Alliance" and side ~= "Horde")
+    if s.map == map and friendly then
+      if not found then
+        found = s
+      elseif G.Distance(ns.Game.geo, found, s) > INN_NEAR_POINT then
+        return nil -- two inns: which one is not known
+      end
+    end
+  end
+  return found and { map = found.map, x = found.x, y = found.y }
+end
 local function bindByName(name)
-  if type(name) ~= "string" or name == "" or not has(C_TaxiMap, "GetTaxiNodesForMap") then return nil end
+  if type(name) ~= "string" or name == "" then return nil end
   if bindCache[name] then return bindCache[name] end
   local ds = ns.ActiveDataset and ns.ActiveDataset()
   local found
@@ -293,7 +312,7 @@ local function bindByName(name)
     local cont = TR.Continent(map)
     if cont then conts[cont] = true end
   end
-  for map in pairs(conts) do
+  for map in pairs(has(C_TaxiMap, "GetTaxiNodesForMap") and conts or {}) do
     for _, n in ipairs(C_TaxiMap.GetTaxiNodesForMap(map) or {}) do
       if not found and short(n.name) == name then
         local x, y = n.position.x, n.position.y
@@ -306,6 +325,8 @@ local function bindByName(name)
     local inn, d = G.Nearest(ns.Game.geo, found, travelNpcs(ds, "inn"))
     if inn and d <= INN_NEAR_POINT then found = { map = inn.map, x = inn.x, y = inn.y } end
   end
+  local zone = ns.TravelAreas and ns.TravelAreas[name]
+  if not found and zone and ds then found = innOfZone(ds, zone) end
   bindCache[name] = found -- not a miss: the client may list no points yet at login
   return found
 end
