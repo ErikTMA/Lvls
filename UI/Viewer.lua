@@ -67,10 +67,11 @@ function V.Model(ds, char, steps, current, view)
         line = { kind = t.kind, spot = t.spot, text = t.text }, travel = true }
     end
   end
-  -- a word on where it stands that the map cannot show ("At the top of the tower")
-  local note = ns.Notes and ns.Notes.ForSpot(st.spot)
-  if note then
-    m.note = note
+  -- a word on where it stands that the map cannot show ("At the top of the tower"):
+  -- the written note, then what the players' comments say (Engine/Notes.lua)
+  local notes = ns.Notes and ns.Notes.ForStep(ds, st) or {}
+  m.note = notes[1]
+  for _, note in ipairs(notes) do
     m.lines[#m.lines + 1] = { note = true, text = note, color = V.COLORS.note,
       line = { kind = "note", spot = st.spot, text = st.title } }
   end
@@ -565,10 +566,11 @@ function V.Render()
     return math.max(min, v or 0)
   end
   local top = math.max(40, 6 + h(frame.header, 14) + 2 + ((m.sub or "") ~= "" and h(frame.sub, 12) or 0) + 6)
+  local y = top
   for i, l in ipairs(m.lines) do
     local r = row(i)
     r:ClearAllPoints()
-    r:SetPoint("TOPLEFT", frame.step, "TOPLEFT", 6, -(top + (i - 1) * V.LINE))
+    r:SetPoint("TOPLEFT", frame.step, "TOPLEFT", 6, -y)
     r:SetPoint("RIGHT", frame.step, "RIGHT", -6, 0)
     r.line = l.line
     -- a quest's name and a note: no box, no icon; a quest's objectives under it, indented
@@ -581,13 +583,19 @@ function V.Render()
     if bare then r.check:Hide(); r.icon:Hide() else r.check:Show(); r.icon:Show() end
     if l.check then r.check:SetTexCoord(V.IconCoords(l.check)) end
     if l.icon then r.icon:SetTexCoord(V.IconCoords(l.icon)) end
+    -- a note wraps (a sentence from the comments); every other line is one line
+    if r.text.SetWordWrap then r.text:SetWordWrap(l.note and true or false) end
     r.text:SetText(l.text)
     r.text:SetTextColor(l.color[1], l.color[2], l.color[3])
     r.progress:SetText(l.progress or "")
+    local rh = V.LINE
+    if l.note then rh = math.max(V.LINE, h(r.text, 0) + 4) end
+    r:SetHeight(rh)
+    y = y + rh
     r:Show()
   end
   for i = #m.lines + 1, #rows do rows[i]:Hide() end
-  local stepH = top + 4 + math.max(1, #m.lines) * V.LINE
+  local stepH = y + 4 + (#m.lines == 0 and V.LINE or 0)
   frame.step:SetHeight(stepH)
   local preview = m.next and ("Next: " .. m.next) or ""
   if m.backlog then preview = preview ~= "" and (preview .. "  ·  " .. m.backlog) or m.backlog end

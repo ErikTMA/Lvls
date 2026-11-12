@@ -60,7 +60,7 @@ end
 AR.NOTE_COLOR = "|cff8cd9ff"
 function AR.GoalText(g)
   local title = AR.GoalTitle(g)
-  local note = g and ns.Notes and ns.Notes.ForSpot(g.spot)
+  local note = g and ns.Notes and ns.Notes.ForArrow(g.spot)
   if note then title = (title or "") .. "\n" .. AR.NOTE_COLOR .. note .. "|r" end
   return title
 end

@@ -6,6 +6,12 @@
 -- quest giver is on, so a note is written by a person: the shipped ones
 -- (Data/forever/Travel.lua, notes = { n = { [npcId] = text }, o = { [objectId] = text } })
 -- and your own (/lvls note <text>, kept in LvlsDB.notes the same way). Yours win.
+--
+-- Comment notes: what the players' comments on Wowhead's pages say the map does not
+-- (upstairs in the inn, hidden behind the tent, the cave's way in, patrols, respawns),
+-- one sentence each, best voted first (Data/forever/Comments.lua). They
+-- come after a written note: on the step's npc / object, on its quests and on what
+-- their open objectives name (the mob, the object, the item).
 local _, ns = ...
 local N = ns:NewModule("Notes")
 
@@ -21,9 +27,81 @@ function N.Get(kind, id)
   return (mine and mine[kind] and mine[kind][id]) or (ours and ours[kind] and ours[kind][id]) or nil
 end
 
--- The note on what stands at a step's spot ({ kind, id }), or nil.
+N.STEP_MAX = 3    -- note lines on a step in the viewer
+N.ARROW_MAX = 100 -- characters of a comment note under the arrow (one line, no wrap)
+-- tags that say where a thing is, not what happens there: these go under the arrow
+N.PLACE = { floor = true, inside = true, hidden = true }
+
+-- The comment notes on npc "n" / object "o" / quest "q" / item "i" `id`: { { text,
+-- v (votes), tags = "floor inside" }, ... } best voted first, or an empty list.
+local NONE = {}
+function N.Comments(kind, id)
+  local c = ns.CommentNotes
+  return (id and c and c[kind] and c[kind][id]) or NONE
+end
+
+-- Has comment note `c` one of the tags in `set`?
+function N.Tagged(c, set)
+  for t in (c.tags or ""):gmatch("%S+") do
+    if set[t] then return true end
+  end
+  return false
+end
+
+-- The written note on what stands at a step's spot ({ kind, id }), or nil.
 function N.ForSpot(spot)
   return spot and N.Get(spot.kind, spot.id) or nil
+end
+
+-- The line under the arrow at a spot: the written note, else the best voted comment
+-- note on where it stands (floor, inside, hidden) short enough for one line.
+function N.ForArrow(spot)
+  local note = N.ForSpot(spot)
+  if note or not spot or (spot.kind ~= "n" and spot.kind ~= "o") then return note end
+  for _, c in ipairs(N.Comments(spot.kind, spot.id)) do
+    if N.Tagged(c, N.PLACE) and #c.text <= N.ARROW_MAX then return c.text end
+  end
+  return nil
+end
+
+-- What a step line names: the entities whose comment notes belong to it.
+local OBJ_KIND = { kill = "n", object = "o", item = "i" }
+local function named(ds, l, out)
+  local q = l.quest and ds and ds.quests and ds.quests[l.quest]
+  if l.quest then out[#out + 1] = { "q", l.quest } end
+  local o = q and l.index and q.obj and q.obj[l.index]
+  if o and OBJ_KIND[o.t] then out[#out + 1] = { OBJ_KIND[o.t], o.id } end
+  if l.starter then out[#out + 1] = { "i", l.starter } end
+  if l.item then out[#out + 1] = { "i", l.item } end
+end
+
+-- The note lines of a step: the written note on its spot first, then the best voted
+-- comment notes on its spot, its quests and their open objectives (lines done or
+-- only "also here" are not this step's work), at most N.STEP_MAX, none twice.
+function N.ForStep(ds, st)
+  local out, seen = {}, {}
+  if not st then return out end
+  local written = N.ForSpot(st.spot)
+  if written then out[1] = written; seen[written] = true end
+  local about = {}
+  if st.spot and (st.spot.kind == "n" or st.spot.kind == "o") then about[1] = { st.spot.kind, st.spot.id } end
+  for _, l in ipairs(st.lines or NONE) do
+    if not l.done and not l.also then named(ds, l, about) end
+  end
+  local cand, from = {}, {}
+  for _, a in ipairs(about) do
+    local key = a[1] .. a[2]
+    if not from[key] then
+      from[key] = true
+      for _, c in ipairs(N.Comments(a[1], a[2])) do cand[#cand + 1] = c end
+    end
+  end
+  table.sort(cand, function(a, b) return a.v > b.v end)
+  for _, c in ipairs(cand) do
+    if #out >= N.STEP_MAX then break end
+    if not seen[c.text] then seen[c.text] = true; out[#out + 1] = c.text end
+  end
+  return out
 end
 
 -- Tidy a note as typed: one line, trimmed, at most N.MAX characters; nil when empty.

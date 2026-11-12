@@ -3,7 +3,7 @@
 ## Notes: A leveling route computed for your character: step by step, with an arrow, on the map and minimap.
 ## Category: Quests
 ## Author: Erik Andersen
-## Version: 0.1.98
+## Version: 0.1.99
 ## SavedVariables: LvlsDB
 ## SavedVariablesPerCharacter: LvlsCharDB
 ## OptionalDeps: QuestieDB
@@ -27,6 +27,7 @@ Data/Schema.lua
 Data/Registry.lua
 Data/forever/Dataset.lua
 Data/forever/Travel.lua
+Data/forever/Comments.lua
 Data/forever/Dungeons.lua
 Data/forever/Transports.lua
 Data/forever/Waypoints.lua

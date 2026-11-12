@@ -1079,7 +1079,7 @@ commands.record = function(arg) ns.TravelData.Record(arg) end
 
 -- /lvls note <text>: a note on where your target stands ("At the top of the tower"),
 -- else on the current step's npc / object; shown on its steps and under the arrow.
--- /lvls note: show it; /lvls note clear: remove yours (the shipped one shows again).
+-- /lvls note: show it (and what the players' comments say); /lvls note clear: remove yours (the shipped one shows again).
 commands.note = function(arg)
   local ds = ns.ActiveDataset and ns.ActiveDataset()
   local kind, id = ns.Auto.Npc("target")
@@ -1098,6 +1098,9 @@ commands.note = function(arg)
   if arg == "" then
     local note = ns.Notes.Get(kind, id)
     ns.Log("info", note and ("%s: %s"):format(name, note) or ("no note on %s; /lvls note <text> writes one"):format(name))
+    for _, c in ipairs(ns.Notes.Comments(kind, id)) do
+      ns.Log("info", ("  comments (%+d): %s"):format(c.v, c.text))
+    end
     return
   end
   local note = ns.Notes.Set(ns.db, kind, id, arg:lower() ~= "clear" and arg or nil)
