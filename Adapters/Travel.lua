@@ -397,26 +397,93 @@ function TR.PathTo(to)
 end
 
 -- Yards on foot from a to b (Engine/Nav: around walls and mountains), nil when the
--- map data does not know a way (off it, another continent, no data). For
--- Engine/Travel's ctx.walk; kept by spot (to 20 yards: the plan is made again as you move), a few hundred at most.
+-- map data does not know a way (off it, another continent, no data) or the way is
+-- still being measured. For Engine/Travel's ctx.walk, which plans with the straight
+-- line meanwhile.
+-- A short way is measured right away (TR.WALK_NODES: a few ms). A longer one (across
+-- the continent: a third of a second, the game stalled every few steps) is measured
+-- in the background, TR.WALK_MS per frame, and the trip is planned again when it is
+-- known. Kept by spot, to 20 yards near and coarser far (the plan is made again as
+-- you move; 20 yards more on a 20 000 yard walk change nothing), a few hundred at most.
 TR.WALK_CACHE = 400
+TR.WALK_NODES = 2000  -- nodes searched at once; more: in the background
+TR.WALK_MS = 3        -- background search time per frame
+TR.WALK_QUEUE = 6     -- ways waiting to be measured, the newest first; older ones dropped
+TR.walkAsync = true   -- tests measure in one go
 local walkCache, walkCount = {}, 0
-local function spotKey(cont, x, y) return cont .. ":" .. math.floor(x / 20 + 0.5) .. ":" .. math.floor(y / 20 + 0.5) end
+local walkQueue, walkJob = {}, nil
+local function spotKey(cont, x, y, grid)
+  return cont .. ":" .. math.floor(x / grid + 0.5) .. ":" .. math.floor(y / grid + 0.5)
+end
+local function remember(key, c)
+  if walkCount >= TR.WALK_CACHE then walkCache, walkCount = {}, 0 end
+  if walkCache[key] == nil then walkCount = walkCount + 1 end
+  walkCache[key] = c
+end
 function TR.Walk(a, b)
   local geo = ns.Game.geo
   if not (ns.Nav and geo and geo.world and a and b) then return nil end
   local ca, ax, ay = geo.world(a.map, a.x, a.y)
   local cb, bx, by = geo.world(b.map, b.x, b.y)
   if not ca or ca ~= cb then return nil end
-  local key = spotKey(ca, ax, ay) .. ">" .. spotKey(cb, bx, by)
+  -- the grid doubles every 800 yards of straight line past the first (2.5% at most)
+  local dx, dy = bx - ax, by - ay
+  local grid = 20
+  local far = math.sqrt(dx * dx + dy * dy) / 800
+  while far >= 2 do grid, far = grid * 2, far / 2 end
+  local key = spotKey(ca, ax, ay, grid) .. ">" .. spotKey(cb, bx, by, grid)
   local c = walkCache[key]
   if c == nil then
-    local ok, pts, length = pcall(ns.Nav.Route, ca, ax, ay, bx, by)
-    c = ok and pts and length or false
-    if walkCount >= TR.WALK_CACHE then walkCache, walkCount = {}, 0 end
-    walkCache[key], walkCount = c, walkCount + 1
+    local limit = TR.walkAsync and TR.WALK_NODES or nil
+    local ok, pts, length = pcall(ns.Nav.Route, ca, ax, ay, bx, by, nil, limit)
+    if ok and not pts and length == "too far" then
+      c = "measuring"
+      table.insert(walkQueue, 1, { key = key, cont = ca, ax = ax, ay = ay, bx = bx, by = by })
+      local old = walkQueue[TR.WALK_QUEUE + 1]
+      if old then walkQueue[TR.WALK_QUEUE + 1] = nil; walkCache[old.key] = nil end -- asked again later
+    else
+      c = ok and pts and length or false
+    end
+    remember(key, c)
   end
-  return c or nil
+  return type(c) == "number" and c or nil
+end
+
+-- Measure the waiting ways for up to `budget` ms; plans the trip again when one is
+-- known. True while there is more to do.
+function TR.WalkStep(budget)
+  local deadline = ns.Util.nowMs() + (budget or TR.WALK_MS)
+  while true do
+    if not walkJob then
+      local q = table.remove(walkQueue, 1)
+      if not q then return false end
+      q.co = coroutine.create(function()
+        return ns.Nav.Route(q.cont, q.ax, q.ay, q.bx, q.by, function()
+          if ns.Util.nowMs() > q.deadline then coroutine.yield() end
+        end)
+      end)
+      walkJob = q
+    end
+    local j = walkJob
+    j.deadline = deadline
+    local ok, pts, length = coroutine.resume(j.co)
+    if not ok or coroutine.status(j.co) == "dead" then
+      walkJob = nil
+      if not ok then ns.Log("debug", "walk: " .. tostring(pts)) end
+      remember(j.key, ok and pts and length or false)
+      if ns.RefreshTravel then pcall(ns.RefreshTravel) end
+    end
+    if ns.Util.nowMs() >= deadline then return walkJob ~= nil or #walkQueue > 0 end
+  end
+end
+
+function TR.WalkBusy() return walkJob ~= nil or #walkQueue > 0 end
+
+local walkDriver = CreateFrame and CreateFrame("Frame")
+if walkDriver then
+  walkDriver:SetScript("OnUpdate", function()
+    if walkJob or walkQueue[1] then TR.WalkStep(TR.WALK_MS) end
+  end)
 end
 
 function TR.Context(ds, char)

@@ -123,8 +123,10 @@ end
 -- The way from (ax, ay) to (bx, by) on continent `cont`: { { x, y }, ... } from the
 -- start to the goal (both included), and its length in yards. nil and why when
 -- there is no graph, either end is off it, or no way connects them on foot.
--- tick() is called every N.TICK nodes (a job yields there).
-function N.Route(cont, ax, ay, bx, by, tick)
+-- tick() is called every N.TICK nodes (a job yields there). With `limit`: nil and
+-- "too far" once the search has looked at that many nodes (a way across the continent
+-- looks at nearly all of them, some 90 000: a third of a second at once).
+function N.Route(cont, ax, ay, bx, by, tick, limit)
   local g = N.Graph(cont)
   if not g then return nil, "no map data" end
   local goals = N.Near(g, bx, by)
@@ -189,6 +191,7 @@ function N.Route(cont, ax, ay, bx, by, tick)
       closed[u] = true
       count = count + 1
       if tick and count % N.TICK == 0 then tick() end
+      if limit and count > limit then return nil, "too far", count end
       local gu = cost[u]
       if finish[u] and gu + finish[u] < best then best, bestNode = gu + finish[u], u end
       local ux, uy = X(u), Y(u)
