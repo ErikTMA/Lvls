@@ -108,6 +108,8 @@ R.DEFAULTS = {
   training = nil,      -- { afford = points (Engine/Training), trainers = { spot, ... } }
   trainShare = 0.03,   -- a point of training is worth this share of the level's experience
   trainSecs = 30,      -- seconds at the trainer
+  commit = nil,        -- { { kind, quest, index }, ... }: the step you are on its way to, kept first
+                       --   while it can still be done (a plan made again does not change your mind)
   lookAhead = 7,       -- steps: each window of this many on one map is put in its shortest order (reorder)
   respawnSecs = 300,   -- seconds a cleared area takes to respawn: a small area that cannot
                        --   give the whole objective is charged for the waits
@@ -707,7 +709,7 @@ local function reorder(steps, ctx)
       u.members[#u.members + 1] = s
     else
       units[#units + 1] = { members = { s }, spot = s.spot,
-        fixed = s.kind == "grind" or s.kind == "train" or s.port ~= nil or not s.spot }
+        fixed = s.kind == "grind" or s.kind == "train" or s.port ~= nil or not s.spot or s.committed }
     end
   end
   if #units < 2 then return steps end
@@ -1174,6 +1176,7 @@ local function planOnce(ds, char, geo, o)
     return u
   end
 
+  local commit = o.commit and #o.commit > 0 and o.commit or nil
   local guard = 0
   local yield = ns.Util.Yield -- a slice at a time when planned as a job (Core/Init)
   while #steps < o.steps and guard < o.steps * 4 do
@@ -1319,8 +1322,10 @@ local function planOnce(ds, char, geo, o)
     local talks = {}      -- pick-ups, hand-ins and the log's work, for "on the way"
     -- at the npc you stand at: the most experience per second first; elsewhere: the
     -- seconds the action adds (see the method above)
+    local offered = {}    -- every action on offer (the committed step is one of them)
     local function offer(action, secs, effort)
       efforts[action] = effort
+      offered[#offered + 1] = action
       local value = worth(action.kind, action.quest)
       local xp = gain(action.quest)
       if action.kind ~= "do" and G.Distance(geo, pos, action.spot) <= o.here then
@@ -1382,8 +1387,34 @@ local function planOnce(ds, char, geo, o)
       end
     end
     best = R.Choose(cands, pos, o, point, gain)
+    -- the step you are on your way to comes first, as long as it is on offer: a plan
+    -- made again on the way (a fight, a quest taken) does not change your mind
+    -- because you are closer to something else now
+    local committed
+    if commit then
+      local left = {}
+      for _, c in ipairs(commit) do
+        local q = c.quest
+        local open = (c.kind == "accept" and not sim.active[q] and not sim.completed[q])
+          or (c.kind == "turnin" and sim.active[q] ~= nil)
+          or (c.kind == "do" and progress[q] ~= nil and not progress[q][c.index])
+        if open then left[#left + 1] = c end
+      end
+      for _, c in ipairs(left) do
+        for _, a in ipairs(offered) do
+          if a.kind == c.kind and a.quest == c.quest and (c.kind ~= "do" or a.index == c.index) then committed = a; break end
+        end
+        if committed then break end
+      end
+      -- nothing of it on offer any more (done, skipped, no longer possible): let go
+      commit = committed and left or nil
+    end
+    if committed then
+      best, here = committed, nil
+      best.committed = true
+    end
     -- nothing left close by but quests the margin holds back: grind the next level
-    if not here then
+    if not here and not committed then
       local close = false
       for _, c in ipairs(cands) do
         if c.secs <= o.localSecs and c.action.spot.map == pos.map then close = true; break end
@@ -1400,7 +1431,7 @@ local function planOnce(ds, char, geo, o)
     -- a pick-up, hand-in or open objective close to the way there is done in passing:
     -- close to the straight line, or (opts.way) to the way on foot, which goes round
     -- a mountain or a lake where the straight line does not
-    if best and not here then
+    if best and not here and not committed then
       local direct = G.Distance(geo, pos, best.spot)
       local pick, pickD
       local way -- the way on foot there: asked once, when the straight line misses

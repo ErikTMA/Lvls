@@ -508,6 +508,24 @@ function S.Valid(ds, char, steps, from)
   return true
 end
 
+-- What is left of the step you are on your way to, as route actions ({ kind, quest,
+-- index }): a plan made again keeps it first (Engine/Route opts.commit), so the
+-- route does not change its mind on the way because something else is closer now.
+-- Nil for a step that is not one of the route's own (a flight point, a dungeon, a
+-- grind or train step) or has nothing open.
+function S.Commit(st)
+  if not st or st.done or st.near or st.inside or not (st.kind == "talk" or st.kind == "work" or st.kind == "use") then return nil end
+  local out = {}
+  for _, l in ipairs(st.lines or {}) do
+    if l.quest and not l.done and not l.also then
+      if l.starter or l.kind == "accept" then out[#out + 1] = { kind = "accept", quest = l.quest }
+      elseif l.kind == "turnin" then out[#out + 1] = { kind = "turnin", quest = l.quest }
+      elseif l.index then out[#out + 1] = { kind = "do", quest = l.quest, index = l.index } end
+    end
+  end
+  return #out > 0 and out or nil
+end
+
 -- The quests a talk step still has you pick up from this npc / object (kind "n" or
 -- "o", id), or nil when the step is not at it.
 function S.OpenAccepts(st, kind, id)

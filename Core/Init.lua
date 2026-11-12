@@ -298,6 +298,7 @@ local function plan(ds, forced)
   end
   local char = ns.char
   local opts = {
+    commit = not offRoute() and ns.Steps.Commit(ns.steps and ns.stepIndex and ns.steps[ns.stepIndex]) or nil,
     speed = ctx and ctx.speed or 7,
     logSize = ns.Game.LogSize(), -- nil: the route's default
     travel = ctx and function(a, b, usable) return ns.Travel.Time(a, b, ctx, usable) end,
