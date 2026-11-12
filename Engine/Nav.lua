@@ -15,6 +15,7 @@ local N = ns:NewModule("Nav")
 N.SNAP_YARDS = 60     -- a start or goal farther than this from the graph: no way
 N.SNAP_SLACK = 25     -- also try nodes up to this much farther than the nearest
 N.SNAP_MAX = 6        -- at most this many of them
+N.SPOT_YARDS = 3      -- a corner this close to the goal is the goal's own (its spot)
 N.TICK = 256          -- nodes between calls to the tick (a job yields there)
 
 local CELL = 64
@@ -131,6 +132,19 @@ function N.Route(cont, ax, ay, bx, by, tick, limit)
   if not g then return nil, "no map data" end
   local goals = N.Near(g, bx, by)
   if #goals == 0 then return nil, "goal off the map data" end
+  -- the graph has a corner at the goal itself (every npc, object and flight point
+  -- spot is one, on each level there): the way ends there, on whichever level the
+  -- spot's corners are, not at a corner near it. Ending at the corner 15 yards away on
+  -- the hill above a cave left the arrow pointing down through the ground.
+  if goals[1][2] <= N.SPOT_YARDS then
+    local at = {}
+    for _, t in ipairs(goals) do
+      if t[2] <= N.SPOT_YARDS then at[#at + 1] = t end
+    end
+    local comps = {}
+    for _, t in ipairs(at) do comps[g.Comp(t[1])] = true end
+    if #N.Near(g, ax, ay, comps) > 0 then goals = at end
+  end
   local comps = {}
   for _, t in ipairs(goals) do comps[g.Comp(t[1])] = true end
   local starts = N.Near(g, ax, ay, comps)
