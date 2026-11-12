@@ -33,6 +33,12 @@
 --      worth trainShare of a level's experience per point of what you can pay for,
 --      so it is taken when the route passes a trainer or goes to the city anyway,
 --      and a trip of its own once enough waits.
+--   3. The order, looked over once the steps are chosen (reorder): every window of
+--      lookAhead steps on one map in its shortest order (all orders that are still
+--      a route, branch and bound), and blocks of one to three steps moved anywhere on
+--      their map when that walks less (one trip to the far west, not two). Quests
+--      stay picked up before their work and handed in after it, chains in order, and
+--      the level and log are simulated again along the new order.
 -- With opts.travel (Engine/Travel), long walks are priced by the fastest trip:
 -- a known flight path makes a far quest hub cheap, and the boats, zeppelins and the
 -- tram make the other continent a destination like any other (without opts.travel
@@ -102,6 +108,7 @@ R.DEFAULTS = {
   training = nil,      -- { afford = points (Engine/Training), trainers = { spot, ... } }
   trainShare = 0.03,   -- a point of training is worth this share of the level's experience
   trainSecs = 30,      -- seconds at the trainer
+  lookAhead = 7,       -- steps: each window of this many on one map is put in its shortest order (reorder)
   respawnSecs = 300,   -- seconds a cleared area takes to respawn: a small area that cannot
                        --   give the whole objective is charged for the waits
 }
@@ -672,6 +679,309 @@ local function buildOpens(ds)
 end
 function R.Opens(ds, char) return ns.GuideCache.Get(ds, char, "opens", buildOpens) end
 
+-- The order of the steps, looked over once they are chosen (R.Plan). The simulation
+-- picks one step at a time, so it zig-zags: east for one quest, west for the next,
+-- east again (Ashenvale: Astranaar, the far west, Satyrnaar, back). Here every window
+-- of at most o.lookAhead steps on one map is put in the order with the shortest walk,
+-- from the step before it to the step after it, by trying every order that is still a
+-- route (branch and bound: an order whose walk so far is already longer is dropped).
+-- An order is a route when each quest is picked up before its work and its work is
+-- done before the hand-in, a quest comes after the hand-in that opens it (and after
+-- the earlier quests of its chain, R.Plan's held), the simulated level allows each
+-- pick-up (its required level, maxAbove, not grey) and the log has room. The level
+-- and experience are simulated again along the new order. A step worked along with
+-- another (along) stays with it; grind and train steps, a step that uses a port and
+-- the change to another map keep their place. The window slides over the route
+-- until nothing gets shorter.
+local function reorder(steps, ctx)
+  local o, ds, char = ctx.o, ctx.ds, ctx.char
+  local X = o.lookAhead or 0
+  if X < 2 or #steps < 2 then return steps end
+  local A, geo = ns.Availability, ctx.geo
+  local yield = ns.Util.Yield
+  -- units: a step and the steps worked along with it
+  local units = {}
+  for _, s in ipairs(steps) do
+    if s.along and #units > 0 then
+      local u = units[#units]
+      u.members[#u.members + 1] = s
+    else
+      units[#units + 1] = { members = { s }, spot = s.spot,
+        fixed = s.kind == "grind" or s.kind == "train" or s.port ~= nil or not s.spot }
+    end
+  end
+  if #units < 2 then return steps end
+  local FAR = 2000
+  local function wpt(spot)
+    local c, x, y
+    if geo and geo.world then c, x, y = geo.world(spot.map, spot.x, spot.y) end
+    if not c then
+      local w, h = 1000, 1000
+      if geo and geo.size then
+        local sw, sh = geo.size(spot.map)
+        if sw and sw > 0 and sh and sh > 0 then w, h = sw, sh end
+      end
+      c, x, y = "m" .. spot.map, spot.x / 100 * w, spot.y / 100 * h
+    end
+    return { c, x, y }
+  end
+  for _, u in ipairs(units) do if u.spot then u.p = wpt(u.spot) end end
+  local startP = wpt(ctx.pos)
+  local function dist(a, b)
+    if not a or not b then return 0 end
+    if a[1] ~= b[1] then return FAR end
+    local dx, dy = a[2] - b[2], a[3] - b[3]
+    return math.sqrt(dx * dx + dy * dy)
+  end
+  -- what must come before what: by original index (the greedy order is a route)
+  local opens = ctx.opens
+  local openedBy = {}
+  for from, list in pairs(opens) do
+    for _, to in ipairs(list) do openedBy[to] = openedBy[to] or {}; openedBy[to][from] = true end
+  end
+  for i, u in ipairs(units) do
+    u.idx = i
+    u.acc, u.work, u.hand, u.any = {}, {}, {}, {}
+    for _, s in ipairs(u.members) do
+      if s.quest then
+        u.any[s.quest] = true
+        if s.kind == "accept" then u.acc[s.quest] = true
+        elseif s.kind == "do" then u.work[s.quest] = true
+        elseif s.kind == "turnin" then u.hand[s.quest] = true end
+      end
+    end
+  end
+  local function needs(u, v) -- u must come after v
+    for q in pairs(u.work) do if v.acc[q] then return true end end
+    for q in pairs(u.hand) do if v.acc[q] or v.work[q] then return true end end
+    for b in pairs(u.acc) do
+      local by, bq = openedBy[b], ds.quests[b]
+      for x in pairs(v.hand) do
+        if (by and by[x]) or (bq and (bq.prev == x)) or (ctx.classAfter and ctx.classAfter(b) == x) then return true end
+      end
+      for _, e in ipairs(bq and bq.earlier or {}) do if v.any[e] then return true end end
+    end
+    return false
+  end
+  -- the level, experience and log count before each unit (a unit's own effect: apply)
+  local maxL = maxLevel({ char = char })
+  local function apply(u, level, xp, log)
+    for _, s in ipairs(u.members) do
+      local q = s.quest and ds.quests[s.quest]
+      local gain = 0
+      if s.kind == "grind" then level, xp = s.level, 0
+      elseif s.kind == "accept" then log = log + 1
+      elseif s.kind == "turnin" and q then log = log - 1; gain = R.QuestXP(q, level)
+      elseif s.kind == "do" and q then gain = R.ObjectiveXP(ds, q, s.index, level) end
+      xp = xp + gain
+      while level < maxL do
+        local need = (level == char.level and char.xpMax) or R.XP_TO_LEVEL[level]
+        if not need or xp < need then break end
+        xp, level = xp - need, level + 1
+      end
+    end
+    return level, xp, log
+  end
+  local function canTake(u, level, log)
+    for b in pairs(u.acc) do
+      local q = ds.quests[b]
+      if log + 1 > o.logSize then return false end
+      log = log + 1
+      if q and not o.focus then
+        if q.r and level < q.r then return false end
+        if q.l and q.l > level + ctx.aboveFor(q) then return false end
+        if q.l and q.l <= A.GreyLevel(level) then return false end
+      end
+    end
+    return true
+  end
+  local log0 = 0
+  for _ in pairs(char.active or {}) do log0 = log0 + 1 end
+  -- okAt: the greedy order may take a quest these checks would not (a guide's, an
+  -- item's); such a unit is not held against an order that leaves it as it was
+  local okAt = {}
+  local function before()
+    local lv, xp, lg = {}, {}, {}
+    local l, x, g = char.level, char.xp or 0, log0
+    for i, u in ipairs(units) do
+      lv[i], xp[i], lg[i] = l, x, g
+      if okAt[u] == nil then okAt[u] = canTake(u, l, g) end
+      l, x, g = apply(u, l, x, g)
+    end
+    return lv, xp, lg
+  end
+  local lv, xpAt, lgAt = before()
+  -- the rest of the route from unit i on is still a route in this order: nothing
+  -- comes before what it needs, and the level and log allow every pick-up
+  local function validFrom(order, i)
+    for a = i, #order do
+      for b = a + 1, #order do
+        if order[a].idx > order[b].idx and needs(order[a], order[b]) then return false end
+      end
+    end
+    local l, x, g = lv[i], xpAt[i], lgAt[i]
+    for j = i, #order do
+      if okAt[order[j]] and not canTake(order[j], l, g) then return false end
+      l, x, g = apply(order[j], l, x, g)
+    end
+    return true
+  end
+  local function legs(order, a, b) -- the walk from unit a-1 to unit b
+    local cost, at = 0, a > 1 and order[a - 1].p or startP
+    for k = a, math.min(b, #order) do cost = cost + dist(at, order[k].p); at = order[k].p end
+    return cost
+  end
+  -- far moves (or-opt): a block of one to three steps taken out and put anywhere
+  -- else on its map, when the walk gets shorter and it is still a route. Not limited
+  -- to the window: the far west visited twice, twenty steps apart, is one visit.
+  local function orOpt()
+    local moved = false
+    for _ = 1, 200 do
+      local found = false
+      for L = 1, 3 do
+        for i = 1, #units - L + 1 do
+          yield()
+          local map = units[i].spot and units[i].spot.map
+          local okBlock = true
+          for k = i, i + L - 1 do
+            if units[k].fixed or units[k].spot.map ~= map then okBlock = false; break end
+          end
+          if okBlock then
+            -- where it may go: within the run of this map around it, no fixed step crossed
+            local lo, hi = i, i + L - 1
+            while lo > 1 and not units[lo - 1].fixed and units[lo - 1].spot.map == map do lo = lo - 1 end
+            while hi < #units and not units[hi + 1].fixed and units[hi + 1].spot.map == map do hi = hi + 1 end
+            local P = i > 1 and units[i - 1].p or startP
+            local nx = units[i + L]
+            local outGain = dist(P, units[i].p) + dist(units[i + L - 1].p, nx and nx.p) - (nx and dist(P, nx.p) or 0)
+            if not nx then outGain = dist(P, units[i].p) end
+            for j = lo - 1, hi do -- insert after unit j (lo - 1: first in the run)
+              if j < i - 1 or j > i + L - 1 then
+                local A = j >= 1 and units[j].p or startP
+                local B = units[j + 1] and units[j + 1].p
+                local inCost = dist(A, units[i].p) + (B and dist(units[i + L - 1].p, B) or 0) - (B and dist(A, B) or 0)
+                if inCost - outGain < -5 then
+                  local order, block = {}, {}
+                  for k = i, i + L - 1 do block[#block + 1] = units[k] end
+                  for k = 1, #units do
+                    if k < i or k > i + L - 1 then order[#order + 1] = units[k] end
+                    if k == j then for _, u in ipairs(block) do order[#order + 1] = u end end
+                  end
+                  if j == 0 then
+                    local o2 = {}
+                    for _, u in ipairs(block) do o2[#o2 + 1] = u end
+                    for _, u in ipairs(order) do o2[#o2 + 1] = u end
+                    order = o2
+                  end
+                  local from = math.min(i, j + 1)
+                  if validFrom(order, from) and legs(order, from, #order) < legs(units, from, #units) - 5 then
+                    units = order
+                    lv, xpAt, lgAt = before()
+                    found, moved = true, true
+                    break
+                  end
+                end
+              end
+            end
+          end
+          if found then break end
+        end
+        if found then break end
+      end
+      if not found then break end
+    end
+    return moved
+  end
+  local changed, passes = true, 0
+  while changed and passes < 4 do
+    changed, passes = false, passes + 1
+    if orOpt() then changed = true end
+    for i = 1, #units - 1 do
+      yield()
+      if not units[i].fixed then
+        local map = units[i].spot.map
+        local w = {}
+        for j = i, math.min(#units, i + X - 1) do
+          local u = units[j]
+          if u.fixed or u.spot.map ~= map then break end
+          w[#w + 1] = u
+        end
+        if #w >= 2 then
+          local P = i > 1 and units[i - 1].p or startP
+          local nxt = units[i + #w]
+          local N = nxt and nxt.p or nil
+          local base = 0
+          local at = P
+          for _, u in ipairs(w) do base = base + dist(at, u.p); at = u.p end
+          base = base + (N and dist(at, N) or 0)
+          local pred = {}
+          for a = 1, #w do
+            pred[a] = {}
+            for b = 1, #w do
+              if a ~= b and w[b].idx < w[a].idx and needs(w[a], w[b]) then pred[a][#pred[a] + 1] = b end
+            end
+          end
+          local best, bestCost = nil, base - 5 -- shorter by a few yards at least: no churn
+          local used, seq, nodes = {}, {}, 0
+          local function dfs(k, at2, cost, level, xp, log)
+            nodes = nodes + 1
+            if nodes % 512 == 0 then yield() end
+            if cost >= bestCost then return end
+            if k > #w then
+              local total = cost + (N and dist(at2, N) or 0)
+              if total < bestCost then
+                bestCost, best = total, {}
+                for a = 1, #seq do best[a] = seq[a] end
+              end
+              return
+            end
+            for a = 1, #w do
+              if not used[a] then
+                local ok = true
+                for _, b in ipairs(pred[a]) do if not used[b] then ok = false; break end end
+                if ok and (not okAt[w[a]] or canTake(w[a], level, log)) then
+                  local l2, x2, g2 = apply(w[a], level, xp, log)
+                  used[a], seq[k] = true, a
+                  dfs(k + 1, w[a].p, cost + dist(at2, w[a].p), l2, x2, g2)
+                  used[a], seq[k] = nil, nil
+                end
+              end
+            end
+          end
+          dfs(1, P, 0, lv[i], xpAt[i], lgAt[i])
+          -- what follows the window must still be a route: the level and log it is left with
+          if best then
+            local l, x, g = lv[i], xpAt[i], lgAt[i]
+            for _, a in ipairs(best) do l, x, g = apply(w[a], l, x, g) end
+            local ok = true
+            for j = i + #w, #units do
+              if okAt[units[j]] and not canTake(units[j], l, g) then ok = false; break end
+              l, x, g = apply(units[j], l, x, g)
+            end
+            if ok then
+              local order = {}
+              for k, a in ipairs(best) do order[k] = w[a] end
+              for k, u in ipairs(order) do units[i + k - 1] = u end
+              changed = true
+              lv, xpAt, lgAt = before()
+            end
+          end
+        end
+      end
+    end
+  end
+  -- the steps in the new order, each with the level it leaves you at
+  local out, l, x, g = {}, char.level, char.xp or 0, log0
+  for _, u in ipairs(units) do
+    l, x, g = apply(u, l, x, g)
+    for _, s in ipairs(u.members) do
+      if s.kind ~= "grind" then s.level = l end
+      out[#out + 1] = s
+    end
+  end
+  return out
+end
+
 local function planOnce(ds, char, geo, o)
   if o.focus then
     -- a guide: every quest of it as soon as the client allows, wherever it is
@@ -690,6 +1000,7 @@ local function planOnce(ds, char, geo, o)
   -- on the zone's map (geo.zone, optional): what is "here" compares maps, and the
   -- client reports some places on a building's or the continent's map
   pos = geo and geo.zone and geo.zone(pos) or pos
+  local startPos = pos
 
   -- pool and shapes
   local shapes, workSecs = {}, {}
@@ -1188,7 +1499,8 @@ local function planOnce(ds, char, geo, o)
     end
     best.also = nil
   end
-  return steps
+  return reorder(steps, { o = o, ds = ds, char = char, geo = geo, pos = startPos, opens = opens,
+    aboveFor = aboveFor, classAfter = next(classOf) and classAfter or nil })
 end
 
 -- The route. Empty with the usual limits (what is left around your level is farther
