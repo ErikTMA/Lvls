@@ -90,9 +90,12 @@ function N.Coord(text)
   return nil
 end
 
--- What a step line names: the entities whose comment notes belong to it.
+-- What a step line names: the entities whose comment notes belong to it. A turn-in
+-- names nothing: its quest's comments are about doing the quest, which is done; what
+-- is said about where the npc you hand it to stands comes with the step's spot.
 local OBJ_KIND = { kill = "n", object = "o", item = "i" }
 local function named(ds, l, out)
+  if l.kind == "turnin" then return end
   local q = l.quest and ds and ds.quests and ds.quests[l.quest]
   if l.quest then out[#out + 1] = { "q", l.quest } end
   local o = q and l.index and q.obj and q.obj[l.index]
@@ -102,8 +105,8 @@ local function named(ds, l, out)
 end
 
 -- The note lines of a step: the written note on its spot first, then the best voted
--- comment notes on its spot, its quests and their open objectives (lines done or
--- only "also here" are not this step's work), at most N.STEP_MAX, none twice.
+-- comment notes on its spot, its quests and their open objectives (lines done, only
+-- "also here" or turn-ins are not work still to do), at most N.STEP_MAX, none twice.
 function N.ForStep(ds, st)
   local out, seen = {}, {}
   if not st then return out end
