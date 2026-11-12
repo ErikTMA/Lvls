@@ -1537,7 +1537,8 @@ end
 -- The route. Empty with the usual limits (what is left around your level is farther
 -- than maxSecs or more work than maxWork: a level-28 dwarf with Thousand Needles a
 -- boat and a long walk away), it plans again with travel up to dryMaxSecs, then with
--- maxWork lifted too, and last (grind on) a grind step where you are, rather than nothing.
+-- maxWork lifted too, and last (grind on, not in a zone guide) a grind step where you are,
+-- rather than nothing.
 -- steps.dry says which of these it took ("far", "work", "grind").
 function R.Plan(ds, char, geo, opts)
   local o = {}
@@ -1550,6 +1551,11 @@ function R.Plan(ds, char, geo, opts)
     { "work", { maxSecs = math.max(o.maxSecs, o.dryMaxSecs), maxWork = 1e9 } },
     { "grind", { dry = true } }, -- only when grind steps are on (o.grind)
   }
+  -- a zone guide (o.within) whose quests cannot be planned grinds nothing: whole
+  -- levels of killing wherever you stand are not that zone, and the empty plan sends
+  -- you back to the leveling route (Core/Init). A level-32 dwarf in Ironforge with
+  -- Ashenvale's quests out of reach was told to grind two levels on yetis.
+  if o.within then tries[3] = nil end
   for _, t in ipairs(tries) do
     local o2 = {}
     for k, v in pairs(o) do o2[k] = v end
