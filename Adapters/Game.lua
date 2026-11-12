@@ -183,7 +183,8 @@ function G.Character()
       return ns.Util.plain(GetMaxLevelForPlayerExpansion()) end)) or nil,
     faction = faction, race = race, class = class,
     completed = G.Completed(), active = G.QuestLog(), skills = safe(G.Skills),
-    pos = safe(G.Position),
+    -- on a flight: where it lands (the trip from the flight master is behind you)
+    pos = (ns.TravelData and ns.TravelData.FlyingTo and safe(ns.TravelData.FlyingTo)) or safe(G.Position),
     bag = items, bagInfo = bagInfo,
   }
 end

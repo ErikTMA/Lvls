@@ -529,6 +529,8 @@ local flight      -- { from = nodeId, t }
 local hearthCast  -- time of the last port's cast (hearthstone, teleport)
 local portCast    -- { id, t }: a teleport cast, its landing spot not yet seen
 local bindCast    -- { t, from }: a hearth cast (hearthstone, Astral Recall), not landed yet
+local flyingTo     -- { name, spot, t }: the flight point you picked at the flight master
+local TAKEOFF = 15 -- seconds from the pick to the taxi; no taxi by then: you did not fly
 local BIND_JUMP = 200 -- yards: a hearth that lands you this far away took you home
 
 local function now() return GetTime and GetTime() or os.time() end
@@ -565,6 +567,34 @@ local function learnTransit(a, b, secs)
   ns.Log("info", ("learned a %s link to %s"):format(what, nameB))
 end
 
+-- The flight point a flight you picked lands at: its name from the slot you clicked
+-- (TakeTaxiNode, the TaxiFrame and the flight map alike), its spot from the
+-- continent's flight points.
+function TR.TookTaxi(slot)
+  local name = type(TaxiNodeName) == "function" and plain(TaxiNodeName(slot))
+  if type(name) ~= "string" then return end
+  name = short(name)
+  local ds, pos = ns.ActiveDataset and ns.ActiveDataset(), ns.Game.Position()
+  local spot
+  if ds and pos then
+    for _, list in ipairs({ TR.FlyNodes(ds, pos.map, UnitFactionGroup and UnitFactionGroup("player")) }) do
+      for _, f in ipairs(list) do if f.name == name then spot = f.spot end end
+    end
+  end
+  flyingTo = { name = name, spot = spot, t = now() }
+  ns.Log("debug", "flying to " .. name)
+end
+
+-- While you are on the taxi (or about to take off): where it lands, { map, x, y }, or
+-- nil. The route plans from there, not from the air above the flight master you left.
+function TR.FlyingTo()
+  local f = flyingTo
+  if not (f and f.spot) then return nil end
+  local onTaxi = UnitOnTaxi and UnitOnTaxi("player")
+  if not onTaxi and now() - f.t > TAKEOFF then return nil end
+  return { map = f.spot.map, x = f.spot.x, y = f.spot.y }
+end
+
 -- Called about once a second.
 function TR.Sample()
   local pos = ns.Game.Position()
@@ -575,7 +605,8 @@ function TR.Sample()
   if onTaxi and not flight and last.spot and ds then
     local f = nearestKnown(ds, last.spot)
     flight = { from = f and f.id, t = t }
-    if TR.Confirm(f) and ns.Refresh then ns.Refresh(true) end
+    -- took off: plan from where the flight lands
+    if (TR.Confirm(f) or TR.FlyingTo()) and ns.Refresh then ns.Refresh(true) end
   elseif not onTaxi and flight and pos and ds then
     local f = nearestKnown(ds, pos)
     if TR.Confirm(f) and ns.Refresh then ns.Refresh(true) end
@@ -583,8 +614,9 @@ function TR.Sample()
       ns.db.flights = ns.db.flights or {}
       ns.db.flights[flight.from .. ">" .. f.id] = math.floor(t - flight.t + 0.5)
     end
-    flight = nil
+    flight, flyingTo = nil, nil
   end
+  if flyingTo and not onTaxi and t - flyingTo.t > TAKEOFF then flyingTo = nil end
   if not pos then return end
   local info = TR.MapInfo(pos.map)
   local mapType = info and info.mapType
@@ -689,6 +721,12 @@ if CreateFrame then
     f:RegisterEvent(e)
   end
   f:SetScript("OnEvent", function(_, ...) TR.OnEvent(...) end)
+  if hooksecurefunc and TakeTaxiNode then
+    hooksecurefunc("TakeTaxiNode", function(slot)
+      local ok, err = pcall(TR.TookTaxi, slot)
+      if not ok then ns.Log("debug", "taxi: " .. tostring(err)) end
+    end)
+  end
   local acc = 0
   f:SetScript("OnUpdate", function(_, elapsed)
     acc = acc + (elapsed or 0)
