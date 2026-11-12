@@ -132,6 +132,11 @@ function G.Skills()
   return out
 end
 
+-- Inside a building or a cave (where you cannot mount): the game's IsIndoors.
+function G.Indoors()
+  return IsIndoors and IsIndoors() and true or false
+end
+
 -- Current uiMap and position on it (percent), or nil.
 -- The player's spot { map, x, y } (map percent), or nil. Pass `out` to have it
 -- filled instead of a new table (the arrow and the minimap ask many times a second).

@@ -17,7 +17,8 @@ end
 
 ns.DEFAULT_SETTINGS = {
   worldMap = true, mapRoute = true, minimap = true, minimapRoute = true, minimapButton = true, objectives = true, arrow = true, nativeArrow = false,
-  groundHelp = 2,        -- lead the way on foot: 0 straight line .. 4 every turn (Engine/Nav.lua N.HELP)
+  groundHelp = 2,        -- lead the way on foot out in the world: 0 straight line .. 4 every turn (Engine/Nav.lua N.HELP)
+  groundHelpIndoors = 2, -- the same inside buildings and caves (UI/Ground.lua)
   showLow = true, showTrivial = false, showDungeon = false, showRepeatable = false,
   zoneFirst = true, debug = false,
   -- automation (Adapters/Automation.lua); hold Shift at an npc to pause it
@@ -43,6 +44,10 @@ function ns.InitDB(db)
   -- the old on/off for the way on foot: off stays off on the slider
   if db.settings.groundRoute == false and db.settings.groundHelp == nil then db.settings.groundHelp = 0 end
   db.settings.groundRoute = nil
+  -- one slider before: inside starts where it was set
+  if db.settings.groundHelpIndoors == nil and db.settings.groundHelp ~= nil then
+    db.settings.groundHelpIndoors = db.settings.groundHelp
+  end
   for k, v in pairs(ns.DEFAULT_SETTINGS) do
     if db.settings[k] == nil then db.settings[k] = v end
   end
@@ -1069,11 +1074,17 @@ commands.train = function()
   if t.nextLevel then ns.Log("info", ("  next at level %d"):format(t.nextLevel)) end
 end
 
--- /lvls walk [0-4]: how much the arrow leads the way on foot
+-- /lvls walk [0-4]: how much the arrow leads the way on foot out in the world;
+-- /lvls walk in [0-4]: inside buildings and caves
 commands.walk = function(arg)
-  local v = tonumber(arg)
-  if v and v >= 0 and v <= ns.Nav.HELP_MAX then ns.Settings.Set("groundHelp", math.floor(v)) end
-  ns.Log("info", "lead the way on foot: " .. ns.Settings.HelpLabel(ns.db.settings.groundHelp))
+  arg = arg or ""
+  local inside = arg:match("^%s*in%a*")
+  local key = inside and "groundHelpIndoors" or "groundHelp"
+  local v = tonumber(inside and arg:sub(#inside + 1) or arg)
+  if v and v >= 0 and v <= ns.Nav.HELP_MAX then ns.Settings.Set(key, math.floor(v)) end
+  local S = ns.Settings
+  ns.Log("info", "lead the way on foot: outside " .. S.HelpLabel(ns.db.settings.groundHelp)
+    .. ", inside " .. S.HelpLabel(ns.db.settings.groundHelpIndoors))
 end
 
 commands.record = function(arg) ns.TravelData.Record(arg) end

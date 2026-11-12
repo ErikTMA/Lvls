@@ -2,7 +2,9 @@
 -- building or up a cliff. This finds the way there (Engine/Nav over the client's
 -- own map data, Data/forever/Nav*.lua) and leads along it, but only where the
 -- straight line would not do (Nav.Worth: a cave, a mountain path, a walled city;
--- how readily is the "Lead the way on foot" slider):
+-- how readily is the "Lead the way on foot" sliders: one for out in the world, one
+-- for inside buildings and caves; the one for where you stand, looked at again as
+-- you go in or out):
 --   * the arrow points at the next turn and counts the yards left along the way
 --   * the world map draws the way as a line
 --   * the game's own waypoint (nativeArrow) stays on the goal
@@ -32,8 +34,20 @@ local cornerFor       -- route, index and map `corner` was made for
 local lastX, lastY, lastMap
 local nextYards
 
-local function help() return ns.db and ns.db.settings.groundHelp or 0 end
+local function indoors() return ns.Game.Indoors and ns.Game.Indoors() or false end
+local function help()
+  local s = ns.db and ns.db.settings
+  if not s then return 0 end
+  if indoors() then return s.groundHelpIndoors or s.groundHelp or 0 end
+  return s.groundHelp or 0
+end
 local function on() return help() > 0 end
+-- either slider leads somewhere: keep the goal (you may walk in or out)
+local function any()
+  local s = ns.db and ns.db.settings
+  return s and ((s.groundHelp or 0) > 0 or (s.groundHelpIndoors or 0) > 0) or false
+end
+local plannedIn       -- indoors() when the way was last looked for
 local function now() return GetTime and GetTime() or 0 end
 local function ms()
   if debugprofilestop then return debugprofilestop() end
@@ -79,6 +93,13 @@ end
 -- Look for the way from the player to GR.want.
 local function plan()
   local goal = GR.want
+  plannedIn = indoors()
+  if not on() then
+    -- the slider for where you stand says the straight line
+    job, GR.straight = nil, nil
+    if GR.route then GR.route = nil; changed() end
+    return
+  end
   local pos = ns.Game.Position({})
   if not goal or not pos then return end
   local geo = ns.Game.geo
@@ -128,13 +149,13 @@ end
 -- Where the arrow leads now (ns.RefreshTravel): the end of the trip's first walk.
 -- nil: no goal, the plain arrow.
 function GR.Want(spot)
-  if not on() or not spot then
+  if not any() or not spot then
     if GR.want or GR.route or job then GR.Clear() end
     return
   end
   local key = keyOf(spot)
-  if GR.want and keyOf(GR.want) == key and (GR.route or job) then return end
-  if GR.straight and GR.straight.key == key and GR.want and keyOf(GR.want) == key then return end
+  if GR.want and keyOf(GR.want) == key and plannedIn == indoors() and (GR.route or job or not on()) then return end
+  if GR.straight and GR.straight.key == key and GR.want and keyOf(GR.want) == key and plannedIn == indoors() then return end
   GR.straight = nil
   GR.want = { map = spot.map, x = spot.x, y = spot.y }
   -- a new goal: the old way leads elsewhere
@@ -146,6 +167,9 @@ end
 -- along the way. nil when there is no way to follow (the arrow points at its target).
 -- Called every arrow update; does its work only when the player moved.
 function GR.Next(pos)
+  -- went in or out: the other slider decides
+  if GR.want and plannedIn ~= indoors() then GR.straight = nil; plan() end
+  if not on() then return nil end
   local r = GR.route
   local s = GR.straight
   if not r and s and pos and not job then
