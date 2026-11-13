@@ -566,7 +566,8 @@ function ns.Refresh(replan)
     local nxt = ns.steps[j]
     if nxt then
       V.view = j
-      ns.Arrow.SetTarget(nxt.spot, nxt.title, true, nxt.kind == "work" and nxt.lines or nil)
+      local spot, title = ns.Steps.Goal(nxt)
+      ns.Arrow.SetTarget(spot, title, true, nxt.kind == "work" and nxt.lines or nil)
     else
       V.view, ns.arrowStep = nil, nil
     end
@@ -575,15 +576,18 @@ function ns.Refresh(replan)
     ns.Arrow.SetTarget(nil) -- in there: nothing to point at
   elseif not st then
     ns.Arrow.SetTarget(nil)
-  elseif not ns.Viewer.view and (st ~= ns.arrowStep or not ns.Arrow.goal or st.spot ~= ns.arrowSpot) then
-    -- a new step, or the step moved (its first objective done: Steps.Place)
-    ns.Arrow.SetTarget(st.spot, st.title, false, st.kind == "work" and st.lines or nil)
+  elseif not ns.Viewer.view and (st ~= ns.arrowStep or not ns.Arrow.goal or ns.Steps.Goal(st) ~= ns.arrowSpot) then
+    -- a new step, or the step moved (its first objective done: Steps.Place; its
+    -- flight path learned: on from the flight master to the step)
+    local spot, title = ns.Steps.Goal(st)
+    ns.Arrow.SetTarget(spot, title, false, st.kind == "work" and st.lines or nil)
   elseif changed or moved then
     ns.RefreshTravel() -- the way there only changes when you move or something changed
   end
   -- the same step, its title moved on ("Kill 12 Kobold Laborer (3/12)")
-  if st and st == ns.arrowStep then ns.Arrow.SetTitle(st.title) end
-  ns.arrowStep, ns.arrowSpot = st, st and st.spot
+  local goal, goalTitle = ns.Steps.Goal(st)
+  if st and st == ns.arrowStep then ns.Arrow.SetTitle(goalTitle) end
+  ns.arrowStep, ns.arrowSpot = st, goal
   if ns.sync and ns.sync.mode == "catchup" then ns.GroupSync.SendStep(st) end
   ns.Events.Fire("LVLS_UPDATED")
   -- the pins only when what they show can have changed (they are the costly part)
@@ -671,7 +675,10 @@ end
 
 commands.next = function()
   local st = ns.stepIndex and ns.steps[ns.stepIndex]
-  if st then ns.Arrow.SetTarget(st.spot, st.title, false, st.kind == "work" and st.lines or nil) end
+  if st then
+    local spot, title = ns.Steps.Goal(st)
+    ns.Arrow.SetTarget(spot, title, false, st.kind == "work" and st.lines or nil)
+  end
 end
 
 -- Skip a quest (the route leaves it out) or take it back.

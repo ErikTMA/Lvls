@@ -603,6 +603,18 @@ function S.AddFlightPaths(steps, undiscovered, geo)
   end
 end
 
+-- Where the arrow leads for a step and what it says: an open "Get the <town> flight
+-- path" line of a talk step first (its flight master), then the step itself.
+function S.Goal(st)
+  if not st then return nil end
+  if st.kind == "talk" then
+    for _, l in ipairs(st.lines or {}) do
+      if l.kind == "fpath" and not l.done and l.spot then return l.spot, l.text end
+    end
+  end
+  return st.spot, st.title
+end
+
 -- A flight point you lack close to where you stand, wherever the route goes next:
 -- a step of its own before the current one (a short walk to the flight master), made
 -- again on every refresh like the dungeon step. Picked within FLIGHT_PATH_NEAR yards

@@ -556,7 +556,10 @@ function V.Browse(delta)
   V.Render()
   local st = ns.steps[i]
   if V.model and V.model.spot then
-    ns.Arrow.SetTarget(V.model.spot, V.model.header, V.view ~= nil, st and st.kind == "work" and st.lines or nil)
+    local spot, title = V.model.spot, V.model.header
+    if st then spot, title = ns.Steps.Goal(st) end
+    ns.Arrow.SetTarget(spot or V.model.spot, title or V.model.header, V.view ~= nil,
+      st and st.kind == "work" and st.lines or nil)
   end
 end
 
