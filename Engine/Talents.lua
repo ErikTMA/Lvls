@@ -199,14 +199,56 @@ function T.FromRanks(tree, ranks)
   return order
 end
 
--- Builds the character can use: its class's, built around that tree when spec is given.
-function T.BuildsFor(builds, classId, spec)
-  local out = {}
+-- Lvls!'s own builds (Data/forever/TalentBuilds.lua) for a class: { { name, class,
+-- spec, order, shipped = true } }, the names turned into the tree's talents. A name
+-- the tree does not have stops that build there (missing lists them).
+T.SHIPPED_PREFIX = "Lvls! "
+
+function T.Shipped(classId, data, builds)
+  builds = builds or ns.TalentBuilds
+  local tree = T.Tree(classId, data)
+  local list = builds and builds[classId]
+  if not (tree and list) then return {}, {} end
+  if list.resolved then return list.resolved, list.missing end
+  local byName = {}
+  for _, tab in ipairs(tree.tabs) do
+    for _, n in ipairs(tab.nodes) do byName[n.n] = n.id end
+  end
+  local out, missing = {}, {}
+  for _, b in ipairs(list) do
+    local order = {}
+    for i = 1, #b.order, 2 do
+      local id = byName[b.order[i]]
+      if not id then missing[#missing + 1] = b.order[i]; break end
+      for _ = 1, b.order[i + 1] or 1 do order[#order + 1] = id end
+    end
+    local tab = tree.tabs[b.spec]
+    out[#out + 1] = { name = T.SHIPPED_PREFIX .. (tab and tab.name or tostring(b.spec)), class = classId,
+      spec = b.spec, order = order, shipped = true }
+  end
+  list.resolved, list.missing = out, missing
+  return out, missing
+end
+
+-- Builds the character can use: Lvls!'s own first, then the player's, of its class
+-- (built around that tree when spec is given).
+function T.BuildsFor(builds, classId, spec, shipped)
+  local own = {}
   for _, b in ipairs(builds or {}) do
+    if b.class == classId and (not spec or b.spec == spec) then own[#own + 1] = b end
+  end
+  table.sort(own, function(a, b) return (a.name or ""):lower() < (b.name or ""):lower() end)
+  local out = {}
+  for _, b in ipairs(shipped or {}) do
     if b.class == classId and (not spec or b.spec == spec) then out[#out + 1] = b end
   end
-  table.sort(out, function(a, b) return (a.name or ""):lower() < (b.name or ""):lower() end)
+  for _, b in ipairs(own) do out[#out + 1] = b end
   return out
+end
+
+-- A name a player's build cannot take: Lvls!'s own builds' names.
+function T.Reserved(name)
+  return type(name) == "string" and name:sub(1, #T.SHIPPED_PREFIX):lower() == T.SHIPPED_PREFIX:lower()
 end
 
 -- The tree to preselect when asking: the one with most points, else the class's

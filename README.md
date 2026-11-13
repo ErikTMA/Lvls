@@ -63,10 +63,12 @@ A World of Warcraft addon for questing and leveling on **WoW Forever**.
   own stat weights, or with your Pawn scale for that spec if you use Pawn.
 - **Talents from your build.** Pick your spec (the tree with the most points is
   preselected, you decide) and a build, and Lvls! learns its points as you level,
-  in its order. Make your own builds in its talent window: click the talents in the
-  order you want them, move a point earlier or later, and Lvls! only lets you put a
-  point where the tree allows it at that level. When you reset your talents it asks
-  again; Turn off leaves your talents alone. `/lvls talents`
+  in its order. Every tree has a leveling build of Lvls!'s own, written for
+  Forever's trees. Make your own in the game's talent window: click the talents in
+  the order you want them (the game's own tooltips), move a point earlier or later
+  in Lvls!' list beside it, and Lvls! only lets you put a point where the tree
+  allows it at that level. When you reset your talents it asks again; Turn off
+  leaves your talents alone. `/lvls talents`
 
 ## Install
 

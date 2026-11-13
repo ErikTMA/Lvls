@@ -12,7 +12,8 @@
 --   events TRAIT_CONFIG_UPDATED, TRAIT_TREE_CURRENCY_INFO_UPDATED, PLAYER_LEVEL_UP,
 --     CONFIG_COMMIT_FAILED, PLAYER_REGEN_ENABLED
 -- LvlsCharDB.talents = { spec = 1-3, build = name, off = true, spent = points last
--- seen }. LvlsDB.talentBuilds = { { name, class, spec, order } } (every character's).
+-- seen }. LvlsDB.talentBuilds = { { name, class, spec, order } } (every character's);
+-- Lvls!'s own builds ("Lvls! Arms", Data/forever/TalentBuilds.lua) come with them.
 -- When the game will not take a point from an addon by itself, the point waits for
 -- a click (UI/Talents' "Learn" question: a click may do what an event may not).
 local _, ns = ...
@@ -76,14 +77,25 @@ function TA.Choice()
   return ns.cdb.talents
 end
 
--- The build in use: the saved one of that name for this class, or nil.
+-- Lvls!'s own builds for this class (Data/forever/TalentBuilds.lua).
+function TA.Shipped() return (T.Shipped(TA.ClassId())) end
+
+-- A build of this class by name: Lvls!'s own or a saved one; nil when none.
+function TA.Find(name)
+  if not name then return nil end
+  local id = TA.ClassId()
+  for _, b in ipairs(TA.Shipped()) do if b.name == name then return b end end
+  for _, b in ipairs(TA.Builds()) do
+    if b.class == id and b.name == name then return b end
+  end
+  return nil
+end
+
+-- The build in use, or nil.
 function TA.ActiveBuild()
   local c = TA.Choice()
   if c.off or not c.build then return nil end
-  for _, b in ipairs(TA.Builds()) do
-    if b.class == TA.ClassId() and b.name == c.build then return b end
-  end
-  return nil
+  return TA.Find(c.build)
 end
 
 -- Save a build (replacing the one of its name; original: the name it had when
@@ -101,6 +113,7 @@ function TA.Save(build, original)
 end
 
 function TA.Delete(classId, name)
+  if T.Reserved(name) then return end -- Lvls!'s own stay
   local list = TA.Builds()
   for i, b in ipairs(list) do
     if b.class == classId and b.name == name then table.remove(list, i); break end
