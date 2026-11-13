@@ -77,6 +77,7 @@ S.ITEMS = {
   { header = "Learning" },
   { key = "learnFights", name = "Learn from my fights", tip = "Record how long fights take, how much health they cost and the rest after them (solo only). Lvls! plans quests you can handle from it. /lvls fights shows what it learned." },
   { key = "suggestGrind", name = "Suggest grinding a level", tip = "When the only quests left close by are ones your fights say are too hard, kill easy mobs nearby until the next level instead of leaving." },
+  { key = "gather", name = "Gather what I see, to share", tip = "Keep where you meet npcs and objects, who starts and ends quests, what counts for objectives and the quests you skip. It stays in your SavedVariables until you share it: /lvls share gives a string to paste at the upload page, and the guide gets better for everyone." },
   { header = "Group" },
   { key = "groupSync", name = "Share quest progress with my group", tip = "Group members who run Lvls! exchange which quests they have done, to catch up with each other." },
   { key = "askSync", name = "Ask to catch up / to help", tip = "When a member has done quests you have not, ask whether to catch up; when one wants to catch up with you, ask whether to follow their route." },

@@ -36,6 +36,7 @@ ns.DEFAULT_SETTINGS = {
   viewerGrowUp = false,  -- the step viewer keeps its bottom edge and grows upwards (UI/Viewer.lua)
   farGrey = false,       -- offer to abandon grey quests this far away (UI/Abandon.lua)
   farGreyMinutes = 10,
+  gather = true,         -- keep what you see to share (Engine/Gather.lua, /lvls share)
 }
 
 function ns.InitDB(db)
@@ -603,6 +604,7 @@ local function onAddonLoaded()
   LvlsDB = ns.InitDB(LvlsDB)
   LvlsCharDB = ns.InitCharDB(LvlsCharDB)
   ns.db, ns.cdb = LvlsDB, LvlsCharDB
+  ns.Gather.Init(LvlsDB)
   if LvlsDB.settings.debug then ns.logLevel = LEVELS.debug end
 end
 
@@ -688,6 +690,7 @@ function ns.SetSkip(qid, on)
   local q = ds and ds.quests[qid]
   if not q or not ns.cdb then return end
   ns.cdb.skip[qid] = on and true or nil
+  if on and ns.GatherLog then ns.GatherLog.Skipped(qid) end
   ns.Log("info", (on and "skipping %s (/lvls unskip to take it back)" or "no longer skipping %s"):format(q.n))
   ns.Refresh(true)
 end
@@ -1205,11 +1208,20 @@ commands.abandon = function(arg)
   if s.farGrey then ns.Abandon.Check() end
 end
 
+-- /lvls share: what Lvls! gathered while you played, as a string to paste at the
+-- upload page (Engine/Gather.lua, UI/Share.lua)
+commands.share = function()
+  local s, size = ns.GatherLog.Share()
+  if not s then ns.Log("info", "nothing to share (LibDeflate missing)"); return end
+  if ns.Share and ns.Share.Show(s) then return end
+  ns.Log("info", ("%d characters; paste them at %s"):format(#s, ns.Gather.URL))
+end
+
 -- the tour of the viewer and the rest, every tip again (UI/Tour.lua)
 commands.tour = function() ns.Tour.Start(true) end
 
 commands.help = function()
-  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|zone [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|talents [off|learn]|gear|nearby|travel|record|note [text|clear]|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|tour|debug|help]")
+  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|zone [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|talents [off|learn]|gear|nearby|travel|record|note [text|clear]|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|share|tour|debug|help]")
 end
 
 local function slash(input)
