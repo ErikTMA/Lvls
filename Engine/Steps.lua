@@ -106,14 +106,16 @@ local function anyOf(names)
   return ("%s +%d more"):format(names[1], #names - 1)
 end
 
--- "Kobold Vermin slain" -> "Kill 10 Kobold Vermin"; "Razormaw Incisor" -> "Loot 10
+-- "Kobold Vermin slain" -> "Kill 10 Kobold Vermin"; "Kodos Tamed" stays; "Razormaw Incisor" -> "Loot 10
 -- Razormaw Incisor from Highland Razormaw": who drops it, or "Collect 8 ..." when no
 -- one knows. ds (and the quest id and objective index, for the provider) name it.
 function S.ObjectiveText(o, ds, qid, i)
   local text = o.text or "objective"
   local n = o.qty and o.qty > 1 and (o.qty .. " ") or ""
   if o.t == "kill" then
-    local name = text:gsub("%s+[Ss]lain$", "")
+    -- only "X slain" is a kill; "Kodos Tamed", "Tower One marked" already say what to do
+    local name, slain = text:gsub("%s+[Ss]lain$", "")
+    if slain == 0 then return text end
     local s1 = o.src and o.src[1]
     if ds and s1 and s1[1] == "n" and #o.src == 1 then name = marked(ds.npcs[s1[2]], name) end
     return "Kill " .. n .. name
