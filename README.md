@@ -61,6 +61,12 @@ A World of Warcraft addon for questing and leveling on **WoW Forever**.
   allow blues. Hold Shift while talking to an npc to do it yourself. Your spec is the
   talent tree with the most points (or the one you pick); gear is judged with Lvls'
   own stat weights, or with your Pawn scale for that spec if you use Pawn.
+- **Talents from your build.** Pick your spec (the tree with the most points is
+  preselected, you decide) and a build, and Lvls! learns its points as you level,
+  in its order. Make your own builds in its talent window: click the talents in the
+  order you want them, move a point earlier or later, and Lvls! only lets you put a
+  point where the tree allows it at that level. When you reset your talents it asks
+  again; Turn off leaves your talents alone. `/lvls talents`
 
 ## Install
 
@@ -84,6 +90,7 @@ A World of Warcraft addon for questing and leveling on **WoW Forever**.
 | `/lvls learn`, `/lvls grind` | Learn from fights; suggest grinding a level: on or off |
 | `/lvls accept`, `/lvls deliver`, `/lvls reward`, `/lvls gold` | Accept quests, hand them in, take the best reward, otherwise the most gold: on or off |
 | `/lvls equip`, `/lvls bind`, `/lvls quality <white\|green\|blue\|epic>` | Put on upgrades; also ones that bind when equipped, up to this quality |
+| `/lvls talents [off\|learn]` | Spec and talent build window; off: leave your talents alone; learn: spend your points now |
 | `/lvls spec [auto\|<spec>]`, `/lvls weights <auto\|pawn\|lvls>`, `/lvls gear` | Spec for gear (auto: from talents), whose stat weights, and what is used now |
 | `/lvls route` | Re-plan from here |
 | `/lvls next` | Point the arrow back at the current step |

@@ -46,7 +46,10 @@ S.ITEMS = {
   { key = "autoEquipBind", name = "Also items that bind when equipped", tip = "Equip upgrades that bind when you put them on, up to the quality below. Better ones stay in your bags to sell or decide." },
   { key = "equipMaxQuality", name = "Highest quality to bind", choices = S.QUALITIES, number = true },
   { key = "gearWeights", name = "Stat weights", choices = S.WEIGHTS, tip = "Which weights judge gear. Your spec always comes from your talents (most points spent) or the choice below, never from Pawn." },
-  { spec = true, name = "Spec", tip = "Detected: the talent tree with most points; below level 10 the class's leveling weights." },
+  { spec = true, name = "Spec", tip = "Detected: the spec picked for your talent build, else the talent tree with most points; below level 10 the class's leveling weights." },
+  { page = "Talents" },
+  { button = "Spec and build...", name = "Learn talents from a build", click = function() ns.TalentsUI.Pick() end,
+    tip = "Pick your spec and a talent build: Lvls! learns its points in its order as you level. Make your own builds there: click the talents in the order you want them. Turn off: Lvls! leaves your talents alone. When your talents are reset, it asks again. /lvls talents" },
   { page = "Arrow" },
   { key = "arrow", name = "Arrow" },
   { key = "groundHelp", name = "Turn-by-turn: outdoors", travel = true, slider = { 0, 4, 1 }, label = S.HelpLabel, tip = "Out in the world: how much the arrow leads you turn by turn on foot, with the way drawn on the world map and the minimap. Straight line: it always points at the goal. Only big detours: walled cities and long caves. Around walls: also mountain paths and buildings. Small detours too: also round smaller things in the way. Every turn: it follows the whole way. Worked out from the game's own map data. /lvls walk 0-4" },
@@ -125,6 +128,10 @@ function S.Register()
       end
     elseif it.header then
       header(it.header)
+    elseif it.button then
+      if layout and CreateSettingsButtonInitializer then
+        layout:AddInitializer(CreateSettingsButtonInitializer(it.name, it.button, it.click, it.tip, true))
+      end
     else
       local get, setv, default, kind, choices
       if it.guide then

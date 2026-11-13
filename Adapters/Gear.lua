@@ -29,8 +29,11 @@ function GA.Class()
   return token, id
 end
 
--- Points spent per talent tree.
+-- Points spent per talent tree: from the trait tree (Adapters/Talents) when the game
+-- has one, else the old per-spec API (forever has one spec per class there).
 function GA.Points()
+  local traits = ns.TalentsData and ns.TalentsData.Points()
+  if traits then return traits end
   local _, classID = GA.Class()
   local n = 3
   if has(C_SpecializationInfo, "GetNumSpecializationsForClassID") and classID then
@@ -49,11 +52,16 @@ function GA.Points()
   return points
 end
 
--- class token, spec index, spec name, source ("override" | "talents" | "leveling")
+-- class token, spec index, spec name, source ("override" | "talents" | "leveling").
+-- The spec picked for the talent build counts as the setting unless the Gear page's
+-- spec is set.
 function GA.Spec()
   local token = GA.Class()
   local override = ns.cdb and ns.cdb.spec
   if override == 0 then override = nil end
+  if not override and ns.cdb and type(ns.cdb.talents) == "table" and not ns.cdb.talents.off then
+    override = ns.cdb.talents.spec
+  end
   local i, name, source = Gear.Spec(token, GA.Points(), override)
   return token, i, name, source
 end

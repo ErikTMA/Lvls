@@ -1051,6 +1051,22 @@ commands.spec = function(arg)
   ns.Log("info", ("spec: %s (%s; talent points %s)"):format(name or "?", source, points))
 end
 
+-- /lvls talents [off | learn]: the spec and build window; off: leave the talents
+-- alone; learn: spend the points the build says now
+commands.talents = function(arg)
+  arg = (arg or ""):lower()
+  if arg == "off" then
+    ns.TalentsData.TurnOff()
+    ns.Log("info", "talents: off. /lvls talents to choose a build again")
+  elseif arg == "learn" then
+    local n, why = ns.TalentsData.Learn(true)
+    if not n then ns.Log("info", "talents: " .. tostring(why)) elseif n == 0 then ns.Log("info", "talents: no points to spend") end
+  else
+    ns.TalentsUI.Pick()
+  end
+end
+commands.talent = commands.talents
+
 commands.gear = function()
   local _, label = ns.GearData.Scorer()
   ns.Log("info", "judging gear with " .. label)
@@ -1193,7 +1209,7 @@ end
 commands.tour = function() ns.Tour.Start(true) end
 
 commands.help = function()
-  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|zone [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|gear|nearby|travel|record|note [text|clear]|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|tour|debug|help]")
+  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|zone [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|talents [off|learn]|gear|nearby|travel|record|note [text|clear]|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|tour|debug|help]")
 end
 
 local function slash(input)
