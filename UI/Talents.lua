@@ -286,7 +286,7 @@ local function refreshPick()
       r.name = b.name
       r.text:SetText(b.name)
       local problem = tree and T.FirstProblem(tree, b.order)
-      r.info:SetText(("%s%d points%s"):format(b.shipped and "Lvls!'s own · " or "", #b.order,
+      r.info:SetText(("%s%d points%s"):format(b.shipped and (b.source and "Wowhead leveling guide · " or "Lvls!'s own · ") or "", #b.order,
         problem and (" · stops at point " .. problem) or ""))
       r.mark:SetShown(b.name == TU.state.build)
       if b.name == TU.state.build then found = true end

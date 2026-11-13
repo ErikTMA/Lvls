@@ -200,7 +200,8 @@ function T.FromRanks(tree, ranks)
 end
 
 -- Lvls!'s own builds (Data/forever/TalentBuilds.lua) for a class: { { name, class,
--- spec, order, shipped = true } }, the names turned into the tree's talents. A name
+-- spec, order, source = the guide it is from, shipped = true } }, the names turned
+-- into the tree's talents. A name
 -- the tree does not have stops that build there (missing lists them).
 T.SHIPPED_PREFIX = "Lvls! "
 
@@ -224,7 +225,7 @@ function T.Shipped(classId, data, builds)
     end
     local tab = tree.tabs[b.spec]
     out[#out + 1] = { name = T.SHIPPED_PREFIX .. (tab and tab.name or tostring(b.spec)), class = classId,
-      spec = b.spec, order = order, shipped = true }
+      spec = b.spec, order = order, source = b.source, shipped = true }
   end
   list.resolved, list.missing = out, missing
   return out, missing
