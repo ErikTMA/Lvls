@@ -35,6 +35,7 @@ S.ITEMS = {
   { header = "At the npc" },
   { key = "autoAccept", name = "Accept the quests the guide picks", tip = "Accept a quest when an npc offers it and the plan (route, guide, catch-up) tells you to pick it up. Other quests are left to you. Hold Shift to pause." },
   { key = "autoDeliver", name = "Hand in quests", tip = "Hand in finished quests when you talk to the npc." },
+  { key = "skipFlightGossip", name = "Skip a flight master's talk", tip = "When a flight master has nothing for you but the flight, open the flight map at once. Quests or other options keep the talk. Hold Shift to pause. /lvls flight" },
   { key = "autoReward", name = "Choose the best reward", tip = "Take the reward that is the biggest upgrade you can use, judged for your class and spec." },
   { key = "rewardGold", name = "Otherwise the most gold", tip = "When no reward is a usable upgrade, take the one that sells for most." },
   { header = "Grey quests" },

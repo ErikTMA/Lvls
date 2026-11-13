@@ -6,6 +6,10 @@
 --   QUEST_ACCEPT_CONFIRM(name, questTitle, questID): ConfirmAcceptQuest()
 --   GOSSIP_SHOW: C_GossipInfo.GetActiveQuests / GetAvailableQuests -> { questID,
 --     isComplete, isTrivial, isIgnored }, SelectActiveQuest(questID) / SelectAvailableQuest(questID)
+--   GOSSIP_SHOW: C_GossipInfo.GetOptions() -> { gossipOptionID, name, icon, status,
+--     selectOptionWhenOnlyOption, orderIndex, overrideIconID }, SelectOption(optionID),
+--     SelectOptionByIndex(orderIndex); the flight option's icon is fileID 132057
+--     (interface/gossipframe/taxigossipicon.blp, wowdev community listfile)
 --   QUEST_GREETING: GetNumActiveQuests, GetActiveTitle(i) -> title, isComplete,
 --     SelectActiveQuest(i); GetNumAvailableQuests, GetAvailableQuestInfo(i) ->
 --     isTrivial, frequency, isRepeatable, isLegendary, questID; SelectAvailableQuest(i)
@@ -74,6 +78,26 @@ function A.OnGossip()
     for _, q in ipairs(C_GossipInfo.GetAvailableQuests() or {}) do
       if wanted(q.questID, q.isTrivial, q.isIgnored) then C_GossipInfo.SelectAvailableQuest(q.questID) return end
     end
+  end
+  A.SkipFlightGossip()
+end
+
+-- A flight master that only offers the flight: open the flight map straight away.
+-- Any quest or other option keeps the gossip, so does one the game skips itself.
+A.TAXI_ICON = 132057
+function A.SkipFlightGossip()
+  if not set("skipFlightGossip") or not has(C_GossipInfo, "GetOptions") then return end
+  if has(C_GossipInfo, "GetActiveQuests") and #(C_GossipInfo.GetActiveQuests() or {}) > 0 then return end
+  if has(C_GossipInfo, "GetAvailableQuests") and #(C_GossipInfo.GetAvailableQuests() or {}) > 0 then return end
+  local opts = C_GossipInfo.GetOptions() or {}
+  local o = opts[1]
+  if #opts ~= 1 or o.selectOptionWhenOnlyOption then return end
+  if (o.overrideIconID or o.icon) ~= A.TAXI_ICON then return end
+  if o.status and o.status ~= 0 then return end -- 0: Enum.GossipOptionStatus.Available
+  if o.gossipOptionID and has(C_GossipInfo, "SelectOption") then
+    C_GossipInfo.SelectOption(o.gossipOptionID)
+  elseif o.orderIndex and has(C_GossipInfo, "SelectOptionByIndex") then
+    C_GossipInfo.SelectOptionByIndex(o.orderIndex)
   end
 end
 

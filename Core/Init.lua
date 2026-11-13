@@ -23,6 +23,7 @@ ns.DEFAULT_SETTINGS = {
   zoneFirst = true, debug = false,
   -- automation (Adapters/Automation.lua); hold Shift at an npc to pause it
   autoAccept = true, autoDeliver = true, autoReward = true, rewardGold = true,
+  skipFlightGossip = true, -- a flight master with nothing but the flight opens the map at once
   autoEquip = false, autoEquipBind = false, equipMaxQuality = 2, gearWeights = "auto",
   classQuests = true,    -- class quests in the leveling route (Engine/Route), marked with the class
   trainSteps = true,     -- go to your class trainer when spells wait there (Engine/Training)
@@ -1068,7 +1069,7 @@ commands.weights = function(arg)
   ns.Log("info", "stat weights: " .. ns.db.settings.gearWeights)
 end
 
-local TOGGLES = { accept = "autoAccept", deliver = "autoDeliver", reward = "autoReward", gold = "rewardGold",
+local TOGGLES = { accept = "autoAccept", deliver = "autoDeliver", reward = "autoReward", gold = "rewardGold", flight = "skipFlightGossip",
   equip = "autoEquip", bind = "autoEquipBind", zone = "zoneFirst", classquests = "classQuests", trainsteps = "trainSteps",
   grind = "suggestGrind", learn = "learnFights", groupsync = "groupSync", asksync = "askSync", map = "worldMap", mapline = "mapRoute", minimap = "minimap", miniroute = "minimapRoute", button = "minimapButton", objectives = "objectives", arrow = "arrow", low = "showLow",
   trivial = "showTrivial", dungeon = "showDungeon", repeatable = "showRepeatable", growup = "viewerGrowUp" }
