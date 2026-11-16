@@ -339,10 +339,18 @@ end
 
 -- Item ids in your bags: { [itemId] = true }, read again after BAG_UPDATE_DELAYED.
 -- Also bagInfo (Engine/UseItems): { [itemId] = { starts = questId, use = true } }
--- for items that start a quest you do not have, or have a use.
+-- for items that start a quest you do not have, or have a use. A key is not one: its
+-- spell is the client opening a door or a chest with it (the Dalaran Sewer Key that
+-- Heart of Disruption gives), nothing to click from the bags.
 -- (C_Container.GetContainerNumSlots / GetContainerItemID / GetContainerItemQuestInfo,
--- C_Item.GetItemSpell, forever 1.60.1)
+-- C_Item.GetItemSpell, C_Item.GetItemInfoInstant (6th: classID), forever 1.60.1)
 local bag, bagDirty = {}, true
+local KEY_CLASS = (Enum and Enum.ItemClass and Enum.ItemClass.Key) or 13
+local function isKey(id)
+  if not has(C_Item, "GetItemInfoInstant") then return false end
+  local ok, _, _, _, _, _, classID = pcall(C_Item.GetItemInfoInstant, id)
+  return ok and ns.Util.plain(classID) == KEY_CLASS
+end
 local function itemInfo(b, s, id)
   local info
   if has(C_Container, "GetContainerItemQuestInfo") then
@@ -352,7 +360,7 @@ local function itemInfo(b, s, id)
   end
   if has(C_Item, "GetItemSpell") then
     local ok, spell = pcall(C_Item.GetItemSpell, id)
-    if ok and ns.Util.plain(spell) then info = info or {}; info.use = true end
+    if ok and ns.Util.plain(spell) and not isKey(id) then info = info or {}; info.use = true end
   end
   return info
 end
