@@ -255,6 +255,7 @@ local hooks = {
       end
       if AR.inArea then return { text = "|cff40ff40In the quest area|r", title = AR.GoalText(g) } end
     end
+    if AR.PortShown() then return { text = "|cff40ff40Click the icon|r", title = t.title } end
     if t.leg and d <= AR.LEG_YARDS and ns.RefreshTravel then
       local now = GetTime and GetTime() or 0
       if not AR.lastLeg or now - AR.lastLeg > 1 then AR.lastLeg = now; ns.RefreshTravel() end
@@ -273,16 +274,156 @@ function push(fresh)
       { manual = true, fresh = fresh, hooks = hooks })
   end
   local t = AR.target
-  if not t then return WA.Clear(AR.OWNER) end
+  if not t then WA.Clear(AR.OWNER); return AR.SyncPort() end
   local gt = AR.GoalText(AR.goal)
   WA.Set(AR.OWNER, { map = t.map, x = t.x, y = t.y, title = t == AR.goal and gt or t.title, leg = t.leg,
     goalTitle = gt }, { manual = AR.goal and AR.goal.manual or false,
     fresh = fresh, hooks = hooks })
+  AR.SyncPort()
+end
+
+-- The port button: when the way there starts with a port (the hearthstone, Astral
+-- Recall, a teleport; Engine/Travel's "hearth" leg), its icon sits on the arrow and
+-- a click casts it. Secure (SecureActionButtonTemplate): the client refuses to set
+-- it up in combat, so it is hidden in a fight (no port then anyway) and let go of
+-- the arrow (a secure frame anchored to it would lock the shared arrow's frame).
+AR.PORT_SIZE = 40
+AR.port = nil       -- the port id (Adapters/Travel's TR.PORTS) the trip starts with
+local portBtn
+local portAnchored = false
+
+local function combat() return InCombatLockdown and InCombatLockdown() and true or false end
+
+local function portIcon(p)
+  local icon
+  if p.item and C_Item and C_Item.GetItemIconByID then icon = C_Item.GetItemIconByID(p.item) end
+  if not icon and C_Spell and C_Spell.GetSpellTexture then icon = C_Spell.GetSpellTexture(p.id) end
+  if not icon and type(GetSpellTexture) == "function" then icon = GetSpellTexture(p.id) end
+  return ns.Util.plain(icon) or "Interface\\Icons\\INV_Misc_QuestionMark"
+end
+
+local function portDef(id)
+  local TR = ns.TravelData
+  return id and TR and TR.PortById and TR.PortById[id]
+end
+
+-- The port to show now: the trip's, while the arrow is Lvls!'s and on screen, and
+-- you are alive.
+local function wantedPort()
+  if not AR.port or AR.corpse or not AR.target then return nil end
+  local f, s = WA.frame, WA.Active()
+  if not f or not f:IsShown() or not s or s.owner ~= AR.OWNER then return nil end
+  return portDef(AR.port)
+end
+
+local function portTooltip(b)
+  local p = b.port
+  if not p or not GameTooltip then return end
+  GameTooltip:SetOwner(b, "ANCHOR_BOTTOM")
+  if p.item and GameTooltip.SetItemByID then GameTooltip:SetItemByID(p.item)
+  elseif GameTooltip.SetSpellByID then GameTooltip:SetSpellByID(p.id) end
+  GameTooltip:AddLine(" ")
+  GameTooltip:AddLine("Click: " .. (AR.portTitle or p.title), 0.25, 0.75, 1)
+  GameTooltip:Show()
+end
+
+local function newPortButton()
+  local b = CreateFrame("Button", "LvlsPortButton", UIParent, "SecureActionButtonTemplate")
+  b:SetSize(AR.PORT_SIZE, AR.PORT_SIZE)
+  b:RegisterForClicks("AnyUp", "AnyDown") -- the client acts on down or up (ActionButtonUseKeyDown)
+  if b.SetFrameStrata then b:SetFrameStrata("MEDIUM") end
+  b.bg = b:CreateTexture(nil, "BACKGROUND") -- a dark edge around the icon
+  b.bg:SetColorTexture(0, 0, 0, 0.9)
+  b.bg:SetPoint("TOPLEFT", b, "TOPLEFT", -2, 2)
+  b.bg:SetPoint("BOTTOMRIGHT", b, "BOTTOMRIGHT", 2, -2)
+  b.icon = b:CreateTexture(nil, "ARTWORK")
+  b.icon:SetAllPoints(b)
+  if b.icon.SetTexCoord then b.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93) end
+  b.cd = CreateFrame("Cooldown", nil, b, "CooldownFrameTemplate")
+  b.cd:SetAllPoints(b)
+  if b.SetPushedTexture then b:SetPushedTexture("Interface\\Buttons\\UI-Quickslot-Depress") end
+  if b.SetHighlightTexture then b:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square", "ADD") end
+  -- dragging the icon moves the arrow, as dragging the arrow does
+  b:RegisterForDrag("LeftButton")
+  b:SetScript("OnDragStart", function()
+    local f = WA.frame
+    local fn = f and f:GetScript("OnDragStart")
+    if fn and not combat() then fn(f) end
+  end)
+  b:SetScript("OnDragStop", function()
+    local f = WA.frame
+    local fn = f and f:GetScript("OnDragStop")
+    if fn then fn(f) end
+  end)
+  b:SetScript("OnEnter", portTooltip)
+  b:SetScript("OnLeave", function() if GameTooltip then GameTooltip:Hide() end end)
+  b:Hide()
+  return b
+end
+
+-- Cooldown swipe: fine in combat (only the secure parts are not).
+local function paintPort(b)
+  local p, TR = b.port, ns.TravelData
+  if not p or not TR or not TR.Cooldown then return end
+  local ready, full = TR.Cooldown(p)
+  local now = GetTime and GetTime() or 0
+  if ready and full and ready > 0 and full > 0 then b.cd:SetCooldown(now - (full - ready), full) else b.cd:Clear() end
+end
+
+function AR.PortShown() return portBtn and portBtn.port and portBtn:IsShown() or false end
+
+-- Show, change or hide the button for what the trip wants now. Not in combat: it
+-- is hidden then and comes back when the fight is over.
+function AR.SyncPort()
+  if not CreateFrame or combat() then return end
+  local p = wantedPort()
+  if not p then
+    if portBtn and portBtn:IsShown() then portBtn:Hide() end
+    return
+  end
+  portBtn = portBtn or newPortButton()
+  local b = portBtn
+  if b.port ~= p then
+    b.port = p
+    if p.item then
+      b:SetAttribute("type", "item")
+      b:SetAttribute("item", "item:" .. p.item)
+      b:SetAttribute("spell", nil)
+    else
+      b:SetAttribute("type", "spell")
+      b:SetAttribute("spell", p.id)
+      b:SetAttribute("item", nil)
+    end
+    b.icon:SetTexture(portIcon(p))
+  end
+  if not portAnchored then
+    b:ClearAllPoints()
+    b:SetPoint("CENTER", WA.frame, "CENTER", 0, 0)
+    portAnchored = true
+  end
+  paintPort(b)
+  if not b:IsShown() then b:Show() end
+end
+
+-- The trip starts with this port (nil: it does not).
+function AR.SetPort(id, title)
+  AR.port, AR.portTitle = id, id and title or nil
+end
+
+-- A fight is about to start (the last moment secure frames can change): hide the
+-- button and let go of the arrow's frame.
+function AR.PortCombat()
+  if not portBtn then return end
+  portBtn:Hide()
+  portBtn:ClearAllPoints()
+  portBtn:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+  portAnchored = false
 end
 
 function AR.SetTarget(spot, title, manual, lines)
   AR.inArea, AR.areaAt = false, nil
   AR.pickup, AR.pickupHere = nil, false
+  AR.SetPort(nil) -- the trip there says (ns.RefreshTravel)
   if not spot then
     AR.goal, AR.target = nil, nil
     if ns.Ground then ns.Ground.Want(nil) end
@@ -424,9 +565,20 @@ ns.Events.On("LVLS_LOADED", function() AR.Attach(); AR.CheckDead() end)
 ns.Events.On("LVLS_STATE", function() AR.CheckDead() end)
 if CreateFrame then
   local f = CreateFrame("Frame")
-  for _, e in ipairs({ "PLAYER_DEAD", "PLAYER_ALIVE", "PLAYER_UNGHOST" }) do f:RegisterEvent(e) end
+  for _, e in ipairs({ "PLAYER_DEAD", "PLAYER_ALIVE", "PLAYER_UNGHOST", "PLAYER_REGEN_DISABLED", "PLAYER_REGEN_ENABLED" }) do
+    f:RegisterEvent(e)
+  end
   f:SetScript("OnEvent", function(_, event)
-    if event == "PLAYER_DEAD" then AR.Died() else AR.CheckDead() end
+    if event == "PLAYER_REGEN_DISABLED" then AR.PortCombat()
+    elseif event == "PLAYER_REGEN_ENABLED" then AR.SyncPort()
+    elseif event == "PLAYER_DEAD" then AR.Died()
+    else AR.CheckDead() end
+  end)
+  -- the port button follows the arrow: shown or hidden, Lvls!'s or another's, the cooldown
+  local acc = 0
+  f:SetScript("OnUpdate", function(_, elapsed)
+    acc = acc + (elapsed or 0)
+    if acc >= 0.25 then acc = 0; AR.SyncPort() end
   end)
 end
 -- the guide shown again: the arrow is Lvls!'s again (a hidden frame has no OnUpdate

@@ -383,6 +383,9 @@ function ns.RefreshTravel()
     if ok then ns.trip = trip end
   end
   local spot, title = ns.Travel.NextSpot(ns.trip)
+  -- the trip starts with a port (the hearthstone, a teleport): its icon on the arrow
+  local first = ns.trip and ns.trip.legs[1]
+  ns.Arrow.SetPort(first and first.mode == "hearth" and first.port or nil, first and first.title)
   if ns.trip and #ns.trip.legs > 1 then ns.Arrow.SetLeg(spot, title) else ns.Arrow.SetLeg(nil) end
   -- the way on foot to where the arrow points now (around walls, up the hill)
   if ns.Ground then
