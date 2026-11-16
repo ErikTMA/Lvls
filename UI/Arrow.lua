@@ -284,13 +284,27 @@ end
 
 -- The port button: when the way there starts with a port (the hearthstone, Astral
 -- Recall, a teleport; Engine/Travel's "hearth" leg), its icon sits on the arrow and
--- a click casts it. Secure (SecureActionButtonTemplate): the client refuses to set
+-- a click casts it. The icon stands in for the arrow (the arrow's art is hidden
+-- while it shows). Secure (SecureActionButtonTemplate): the client refuses to set
 -- it up in combat, so it is hidden in a fight (no port then anyway) and let go of
 -- the arrow (a secure frame anchored to it would lock the shared arrow's frame).
-AR.PORT_SIZE = 40
+AR.PORT_SIZE = 56
 AR.port = nil       -- the port id (Adapters/Travel's TR.PORTS) the trip starts with
 local portBtn
 local portAnchored = false
+local artHidden = false
+
+-- The arrow's own art (the arrow, the "here" mark): hidden while the icon stands in
+-- for it. Alpha, not Hide: the shared arrow shows them again on every redraw.
+local function arrowArt(on)
+  local f = WA.frame
+  if not f or artHidden == not on then return end
+  artHidden = not on
+  local a = on and 1 or 0
+  if f.arrow and f.arrow.SetAlpha then f.arrow:SetAlpha(a) end
+  if f.here and f.here.SetAlpha then f.here:SetAlpha(a) end
+end
+AR.ArrowArtHidden = function() return artHidden end
 
 local function combat() return InCombatLockdown and InCombatLockdown() and true or false end
 
@@ -331,7 +345,6 @@ local function newPortButton()
   local b = CreateFrame("Button", "LvlsPortButton", UIParent, "SecureActionButtonTemplate")
   b:SetSize(AR.PORT_SIZE, AR.PORT_SIZE)
   b:RegisterForClicks("AnyUp", "AnyDown") -- the client acts on down or up (ActionButtonUseKeyDown)
-  if b.SetFrameStrata then b:SetFrameStrata("MEDIUM") end
   b.bg = b:CreateTexture(nil, "BACKGROUND") -- a dark edge around the icon
   b.bg:SetColorTexture(0, 0, 0, 0.9)
   b.bg:SetPoint("TOPLEFT", b, "TOPLEFT", -2, 2)
@@ -379,6 +392,7 @@ function AR.SyncPort()
   local p = wantedPort()
   if not p then
     if portBtn and portBtn:IsShown() then portBtn:Hide() end
+    arrowArt(true)
     return
   end
   portBtn = portBtn or newPortButton()
@@ -399,10 +413,16 @@ function AR.SyncPort()
   if not portAnchored then
     b:ClearAllPoints()
     b:SetPoint("CENTER", WA.frame, "CENTER", 0, 0)
+    -- above the arrow's frame, which takes the mouse too (drag, tooltip): else the
+    -- click goes to the arrow and nothing is cast
+    local f = WA.frame
+    if b.SetFrameStrata then b:SetFrameStrata((f.GetFrameStrata and f:GetFrameStrata()) or "MEDIUM") end
+    if b.SetFrameLevel then b:SetFrameLevel(((f.GetFrameLevel and f:GetFrameLevel()) or 1) + 10) end
     portAnchored = true
   end
   paintPort(b)
   if not b:IsShown() then b:Show() end
+  arrowArt(false)
 end
 
 -- The trip starts with this port (nil: it does not).
@@ -415,6 +435,7 @@ end
 function AR.PortCombat()
   if not portBtn then return end
   portBtn:Hide()
+  arrowArt(true)
   portBtn:ClearAllPoints()
   portBtn:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
   portAnchored = false
