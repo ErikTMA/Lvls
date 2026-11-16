@@ -152,8 +152,18 @@ function TA.OnTrainer()
   if reading or not ns.cdb or not TA.IsClassTrainer() then return end
   local list = TA.ReadTrainer()
   if not list then return end
+  local at = (UnitLevel and plain(UnitLevel("player"))) or 0
+  -- what this trainer teaches, kept per npc: the route sends you only to a trainer
+  -- that teaches what waits (Engine/Training.Trainers)
+  local kind, id
+  if ns.Auto and ns.Auto.Npc then kind, id = ns.Auto.Npc() end
+  if kind == "n" and id then
+    ns.cdb.taught = ns.cdb.taught or {}
+    ns.cdb.taught[id] = ns.Training.Taught(list)
+  end
+  local old = ns.cdb.trainer
   -- time: a train step planned before this visit is done (Engine/Steps)
-  ns.cdb.trainer = { list = list, at = (UnitLevel and plain(UnitLevel("player"))) or 0,
+  ns.cdb.trainer = { list = ns.Training.Merge(list, at, old and old.list, old and old.at), at = at,
     time = type(time) == "function" and time() or 0 }
   TA.Invalidate()
   ns.Events.Fire("LVLS_STATE", "TRAINER_UPDATE")

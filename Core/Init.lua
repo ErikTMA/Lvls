@@ -347,7 +347,8 @@ local function plan(ds, forced)
     classQuests = ns.db.settings.classQuests,
     groupMargin = elite and 3 or 0,
     training = ns.db.settings.trainSteps and char.training and {
-      afford = char.training.afford, trainers = ns.Training.Trainers(ds, char.class, char.faction) } or nil,
+      afford = char.training.afford, trainers = ns.Training.Trainers(ds, char.class, char.faction,
+        ns.cdb and ns.cdb.taught, char.training) } or nil,
   }
   if ns.steps and ns.planAsync ~= false then
     ns.planJob = { job = ns.Util.Job(ns.Route.Plan, ds, char, ns.Game.geo, opts), ds = ds, g = g, char = char,

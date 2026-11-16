@@ -5,7 +5,9 @@
 --   list    what a class trainer of yours teaches, read the last time you had one
 --           open (kept per character): { { n = name, r = "Rank 4" | "", l = level,
 --           c = copper, s = "available" | "unavailable" | "used" }, ... }, at = the
---           level you were then. nil: no trainer seen yet.
+--           level you were then (an entry's own `a`: the level you were when the
+--           trainer it came from had it, kept from an earlier trainer whose list
+--           went further). nil: no trainer seen yet.
 --   future  the spellbook's spells you do not have yet: { { n, l }, ... }. Used only
 --           without a list (the trainer's list is exact, and the spellbook may also
 --           hold spells a quest gives).
@@ -65,13 +67,12 @@ function T.Summary(seen, level, money)
   local source
   if seen.list then
     source = "trainer"
-    local at = seen.at or 0
     for _, s in ipairs(seen.list) do
       local l = s.l or 0
       if type(s.n) == "string" and s.s ~= "used" then
         if l > level then
           if not nextLevel or l < nextLevel then nextLevel = l end
-        elseif not (s.s == "unavailable" and l <= at) then
+        elseif not (s.s == "unavailable" and l <= (s.a or seen.at or 0)) then
           wait(s.n, s.r, l, s.c)
         end
       end
@@ -163,20 +164,79 @@ function T.StepText(sum)
   return "Learn " .. T.Names(sum, 3)
 end
 
+-- What a trainer's list says it teaches: { [spell name] = the level of its highest
+-- rank there }.
+function T.Taught(list)
+  local out = {}
+  for _, s in ipairs(list or {}) do
+    if type(s.n) == "string" and (s.l or 0) >= (out[s.n] or -1) then out[s.n] = s.l or 0 end
+  end
+  return out
+end
+
+-- A trainer's new list over the one kept: its own entries, and the kept ones it does
+-- not have (a trainer that teaches less, as in a starting area, must not make the
+-- spells only others teach go away). Kept entries carry the level they were read at.
+function T.Merge(list, at, old, oldAt)
+  local out, has = {}, {}
+  for _, s in ipairs(list or {}) do
+    out[#out + 1] = s
+    has[(s.n or "") .. "|" .. (s.r or "")] = true
+  end
+  for _, s in ipairs(old or {}) do
+    if not has[(s.n or "") .. "|" .. (s.r or "")] then
+      local c = {}
+      for k, v in pairs(s) do c[k] = v end
+      c.a = c.a or oldAt
+      out[#out + 1] = c
+    end
+  end
+  return out
+end
+
+-- How many of the spells waiting (`sum`) a trainer teaches (`taught`, T.Taught;
+-- nil: not seen yet), and whether that is all of them.
+function T.Covers(sum, taught)
+  if not taught then return nil end
+  local n, all = 0, true
+  for _, e in ipairs(sum and sum.spells or {}) do
+    if (taught[e.n] or -1) >= (e.l or 0) then n = n + 1 else all = false end
+  end
+  return n, all
+end
+
 -- Class trainers of your class and faction in the dataset (friendly to you, or with
 -- no reaction known): { { map, x, y, kind = "n", id, name }, ... }.
-function T.Trainers(ds, class, faction)
+-- With `taught` ({ [npc id] = T.Taught of its list }) and `sum` (what waits): only
+-- the trainers that can teach it. Ones known to teach all of it; none of those: the
+-- ones not seen yet (they may); none of those either: the ones teaching the most.
+function T.Trainers(ds, class, faction, taught, sum)
   local out = {}
   local ids = ds and ds.trainers and class and ds.trainers[class]
   local key = faction == "Alliance" and "ra" or faction == "Horde" and "rh" or nil
+  local all, unseen, part, best = {}, {}, {}, 0
   for _, id in ipairs(ids or {}) do
     local rec = ds.npcs[id]
     local r = rec and key and rec[key]
     if rec and (r == 1 or (rec.ra == nil and rec.rh == nil)) then
-      for _, s in ipairs(ns.Geo.Spots(ds, "n", id)) do
-        s.kind, s.id, s.name = "n", id, rec.n
-        out[#out + 1] = s
+      local into = all
+      if taught and sum then
+        local n, full = T.Covers(sum, taught[id])
+        if n == nil then into = unseen
+        elseif not full then
+          if n > best then best, part = n, {} end
+          into = n > 0 and n == best and part or nil
+        end
       end
+      if into then into[#into + 1] = id end
+    end
+  end
+  local pick = #all > 0 and all or #unseen > 0 and unseen or part
+  for _, id in ipairs(pick) do
+    local rec = ds.npcs[id]
+    for _, s in ipairs(ns.Geo.Spots(ds, "n", id)) do
+      s.kind, s.id, s.name = "n", id, rec.n
+      out[#out + 1] = s
     end
   end
   return out
