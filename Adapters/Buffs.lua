@@ -5,23 +5,34 @@
 -- these buffs (UNIT_AURA on the player) or an item's cooldown running out asks for a
 -- refresh (LVLS_STATE), so the step's buff line and the item bar follow.
 local _, ns = ...
-local BA = ns:NewModule("BuffData")
+local BA = ns:NewModule("BuffState")
 local G = ns.Game
 local plain = ns.Util.plain
 
--- { [aura] = { stacks, left } }, { [item] = seconds left }
-function BA.State()
-  local buffs, cds = {}, {}
+local function aura(buffs, id, now)
+  if not G.has(C_UnitAuras, "GetPlayerAuraBySpellID") then return end
+  local ok, a = pcall(C_UnitAuras.GetPlayerAuraBySpellID, id)
+  if ok and type(a) == "table" then
+    local exp = plain(a.expirationTime)
+    buffs[id] = { stacks = plain(a.applications) or 1, left = (exp and exp > 0) and math.max(0, exp - now) or nil }
+  end
+end
+
+-- { [aura] = { stacks, left } }, { [item] = seconds left }, and the names of the
+-- boost foods in your bags { [item] = name } (C_Item.GetItemNameByID)
+function BA.State(bag)
+  local buffs, cds, names = {}, {}, {}
   local now = GetTime and GetTime() or 0
-  for _, b in ipairs(ns.Buffs.List()) do
-    if G.has(C_UnitAuras, "GetPlayerAuraBySpellID") then
-      local ok, a = pcall(C_UnitAuras.GetPlayerAuraBySpellID, b.aura)
-      if ok and type(a) == "table" then
-        local exp = plain(a.expirationTime)
-        buffs[b.aura] = { stacks = plain(a.applications) or 1,
-          left = (exp and exp > 0) and math.max(0, exp - now) or nil }
-      end
+  local food = ns.Buffs.Food()
+  for _, id in ipairs(food and food.auras or {}) do aura(buffs, id, now) end
+  for item in pairs(bag or {}) do
+    if food and food.items[item] and G.has(C_Item, "GetItemNameByID") then
+      local ok, n = pcall(C_Item.GetItemNameByID, item)
+      names[item] = ok and plain(n) or nil
     end
+  end
+  for _, b in ipairs(ns.Buffs.List()) do
+    aura(buffs, b.aura, now)
     if G.has(C_Container, "GetItemCooldown") then
       local ok, start, dur = pcall(C_Container.GetItemCooldown, b.item)
       start, dur = ok and plain(start), ok and plain(dur)
@@ -30,7 +41,7 @@ function BA.State()
       end
     end
   end
-  return buffs, cds
+  return buffs, cds, names
 end
 
 -- A key of what Engine/Buffs looks at: each buff's stacks, whether it runs low, and
@@ -43,6 +54,14 @@ local function key()
     local low = a and a.left and a.left <= ns.Buffs.RENEW and 1 or 0
     parts[#parts + 1] = (a and a.stacks or 0) .. ":" .. low .. ":" .. ((cds[b.item] or 0) > 0 and 1 or 0)
   end
+  -- Well Fed: on you, and whether it runs low
+  local food = ns.Buffs.Food()
+  local fed = 0
+  for _, id in ipairs(food and food.auras or {}) do
+    local a = buffs[id]
+    if a then fed = (a.left and a.left <= ns.Buffs.FOOD_RENEW) and 1 or 2 end
+  end
+  parts[#parts + 1] = "fed" .. fed
   return table.concat(parts, ","), cds
 end
 

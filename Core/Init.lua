@@ -513,8 +513,8 @@ function ns.Refresh(replan)
   ns.char.trainedAt = ns.cdb and ns.cdb.trainer and ns.cdb.trainer.time or nil
   -- leveling buffs on you and their items' cooldowns (Adapters/Buffs), what Lvls!
   -- wants of them (Engine/Buffs: a line on the step, the item bar)
-  local buffs, cds = try("buffs", ns.BuffData.State)
-  ns.char.buffs, ns.char.cooldowns = buffs or {}, cds or {}
+  local buffs, cds, names = try("buffs", ns.BuffState.State, ns.char.bag)
+  ns.char.buffs, ns.char.cooldowns, ns.char.itemNames = buffs or {}, cds or {}, names or {}
   ns.wantBuffs = try("buff wants", ns.Buffs.Wanted, ds, ns.char, ns.cdb and ns.cdb.buffIgnore) or {}
   try("dungeon tracking", ns.DungeonInfo.Track, ns.char.pos)
   ns.travelCtx = try("travel", ns.TravelData.Context, ds, ns.char) or ns.travelCtx
@@ -742,10 +742,12 @@ function ns.IgnoreBuff(item, what)
     ns.cdb.buffIgnore = {}
     ns.Log("info", ("wanting %d leveling buff%s again"):format(n, n == 1 and "" or "s"))
   else
-    local b = ns.Buffs.Find(item)
+    local b = item == ns.Buffs.FOOD and { name = "food for Well Fed" } or ns.Buffs.Find(item)
     if not b then return end
     ns.cdb.buffIgnore[item] = what
-    if what == "use" then
+    if item == ns.Buffs.FOOD then
+      ns.Log("info", "no more reminders to eat for Well Fed (/lvls unskip buffs takes it back)")
+    elseif what == "use" then
       ns.Log("info", ("no more reminders to use your %s (/lvls unskip buffs takes it back)"):format(b.name))
     else
       ns.Log("info", ("not getting the %s (the Guides menu still has it; /lvls unskip buffs takes it back)"):format(b.name))

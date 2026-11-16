@@ -264,7 +264,10 @@ function V.LineTip(line)
   if line and line.kind == "buff" then
     local b = ns.Buffs.Find(line.item)
     local tip = { { b and b.name or line.text, 1, 0.82, 0.25 } }
-    if b then
+    if line.item == ns.Buffs.FOOD then
+      tip[#tip + 1] = { ("Ten seconds of eating it makes you Well Fed: %s, besides the food's own stat."):format(
+        ns.Buffs.FoodGain()), 0.9, 0.9, 0.9 }
+    elseif b then
       tip[#tip + 1] = { ("%s: +%d%% experience from kills%s a stack, %d stack%s, for %s. Ready again after %d minutes."):format(
         b.auraName, b.xp, b.questXp > 0 and " and quests" or "", b.stacks, b.stacks == 1 and "" or "s",
         ns.Buffs.Gain(b):match("for (.*)$"), math.floor(b.cooldown / 60)), 0.9, 0.9, 0.9 }

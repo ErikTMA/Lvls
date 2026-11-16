@@ -17,6 +17,36 @@ local B = ns:NewModule("Buffs")
 local A = ns.Availability
 
 B.RENEW = 600 -- a buff with less than this left is to be used again
+B.FOOD_RENEW = 60 -- and Well Fed (15 minutes) with less than this
+B.FOOD = "food" -- the ignore key of the reminder to eat (ignore[B.FOOD] = "use")
+
+-- Food whose Well Fed adds experience from kills (Data/forever/Buffs.lua BuffFood):
+-- { boost, xp, lasts, auras, items = { [item] = required level } }, or nil.
+function B.Food() return ns.BuffFood end
+
+-- The food in your bags to eat for the boost: the one for the highest level you
+-- may eat (the most stats), nil when none.
+function B.FoodToEat(char)
+  local f = B.Food()
+  if not f or not char.bag then return nil end
+  local best, bestLevel
+  for item, lvl in pairs(f.items) do
+    if char.bag[item] and lvl <= (char.level or 1) and (not best or lvl > bestLevel or (lvl == bestLevel and item < best)) then
+      best, bestLevel = item, lvl
+    end
+  end
+  return best
+end
+
+-- Well Fed with the boost on you: its seconds left (true when unknown), nil when not.
+function B.WellFed(char)
+  local f = B.Food()
+  for _, a in ipairs(f and f.auras or {}) do
+    local on = char.buffs and char.buffs[a]
+    if on then return on.left or true end
+  end
+  return nil
+end
 
 function B.List() return ns.BuffData or {} end
 
@@ -108,6 +138,8 @@ end
 -- { { kind = "get", buff, chain } | { kind = "use", buff }, ... }.
 --   get: not yours, its chain open and in reach, not ignored
 --   use: in your bags, its buff missing or running out (B.RENEW), the item ready
+--   eat: food in your bags whose Well Fed adds experience (B.Food), not Well Fed
+--        (or under B.FOOD_RENEW left), not ignored (ignore[B.FOOD]): { kind, item }
 function B.Wanted(ds, char, ignore)
   ignore = ignore or {}
   local out = {}
@@ -129,11 +161,28 @@ function B.Wanted(ds, char, ignore)
       end
     end
   end
+  local food = ignore[B.FOOD] ~= "use" and B.FoodToEat(char)
+  if food then
+    local left = B.WellFed(char)
+    if not left or (left ~= true and left <= B.FOOD_RENEW) then
+      out[#out + 1] = { kind = "eat", item = food, name = char.itemNames and char.itemNames[food] }
+    end
+  end
   return out
+end
+
+-- "+5% experience from kills for 15 minutes" (the food's boost)
+function B.FoodGain()
+  local f = B.Food()
+  return ("+%d%% experience from kills for %d minutes"):format(f.xp, math.floor(f.lasts / 60))
 end
 
 -- A want as a step line (UI/Viewer adds it under the step's own lines).
 function B.Line(w)
+  if w.kind == "eat" then
+    return { kind = "buff", want = "use", item = B.FOOD, use = w.item,
+      text = ("Eat %s 10 seconds: %s"):format(w.name or "your food", B.FoodGain()) }
+  end
   local b = w.buff
   if w.kind == "get" then
     return { kind = "buff", want = "get", item = b.item, chain = w.chain.id,
@@ -147,7 +196,9 @@ end
 function B.Items(wanted)
   local out = {}
   for _, w in ipairs(wanted or {}) do
-    if w.kind == "use" then
+    if w.kind == "eat" then
+      out[#out + 1] = { id = w.item, kind = "use", text = "Eat 10 seconds: " .. B.FoodGain() }
+    elseif w.kind == "use" then
       out[#out + 1] = { id = w.buff.item, kind = "use", text = ("%s: %s"):format(B.How(w.buff):gsub("^%l", string.upper), B.Gain(w.buff)) }
     end
   end
