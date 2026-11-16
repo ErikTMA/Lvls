@@ -60,6 +60,7 @@ function ns.InitCharDB(cdb)
   cdb = cdb or {}
   if cdb.viewer == nil then cdb.viewer = true end
   if type(cdb.skip) ~= "table" then cdb.skip = {} end
+  if type(cdb.trainIgnore) ~= "table" then cdb.trainIgnore = {} end
   if type(cdb.spec) ~= "number" then cdb.spec = 0 end -- 0: from the talents
   cdb.stepsDone = nil -- the old step counter, gone
   if type(cdb.fights) ~= "table" then cdb.fights = {} end -- Adapters/FightLog
@@ -695,6 +696,26 @@ function ns.SetSkip(qid, on)
   ns.Refresh(true)
 end
 
+-- Leave what waits at your class trainer now (right-click the train line); a higher
+-- rank brings a spell back. on = false: take every one back.
+function ns.IgnoreTraining(on)
+  if not ns.cdb then return end
+  if on == false then
+    local n = 0
+    for _ in pairs(ns.cdb.trainIgnore) do n = n + 1 end
+    ns.cdb.trainIgnore = {}
+    ns.Log("info", ("no longer ignoring %d spell%s at your trainer"):format(n, n == 1 and "" or "s"))
+  else
+    local t = ns.char and ns.char.training
+    if not t or t.count == 0 then return end
+    ns.Training.Ignore(t, ns.cdb.trainIgnore)
+    ns.Log("info", ("ignoring %s at your trainer until a higher rank (/lvls unskip training takes it back)")
+      :format(ns.Training.Names(t, 99)))
+  end
+  ns.TrainingData.Invalidate()
+  ns.Refresh(true)
+end
+
 -- quests whose name contains `text` (or with that id) among `ids`
 local function matching(ds, ids, text)
   local out, id, low = {}, tonumber(text), text:lower()
@@ -747,6 +768,10 @@ commands.why = function(arg)
 end
 
 commands.unskip = function(arg)
+  if arg:lower() == "training" or arg:lower() == "all" then
+    if next(ns.cdb.trainIgnore) or arg:lower() == "training" then ns.IgnoreTraining(false) end
+    if arg:lower() == "training" then return end
+  end
   local ds = ns.ActiveDataset()
   if not ds then return end
   local found = arg:lower() == "all" and matching(ds, ns.cdb.skip, "") or matching(ds, ns.cdb.skip, arg)
@@ -1221,7 +1246,7 @@ end
 commands.tour = function() ns.Tour.Start(true) end
 
 commands.help = function()
-  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|zone [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|talents [off|learn]|gear|nearby|travel|record|note [text|clear]|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|share|tour|debug|help]")
+  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|zone [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|training|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|talents [off|learn]|gear|nearby|travel|record|note [text|clear]|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|share|tour|debug|help]")
 end
 
 local function slash(input)

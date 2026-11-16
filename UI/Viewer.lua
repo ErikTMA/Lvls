@@ -208,10 +208,12 @@ local function row(i)
   h:SetAllPoints(r)
   h:SetColorTexture(1, 1, 1, 0.06)
   if r.RegisterForClicks then r:RegisterForClicks("LeftButtonUp", "RightButtonUp") end
-  -- left: point the arrow there; right: skip the line's quest
+  -- left: point the arrow there; right: skip the line's quest (a train line: ignore
+  -- the spells it lists)
   r:SetScript("OnClick", function(self, button)
     if button == "RightButton" then
-      if self.line and self.line.quest then ns.SetSkip(self.line.quest, true) end
+      if self.line and self.line.quest then ns.SetSkip(self.line.quest, true)
+      elseif self.line and self.line.kind == "train" then ns.IgnoreTraining(true) end
     else
       V.PointAt(self.line)
     end
@@ -238,6 +240,11 @@ function V.Num(v) return (("%.1f"):format(v):gsub("%.0$", "")) end
 function V.LineTip(line)
   if line and line.at then
     return { { ("Click: point the arrow at %s, %s"):format(V.Num(line.at.x), V.Num(line.at.y)), 0.6, 0.8, 1 } }
+  end
+  if line and line.kind == "train" then
+    return { { line.text or "Learn your new spells", 1, 0.82, 0.25 },
+      { "Right-click: ignore these spells and go on with the guide (a higher rank brings one back;"
+        .. " /lvls unskip training takes them all back)", 0.6, 0.8, 1 } }
   end
   if not (line and line.quest) then return nil end
   local ds = ns.ActiveDataset()

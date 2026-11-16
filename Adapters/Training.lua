@@ -132,7 +132,8 @@ function TA.Seen()
   if cache then return cache end
   local t = ns.cdb and ns.cdb.trainer
   local known, future = TA.Spellbook()
-  cache = { list = t and t.list, at = t and t.at, known = known, future = future, bars = TA.Bars() }
+  cache = { list = t and t.list, at = t and t.at, known = known, future = future, bars = TA.Bars(),
+    ignore = ns.cdb and ns.cdb.trainIgnore }
   return cache
 end
 function TA.Invalidate() cache = nil end

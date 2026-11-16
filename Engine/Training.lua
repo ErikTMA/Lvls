@@ -11,6 +11,8 @@
 --           hold spells a quest gives).
 --   known   { [spell name] = true }: spells in your spellbook
 --   bars    { [spell name] = true }: spells on your action bars
+--   ignore  { [spell name] = level }: spells you told Lvls! to leave (right-click
+--           the train line): one waits again only with a rank above that level
 --
 -- A spell waits when you reached its level and do not have it (the trainer says
 -- "used" once you do). One a trainer called unavailable at a level you already had
@@ -89,8 +91,11 @@ function T.Summary(seen, level, money)
   else
     return nil
   end
+  local ignore = seen.ignore or {}
   local spells = {}
-  for _, e in pairs(by) do spells[#spells + 1] = e end
+  for n, e in pairs(by) do
+    if not (ignore[n] and (e.l or 0) <= ignore[n]) then spells[#spells + 1] = e end
+  end
   table.sort(spells, function(a, b)
     if a.weight ~= b.weight then return a.weight > b.weight end
     if a.l ~= b.l then return a.l > b.l end
@@ -113,6 +118,16 @@ function T.Summary(seen, level, money)
   end
   if sum.afford >= T.TRIP then sum.worth = "trip" elseif sum.afford >= T.PASS then sum.worth = "pass" end
   return sum
+end
+
+-- What to remember to leave everything waiting now: { [spell name] = level }, added
+-- to `ignore` (kept, and raised where a spell already was).
+function T.Ignore(sum, ignore)
+  ignore = ignore or {}
+  for _, e in ipairs(sum and sum.spells or {}) do
+    if (e.l or 0) > (ignore[e.n] or -1) then ignore[e.n] = e.l or 0 end
+  end
+  return ignore
 end
 
 -- "Fireball, Frost Armor +2 more"
