@@ -115,6 +115,18 @@ function V.Model(ds, char, steps, current, view)
       for _, g in ipairs(group) do add(g, true) end
     end
   end
+  -- what Lvls! wants of your leveling buffs (Engine/Buffs), under the current step:
+  -- get one (click: its guide), use one (its item is on the item bar)
+  if not view or view == current then
+    for _, w in ipairs(ns.wantBuffs or {}) do
+      local guiding = w.kind == "get" and ns.cdb and ns.cdb.buffGuide == w.buff.item
+      if not guiding and #m.lines < V.MAX_LINES then
+        local l = ns.Buffs.Line(w)
+        m.lines[#m.lines + 1] = { icon = w.kind == "get" and "accept" or "collect", check = "checkoff",
+          text = l.text, color = V.COLORS.also, line = l, buff = true }
+      end
+    end
+  end
   local nxt = steps[i + 1]
   if nxt then m.next = nxt.title .. ": " .. (nxt.lines[1] and nxt.lines[1].text or "") end
   m.backlog = V.Backlog(ds, ns.backlog)
@@ -213,7 +225,10 @@ local function row(i)
   r:SetScript("OnClick", function(self, button)
     if button == "RightButton" then
       if self.line and self.line.quest then ns.SetSkip(self.line.quest, true)
-      elseif self.line and self.line.kind == "train" then ns.IgnoreTraining(true) end
+      elseif self.line and self.line.kind == "train" then ns.IgnoreTraining(true)
+      elseif self.line and self.line.kind == "buff" then ns.IgnoreBuff(self.line.item, self.line.want) end
+    elseif self.line and self.line.kind == "buff" then
+      if self.line.want == "get" then ns.SetBuffGuide(self.line.item) end
     else
       V.PointAt(self.line)
     end
@@ -245,6 +260,23 @@ function V.LineTip(line)
     return { { line.text or "Learn your new spells", 1, 0.82, 0.25 },
       { "Right-click: ignore these spells and go on with the guide (a higher rank brings one back;"
         .. " /lvls unskip training takes them all back)", 0.6, 0.8, 1 } }
+  end
+  if line and line.kind == "buff" then
+    local b = ns.Buffs.Find(line.item)
+    local tip = { { b and b.name or line.text, 1, 0.82, 0.25 } }
+    if b then
+      tip[#tip + 1] = { ("%s: +%d%% experience from kills%s a stack, %d stack%s, for %s. Ready again after %d minutes."):format(
+        b.auraName, b.xp, b.questXp > 0 and " and quests" or "", b.stacks, b.stacks == 1 and "" or "s",
+        ns.Buffs.Gain(b):match("for (.*)$"), math.floor(b.cooldown / 60)), 0.9, 0.9, 0.9 }
+    end
+    if line.want == "get" then
+      tip[#tip + 1] = { "Click: a guide through its quests", 0.25, 0.75, 0.25 }
+      tip[#tip + 1] = { "Right-click: not wanted (the Guides menu still has it; /lvls unskip buffs takes it back)", 0.6, 0.8, 1 }
+    else
+      tip[#tip + 1] = { "Its button is on the item bar, or right-click it in your bags", 0.9, 0.9, 0.9 }
+      tip[#tip + 1] = { "Right-click: no more reminders (/lvls unskip buffs takes it back)", 0.6, 0.8, 1 }
+    end
+    return tip
   end
   if not (line and line.quest) then return nil end
   local ds = ns.ActiveDataset()
@@ -472,6 +504,11 @@ function V.MenuTree()
     current = function() return ns.cdb and ns.cdb.classGuide end,
     select = function(id) ns.SetClassGuide(id) end,
   }) })
+  local buffs = ns.Picker.Buffs(ds, ns.char, ns.BuffChains(), {
+    current = function() return ns.cdb and ns.cdb.buffGuide end,
+    select = function(item) ns.SetBuffGuide(item) end,
+  })
+  if #buffs > 0 then add({ kind = "sub", text = "Leveling buffs", children = buffs }) end
   local group = {}
   for _, p in ipairs(ns.SyncPeers()) do
     if p.version == "ok" and p.count > 0 then
@@ -489,7 +526,7 @@ function V.MenuTree()
   if #group > 0 then add({ kind = "sub", text = "Group", children = group }) end
   add({ kind = "divider" })
   add({ kind = "radio", key = 0, text = "Leveling route (no guide)",
-    selected = function() return not (ns.sync or (ns.cdb and (ns.cdb.guide or ns.cdb.classGuide or ns.cdb.zoneGuide))) end,
+    selected = function() return not (ns.sync or (ns.cdb and (ns.cdb.guide or ns.cdb.classGuide or ns.cdb.zoneGuide or ns.cdb.buffGuide))) end,
     select = function() ns.SetGuide(nil) end })
   return tree
 end

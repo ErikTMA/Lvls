@@ -359,3 +359,23 @@ function P.Classes(ds, char, chains, env)
   if #raids > 0 then out[#out + 1] = { kind = "sub", text = ("Raid quests (%d)"):format(#raids), children = raids } end
   return out
 end
+
+-- Leveling buffs ------------------------------------------------------------------
+
+-- chains: Buffs.Chain of each buff still to get. env: { current = item | nil, select(item) }
+function P.Buffs(ds, char, chains, env)
+  local out = {}
+  for _, c in ipairs(chains) do
+    local it = chainItem(ds, char, c, { current = function() return env.current and env.current() == c.buff.item and c.id end,
+      select = function() if env.select then env.select(c.buff.item) end end }, #c.reach > 0)
+    it.key = "buff" .. c.buff.item
+    local tip = it.tip
+    it.tip = function()
+      local t = tip()
+      table.insert(t.lines, 1, { text = ns.Buffs.Gain(c.buff), color = GREEN })
+      return t
+    end
+    out[#out + 1] = it
+  end
+  return out
+end

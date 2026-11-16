@@ -32,6 +32,47 @@ end
 local owner = setmetatable({}, { __mode = "k" })
 function R.DatasetOf(q) return q and owner[q] end
 
+-- Wowhead places some objects on a second map with exactly the points of another
+-- object that stands only there: the Barrens' "Burned-Out Remains" (415106) also at
+-- the Westfall wreck, on the points of Westfall's own remains (415107), so the route
+-- handed in at Westfall what the Barrens' remains take. An object on several maps
+-- whose points on one map are another object's, all of them, where that object
+-- stands on that map only, is not on that map. Returns how many maps were dropped.
+function R.DropCopiedPoints(objects)
+  local function key(list)
+    local c = {}
+    for i, v in ipairs(list) do c[i] = v end
+    table.sort(c)
+    return table.concat(c, ",")
+  end
+  local only = {} -- [map .. ":" .. points] = { object ids placed on that map only }
+  for id, o in pairs(objects or {}) do
+    local maps, m1 = 0, nil
+    for m in pairs(o.p or {}) do maps, m1 = maps + 1, m end
+    if maps == 1 and #o.p[m1] > 0 then
+      local k = m1 .. ":" .. key(o.p[m1])
+      only[k] = only[k] or {}
+      table.insert(only[k], id)
+    end
+  end
+  local dropped = 0
+  for id, o in pairs(objects or {}) do
+    local maps = 0
+    for _ in pairs(o.p or {}) do maps = maps + 1 end
+    if maps > 1 then
+      for m, list in pairs(o.p) do
+        local others = #list > 0 and only[m .. ":" .. key(list)]
+        if others then
+          local other = false
+          for _, oid in ipairs(others) do if oid ~= id then other = true end end
+          if other and maps > 1 then o.p[m] = nil; maps = maps - 1; dropped = dropped + 1 end
+        end
+      end
+    end
+  end
+  return dropped
+end
+
 -- giver / turn-in indexes: npc or object id -> { questId, ... }
 local function index(ds)
   local startsN, startsO, endsN, endsO = {}, {}, {}, {}
@@ -55,6 +96,7 @@ local function index(ds)
   end
   ds.starts = { n = startsN, o = startsO }
   ds.ends = { n = endsN, o = endsO }
+  R.DropCopiedPoints(ds.objects)
   local mapsOfArea = {}
   for a, m in pairs(ds.zones) do mapsOfArea[m] = mapsOfArea[m] or a end
   ds.areaOfMap = mapsOfArea

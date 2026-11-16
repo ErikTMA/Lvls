@@ -30,7 +30,7 @@ T.STEPS = {
   { id = "lines", target = viewer("step"), title = "Click a line",
     text = "Click the step, or one of its lines: the arrow points there, at the nearest spot for that goal.\n\nHover a line for more about its quest." },
   { id = "skip", target = viewer("step"), title = "Right-click a quest to skip it",
-    text = "Right-click a line of a quest you do not want: the route leaves it out from then on.\n\n/lvls unskip <quest> (or /lvls unskip all) takes it back. /lvls why <quest> says why a quest is in the route or not.\n\nRight-click a \"Learn ...\" line to leave those spells at the trainer: a higher rank brings one back, /lvls unskip training takes them all back." },
+    text = "Right-click a line of a quest you do not want: the route leaves it out from then on.\n\n/lvls unskip <quest> (or /lvls unskip all) takes it back. /lvls why <quest> says why a quest is in the route or not.\n\nRight-click a \"Learn ...\" line to leave those spells at the trainer: a higher rank brings one back, /lvls unskip training takes them all back.\n\nA \"Get the Cozy Sleeping Bag\" line: click it for its guide, right-click it if you do not want it (/lvls unskip buffs)." },
   { id = "noteCoord", target = viewer("step"), title = "Notes with a position",
     text = "Blue lines are notes from players' comments on the quest. When one gives a position, like \"the entrance is at 76,75\", click it and the arrow points there." },
   { id = "browse", target = viewer("prevBtn"), to = viewer("nextBtn"), title = "Look ahead",

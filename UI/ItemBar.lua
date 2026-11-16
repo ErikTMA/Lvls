@@ -1,6 +1,7 @@
 -- The item bar: a movable row of buttons for the current step's items (Engine/UseItems):
 -- an item that starts a quest, the quest log's item for a quest (use it on an npc,
--- a corpse, at a place), items a quest gives you that have a use. Click to use;
+-- a corpse, at a place), items a quest gives you that have a use, and a leveling
+-- buff's item while its buff is missing (Engine/Buffs). Click to use;
 -- key bindings for the first four (Bindings.xml: Key Bindings -> AddOns -> Lvls!).
 -- Drag a button to move the bar (unless locked: /lvls items lock).
 --
@@ -145,6 +146,10 @@ function IB.Update()
   local ds = ns.ActiveDataset and ns.ActiveDataset()
   if not ds or not ns.char then return end
   IB.list = ns.UseItems.List(ds, ns.char, ns.steps, ns.stepIndex, ns.UseItems.MAX)
+  -- a leveling buff to use (Engine/Buffs: its buff is missing, the item is ready)
+  for _, it in ipairs(ns.Buffs.Items(ns.wantBuffs)) do
+    if #IB.list < ns.UseItems.MAX then IB.list[#IB.list + 1] = it end
+  end
   local key = (ns.db and ns.db.settings.itemBar and "on:" or "off:") .. ns.UseItems.Key(IB.list)
   if key ~= IB.key or IB.pending then
     IB.key = key

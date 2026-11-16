@@ -61,6 +61,7 @@ function ns.InitCharDB(cdb)
   if cdb.viewer == nil then cdb.viewer = true end
   if type(cdb.skip) ~= "table" then cdb.skip = {} end
   if type(cdb.trainIgnore) ~= "table" then cdb.trainIgnore = {} end
+  if type(cdb.buffIgnore) ~= "table" then cdb.buffIgnore = {} end -- Engine/Buffs: [item] = "get" | "use"
   if type(cdb.spec) ~= "number" then cdb.spec = 0 end -- 0: from the talents
   cdb.stepsDone = nil -- the old step counter, gone
   if type(cdb.fights) ~= "table" then cdb.fights = {} end -- Adapters/FightLog
@@ -76,6 +77,7 @@ ns.REPLAN_BELOW = 5
 -- its map: the leveling route with only that zone's quests, Engine/Zones).
 local function guideSet(ds)
   local area, chainId = ns.cdb and ns.cdb.guide, ns.cdb and ns.cdb.classGuide
+  local buffItem = ns.cdb and ns.cdb.buffGuide
   local zone = ns.cdb and ns.cdb.zoneGuide
   local before = ns.guideName -- the name it ran under (a chain's name moves on with its parts)
   ns.guide, ns.guideName = nil, nil
@@ -115,12 +117,17 @@ local function guideSet(ds)
   elseif chainId then
     local chain = ns.ClassQuests.Find(ds, ns.char, chainId)
     if chain then g, name = ns.ClassQuests.Set(ds, ns.char, chain), chain.name end
+  elseif buffItem then
+    -- a leveling buff's quest chain (Engine/Buffs), as a class quest chain is done
+    local b = ns.Buffs.Find(buffItem)
+    local chain = b and ns.Buffs.Chain(ds, ns.char, b)
+    if chain and #chain.reach > 0 then g, name = ns.ClassQuests.Set(ds, ns.char, chain), chain.name end
   else
     return nil
   end
   if not g or #g.order == 0 or ns.Dungeons.Done(ds, ns.char, g) then
     ns.Log("info", ("%s guide: all done"):format(before or name or "class quest"))
-    ns.cdb.guide, ns.cdb.classGuide = nil, nil
+    ns.cdb.guide, ns.cdb.classGuide, ns.cdb.buffGuide = nil, nil, nil
     return nil
   end
   ns.guide, ns.guideName = g, name
@@ -503,6 +510,11 @@ function ns.Refresh(replan)
   -- what waits at your class trainer (Engine/Training), and when you last had one open
   ns.char.training = try("training", ns.TrainingData.Summary, ns.char.level)
   ns.char.trainedAt = ns.cdb and ns.cdb.trainer and ns.cdb.trainer.time or nil
+  -- leveling buffs on you and their items' cooldowns (Adapters/Buffs), what Lvls!
+  -- wants of them (Engine/Buffs: a line on the step, the item bar)
+  local buffs, cds = try("buffs", ns.BuffData.State)
+  ns.char.buffs, ns.char.cooldowns = buffs or {}, cds or {}
+  ns.wantBuffs = try("buff wants", ns.Buffs.Wanted, ds, ns.char, ns.cdb and ns.cdb.buffIgnore) or {}
   try("dungeon tracking", ns.DungeonInfo.Track, ns.char.pos)
   ns.travelCtx = try("travel", ns.TravelData.Context, ds, ns.char) or ns.travelCtx
   local known, unknown, unsure
@@ -719,6 +731,62 @@ function ns.IgnoreTraining(on)
   ns.Refresh(true)
 end
 
+-- Stop wanting a leveling buff (right-click its line, Engine/Buffs): "get" leaves its
+-- quest chain, "use" stops the reminder to use it. on = false: want them all again.
+function ns.IgnoreBuff(item, what)
+  if not ns.cdb then return end
+  if what == false then
+    local n = 0
+    for _ in pairs(ns.cdb.buffIgnore) do n = n + 1 end
+    ns.cdb.buffIgnore = {}
+    ns.Log("info", ("wanting %d leveling buff%s again"):format(n, n == 1 and "" or "s"))
+  else
+    local b = ns.Buffs.Find(item)
+    if not b then return end
+    ns.cdb.buffIgnore[item] = what
+    if what == "use" then
+      ns.Log("info", ("no more reminders to use your %s (/lvls unskip buffs takes it back)"):format(b.name))
+    else
+      ns.Log("info", ("not getting the %s (the Guides menu still has it; /lvls unskip buffs takes it back)"):format(b.name))
+    end
+  end
+  ns.Refresh(true)
+end
+
+-- Leveling buffs you can get now (Engine/Buffs.Chain of each, open ones in reach).
+function ns.BuffChains()
+  local ds = ns.ActiveDataset()
+  if not ds or not ns.char then return {} end
+  local out = {}
+  for _, b in ipairs(ns.Buffs.List()) do
+    local c = not (ns.char.completed[b.quest] or (ns.char.bag and ns.char.bag[b.item])) and ns.Buffs.Chain(ds, ns.char, b)
+    if c and c.open > 0 then out[#out + 1] = c end
+  end
+  return out
+end
+
+-- Start the guide to a leveling buff (its item id) or stop it (nil).
+function ns.SetBuffGuide(item)
+  local ds = ns.ActiveDataset()
+  if not ds or not ns.cdb then return end
+  ns.cdb.guide, ns.cdb.classGuide, ns.cdb.zoneGuide, ns.cdb.buffGuide = nil, nil, nil, item
+  ns.Viewer.view = nil
+  local b = item and ns.Buffs.Find(item)
+  local chain = b and ns.Buffs.Chain(ds, ns.char, b)
+  if chain and #chain.reach == 0 then
+    ns.cdb.buffGuide = nil
+    ns.Log("info", ("%s: not before level %d"):format(chain.name, chain.minLevel))
+    return
+  end
+  if chain then
+    ns.Log("info", ("%s guide: %d quest%s, %s"):format(chain.name, chain.open, chain.open == 1 and "" or "s",
+      ns.Buffs.Gain(b)))
+  elseif not item then
+    ns.Log("info", "guide stopped: back to the leveling route")
+  end
+  ns.Refresh(true)
+end
+
 -- quests whose name contains `text` (or with that id) among `ids`
 local function matching(ds, ids, text)
   local out, id, low = {}, tonumber(text), text:lower()
@@ -775,6 +843,10 @@ commands.unskip = function(arg)
     if next(ns.cdb.trainIgnore) or arg:lower() == "training" then ns.IgnoreTraining(false) end
     if arg:lower() == "training" then return end
   end
+  if arg:lower() == "buffs" or arg:lower() == "all" then
+    if next(ns.cdb.buffIgnore) or arg:lower() == "buffs" then ns.IgnoreBuff(nil, false) end
+    if arg:lower() == "buffs" then return end
+  end
   local ds = ns.ActiveDataset()
   if not ds then return end
   local found = arg:lower() == "all" and matching(ds, ns.cdb.skip, "") or matching(ds, ns.cdb.skip, arg)
@@ -800,7 +872,7 @@ end
 function ns.SetGuide(area)
   local ds = ns.ActiveDataset()
   if not ds or not ns.cdb then return end
-  ns.cdb.guide, ns.cdb.classGuide, ns.cdb.zoneGuide = area, nil, nil
+  ns.cdb.guide, ns.cdb.classGuide, ns.cdb.zoneGuide, ns.cdb.buffGuide = area, nil, nil, nil
   if ns.sync and not area then ns.SetSync(nil) return end
   ns.Viewer.view = nil
   if area then
@@ -825,7 +897,7 @@ end
 function ns.SetClassGuide(id)
   local ds = ns.ActiveDataset()
   if not ds or not ns.cdb then return end
-  ns.cdb.guide, ns.cdb.classGuide, ns.cdb.zoneGuide = nil, id, nil
+  ns.cdb.guide, ns.cdb.classGuide, ns.cdb.zoneGuide, ns.cdb.buffGuide = nil, id, nil, nil
   ns.Viewer.view = nil
   local chain = id and ns.ClassQuests.Find(ds, ns.char, id)
   if chain and #chain.reach == 0 then
@@ -854,7 +926,7 @@ end
 function ns.SetZoneGuide(map)
   local ds = ns.ActiveDataset()
   if not ds or not ns.cdb then return end
-  ns.cdb.guide, ns.cdb.classGuide, ns.cdb.zoneGuide = nil, nil, map
+  ns.cdb.guide, ns.cdb.classGuide, ns.cdb.zoneGuide, ns.cdb.buffGuide = nil, nil, map, nil
   ns.Viewer.view = nil
   if map then
     local l = ns.Zones.Left(ds, ns.char, map, ns.DifficultyModel().above)
@@ -870,6 +942,15 @@ end
 commands.guide = function(arg)
   arg = (arg or ""):lower()
   if arg == "off" or arg == "stop" then ns.SetGuide(nil) return end
+  local buffArg = arg:match("^buffs?%s*(.*)$")
+  if buffArg then
+    local chains = ns.BuffChains()
+    for _, c in ipairs(chains) do
+      if c.name:lower():find(buffArg, 1, true) then ns.SetBuffGuide(c.buff.item) return end
+    end
+    ns.Log("info", #chains == 0 and "no leveling buff left to get" or ("no leveling buff matches " .. buffArg))
+    return
+  end
   local zoneArg = arg:match("^zone%s*(.*)$")
   if zoneArg then
     local zones = ns.ZoneList()
@@ -1249,7 +1330,7 @@ end
 commands.tour = function() ns.Tour.Start(true) end
 
 commands.help = function()
-  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|zone [name]|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|training|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|talents [off|learn]|gear|nearby|travel|record|note [text|clear]|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|share|tour|debug|help]")
+  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|zone [name]|buff|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|training|buffs|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|talents [off|learn]|gear|nearby|travel|record|note [text|clear]|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|share|tour|debug|help]")
 end
 
 local function slash(input)
