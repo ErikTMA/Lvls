@@ -25,6 +25,7 @@ ns.DEFAULT_SETTINGS = {
   autoAccept = true, autoDeliver = true, autoReward = true, rewardGold = true,
   skipFlightGossip = true, -- a flight master with nothing but the flight opens the map at once
   autoEquip = false, autoEquipBind = false, equipMaxQuality = 2, gearWeights = "auto",
+  autoSellJunk = true, autoRepair = true, -- at a vendor: sell grey items, then repair with your own money
   classQuests = true,    -- class quests in the leveling route (Engine/Route), marked with the class
   trainSteps = true,     -- go to your class trainer when spells wait there (Engine/Training)
   learnFights = true,    -- record fights (Adapters/FightLog) to learn what is hard for you
@@ -1207,7 +1208,7 @@ commands.weights = function(arg)
 end
 
 local TOGGLES = { accept = "autoAccept", deliver = "autoDeliver", reward = "autoReward", gold = "rewardGold", flight = "skipFlightGossip",
-  equip = "autoEquip", bind = "autoEquipBind", zone = "zoneFirst", classquests = "classQuests", trainsteps = "trainSteps",
+  equip = "autoEquip", bind = "autoEquipBind", junk = "autoSellJunk", repair = "autoRepair", zone = "zoneFirst", classquests = "classQuests", trainsteps = "trainSteps",
   grind = "suggestGrind", learn = "learnFights", groupsync = "groupSync", asksync = "askSync", map = "worldMap", mapline = "mapRoute", minimap = "minimap", miniroute = "minimapRoute", button = "minimapButton", objectives = "objectives", arrow = "arrow", low = "showLow",
   trivial = "showTrivial", dungeon = "showDungeon", repeatable = "showRepeatable", growup = "viewerGrowUp" }
 for cmd, key in pairs(TOGGLES) do
@@ -1339,7 +1340,7 @@ end
 commands.tour = function() ns.Tour.Start(true) end
 
 commands.help = function()
-  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|zone [name]|buff|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|training|buffs|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|talents [off|next]|gear|nearby|travel|record|note [text|clear]|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|share|tour|debug|help]")
+  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|zone [name]|buff|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|training|buffs|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|junk|repair|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|talents [off|next]|gear|nearby|travel|record|note [text|clear]|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|share|tour|debug|help]")
 end
 
 local function slash(input)

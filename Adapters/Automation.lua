@@ -1,4 +1,5 @@
--- Automation: accept and hand in quests, pick the reward, put on upgrades. Every
+-- Automation: accept and hand in quests, pick the reward, put on upgrades, sell
+-- grey items and repair at a vendor. Every
 -- part has its own setting; holding Shift while talking to an npc pauses it.
 -- Client calls (forever 1.60.1; wow-ui-source branch forever, QuestFrame.lua,
 -- GossipFrameShared.lua, GameDialogDefs.lua):
@@ -233,6 +234,81 @@ function A.OnBindConfirm(slot)
   if type(StaticPopup_Hide) == "function" then StaticPopup_Hide("EQUIP_BIND") end
 end
 
+-- at a vendor ----------------------------------------------------------------
+-- MERCHANT_SHOW / MERCHANT_CLOSED (MerchantFrameDocumentation). With the window
+-- open, C_Container.UseContainerItem(bag, slot) sells; GetContainerItemInfo ->
+-- { quality, hasNoValue, isLocked, stackCount, hyperlink }. Repairs (Vanilla
+-- MerchantFrame.xml): CanMerchantRepair(), GetRepairAllCost() -> cost, canRepair,
+-- RepairAllItems() (own money), GetMoney().
+
+A.atMerchant = false
+A.repairWait = false -- not enough money yet: try again when the sales come in (PLAYER_MONEY)
+A.SELL_GAP = 0.15    -- seconds between sales: the server drops a burst
+
+-- The grey (poor) items in your bags that sell for something.
+function A.Junk()
+  local out = {}
+  if not (has(C_Container, "GetContainerNumSlots") and has(C_Container, "GetContainerItemInfo")) then return out end
+  for bag = 0, (NUM_BAG_SLOTS or 4) do
+    for slot = 1, C_Container.GetContainerNumSlots(bag) or 0 do
+      local it = C_Container.GetContainerItemInfo(bag, slot)
+      if type(it) == "table" and it.quality == 0 and not it.hasNoValue and not it.isLocked and it.hyperlink then
+        local info = GA.Info(it.hyperlink)
+        out[#out + 1] = { bag = bag, slot = slot, link = it.hyperlink,
+          value = (info and info.sell or 0) * math.max(1, it.stackCount or 1) }
+      end
+    end
+  end
+  return out
+end
+
+function A.Repair()
+  A.repairWait = false
+  if not set("autoRepair") or not A.atMerchant then return end
+  if type(CanMerchantRepair) ~= "function" or not CanMerchantRepair() or type(GetRepairAllCost) ~= "function" then return end
+  local cost, can = GetRepairAllCost()
+  if not can or (cost or 0) <= 0 then return end
+  if type(GetMoney) == "function" and (GetMoney() or 0) < cost then
+    if not A.repairShort then ns.Log("info", ("repairs cost %s, more than you have"):format(money(cost))) end
+    A.repairShort, A.repairWait = true, true
+    return
+  end
+  RepairAllItems()
+  A.repairShort = nil
+  ns.Log("info", ("repaired everything for %s"):format(money(cost)))
+end
+
+function A.SellNext(junk, i, sold, total)
+  if not A.atMerchant then return end
+  local j = junk[i]
+  if not j then
+    if sold > 0 then
+      ns.Log("info", ("sold %d grey item%s for %s"):format(sold, sold == 1 and "" or "s", money(total)))
+    end
+    A.Repair()
+    return
+  end
+  -- still in that slot (you may have moved or sold it yourself meanwhile)
+  if C_Container.GetContainerItemLink(j.bag, j.slot) == j.link then
+    C_Container.UseContainerItem(j.bag, j.slot)
+    sold, total = sold + 1, total + j.value
+  end
+  if C_Timer and C_Timer.After then
+    C_Timer.After(A.SELL_GAP, function() A.SellNext(junk, i + 1, sold, total) end)
+  else
+    A.SellNext(junk, i + 1, sold, total)
+  end
+end
+
+function A.OnMerchant()
+  A.atMerchant, A.repairShort = true, nil
+  if paused() then return end
+  local junk = set("autoSellJunk") and has(C_Container, "UseContainerItem") and A.Junk() or {}
+  A.SellNext(junk, 1, 0, 0)
+end
+
+function A.OnMerchantClosed() A.atMerchant, A.repairWait = false, false end
+
 -- talking to an npc ----------------------------------------------------------
 
 -- The npc or object whose dialog is open (or `unit`: "target"): "n" | "o", id; nil
@@ -294,6 +370,9 @@ local HANDLERS = {
   PLAYER_LEVEL_UP = function() A.ScanBags() end,
   PLAYER_REGEN_ENABLED = function() if A.waitCombat then A.ScanBags() end end,
   PLAYER_LOGIN = function() A.Baseline() end,
+  MERCHANT_SHOW = function() A.OnMerchant() end,
+  MERCHANT_CLOSED = function() A.OnMerchantClosed() end,
+  PLAYER_MONEY = function() if A.repairWait then A.Repair() end end,
 }
 
 if CreateFrame then
