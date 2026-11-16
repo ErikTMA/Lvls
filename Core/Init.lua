@@ -1166,16 +1166,22 @@ commands.spec = function(arg)
   ns.Log("info", ("spec: %s (%s; talent points %s)"):format(name or "?", source, points))
 end
 
--- /lvls talents [off | learn]: the spec and build window; off: leave the talents
--- alone; learn: spend the points the build says now
+-- /lvls talents [off | next]: the spec and build window; off: leave the talents
+-- alone; next (or learn): say which points the build wants now
 commands.talents = function(arg)
   arg = (arg or ""):lower()
   if arg == "off" then
     ns.TalentsData.TurnOff()
     ns.Log("info", "talents: off. /lvls talents to choose a build again")
-  elseif arg == "learn" then
-    local n, why = ns.TalentsData.Learn(true)
-    if not n then ns.Log("info", "talents: " .. tostring(why)) elseif n == 0 then ns.Log("info", "talents: no points to spend") end
+  elseif arg == "next" or arg == "learn" then
+    local plan, stop = ns.TalentsData.Due(true)
+    if #plan > 0 then
+      ns.Log("info", ("talents to learn: %s. Open your talents (N): Lvls! marks them"):format(ns.TalentsData.PlanText(plan)))
+    elseif not ns.TalentsData.ActiveBuild() then
+      ns.Log("info", "talents: no build chosen (/lvls talents)")
+    else
+      ns.Log("info", "talents: " .. (stop and ("the build stops at " .. stop) or "no points to spend"))
+    end
   else
     ns.TalentsUI.Pick()
   end
@@ -1333,7 +1339,7 @@ end
 commands.tour = function() ns.Tour.Start(true) end
 
 commands.help = function()
-  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|zone [name]|buff|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|training|buffs|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|talents [off|learn]|gear|nearby|travel|record|note [text|clear]|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|share|tour|debug|help]")
+  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|zone [name]|buff|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|training|buffs|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|talents [off|next]|gear|nearby|travel|record|note [text|clear]|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|share|tour|debug|help]")
 end
 
 local function slash(input)

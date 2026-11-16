@@ -1,19 +1,18 @@
 -- The talent window (/lvls talents, Settings -> Lvls! -> Talents).
 --   Choose: the three trees of your class, the one with most points preselected
---     (none spent: the class's leveling tree): only a suggestion, nothing is learned
---     until you pick a build and press Learn. Under it the builds for that tree:
+--     (none spent: the class's leveling tree): only a suggestion, nothing is marked
+--     until you pick a build and press Follow. Under it the builds for that tree:
 --     Lvls!'s own (Data/forever/TalentBuilds.lua, preselected) and yours: New / Edit /
 --     Copy / Delete (Lvls!'s own are edited as a copy). Turn off: Lvls! leaves your
 --     talents alone and does not ask again (a talent reset asks again unless it is off).
---   Edit: the game's own talent window shows the build (UI/TalentsGame), with this
---     window's order panel docked beside it; when the game's window cannot, this
---     window draws the three trees itself. Left-click a talent: one more point, at the
+--   Edit: this window draws the three trees (the game's own talent window is never
+--     driven from here: ErikTMA/Lvls#2, see UI/TalentsGame). Left-click a talent: one more point, at the
 --     end of the order; right-click: its last point out. The order is the list, one
 --     line per point with the level it comes at: move a point up or down (only where
 --     the tree allows it) or take it out. A point the tree no longer allows after a
 --     change is red, with why, until it is fixed.
--- Learning itself is Adapters/Talents; when the game wants a click for it, a
--- question with a Learn button comes up.
+-- Learning: Adapters/Talents says which points are due; the player clicks them in the
+-- game's talent window, where UI/TalentsGame marks them.
 local _, ns = ...
 local TU = ns:NewModule("TalentsUI")
 local T = ns.Talents
@@ -22,7 +21,6 @@ TU.CELL, TU.GAP = 34, 6
 TU.LIST_ROWS = 13
 TU.SIDE = 276 -- the order panel's width
 TU.WIDTH, TU.HEIGHT = 840, 470
-TU.ASK = "LVLS_TALENTS_LEARN"
 local C = { bg = { 0.067, 0.067, 0.067, 0.96 }, panel = { 0.125, 0.125, 0.125, 0.95 }, bar = { 0.23, 0.23, 0.23, 1 },
   accent = { 1, 0.48, 0.1 }, text = { 0.92, 0.92, 0.92 }, dim = { 0.5, 0.5, 0.5 }, bad = { 1, 0.35, 0.3 },
   good = { 0.4, 1, 0.4 }, part = { 1, 0.82, 0.25 } }
@@ -154,8 +152,8 @@ local function buildPick(f)
   p.intro = text(p, "GameFontHighlight", C.text[1], C.text[2], C.text[3])
   p.intro:SetPoint("TOPLEFT", p, "TOPLEFT", 0, 0)
   p.intro:SetWidth(TU.WIDTH - 24)
-  p.intro:SetText("Pick the spec your talents follow, then a build: Lvls! learns its points in its order as you level. "
-    .. "The preselected spec is only a suggestion. Nothing is learned until you press Learn.")
+  p.intro:SetText("Pick the spec your talents follow, then a build: as you level, Lvls! marks its next points in your talent window (N) "
+    .. "for you to click. The preselected spec is only a suggestion.")
   p.cards = {}
   for i = 1, 3 do
     local card = CreateFrame("Button", nil, p)
@@ -229,10 +227,10 @@ local function buildPick(f)
     end
   end)
   p.delete:SetPoint("TOPLEFT", p.copy, "BOTTOMLEFT", 0, -18)
-  p.learn = button(p, "Learn with this build", 180, function()
+  p.learn = button(p, "Follow this build", 180, function()
     if not TU.state.build then return end
     ns.TalentsData.Use(TU.state.spec, TU.state.build)
-    say(("learning with %s"):format(TU.state.build))
+    say(("following %s: its next points are marked in your talent window (N)"):format(TU.state.build))
     TU.Refresh()
   end)
   p.learn:SetPoint("BOTTOMLEFT", p, "BOTTOMLEFT", 0, 0)
@@ -308,9 +306,8 @@ local function refreshPick()
 end
 
 -- the editor ------------------------------------------------------------------
--- p.trees: the three trees drawn here (when the game's window cannot show the build);
--- p.side: the order panel (name, points, the order list, Save / Cancel), on the right
--- of this window, or alone and docked beside the game's talent window.
+-- p.trees: the three trees drawn here; p.side: the order panel (name, points, the
+-- order list, Save / Cancel), on the right of this window.
 
 local function treeOrigin(ti)
   return 12 + (ti - 1) * (4 * (TU.CELL + TU.GAP) + 16), -48
@@ -509,20 +506,15 @@ local function drawTrees(p, tree, m, points, specs)
   end
 end
 
--- This window as the order panel beside the game's talent window, or whole.
-local function layout(game)
-  if TU.layout == game then return end
-  TU.layout = game
-  if game then frame.edit.trees:Hide() else frame.edit.trees:Show() end
+-- The window whole (placed once per showing).
+local function layout()
+  if TU.layout == false then return end
+  TU.layout = false
+  frame.edit.trees:Show()
   frame:ClearAllPoints()
-  if game then
-    frame:SetSize(TU.SIDE + 24, TU.HEIGHT)
-    frame:SetPoint("TOPLEFT", ns.TalentsGame.Frame(), "TOPRIGHT", 4, 0)
-  else
-    frame:SetSize(TU.WIDTH, TU.HEIGHT)
-    ns.Style.Place(frame, "talents", "CENTER", "CENTER", 0, 40)
-  end
-  frame.status:SetWidth((game and TU.SIDE or TU.WIDTH - 24))
+  frame:SetSize(TU.WIDTH, TU.HEIGHT)
+  ns.Style.Place(frame, "talents", "CENTER", "CENTER", 0, 40)
+  frame.status:SetWidth(TU.WIDTH - 24)
 end
 
 local function refreshEdit()
@@ -538,22 +530,8 @@ local function refreshEdit()
   s.spec:SetText(("Built around %s"):format(specs[e.spec] and specs[e.spec].name or "?"))
   s.spent:SetText(("%d / %d points"):format(m.spent, T.MaxPoints()))
   local ranks = select(2, T.Simulate(tree, e.order))
-  local game = false
-  if e.game then
-    local points = {}
-    for nid, cell in pairs(m.cells) do if #cell.points > 0 then points[nid] = cell.points end end
-    local ok, why = ns.TalentsGame.Show(id, tree, ranks, points,
-      function(nid, remove) if remove then TU.RemovePoint(nid) else TU.AddPoint(nid) end end,
-      function() TU.Hide() end)
-    if ok then
-      game = true
-    else
-      e.game = false -- the game's window could not show it: the trees here
-      say("the game's talent window cannot show the build (" .. tostring(why) .. "): the trees are here instead")
-    end
-  end
-  layout(game)
-  if not game then drawTrees(p, tree, m, T.Points(tree, ranks), specs) end
+  layout()
+  drawTrees(p, tree, m, T.Points(tree, ranks), specs)
   local off = TU.state.scroll or 0
   local maxOff = math.max(0, #m.rows - TU.LIST_ROWS)
   if off > maxOff then off = maxOff end
@@ -657,7 +635,6 @@ function TU.SaveEdit()
   for i, v in ipairs(e.order) do order[i] = v end
   ns.TalentsData.Save({ name = name, class = id, spec = e.spec, order = order }, e.original)
   local problem, why = T.FirstProblem(tree, order)
-  ns.TalentsGame.Close()
   TU.state.mode, TU.state.edit, TU.state.build, TU.state.spec = "pick", nil, name, e.spec
   say(problem and ("saved %s: it stops at point %d (%s)"):format(name, problem, why) or ("saved " .. name), problem ~= nil)
   TU.Refresh()
@@ -666,13 +643,11 @@ end
 
 -- Back to choosing, the edit dropped.
 function TU.CancelEdit()
-  ns.TalentsGame.Close()
   TU.state.mode, TU.state.edit = "pick", nil
   TU.Refresh()
 end
 
--- Open the editor: a saved build by name (copy: as a new one), or a new one. The
--- game's talent window shows it when it can (out of combat), else the trees here.
+-- Open the editor: a saved build by name (copy: as a new one), or a new one.
 function TU.Edit(name, copy)
   local _, id = classInfo()
   local token = ns.GearData.Class()
@@ -683,9 +658,7 @@ function TU.Edit(name, copy)
   local specName = (ns.Gear.SPECS[token] or {})[spec] and ns.Gear.SPECS[token][spec].name or "Build"
   local base = (b and not b.shipped) and (b.name .. " copy") or specName
   local newName = (b and not copy) and b.name or T.FreeName(ns.TalentsData.Builds(), id, base)
-  local inCombat = type(InCombatLockdown) == "function" and InCombatLockdown()
-  TU.state.edit = { name = newName, spec = spec, order = order, original = (b and not copy) and b.name or nil,
-    game = not inCombat and ns.TalentsGame.Supported() }
+  TU.state.edit = { name = newName, spec = spec, order = order, original = (b and not copy) and b.name or nil }
   TU.state.mode, TU.state.scroll = "edit", 0
   if frame then frame.edit.name.typed = nil; frame.edit.name:SetText(newName) end
   TU.Show()
@@ -710,13 +683,7 @@ local function create()
   frame.close = button(frame.titleBar, "x", 22, function() TU.Hide() end)
   frame.close:SetPoint("RIGHT", frame.titleBar, "RIGHT", -4, 0)
   ns.Style.Draggable(frame, "talents", frame.titleBar)
-  -- docked beside the game's talent window it stays there: no dragging
-  local start, stop = frame.titleBar:GetScript("OnDragStart"), frame.titleBar:GetScript("OnDragStop")
-  frame.titleBar:SetScript("OnDragStart", function(...) if not TU.layout and start then start(...) end end)
-  frame.titleBar:SetScript("OnDragStop", function(...) if not TU.layout and stop then stop(...) end end)
-  -- closed while the game's window shows the build: that view ends, the edit stays
-  -- for /lvls talents to go on with
-  frame:SetScript("OnHide", function() ns.TalentsGame.Close(); TU.layout = nil end)
+  frame:SetScript("OnHide", function() TU.layout = nil end)
   frame.status = text(frame, "GameFontDisableSmall", C.dim[1], C.dim[2], C.dim[3])
   frame.status:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 12, 12)
   frame.status:SetWidth(TU.WIDTH - 24)
@@ -735,7 +702,7 @@ function TU.Refresh()
   frame.pick:SetShown(not editing)
   frame.edit:SetShown(editing)
   frame.title:SetText(editing and "Lvls! talents: edit build" or "Lvls! talents: spec and build")
-  if editing then refreshEdit() else layout(false); refreshPick() end
+  if editing then refreshEdit() else layout(); refreshPick() end
 end
 
 function TU.Show(mode)
@@ -763,28 +730,9 @@ function TU.Pick()
   return TU.Show()
 end
 
-local function define()
-  if not StaticPopupDialogs or type(StaticPopup_Show) ~= "function" then return false end
-  StaticPopupDialogs[TU.ASK] = StaticPopupDialogs[TU.ASK] or {
-    text = "Lvls!: learn %s?",
-    button1 = "Learn", button2 = "Not now",
-    OnAccept = function() ns.TalentsData.Learn(true) end,
-    timeout = 0, whileDead = true, hideOnEscape = true, preferredIndex = 3,
-  }
-  return true
-end
-
--- "Cruelty 2/5, Unbridled Wrath 1/5"
-function TU.PlanText(plan)
-  local names = {}
-  for _, p in ipairs(plan or {}) do names[#names + 1] = ("%s %d/%d"):format(p.name, p.rank, p.max) end
-  return table.concat(names, ", ")
-end
+function TU.PlanText(plan) return ns.TalentsData.PlanText(plan) end
 
 ns.Events.On("LVLS_TALENTS_PICK", function() TU.Pick() end)
-ns.Events.On("LVLS_TALENTS_ASK", function(plan)
-  if define() then StaticPopup_Show(TU.ASK, TU.PlanText(plan)) end
-end)
 ns.Events.On("LVLS_UPDATED", function() if frame and frame:IsShown() and TU.state.mode == "pick" then TU.Refresh() end end)
 
 local combat = CreateFrame and CreateFrame("Frame")

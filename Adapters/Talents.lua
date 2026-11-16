@@ -1,21 +1,19 @@
--- Talents, game side: read the character's talents, learn the next points of the
--- chosen build (Engine/Talents.lua), notice a reset. Forever's talents are a trait
+-- Talents, game side: read the character's talents, say which points of the chosen
+-- build (Engine/Talents.lua) come next, notice a reset. Forever's talents are a trait
 -- tree (the ClassTalents UI; wow-ui-source branch forever, Camelot). APIs (forever
--- 1.60.1, feature detected):
+-- 1.60.1, feature detected), all read-only:
 --   C_ClassTalents.GetActiveConfigID() -> configID
 --   C_Traits.GetNodeInfo(configID, nodeID) -> { ranksPurchased, maxRanks, canPurchaseRank, ... }
 --   C_Traits.GetTreeCurrencyInfo(configID, treeID, excludeStaged) -> { { quantity, spent, maxQuantity } }
---   C_Traits.PurchaseRank(configID, nodeID) -> ok   (stages a point)
---   C_ClassTalents.CommitConfig(savedConfigID?) -> ok (Camelot's talent frame commits
---     this way, no loadout); C_Traits.CommitConfig(configID) the generic one
---   C_ClassTalents.CanEditTalents() -> canEdit, why; InCombatLockdown()
---   events TRAIT_CONFIG_UPDATED, TRAIT_TREE_CURRENCY_INFO_UPDATED, PLAYER_LEVEL_UP,
---     CONFIG_COMMIT_FAILED, PLAYER_REGEN_ENABLED
+--   C_Traits.ConfigHasStagedChanges(configID) -> points clicked but not applied yet
+--   events TRAIT_CONFIG_UPDATED, TRAIT_TREE_CURRENCY_INFO_UPDATED, PLAYER_LEVEL_UP
+-- Lvls! never spends a point itself. Committing talents from addon code taints the
+-- action bars' Edit Mode layout for the rest of the session (ErikTMA/Lvls#2: blocked
+-- actions in combat). The player clicks the points in the game's talent window, which
+-- Lvls! marks (UI/TalentsGame); LVLS_TALENTS_DUE(plan, stop) says what is next.
 -- LvlsCharDB.talents = { spec = 1-3, build = name, off = true, spent = points last
 -- seen }. LvlsDB.talentBuilds = { { name, class, spec, order } } (every character's);
 -- Lvls!'s own builds ("Lvls! Arms", Data/forever/TalentBuilds.lua) come with them.
--- When the game will not take a point from an addon by itself, the point waits for
--- a click (UI/Talents' "Learn" question: a click may do what an event may not).
 local _, ns = ...
 local TA = ns:NewModule("TalentsData")
 local T = ns.Talents
@@ -127,7 +125,8 @@ function TA.Use(spec, name)
   local c = TA.Choice()
   c.off, c.spec, c.build = nil, spec, name
   TA.asked = true
-  TA.Learn()
+  TA.dueKey = nil -- say it again for the new build
+  TA.Due()
   if ns.Refresh then ns.Refresh() end
 end
 
@@ -135,6 +134,7 @@ function TA.TurnOff()
   local c = TA.Choice()
   c.off, c.spec, c.build = true, nil, nil
   TA.asked = true
+  TA.Due(true)
 end
 
 -- Talents reset (fewer points than last seen): the spec and build choice go, and
@@ -148,27 +148,6 @@ function TA.CheckReset(st)
     TA.asked = nil
     ns.Log("info", "your talents were reset: choose a spec and build again (or turn it off)")
     return true
-  end
-  return false
-end
-
-local function canEdit()
-  if type(InCombatLockdown) == "function" and InCombatLockdown() then return false, "in combat" end
-  if has(C_ClassTalents, "CanEditTalents") then
-    local ok, can, why = pcall(C_ClassTalents.CanEditTalents)
-    if ok and can == false then return false, plain(why) or "the game says not now" end
-  end
-  return true
-end
-
-local function commit(config)
-  if has(C_ClassTalents, "CommitConfig") then
-    local ok, done = pcall(C_ClassTalents.CommitConfig)
-    if ok and done then return true end
-  end
-  if has(C_Traits, "CommitConfig") then
-    local ok, done = pcall(C_Traits.CommitConfig, config)
-    return ok and done and true or false
   end
   return false
 end
@@ -192,77 +171,58 @@ function TA.Pending(st, build)
   return out, stop
 end
 
--- Spend what the build says, as far as the game takes it. byClick: from a button
--- (the click lets the game take it when an event may not). Returns the points
--- learned, or nil and why.
-function TA.Learn(byClick)
-  local build = TA.ActiveBuild()
-  if not build then return nil, "no build chosen" end
-  local st = TA.State()
-  if not st then return nil, "talents not readable yet" end
-  if st.unspent <= 0 then return 0 end
-  local ok, why = canEdit()
-  if not ok then TA.waiting = true; return nil, why end
-  if TA.clickOnly and not byClick then
-    local plan = TA.Pending(st, build)
-    if #plan > 0 then TA.needClick = plan; ns.Events.Fire("LVLS_TALENTS_ASK", plan) end
-    return nil, "waits for a click"
-  end
-  TA.waiting = nil
-  local plan, stop = TA.Pending(st, build)
-  local learned = {}
-  for _, p in ipairs(plan) do
-    local info = has(C_Traits, "GetNodeInfo") and select(2, pcall(C_Traits.GetNodeInfo, st.config, p.id))
-    if type(info) == "table" and info.canPurchaseRank == false then
-      stop = ("%s: the game will not take a point there yet"):format(p.name); break
-    end
-    local bought = has(C_Traits, "PurchaseRank") and select(2, pcall(C_Traits.PurchaseRank, st.config, p.id))
-    if not bought then break end
-    learned[#learned + 1] = p
-  end
-  if #learned == 0 then
-    if #plan > 0 and not byClick then
-      -- not taken from an event: ask for a click
-      TA.needClick = plan
-      ns.Events.Fire("LVLS_TALENTS_ASK", plan)
-      return nil, "waits for a click"
-    end
-    if stop and stop ~= TA.lastStop then ns.Log("info", "talent build stops at " .. stop) end
-    TA.lastStop = stop
-    return nil, stop or "nothing to learn"
-  end
-  if not commit(st.config) then
-    if has(C_Traits, "RollbackConfig") then pcall(C_Traits.RollbackConfig, st.config) end
-    if not byClick then
-      TA.needClick = plan
-      ns.Events.Fire("LVLS_TALENTS_ASK", plan)
-      return nil, "waits for a click"
-    end
-    ns.Log("info", "the game did not take the talents")
-    return nil, "commit failed"
-  end
-  TA.needClick = nil
-  local names = {}
-  for _, p in ipairs(learned) do names[#names + 1] = ("%s %d/%d"):format(p.name, p.rank, p.max) end
-  ns.Log("info", "learned " .. table.concat(names, ", "))
-  if stop and stop ~= TA.lastStop then ns.Log("info", "talent build stops at " .. stop) end
-  TA.lastStop = stop
-  -- the points seen (Choice().spent) stay what the game said: a commit the game
-  -- turns down afterwards must not look like a reset
-  return #learned
+-- Points clicked in the game's window but not applied yet: the spent count is not
+-- the character's then (an undone click must not look like a reset).
+local function staged(st)
+  if not has(C_Traits, "ConfigHasStagedChanges") then return false end
+  local ok, yes = pcall(C_Traits.ConfigHasStagedChanges, st.config)
+  return ok and plain(yes) == true
 end
 
--- After any talent change: a reset clears the choice; points to spend are spent,
--- or the picker asks when nothing is chosen yet.
+local function key(plan, stop)
+  local ids = {}
+  for i, p in ipairs(plan) do ids[i] = p.id .. ":" .. p.rank end
+  return table.concat(ids, ",") .. "|" .. tostring(stop)
+end
+
+-- The points the chosen build wants now ({} when none, or nothing chosen), and why
+-- it stops before the points run out. Fires LVLS_TALENTS_DUE when that changes, and
+-- says it in chat once (quiet: only the marks follow, as while clicking them).
+function TA.Due(quiet)
+  local st, build = TA.State(), TA.ActiveBuild()
+  local plan, stop = {}, nil
+  if st and build and st.unspent > 0 and not TA.Choice().off then plan, stop = TA.Pending(st, build) end
+  local k = key(plan, stop)
+  if k ~= TA.dueKey then
+    TA.dueKey, TA.due = k, plan
+    if not quiet and #plan > 0 then
+      ns.Log("info", ("talents to learn: %s. Open your talents (N): Lvls! marks them"):format(TA.PlanText(plan)))
+    end
+    if not quiet and #plan == 0 and stop and stop ~= TA.lastStop then ns.Log("info", "talent build stops at " .. stop) end
+    TA.lastStop = stop
+    ns.Events.Fire("LVLS_TALENTS_DUE", plan, stop)
+  end
+  return plan, stop
+end
+
+-- "Cruelty 2/5, Unbridled Wrath 1/5"
+function TA.PlanText(plan)
+  local names = {}
+  for _, p in ipairs(plan or {}) do names[#names + 1] = ("%s %d/%d"):format(p.name, p.rank, p.max) end
+  return table.concat(names, ", ")
+end
+
+-- After any talent change: a reset clears the choice; the points to spend are
+-- marked, or the picker asks when nothing is chosen yet.
 function TA.Update()
   if not ns.cdb then return end
   local st = TA.State()
   if not st then return end
-  TA.CheckReset(st)
+  if not staged(st) then TA.CheckReset(st) end
   local c = TA.Choice()
-  if c.off then return end
+  if c.off then TA.Due(true); return end
   if TA.ActiveBuild() then
-    if st.unspent > 0 then TA.Learn() end
+    TA.Due()
   elseif st.unspent > 0 and not TA.asked then
     TA.asked = true
     ns.Events.Fire("LVLS_TALENTS_PICK")
@@ -270,23 +230,13 @@ function TA.Update()
 end
 
 local EVENTS = { "TRAIT_CONFIG_UPDATED", "TRAIT_TREE_CURRENCY_INFO_UPDATED", "PLAYER_LEVEL_UP",
-  "PLAYER_REGEN_ENABLED", "PLAYER_TALENT_UPDATE", "CHARACTER_POINTS_CHANGED", "CONFIG_COMMIT_FAILED" }
-
--- The game turned a commit down after taking it: from now on (this session) points
--- wait for a click, so it does not try again on every event.
-function TA.CommitFailed()
-  TA.clickOnly = true
-  local st, build = TA.State(), TA.ActiveBuild()
-  local plan = TA.Pending(st, build)
-  if #plan > 0 then TA.needClick = plan; ns.Events.Fire("LVLS_TALENTS_ASK", plan) end
-end
+  "PLAYER_TALENT_UPDATE", "CHARACTER_POINTS_CHANGED" }
 
 if CreateFrame then
   local f = CreateFrame("Frame")
   for _, e in ipairs(EVENTS) do pcall(f.RegisterEvent, f, e) end
-  f:SetScript("OnEvent", function(_, event)
-    if event == "PLAYER_REGEN_ENABLED" and not TA.waiting then return end
-    local ok, err = pcall(event == "CONFIG_COMMIT_FAILED" and TA.CommitFailed or TA.Update)
+  f:SetScript("OnEvent", function()
+    local ok, err = pcall(TA.Update)
     if not ok then ns.Log("debug", "talents: " .. tostring(err)) end
   end)
 end
