@@ -335,7 +335,7 @@ function S.Place(ds, char, st, geo, isCurrent)
   if not open then return end
   local q = ds.quests[open.quest]
   local from = isCurrent and char.pos and st.spot and char.pos.map == st.spot.map and char.pos or st.spot
-  local spot = q and ns.Route.WorkTarget(ds, q, open.index, geo, from)
+  local spot = q and ns.Route.WorkTarget(ds, q, open.index, geo, from, { level = char.level })
   if spot then
     st.spot = { map = spot.map, x = spot.x, y = spot.y }
     open.at = st.spot

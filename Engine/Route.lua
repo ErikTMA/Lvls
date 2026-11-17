@@ -195,13 +195,62 @@ end
 -- it has given the objective (0 when it is big enough). The route weighs an area by
 -- the walk plus those waits, so a patch of a few mobs close by does not win over the
 -- big area the objective is meant for.
-local function objectiveTargets(o, spots)
-  local targets = G.Group(spots, 5, spawnYield(o))
+-- Each area also gets `kills` (spawns killed for the objective, by the drop chances of
+-- the mobs there) and `lvl` (their level, by what they give), so the route works the
+-- easiest mobs that can give it: a level-14 after Gnoll Paws was sent to the level
+-- 16-19 gnolls in south Westfall, past the level 11-13 ones in the north.
+local function objectiveTargets(ds, o, spots)
+  local yield = spawnYield(o)
+  local targets = G.Group(spots, 5, yield)
   local qty = o.qty or 1
-  for _, t in ipairs(targets) do
+  local acc = {}
+  for _, s in ipairs(spots) do
+    -- a spot's area: the nearest group centre on its map
+    local best, bd
+    for k, t in ipairs(targets) do
+      if t.map == s.map then
+        local dx, dy = t.x - s.x, t.y - s.y
+        local d = dx * dx + dy * dy
+        if not bd or d < bd then best, bd = k, d end
+      end
+    end
+    if best then
+      local a = acc[best] or { n = 0, y = 0, lw = 0, ly = 0 }
+      acc[best] = a
+      local y = yield(s)
+      a.n, a.y = a.n + 1, a.y + y
+      local rec = s.kind ~= "o" and ds and ds.npcs[s.id]
+      local lv = rec and rec.lv
+      if lv and lv[1] then
+        a.lw, a.ly = a.lw + y, a.ly + y * (lv[1] + (lv[2] or lv[1])) / 2
+      end
+    end
+  end
+  for k, t in ipairs(targets) do
     t.rounds = t.area > 0 and math.max(0, qty - t.area) / t.area or 0
+    local a = acc[k]
+    if a and a.y > 0 and a.y < 1e5 then -- not a vendor: nothing to kill
+      t.kills = qty * a.n / a.y
+      if a.lw > 0 then t.lvl = a.ly / a.lw end
+    end
   end
   return targets
+end
+
+-- How much longer a kill takes per level the mob is above you (and shorter below,
+-- down to HARD_MIN): 1.3 a level, so mobs four above take about three times as long.
+R.HARD_PER_LEVEL = 1.3
+R.HARD_MIN, R.HARD_MAX = 0.7, 5
+function R.Hardness(mobLevel, level)
+  if not mobLevel or not level then return 1 end
+  local f = R.HARD_PER_LEVEL ^ (mobLevel - level)
+  return math.max(R.HARD_MIN, math.min(R.HARD_MAX, f))
+end
+
+-- Seconds of killing an area takes at a level (0 without the numbers).
+local function killCost(o, t, level)
+  if not level or not t.kills then return 0 end
+  return t.kills * (o.killSeconds or R.DEFAULTS.killSeconds) * R.Hardness(t.lvl, level)
 end
 
 -- A quest started by an item that drops in the open world: where to loot it and the
@@ -276,7 +325,7 @@ local function shape(ds, q, dungeon, bagStart, pos, opens, entry, opts)
     else
       local spots = ns.Quests.ObjectiveSpots(ds, q, i)
       if #spots > 0 then
-        objs[i] = { targets = objectiveTargets(o, spots), spots = spots }
+        objs[i] = { targets = objectiveTargets(ds, o, spots), spots = spots }
       else
         why = ("no location known for: %s"):format(o.text or ("objective " .. i))
       end
@@ -302,13 +351,15 @@ local function travelSecs(o, a, b, d)
 end
 
 -- The objective area to work: the fewest seconds of walking plus respawn waits
--- (objectiveTargets). Returns the spot and its yards, as G.Nearest.
-local function bestTarget(o, geo, from, targets)
+-- (objectiveTargets), plus, with the character's level, the killing there (drop
+-- chances and how hard the mobs are for that level). Returns the spot and its yards,
+-- as G.Nearest.
+local function bestTarget(o, geo, from, targets, level)
   local best, bestD, bestC = nil, math.huge, math.huge
   for _, t in ipairs(targets) do
     local d = G.Distance(geo, from, t)
     if d < math.huge then
-      local c = d / o.speed + (t.rounds or 0) * o.respawnSecs
+      local c = d / o.speed + (t.rounds or 0) * o.respawnSecs + killCost(o, t, level)
       if c < bestC then best, bestD, bestC = t, d, c end
     end
   end
@@ -316,7 +367,8 @@ local function bestTarget(o, geo, from, targets)
 end
 
 -- The area to work one objective in, from `from`, as the route chooses it (walk plus
--- respawn waits; opts as R.DEFAULTS). nil when the data cannot place it.
+-- respawn waits, and the killing at opts.level; opts as R.DEFAULTS). nil when the
+-- data cannot place it.
 function R.WorkTarget(ds, q, i, geo, from, opts)
   local o = q.obj and q.obj[i]
   if not o or not from then return nil end
@@ -324,9 +376,10 @@ function R.WorkTarget(ds, q, i, geo, from, opts)
   if #spots == 0 then spots = ns.Quests.ObjectiveSpots(ds, q, i) end
   if #spots == 0 then return nil end
   local oo = { speed = opts and opts.speed or R.DEFAULTS.speed,
-    respawnSecs = opts and opts.respawnSecs or R.DEFAULTS.respawnSecs }
-  local targets = objectiveTargets(o, spots)
-  return bestTarget(oo, geo, from, targets) or targets[1]
+    respawnSecs = opts and opts.respawnSecs or R.DEFAULTS.respawnSecs,
+    killSeconds = opts and opts.killSeconds or R.DEFAULTS.killSeconds }
+  local targets = objectiveTargets(ds, o, spots)
+  return bestTarget(oo, geo, from, targets, opts and opts.level) or targets[1]
 end
 
 -- The spot to go to and the seconds it takes: the nearest on this continent, else
@@ -335,8 +388,8 @@ end
 -- here: only this continent (the route stays on this map anyway).
 local CROSS_TRIES = 4 -- spots tried on another continent (targets are biggest first)
 local CROSS_AVAIL = 12 -- quests to pick up on another continent offered per step (the quickest)
-local function reachSpot(o, geo, from, spots, here)
-  local best, d = bestTarget(o, geo, from, spots)
+local function reachSpot(o, geo, from, spots, here, level)
+  local best, d = bestTarget(o, geo, from, spots, level)
   if best then return best, d, travelSecs(o, from, best, d) end
   if here or not o.travel then return nil, math.huge, math.huge end
   local secs
@@ -1028,7 +1081,7 @@ local function planOnce(ds, char, geo, o)
         local ob = s.objs[i]
         if ob and ob.targets then
           workSecs[q.id] = workSecs[q.id] + workSeconds(q.obj[i], ob.spots, o)
-          local tgt, d = bestTarget(o, geo, here, ob.targets)
+          local tgt, d = bestTarget(o, geo, here, ob.targets, st.level)
           if not entry and not across and d == math.huge then shapes[q.id] = false; return false end
           here = tgt or here
         end
@@ -1197,7 +1250,7 @@ local function planOnce(ds, char, geo, o)
           for i in ipairs(q.obj or {}) do
             local so = s.objs[i]
             if so and so.targets and not progress[qid][i] then
-              pending[#pending + 1] = { quest = qid, index = i, spot = bestTarget(o, geo, pos, so.targets) or so.targets[1] }
+              pending[#pending + 1] = { quest = qid, index = i, spot = bestTarget(o, geo, pos, so.targets, st.level) or so.targets[1] }
             end
           end
         end
@@ -1358,7 +1411,7 @@ local function planOnce(ds, char, geo, o)
               if so and so.free then
                 progress[qid][i] = true
               elseif so and so.targets then
-                local tgt, _, secs = reachSpot(o, geo, pos, so.targets, busy())
+                local tgt, _, secs = reachSpot(o, geo, pos, so.targets, busy(), st.level)
                 if secs < math.huge then
                   offer({ kind = "do", quest = qid, index = i, spot = tgt },
                     secs, workSeconds(ob, so.spots, o) + (tgt.rounds or 0) * o.respawnSecs)
