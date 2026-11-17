@@ -56,11 +56,29 @@ function A.OnDetail()
   AcceptQuest()
 end
 
+-- Close the game's own popup once its question is answered here. Only when it is the
+-- one popup up: hiding runs StaticPopup's cleanup in our (tainted) code, which leaves
+-- taint in its list of shown dialogs while others stay; with none left the client
+-- rebuilds that list securely. Otherwise the popup stays (its Yes is then a no-op).
+function A.HidePopup(which)
+  local only
+  for i = 1, 4 do
+    local d = _G["StaticPopup" .. i]
+    if type(d) == "table" and d.IsShown and d:IsShown() then
+      if only then return false end
+      only = d
+    end
+  end
+  if not only or only.which ~= which then return false end
+  only:Hide()
+  return true
+end
+
 -- a group member shares an escort quest: QUEST_ACCEPT_CONFIRM(name, questTitle, questID)
 function A.OnAcceptConfirm(_, _, qid)
   if not set("autoAccept") or paused() or not A.Planned(qid) then return end
   ConfirmAcceptQuest()
-  if type(StaticPopup_Hide) == "function" then StaticPopup_Hide("QUEST_ACCEPT") end
+  A.HidePopup("QUEST_ACCEPT")
 end
 
 local function wanted(qid, trivial, ignored)
@@ -231,7 +249,7 @@ function A.OnBindConfirm(slot)
   A.pending = nil
   if not p or not set("autoEquipBind") or GetTime() - p.at > 5 then return end
   EquipPendingItem(slot)
-  if type(StaticPopup_Hide) == "function" then StaticPopup_Hide("EQUIP_BIND") end
+  A.HidePopup("EQUIP_BIND")
 end
 
 -- at a vendor ----------------------------------------------------------------

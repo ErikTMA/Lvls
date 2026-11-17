@@ -1,4 +1,4 @@
--- Abandoning grey quests (Engine/Grey.lua):
+-- Abandoning grey quests (Engine/Grey.lua), asked in UI/Ask (not StaticPopup, which taints):
 --   the viewer's trash can   "Abandon 3 grey quests? ..."  Abandon / Cancel (Shift-click: no question,
 --                            unless items would be destroyed). Both name the items it destroys.
 --   farGrey (setting)        "2 grey quests are more than 10 minutes away: ... Abandon them?"
@@ -55,14 +55,13 @@ function A.Destroys(ids)
 end
 
 local function define()
-  if not StaticPopupDialogs or type(StaticPopup_Show) ~= "function" then return false end
-  StaticPopupDialogs[A.ALL] = StaticPopupDialogs[A.ALL] or {
+  if not ns.Ask or not CreateFrame then return false end
+  ns.Ask.Define(A.ALL, {
     text = "Lvls!: abandon %s?\n\n%s",
     button1 = "Abandon", button2 = "Cancel",
     OnAccept = function(_, data) A.Abandon(data) end,
-    timeout = 0, whileDead = true, hideOnEscape = true, preferredIndex = 3,
-  }
-  StaticPopupDialogs[A.FAR] = StaticPopupDialogs[A.FAR] or {
+  })
+  ns.Ask.Define(A.FAR, {
     text = "Lvls!: %s\n\nAbandon them? (Settings: Offer to abandon far grey quests)",
     button1 = "Abandon", button2 = "Keep",
     OnAccept = function(_, data) A.asking = nil; A.Abandon(data) end,
@@ -71,8 +70,7 @@ local function define()
       for _, qid in ipairs(data or {}) do A.kept[qid] = true end
     end,
     OnHide = function() A.asking = nil end, -- closed some other way: may ask again
-    timeout = 0, whileDead = true, hideOnEscape = true, preferredIndex = 3,
-  }
+  })
   return true
 end
 
@@ -96,7 +94,7 @@ function A.Trash()
     return
   end
   if shift and destroys == "" then A.Abandon(ids); return end
-  StaticPopup_Show(A.ALL, quests(#ids), A.Names(ns.ActiveDataset(), ids) .. destroys, ids)
+  ns.Ask.Show(A.ALL, quests(#ids), A.Names(ns.ActiveDataset(), ids) .. destroys, ids)
 end
 
 -- The grey quests further than the setting's minutes, not kept: { questId, ... }.
@@ -128,7 +126,7 @@ function A.Check(now)
   local text = ("%s %s more than %d minute%s away: %s"):format(quests(#ids), #ids == 1 and "is" or "are",
     s.farGreyMinutes or 10, (s.farGreyMinutes or 10) == 1 and "" or "s", A.Names(ns.ActiveDataset(), ids))
     .. A.Destroys(ids)
-  StaticPopup_Show(A.FAR, text, nil, ids)
+  ns.Ask.Show(A.FAR, text, nil, ids)
   return true
 end
 
