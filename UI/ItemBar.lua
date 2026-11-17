@@ -95,9 +95,11 @@ local function newButton(i)
   return b
 end
 
--- Count, cooldown, range and key: fine in combat (only the secure parts are not).
+-- Count, cooldown, range and key: fine in combat (only the secure parts are not;
+-- range to a friendly target is, so it is skipped there in combat).
 function IB.Paint()
   local target = UnitExists and UnitExists("target")
+  local enemy = target and UnitCanAttack and UnitCanAttack("player", "target")
   for i, b in ipairs(buttons) do
     local it = b.item
     if it and b:IsShown() then
@@ -112,7 +114,8 @@ function IB.Paint()
         if start and duration and duration > 0 then b.cd:SetCooldown(start, duration) else b.cd:Clear() end
       end
       local inRange = true
-      if target and C_Item and C_Item.IsItemInRange then
+      -- IsItemInRange is protected in combat unless the target is an enemy
+      if target and C_Item and C_Item.IsItemInRange and (not combat() or enemy) then
         local r = ns.Util.plain(C_Item.IsItemInRange(it.id, "target"))
         inRange = r ~= false
       end
