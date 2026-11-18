@@ -1,6 +1,6 @@
 -- The Lvls! pages in the game's Settings (Options -> AddOns -> Lvls!, with a
 -- subpage per topic under it), and the matching /lvls commands. Values live in LvlsDB.settings (account) and
--- LvlsCharDB.spec (this character's spec override).
+-- LvlsCharDB.spec (this character's spec override) and LvlsCharDB.pawnScale (its weights).
 -- API (wow-ui-source branch forever, Blizzard_Settings_Shared):
 --   Settings.RegisterVerticalLayoutCategory(name) -> category, layout
 --   Settings.RegisterVerticalLayoutSubcategory(parent, name) -> category, layout
@@ -20,7 +20,6 @@ S.QUALITIES = { { 1, "Common (white)" }, { 2, "Uncommon (green)" }, { 3, "Rare (
 S.HELP = { [0] = "Straight line", "Only big detours", "Around walls", "Small detours too", "Every turn" }
 function S.HelpLabel(v) return S.HELP[v] or tostring(v) end
 function S.MinutesLabel(v) return ("%d min"):format(v) end
-S.WEIGHTS = { { "auto", "Pawn when it has a scale for my spec, else Lvls" }, { "pawn", "Pawn" }, { "lvls", "Lvls' own weights" } }
 
 -- Everything on the pages, in order. { page = name } starts a subpage under Lvls!
 -- (items before the first one are on Lvls! itself); { header = name } a section.
@@ -45,7 +44,7 @@ S.ITEMS = {
   { key = "autoEquip", name = "Put on upgrades (out of combat)", tip = "Equip new items in your bags that are upgrades for your spec." },
   { key = "autoEquipBind", name = "Also items that bind when equipped", tip = "Equip upgrades that bind when you put them on, up to the quality below. Better ones stay in your bags to sell or decide." },
   { key = "equipMaxQuality", name = "Highest quality to bind", choices = S.QUALITIES, number = true },
-  { key = "gearWeights", name = "Stat weights", choices = S.WEIGHTS, tip = "Which weights judge gear. Your spec always comes from your talents (most points spent) or the choice below, never from Pawn." },
+  { weights = true, name = "Stat weights", tip = "Which weights judge gear: Lvls' own for your spec (below), or one of your Pawn scales. /lvls weights" },
   { spec = true, name = "Spec", tip = "Detected: the spec picked for your talent build, else the talent tree with most points; below level 10 the class's leveling weights." },
   { header = "At a vendor" },
   { key = "autoSellJunk", name = "Sell grey items", tip = "When you open a vendor, sell the grey (poor quality) items in your bags. Hold Shift to pause. You can buy them back from the vendor's Buyback tab. /lvls junk" },
@@ -102,6 +101,19 @@ function S.Set(key, value)
   if ns.Refresh and ns.char then ns.Refresh() end
 end
 
+-- this character's weights: Lvls' own (""), then Pawn's scales; a picked scale
+-- Pawn no longer has stays listed so the dropdown shows it
+function S.WeightChoices()
+  local out = { { "", "Lvls' own weights" } }
+  local pick, seen = ns.cdb and ns.cdb.pawnScale, false
+  for _, o in ipairs(ns.GearData.PawnScales()) do
+    out[#out + 1] = { o[1], "Pawn: " .. o[2] }
+    if o[1] == pick then seen = true end
+  end
+  if type(pick) == "string" and pick ~= "" and not seen then out[#out + 1] = { pick, "Pawn: " .. pick .. " (not in Pawn)" } end
+  return out
+end
+
 -- this character's spec choices: 0 = detect, then the class's trees
 function S.SpecChoices()
   local token = ns.GearData.Class()
@@ -156,6 +168,10 @@ function S.Register()
           end
           return out
         end
+      elseif it.weights then
+        get = function() return ns.cdb and ns.cdb.pawnScale or "" end
+        setv = function(v) if ns.cdb then ns.cdb.pawnScale = v end; if ns.Refresh and ns.char then ns.Refresh() end end
+        default, kind, choices = "", Var.String, S.WeightChoices
       elseif it.spec then
         get = function() return ns.cdb and ns.cdb.spec or 0 end
         setv = function(v) if ns.cdb then ns.cdb.spec = v end end
@@ -173,7 +189,7 @@ function S.Register()
           kind = Var.Boolean
         end
       end
-      local setting = Settings.RegisterProxySetting(category, "LVLS_" .. (it.key or (it.guide and "guide") or "spec"):upper(), kind,
+      local setting = Settings.RegisterProxySetting(category, "LVLS_" .. (it.key or (it.guide and "guide") or (it.weights and "weights") or "spec"):upper(), kind,
         it.name, default, get, setv)
       if it.slider and Settings.CreateSlider and Settings.CreateSliderOptions then
         local o = Settings.CreateSliderOptions(it.slider[1], it.slider[2], it.slider[3])

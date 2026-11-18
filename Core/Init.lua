@@ -24,7 +24,7 @@ ns.DEFAULT_SETTINGS = {
   -- automation (Adapters/Automation.lua); hold Shift at an npc to pause it
   autoAccept = true, autoDeliver = true, autoReward = true, rewardGold = true,
   skipFlightGossip = true, -- a flight master with nothing but the flight opens the map at once
-  autoEquip = false, autoEquipBind = false, equipMaxQuality = 2, gearWeights = "auto",
+  autoEquip = false, autoEquipBind = false, equipMaxQuality = 2,
   autoSellJunk = true, autoRepair = true, -- at a vendor: sell grey items, then repair with your own money
   classQuests = true,    -- class quests in the leveling route (Engine/Route), marked with the class
   trainSteps = true,     -- go to your class trainer when spells wait there (Engine/Training)
@@ -47,6 +47,7 @@ function ns.InitDB(db)
   -- the old on/off for the way on foot: off stays off on the slider
   if db.settings.groundRoute == false and db.settings.groundHelp == nil then db.settings.groundHelp = 0 end
   db.settings.groundRoute = nil
+  db.settings.gearWeights = nil -- replaced by the Pawn scale picked per character (LvlsCharDB.pawnScale)
   -- one slider before: inside starts where it was set
   if db.settings.groundHelpIndoors == nil and db.settings.groundHelp ~= nil then
     db.settings.groundHelpIndoors = db.settings.groundHelp
@@ -64,6 +65,7 @@ function ns.InitCharDB(cdb)
   if type(cdb.trainIgnore) ~= "table" then cdb.trainIgnore = {} end
   if type(cdb.buffIgnore) ~= "table" then cdb.buffIgnore = {} end -- Engine/Buffs: [item] = "get" | "use"
   if type(cdb.spec) ~= "number" then cdb.spec = 0 end -- 0: from the talents
+  if type(cdb.pawnScale) ~= "string" then cdb.pawnScale = "" end -- "": Lvls' own weights, else a Pawn scale's Name
   cdb.stepsDone = nil -- the old step counter, gone
   if type(cdb.fights) ~= "table" then cdb.fights = {} end -- Adapters/FightLog
   return cdb
@@ -1201,10 +1203,26 @@ commands.quality = function(arg)
   ns.Log("info", ("items that bind when equipped are put on up to quality %d"):format(ns.db.settings.equipMaxQuality))
 end
 
+-- /lvls weights: list; lvls: Lvls' own; else the Pawn scale whose name contains it
 commands.weights = function(arg)
   arg = (arg or ""):lower()
-  if arg == "auto" or arg == "pawn" or arg == "lvls" then ns.db.settings.gearWeights = arg end
-  ns.Log("info", "stat weights: " .. ns.db.settings.gearWeights)
+  local scales = ns.GearData.PawnScales()
+  if arg == "lvls" then
+    ns.cdb.pawnScale = ""
+  elseif arg ~= "" then
+    local hit
+    for _, o in ipairs(scales) do
+      if o[1]:lower() == arg or o[2]:lower() == arg then hit = o break end
+      if not hit and (o[1]:lower():find(arg, 1, true) or o[2]:lower():find(arg, 1, true)) then hit = o end
+    end
+    if hit then ns.cdb.pawnScale = hit[1] else ns.Log("warn", "no Pawn scale matches " .. arg) end
+  end
+  local pick = ns.cdb.pawnScale
+  ns.Log("info", "stat weights: " .. (pick ~= "" and ("Pawn scale " .. pick) or "Lvls' own"))
+  if arg == "" then
+    for _, o in ipairs(scales) do ns.Log("info", "  Pawn: " .. o[2]) end
+    if #scales == 0 then ns.Log("info", "  no Pawn scales (Pawn not installed?)") end
+  end
 end
 
 local TOGGLES = { accept = "autoAccept", deliver = "autoDeliver", reward = "autoReward", gold = "rewardGold", flight = "skipFlightGossip",
@@ -1340,7 +1358,7 @@ end
 commands.tour = function() ns.Tour.Start(true) end
 
 commands.help = function()
-  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|zone [name]|buff|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|training|buffs|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|junk|repair|quality <1-4>|weights <auto|pawn|lvls>|spec [auto|name]|talents [off|next]|gear|nearby|travel|record|note [text|clear]|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|share|tour|debug|help]")
+  ns.Log("info", "/lvls [show|settings|guide [dungeon|class [name]|zone [name]|buff|off]|sync [name|follow name|off]|groupsync|asksync|classquests|train|trainsteps|fights [reset]|grind|learn|route|next|skip [quest]|unskip <quest|training|buffs|all>|abandon [far [minutes|off]]|why <quest>|zone|accept|deliver|reward|gold|equip|bind|junk|repair|quality <1-4>|weights [lvls|scale]|spec [auto|name]|talents [off|next]|gear|nearby|travel|record|note [text|clear]|status|items [lock|unlock|reset]|arrow|walk [0-4]|map|minimap|miniroute|button|objectives|low|trivial|dungeon|repeatable|growup|share|tour|debug|help]")
 end
 
 local function slash(input)

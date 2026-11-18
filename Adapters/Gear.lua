@@ -12,8 +12,9 @@
 --   C_Item.GetItemGUID, C_Item.EquipItemByName(link, slot), EquipPendingItem(slot)
 -- Pawn (third party, feature detected): PawnGetAllScalesEx() -> { { Name,
 --   LocalizedName, IsVisible }, ... }, PawnGetItemData(link) -> item,
---   PawnGetSingleValueFromItem(item, scaleName) -> value. Pawn only gives weights:
---   the spec always comes from the talents (or the setting).
+--   PawnGetSingleValueFromItem(item, scaleName) -> value. The scale is the one
+--   picked on the Gear page (LvlsCharDB.pawnScale), never guessed; the spec always
+--   comes from the talents (or the setting).
 local _, ns = ...
 local GA = ns:NewModule("GearData")
 local Gear = ns.Gear
@@ -66,28 +67,37 @@ function GA.Spec()
   return token, i, name, source
 end
 
--- Pawn scale for this class and spec: its name ends in ":<CLASS><n>" (Pawn's own
--- scales, e.g. "Classic":WARRIOR2) or its shown name names the spec.
-function GA.PawnScale(token, spec, specName)
-  if not (has(_G, "PawnGetAllScalesEx") and has(_G, "PawnGetItemData") and has(_G, "PawnGetSingleValueFromItem")) then
-    return nil, "Pawn not installed"
-  end
-  if not token then return nil, "class not known yet" end
+local function pawnReady()
+  return has(_G, "PawnGetAllScalesEx") and has(_G, "PawnGetItemData") and has(_G, "PawnGetSingleValueFromItem")
+end
+
+-- Pawn's scales for the Stat weights dropdown: { { name, label }, ... }, the ones
+-- shown in Pawn first; empty without Pawn.
+function GA.PawnScales()
+  if not pawnReady() then return {} end
   local ok, scales = pcall(PawnGetAllScalesEx)
-  if not ok or type(scales) ~= "table" then return nil, "Pawn scales unreadable" end
-  local suffix = ":" .. token .. tostring(spec)
-  local found
+  if not ok or type(scales) ~= "table" then return {} end
+  local shown, hidden = {}, {}
   for _, s in ipairs(scales) do
-    local name = type(s.Name) == "string" and s.Name or ""
-    local shown = type(s.LocalizedName) == "string" and s.LocalizedName:lower() or ""
-    if name:upper():sub(-#suffix) == suffix:upper()
-      or (specName and shown:find(specName:lower(), 1, true) and shown:find(token:lower(), 1, true)) then
-      if s.IsVisible then return s.Name end
-      found = found or s.Name
+    if type(s.Name) == "string" and s.Name ~= "" then
+      local label = type(s.LocalizedName) == "string" and s.LocalizedName ~= "" and s.LocalizedName or s.Name
+      if s.IsVisible then shown[#shown + 1] = { s.Name, label }
+      else hidden[#hidden + 1] = { s.Name, label .. " (hidden in Pawn)" } end
     end
   end
-  if found then return nil, ("Pawn's scale %s is hidden; show it in Pawn to use it"):format(found) end
-  return nil, "Pawn has no scale for " .. (specName or "this spec")
+  for _, o in ipairs(hidden) do shown[#shown + 1] = o end
+  return shown
+end
+
+-- The Pawn scale this character picked, when Pawn still has it; else nil and why.
+function GA.PawnScale()
+  local pick = ns.cdb and ns.cdb.pawnScale
+  if type(pick) ~= "string" or pick == "" then return nil end
+  if not pawnReady() then return nil, "Pawn not installed" end
+  for _, o in ipairs(GA.PawnScales()) do
+    if o[1] == pick then return pick end
+  end
+  return nil, ("Pawn has no scale %s"):format(pick)
 end
 
 -- The scorer in use: function(link) -> score or nil (item data not loaded yet),
@@ -95,21 +105,18 @@ end
 local warned = {}
 function GA.Scorer()
   local token, spec, specName, source = GA.Spec()
-  local mode = ns.db and ns.db.settings.gearWeights or "auto"
-  if mode ~= "lvls" then
-    local scale, why = GA.PawnScale(token, spec, specName)
-    if scale then
-      return function(link)
-        local ok, item = pcall(PawnGetItemData, link)
-        if not ok or not item then return nil end
-        local ok2, v = pcall(PawnGetSingleValueFromItem, item, scale)
-        return ok2 and tonumber(v) or nil
-      end, ("Pawn scale %s (%s, %s)"):format(scale, specName or "?", source)
-    end
-    if mode == "pawn" and not warned[why] then
-      warned[why] = true
-      ns.Log("warn", why .. ": using Lvls' own weights")
-    end
+  local scale, why = GA.PawnScale()
+  if scale then
+    return function(link)
+      local ok, item = pcall(PawnGetItemData, link)
+      if not ok or not item then return nil end
+      local ok2, v = pcall(PawnGetSingleValueFromItem, item, scale)
+      return ok2 and tonumber(v) or nil
+    end, ("Pawn scale %s"):format(scale)
+  end
+  if why and not warned[why] then
+    warned[why] = true
+    ns.Log("warn", why .. ": using Lvls' own weights")
   end
   local w = Gear.Weights(token, spec)
   return function(link)
