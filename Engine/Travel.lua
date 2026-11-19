@@ -224,6 +224,15 @@ function T.Plan(from, to, ctx)
     table.insert(legs, 1, leg)
     v = u
   end
+  -- flights one after the other are one flight: the flight master routes you
+  -- through the points between ("fly to Southshore", not via Menethil Harbor)
+  for i = #legs, 2, -1 do
+    local a, b = legs[i - 1], legs[i]
+    if a.mode == "fly" and b.mode == "fly" then
+      a.to, a.secs, a.title, a.node, a.nodeName = b.to, a.secs + b.secs, b.title, b.node, b.nodeName
+      table.remove(legs, i)
+    end
+  end
   local trip = { legs = legs, secs = dist[goal.i], walk = walk }
   -- a flight, boat or port only when it is faster than walking there; a trip of
   -- walks only (past a flight point) is the walk straight there
