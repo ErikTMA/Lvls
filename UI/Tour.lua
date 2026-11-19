@@ -39,6 +39,8 @@ T.STEPS = {
     text = "Instead of the leveling route: one zone, a dungeon (its quests and the chains leading to them, ending at its entrance) or a class quest chain.\n\nIn a group with others running Lvls!, catch up with them here." },
   { id = "replan", target = viewer("replan"), title = "Plan again",
     text = "Plans the route again from where you are now. With nothing changed it is the same route." },
+  { id = "talents", target = viewer("talents"), title = "Talents",
+    text = "Choose the spec and talent build Lvls! follows; it marks the points to spend in the game's talent window (N). Also /lvls talents.\n\nWith points to spend and no build chosen, a small note under this button says so." },
   { id = "trash", target = viewer("trash"), title = "Abandon grey quests",
     text = "Abandons the grey quests in your log (no experience left in them). It asks first and names any items that would go with them. Shift-click: at once, when no items would.\n\nDim: none in your log." },
   { id = "settings", target = viewer("settings"), title = "Settings",

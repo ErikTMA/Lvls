@@ -713,6 +713,7 @@ function TU.Show(mode)
   end
   if mode then TU.state.mode = mode end
   if not frame:IsShown() then TU.layout = nil end -- placed by the first refresh
+  TU.Ask(false)
   frame:Show()
   TU.Refresh()
   return true
@@ -720,8 +721,8 @@ end
 
 function TU.Hide() if frame then frame:Hide() end end
 
--- The picker, asked by Adapters/Talents (points to spend, nothing chosen): what is
--- chosen preselected, else the suggestion. In combat it waits for the fight to end.
+-- The picker (the viewer's talents button, /lvls talents, Settings): what is chosen
+-- preselected, else the suggestion. In combat it waits for the fight to end.
 function TU.Pick()
   if type(InCombatLockdown) == "function" and InCombatLockdown() then TU.afterCombat = true; return false end
   TU.afterCombat = nil
@@ -732,7 +733,25 @@ end
 
 function TU.PlanText(plan) return ns.TalentsData.PlanText(plan) end
 
-ns.Events.On("LVLS_TALENTS_PICK", function() TU.Pick() end)
+-- Adapters/Talents asks (points to spend, nothing chosen): no window over the game, a
+-- small hint at the viewer's talents button (UI/Viewer), shown only with the viewer,
+-- until the picker is opened or a build chosen.
+TU.ask = false
+function TU.Ask(on)
+  on = on and true or false
+  if TU.ask == on then return end
+  TU.ask = on
+  ns.Events.Fire("LVLS_TALENTS_ASK", on)
+end
+
+-- The hint is wanted: asked, and still nothing chosen (nor turned off).
+function TU.Asking()
+  if not TU.ask then return false end
+  local c = ns.TalentsData.Choice()
+  return not (c.off or ns.TalentsData.ActiveBuild())
+end
+
+ns.Events.On("LVLS_TALENTS_PICK", function() TU.Ask(true) end)
 ns.Events.On("LVLS_UPDATED", function() if frame and frame:IsShown() and TU.state.mode == "pick" then TU.Refresh() end end)
 
 local combat = CreateFrame and CreateFrame("Frame")

@@ -3,7 +3,8 @@
 -- of the next step and the experience bar. Prev / next browse the plan; clicking a
 -- line points the arrow at it, right-clicking skips its quest (hover: a tooltip
 -- says so, and that WoW Forever's quests may still lack prerequisites). The gear opens the
--- settings page.
+-- settings page; the tree opens the talent picker (UI/Talents), and when Lvls! wants
+-- a build chosen (points to spend, none chosen) a small hint says so under it.
 local _, ns = ...
 local V = ns:NewModule("Viewer")
 
@@ -20,8 +21,9 @@ V.COLORS = {
 }
 local ICONS = "Interface\\AddOns\\Lvls\\Media\\Icons"
 local ICON_SLOT = { checkoff = 0, checkon = 1, accept = 2, turnin = 3, kill = 4, collect = 5, talk = 6, ["goto"] = 7,
-  fly = 8, transit = 9, hearth = 10, enter = 11, path = 12, settings = 13, trash = 14, replan = 15 }
-local ICON_SLOTS = 16
+  fly = 8, transit = 9, hearth = 10, enter = 11, path = 12, settings = 13, trash = 14, replan = 15,
+  talents = 16 }
+local ICON_SLOTS = 32
 
 V.view = nil -- index of the step being shown (nil: follow the current step)
 local frame, rows = nil, {}
@@ -398,8 +400,54 @@ local function create()
     GameTooltip:Show()
   end)
   frame.replan:SetScript("OnLeave", function() if GameTooltip then GameTooltip:Hide() end end)
+  -- the talent picker (/lvls talents): a small tree
+  frame.talents = button(frame.bar, "", 20, function() V.OpenTalents() end)
+  frame.talents:SetPoint("RIGHT", frame.replan, "LEFT", -2, 0)
+  frame.talents.icon = frame.talents:CreateTexture(nil, "ARTWORK")
+  frame.talents.icon:SetSize(14, 14)
+  frame.talents.icon:SetPoint("CENTER", frame.talents, "CENTER", 0, 0)
+  frame.talents.icon:SetTexture(ICONS)
+  frame.talents.icon:SetTexCoord(V.IconCoords("talents"))
+  frame.talents:SetScript("OnEnter", function(self)
+    if not GameTooltip then return end
+    GameTooltip:SetOwner(self, "ANCHOR_TOP")
+    GameTooltip:AddLine("Talents")
+    GameTooltip:AddLine("Choose the spec and build Lvls! follows", 1, 1, 1, true)
+    GameTooltip:Show()
+  end)
+  frame.talents:SetScript("OnLeave", function() if GameTooltip then GameTooltip:Hide() end end)
+  -- the hint under it: a small box with a notch up to the button; a click opens the
+  -- picker, its x lets it go (the button still opens the picker)
+  local hint = CreateFrame("Button", nil, frame)
+  frame.hint = hint
+  hint:SetFrameLevel((frame:GetFrameLevel() or 1) + 10)
+  hint:SetSize(V.HINT_WIDTH, 34)
+  hint:SetPoint("TOPRIGHT", frame.talents, "BOTTOMRIGHT", 40, -6)
+  bg(hint, { 0.03, 0.03, 0.03, 0.97 })
+  hint.edge = hint:CreateTexture(nil, "BORDER")
+  hint.edge:SetColorTexture(C.accent[1], C.accent[2], C.accent[3], 1)
+  hint.edge:SetPoint("TOPLEFT", hint, "TOPLEFT", 0, 0)
+  hint.edge:SetPoint("TOPRIGHT", hint, "TOPRIGHT", 0, 0)
+  hint.edge:SetHeight(2)
+  hint.notch = hint:CreateTexture(nil, "BORDER")
+  hint.notch:SetColorTexture(C.accent[1], C.accent[2], C.accent[3], 1)
+  hint.notch:SetSize(6, 6)
+  hint.notch:SetPoint("BOTTOM", frame.talents, "BOTTOM", 0, -6)
+  hint.text = hint:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+  hint.text:SetPoint("TOPLEFT", hint, "TOPLEFT", 8, -7)
+  hint.text:SetPoint("RIGHT", hint, "RIGHT", -20, 0)
+  if hint.text.SetJustifyH then hint.text:SetJustifyH("LEFT") end
+  if hint.text.SetWordWrap then hint.text:SetWordWrap(true) end
+  hint.text:SetText(V.HINT_TEXT)
+  local hl = hint:CreateTexture(nil, "HIGHLIGHT")
+  hl:SetAllPoints(hint)
+  hl:SetColorTexture(1, 1, 1, 0.06)
+  hint:SetScript("OnClick", function() V.OpenTalents() end)
+  hint.close = button(hint, "x", 16, function() V.DismissHint() end)
+  hint.close:SetPoint("TOPRIGHT", hint, "TOPRIGHT", -2, -3)
+  hint:Hide()
   frame.nextBtn = button(frame.bar, ">", 20, function() V.Browse(1) end)
-  frame.nextBtn:SetPoint("RIGHT", frame.replan, "LEFT", -2, 0)
+  frame.nextBtn:SetPoint("RIGHT", frame.talents, "LEFT", -2, 0)
   frame.stepNo = frame.bar:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
   frame.stepNo:SetPoint("RIGHT", frame.nextBtn, "LEFT", -4, 0)
   frame.prevBtn = button(frame.bar, "<", 20, function() V.Browse(-1) end)
@@ -450,6 +498,29 @@ end
 -- the same things as any other (the log, where you are, settings, skips), so with
 -- nothing changed it is the same route.
 function V.Replan() ns.Refresh(true) end
+
+-- The tree on the title bar, and its hint: the talent picker, as /lvls talents.
+function V.OpenTalents()
+  if ns.TalentsUI then ns.TalentsUI.Pick() end
+end
+
+V.HINT_WIDTH = 180
+V.HINT_TEXT = "Talent points to spend: choose a build and Lvls! marks them"
+
+-- The hint at the talents button: only while the viewer is shown and Lvls! asks.
+function V.HintWanted()
+  return V.Shown() and ns.TalentsUI ~= nil and ns.TalentsUI.Asking() and true or false
+end
+
+function V.RenderHint()
+  if not (frame and frame.hint) then return end
+  if V.HintWanted() and frame:IsShown() then frame.hint:Show() else frame.hint:Hide() end
+end
+
+-- Its x: not now. The ask comes again after a talent reset.
+function V.DismissHint()
+  if ns.TalentsUI then ns.TalentsUI.Ask(false) end
+end
 
 -- The gear on the title bar: the settings page, as /lvls settings.
 function V.OpenSettings() ns.Slash("settings") end
@@ -669,6 +740,7 @@ function V.Render()
     .. (m.train and ("  ·  " .. m.train) or ""))
   frame:SetHeight(22 + 4 + stepH + 20 + 18)
   V.Anchor()
+  V.RenderHint()
 end
 
 function V.Show(on)
@@ -679,6 +751,7 @@ function V.Show(on)
   local was = V.Shown()
   if ns.cdb then ns.cdb.viewer = on end
   V.Render()
+  V.RenderHint()
   if was ~= on then ns.Events.Fire("LVLS_GUIDE", on) end
 end
 
@@ -691,3 +764,4 @@ ns.Events.On("LVLS_LOADED", function()
   if ns.cdb and ns.cdb.viewer ~= false then V.Show(true) end
 end)
 ns.Events.On("LVLS_UPDATED", function() V.Render() end)
+ns.Events.On("LVLS_TALENTS_ASK", function() V.RenderHint() end)
